@@ -1,5 +1,5 @@
 <%@ include file="../header.jsp" %>
-<%--@elvariable id="elementSchool" type="com.killard.web.jdo.card.ElementSchoolDO"--%>
+<%--@elvariable id="elementSchool" type="com.killard.jdo.card.ElementSchoolDO"--%>
 <table>
     <tr>
         <td>${elementSchool.descriptor.name}</td>

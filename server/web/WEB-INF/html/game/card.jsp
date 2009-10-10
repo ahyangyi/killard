@@ -1,7 +1,7 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
-<%--@elvariable id="elementRecord" type="com.killard.web.jdo.board.player.ElementRecordDO"--%>
-<%--@elvariable id="player" type="com.killard.web.jdo.board.player.PlayerRecordDO"--%>
+<%--@elvariable id="elementRecord" type="com.killard.jdo.board.player.ElementRecordDO"--%>
+<%--@elvariable id="player" type="com.killard.jdo.board.player.PlayerRecordDO"--%>
 <div class="elementschool">
     ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
     <c:if test="${player.name == playerName}">

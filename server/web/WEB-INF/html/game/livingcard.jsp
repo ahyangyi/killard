@@ -1,5 +1,5 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="record" type="com.killard.web.jdo.CardRecordDO"--%>
+<%--@elvariable id="record" type="com.killard.web.jdo.board.CardRecordDO"--%>
 <c:set var="card" value="${record.card}"/>
 <c:choose>
     <c:when test="${card.descriptor.imageData != null}">

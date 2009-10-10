@@ -1,6 +1,6 @@
-<%@ page import="com.killard.web.jdo.CardDO" %>
+<%@ page import="com.killard.web.jdo.card.CardDO" %>
 <%@ include file="/WEB-INF/html/header.jsp" %>
-<%--@elvariable id="packages" type="java.util.List<com.killard.web.jdo.PackageDO>"--%>
+<%--@elvariable id="packages" type="java.util.List<com.killard.web.jdo.card.PackageDO>"--%>
 <table style="width:100%;">
     <c:forEach var="package" items="${packages}">
         <tr>

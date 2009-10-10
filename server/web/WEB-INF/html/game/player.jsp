@@ -1,7 +1,7 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
-<%--@elvariable id="board" type="com.killard.web.jdo.BoardManagerDO"--%>
-<%--@elvariable id="player" type="com.killard.web.jdo.PlayerRecordDO"--%>
+<%--@elvariable id="board" type="com.killard.web.jdo.board.BoardManagerDO"--%>
+<%--@elvariable id="player" type="com.killard.web.jdo.board.PlayerRecordDO"--%>
 <c:choose>
     <c:when test="${player.health == 0}">
         <c:set var="playerColor" value="#808080"/>

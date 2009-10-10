@@ -1,0 +1,36 @@
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <application>one-board</application>
+
+    <version>1</version>
+
+    <static-files>
+        <include path="/favicon.ico" expiration="1h"/>
+        <!--<include path="/**.png" expiration="1d 1h"/>-->
+        <!--<include path="/**.jpg" expiration="1d 1h"/>-->
+        <include path="/**.gif" expiration="1h"/>
+        <include path="/**.css"/>
+        <include path="/**.swf"/>
+        <include path="/**.htm"/>
+        <exclude path="/**.png"/>
+        <exclude path="/**.html"/>
+        <exclude path="/**.xml"/>
+    </static-files>
+
+    <resource-files>
+        <include path="/WEB-INF/card/**.png"/>
+        <include path="/**.png"/>
+        <include path="/**.xml"/>
+    </resource-files>
+
+    <sessions-enabled>false</sessions-enabled>
+
+    <inbound-services>
+        <service>xmpp_message</service>
+    </inbound-services>
+
+    <system-properties>
+        <property name="com.google.gdata.DisableCookieHandler" value="true"/>
+        <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
+    </system-properties>
+
+</appengine-web-app>

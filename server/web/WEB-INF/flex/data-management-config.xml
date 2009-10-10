@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="data-service" class="flex.data.DataService">
+
+    <adapters>
+        <adapter-definition id="actionscript" class="flex.data.adapters.ASObjectAdapter"/>
+        <adapter-definition id="java-dao" class="flex.data.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-polling-amf"/>
+    </default-channels>
+
+</service>

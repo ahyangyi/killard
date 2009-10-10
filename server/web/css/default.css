@@ -1,0 +1,35 @@
+div.menu {
+    width: 100%;
+    text-align:center;
+}
+
+div.menu ul {
+    list-style-type: none;
+}
+
+div.menu li {
+    display: inline;
+}
+
+div.line {
+    border: 1px solid;
+    width: 100%;
+    color: gray;
+}
+
+div.copyright {
+    width: 100%;
+    text-align: center;
+}
+
+div.elementschool {
+    width:100%;
+}
+
+div.elementschool #newcard {
+    display:none;
+}
+
+div.elementschool:hover #newcard {
+    display:block;
+}

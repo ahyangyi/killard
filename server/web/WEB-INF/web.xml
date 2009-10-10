@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5">
+    <display-name>One Board</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>flex.class.path</param-name>
+        <param-value>/WEB-INF/lib</param-value>
+    </context-param>
+
+    <!--<listener>-->
+        <!--<listener-class>flex.messaging.HttpFlexSession</listener-class>-->
+    <!--</listener>-->
+
+    <filter>
+        <filter-name>PersistenceManagerFilter</filter-name>
+        <filter-class>com.killard.web.filter.PersistenceManagerFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>PersistenceManagerFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!--<servlet>-->
+        <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
+        <!--<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>services.configuration.file</param-name>-->
+            <!--<param-value>/WEB-INF/flex/services-config.xml</param-value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>flex.write.path</param-name>-->
+            <!--<param-value>/WEB-INF/flex</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/_ah/xmpp/message/chat/</url-pattern>
+    </servlet-mapping>
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
+        <!--<url-pattern>/messagebroker/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>game</web-resource-name>
+            <url-pattern>/game/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>manage</web-resource-name>
+            <url-pattern>/game/manage/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

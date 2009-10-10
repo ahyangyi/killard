@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="message-service"
+    class="flex.messaging.services.MessageService">
+
+    <adapters>
+        <!--<adapter-definition id="jms" class="flex.messaging.services.messaging.adapters.JMSAdapter"/>-->
+        <adapter-definition id="actionscript" class="flex.messaging.services.messaging.adapters.ActionScriptAdapter" default="true" />
+    </adapters>
+    
+    <default-channels>
+        <channel ref="my-polling-amf"/>
+        <channel ref="per-client-qos-polling-amf"/>
+    </default-channels>
+
+    <destination id="market-data-feed">
+        <properties>
+            <network>
+                <session-timeout>0</session-timeout>
+            </network>
+            <server>
+                <max-cache-size>1000</max-cache-size>
+                <message-time-to-live>0</message-time-to-live>
+                <durable>true</durable>
+                <allow-subtopics>true</allow-subtopics>
+                <subtopic-separator>.</subtopic-separator>
+            </server>
+        </properties>
+
+        <channels>
+            <channel ref="my-http"/>
+            <channel ref="my-amf"/>
+			<channel ref="my-polling-amf"/>
+			<channel ref="my-streaming-amf"/>
+            <channel ref="per-client-qos-polling-amf"/>
+        </channels>
+    </destination>
+</service>

@@ -1,0 +1,14 @@
+<flex-config xmlns="http://www.adobe.com/2006/flex-config">
+    <compiler>
+        <debug>true</debug>
+        <source-path>
+            <path-element>src</path-element>
+        </source-path>
+        <services>../server/web/WEB-INF/flex/services-config.xml</services>
+        <context-root>/</context-root>
+    </compiler>
+    <file-specs>
+        <path-element>flash/src/com/killard/Board.mxml</path-element>
+    </file-specs>
+    <output>/Users/dkr/Code/game/killard/out/exploded/server/board.swf</output>
+</flex-config>

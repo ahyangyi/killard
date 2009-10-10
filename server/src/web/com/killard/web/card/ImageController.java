@@ -68,7 +68,7 @@ public class ImageController extends BasicController {
                     ImagesServiceFactory
                             .makeComposite(makeNumberImage(card.getHealth(), request), 0, 0, 1f, Composite.Anchor.BOTTOM_LEFT);
             Composite attackComp =
-                    ImagesServiceFactory.makeComposite(makeNumberImage(card.getAttack().getValue(), request), 0, 0, 1f,
+                    ImagesServiceFactory.makeComposite(makeNumberImage(card.getAttackValue(), request), 0, 0, 1f,
                             Composite.Anchor.BOTTOM_RIGHT);
 
             List<Composite> composites = new ArrayList<Composite>(4);

@@ -1,9 +1,9 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
-<%--@elvariable id="elementRecord" type="com.killard.web.jdo.board.ElementRecordDO"--%>
-<%--@elvariable id="player" type="com.killard.web.jdo.board.PlayerRecordDO"--%>
+<%--@elvariable id="elementRecord" type="com.killard.web.jdo.board.player.ElementRecordDO"--%>
+<%--@elvariable id="player" type="com.killard.web.jdo.board.player.PlayerRecordDO"--%>
 <div class="elementschool">
-    ${elementRecord.elementSchool.descriptor.name}:&nbsp;${elementRecord.amount}
+    ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
     <c:if test="${player.name == playerName}">
         <form action="/game/playcard.html" method="POST">
             <div id="newcard">
@@ -11,7 +11,7 @@
                     <c:forEach var="card"
                                items="${elementRecord.holdedCards}">
                         <option value="${card.key.id}">
-                            <span style="font-size:10px;">${card.descriptor.name},${card.level}</span>
+                            <span style="font-size:10px;">${card.name},${card.level}</span>
                         </option>
                     </c:forEach>
                 </select>

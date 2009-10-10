@@ -3,13 +3,6 @@ package com.killard.web.jdo;
 import com.google.appengine.api.datastore.Key;
 import com.killard.web.context.BoardContext;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Inheritance;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.Locale;
 import java.util.SortedSet;
 
@@ -22,32 +15,14 @@ import java.util.SortedSet;
  * This class is mutable and not thread safe.
  * </p>
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
-@Inheritance(strategy= InheritanceStrategy.NEW_TABLE)
 public abstract class DescriptableDO<T extends DescriptorDO> implements Comparable<DescriptableDO> {
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-
-    @Persistent
-    private String id;
-
-    protected DescriptableDO(String id) {
-        this.id = id;
+    protected DescriptableDO() {
     }
 
-    public Key getKey() {
-        return key;
-    }
+    public abstract Key getKey();
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    public abstract String getId();
 
     public T getDescriptor() {
         return getDescriptor(BoardContext.getLocale());

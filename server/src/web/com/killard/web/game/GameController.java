@@ -3,7 +3,7 @@ package com.killard.web.game;
 import com.killard.web.BasicController;
 import com.killard.web.PersistenceHelper;
 import com.killard.web.jdo.board.BoardManagerDO;
-import com.killard.web.jdo.board.PlayerRecordDO;
+import com.killard.web.jdo.board.player.PlayerRecordDO;
 import com.killard.web.jdo.card.PackageDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,18 +42,20 @@ public class GameController extends BasicController {
 
         List<PackageDO> packages = new LinkedList<PackageDO>();
         Extent<PackageDO> packageExtent = pm.getExtent(PackageDO.class);
-        for (PackageDO pack : packageExtent) packages.add(pack);
+        for (PackageDO pack : packageExtent) {
+            if (pack.isOpen()) packages.add(pack);
+        }
         packageExtent.closeAll();
 
-        List<BoardManagerDO> boards = new LinkedList<BoardManagerDO>();
-        Extent<BoardManagerDO> boardExtent = pm.getExtent(BoardManagerDO.class);
-        for (BoardManagerDO board : boardExtent) {
-            if (board.getPlayers().size() < board.getMaxPlayerNumber()) boards.add(board);
-        }
-        boardExtent.closeAll();
+//        List<BoardManagerDO> boards = new LinkedList<BoardManagerDO>();
+//        Extent<BoardManagerDO> boardExtent = pm.getExtent(BoardManagerDO.class);
+//        for (BoardManagerDO board : boardExtent) {
+//            if (board.getPlayers().size() < board.getMaxPlayerNumber()) boards.add(board);
+//        }
+//        boardExtent.closeAll();
 
         modelMap.put("packages", packages);
-        modelMap.put("boards", boards);
+//        modelMap.put("boards", boards);
         return "game/list";
     }
 
@@ -69,7 +71,6 @@ public class GameController extends BasicController {
         modelMap.put("playerName", playerName);
         modelMap.put("players", boardManager.getPlayers(playerName));
         modelMap.put("actions", boardManager.getActions());
-        modelMap.put("manager", boardManager.getPackage().getManagers().contains(getUser()));
         return "game/board";
     }
 
@@ -97,7 +98,7 @@ public class GameController extends BasicController {
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
             quit();
             PersistenceHelper.doTransaction();
-            join(getBoardManager(packageId, boardId));
+            join(getBoardManager(boardId));
         }
 
         redirect("board", request, response);
@@ -113,6 +114,7 @@ public class GameController extends BasicController {
     }
 
     protected void join(BoardManagerDO boardManager) {
+        PersistenceHelper.doTransaction();
         PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
         boardManager.addPlayer(getPlayerName(), INIT_HEALTH);
         PersistenceHelper.getPersistenceManager().makePersistent(boardManager);

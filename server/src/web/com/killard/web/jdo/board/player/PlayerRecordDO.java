@@ -1,4 +1,4 @@
-package com.killard.web.jdo.board;
+package com.killard.web.jdo.board.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -8,9 +8,9 @@ import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.environment.record.PlayerRecord;
 import com.killard.web.PersistenceHelper;
-import com.killard.web.jdo.card.CardDO;
+import com.killard.web.jdo.board.BoardCardDO;
+import com.killard.web.jdo.board.BoardManagerDO;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -36,7 +36,6 @@ public class PlayerRecordDO extends PlayerRecord {
     private Key key;
 
     @Persistent
-    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
     private Key boardManagerKey;
 
     @Persistent
@@ -67,6 +66,8 @@ public class PlayerRecordDO extends PlayerRecord {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
+
+        this.boardManagerKey = boardManager.getKey();
 
         this.name = name;
         this.health = health;
@@ -141,7 +142,7 @@ public class PlayerRecordDO extends PlayerRecord {
     @Override
     public Card getHoldedCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (CardDO card : element.getHoldedCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (BoardCardDO card : element.getHoldedCards()) if (card.getKey().getId() == cardIndex) return card;
         }
         return null;
     }

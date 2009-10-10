@@ -3,6 +3,7 @@ package com.killard.web.jdo;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -42,7 +43,7 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     private String name;
 
     @Persistent
-    private String description;
+    private Text description;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -85,11 +86,12 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     }
 
     public String getDescription() {
-        return description;
+        if (description == null) return "";
+        return description.getValue();
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = new Text(description);
     }
 
     public byte[] getImageData() {

@@ -2,14 +2,23 @@
 
 package com.killard.parser;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Map;
+import org.antlr.runtime.BaseRecognizer;
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.DFA;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.IntStream;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.TreeNodeStream;
+import org.antlr.runtime.tree.TreeParser;
+
 import java.util.HashMap;
-
-
-import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class CardBuilder extends TreeParser {
     public static final String[] tokenNames = new String[] {

@@ -1,10 +1,11 @@
-package com.killard.web.jdo.board;
+package com.killard.web.jdo.board.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.web.PersistenceHelper;
-import com.killard.web.jdo.card.CardDO;
-import com.killard.web.jdo.card.ElementSchoolDO;
+import com.killard.web.jdo.board.BoardCardDO;
+import com.killard.web.jdo.board.BoardElementSchoolDO;
+import com.killard.web.jdo.board.BoardManagerDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -28,7 +29,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementRecordDO implements Comparator<CardDO> {
+public class ElementRecordDO implements Comparator<BoardCardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -44,30 +45,30 @@ public class ElementRecordDO implements Comparator<CardDO> {
     private List<Key> holdedCardKeys = new ArrayList<Key>();
 
     @NotPersistent
-    private ElementSchoolDO elementSchool;
+    private BoardElementSchoolDO elementSchool;
 
     @NotPersistent
-    private SortedSet<CardDO> holdedCards = new TreeSet<CardDO>(this);
+    private SortedSet<BoardCardDO> holdedCards = new TreeSet<BoardCardDO>(this);
 
-    public ElementRecordDO(ElementSchoolDO elementSchool, int amount, List<CardDO> cards) {
+    public ElementRecordDO(BoardElementSchoolDO elementSchool, int amount, List<BoardCardDO> cards) {
         this.elementSchoolKey = elementSchool.getKey();
         this.amount = amount;
 
         this.holdedCardKeys = new ArrayList<Key>(cards.size());
-        for (CardDO card : cards) holdedCardKeys.add(card.getKey());
+        for (BoardCardDO card : cards) holdedCardKeys.add(card.getKey());
 
         this.elementSchool = elementSchool;
         this.holdedCards.addAll(cards);
     }
 
     public void restore(BoardManagerDO boardManager) {
-        elementSchool = PersistenceHelper.getPersistenceManager().getObjectById(ElementSchoolDO.class, elementSchoolKey);
+        elementSchool = PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
         if (holdedCardKeys == null) {
             holdedCardKeys = new ArrayList<Key>();
         }
-        holdedCards = new TreeSet<CardDO>(this);
+        holdedCards = new TreeSet<BoardCardDO>(this);
         for (Key key : holdedCardKeys) {
-            holdedCards.add(PersistenceHelper.getPersistenceManager().getObjectById(CardDO.class, key));
+            holdedCards.add(PersistenceHelper.getPersistenceManager().getObjectById(BoardCardDO.class, key));
         }
     }
 
@@ -79,7 +80,7 @@ public class ElementRecordDO implements Comparator<CardDO> {
         return elementSchoolKey;
     }
 
-    public ElementSchoolDO getElementSchool() {
+    public BoardElementSchoolDO getElementSchool() {
         return elementSchool;
     }
 
@@ -91,8 +92,8 @@ public class ElementRecordDO implements Comparator<CardDO> {
         this.amount = amount;
     }
 
-    public CardDO[] getHoldedCards() {
-        return holdedCards.toArray(new CardDO[holdedCardKeys.size()]);
+    public BoardCardDO[] getHoldedCards() {
+        return holdedCards.toArray(new BoardCardDO[holdedCardKeys.size()]);
     }
 
     protected void setPlayer(PlayerRecordDO player) {
@@ -101,7 +102,7 @@ public class ElementRecordDO implements Comparator<CardDO> {
         this.key = keyBuilder.getKey();
     }
 
-    public int compare(CardDO card1, CardDO card2) {
+    public int compare(BoardCardDO card1, BoardCardDO card2) {
         if (card1.getLevel() == card2.getLevel()) return card1.compareTo(card2);
         return card1.getLevel() - card2.getLevel();
     }

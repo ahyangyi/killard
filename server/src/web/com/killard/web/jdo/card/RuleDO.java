@@ -2,18 +2,7 @@ package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
-import com.killard.card.Action;
-import com.killard.card.Attribute;
-import com.killard.card.action.KillCardAction;
-import com.killard.card.action.NewCardAction;
-import com.killard.card.action.NextTurnAction;
-import com.killard.environment.ActionValidator;
-import com.killard.environment.AfterAction;
-import com.killard.environment.BeforeAction;
-import com.killard.environment.event.ActionListener;
 import com.killard.web.jdo.AttributeHandler;
-import com.killard.web.jdo.FunctionHelper;
-import com.killard.web.jdo.board.BoardManagerDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -23,7 +12,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * <p>
@@ -35,7 +23,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RuleDO implements ActionListener {
+public class RuleDO {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -75,51 +63,24 @@ public class RuleDO implements ActionListener {
         return packageKey;
     }
 
-    public Text getDefinition() {
-        return definition;
+    public AttributeHandler[] getValidators() {
+        return validators.toArray(new AttributeHandler[validators.size()]);
+    }
+
+    public AttributeHandler[] getBefore() {
+        return before.toArray(new AttributeHandler[before.size()]);
+    }
+
+    public AttributeHandler[] getAfter() {
+        return after.toArray(new AttributeHandler[after.size()]);
+    }
+
+    public String getDefinition() {
+        return definition.getValue();
     }
 
     public void setDefinition(String definition) {
         this.definition = new Text(definition);
-    }
-
-    @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(BoardManagerDO owner, Action action) {
-        List<Action> result = FunctionHelper.handler(owner, action, validators);
-        getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
-        return result;
-    }
-
-    @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(owner, action, before);
-    }
-
-    @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(owner, action, after);
-    }
-
-    @AfterAction(actionClass = NextTurnAction.class, selfTargeted = false)
-    public Object after(BoardManagerDO boardManager, NextTurnAction action) {
-        boardManager.moveToNext();
-        return null;
-    }
-
-    @AfterAction(actionClass = NewCardAction.class, selfTargeted = false)
-    public void after(BoardManagerDO boardManager, NewCardAction action) {
-        for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.addActionListener(attribute, action.getTarget());
-    }
-
-    @BeforeAction(actionClass = KillCardAction.class, selfTargeted = false)
-    public void before(BoardManagerDO boardManager, KillCardAction action) {
-        for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.removeActionListener(attribute);
-    }
-
-    public Logger getLog() {
-        return Logger.getLogger(getClass().getName());
     }
 
     public RuleDO clone(PackageDO pack) {

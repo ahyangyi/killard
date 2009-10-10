@@ -1,7 +1,7 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
 <%--@elvariable id="board" type="com.killard.web.jdo.board.BoardManagerDO"--%>
-<%--@elvariable id="player" type="com.killard.web.jdo.board.PlayerRecordDO"--%>
+<%--@elvariable id="player" type="com.killard.web.jdo.board.player.PlayerRecordDO"--%>
 <c:choose>
     <c:when test="${player.health == 0}">
         <c:set var="playerColor" value="#808080"/>
@@ -38,7 +38,7 @@
                     <td>HP:${player.health}</td>
                     <td style="width:50%;"></td>
                     <td style="width:150px;">
-                        <c:if test="${myturn}"><a href="endturn.html">End Turn</a></c:if>
+                        <c:if test="${myturn}"><a href="/game/endturn.html">End Turn</a></c:if>
                         <c:if test="${player.health <= 0}">Game Over</c:if>
                     </td>
                 </tr>

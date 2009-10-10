@@ -1,12 +1,14 @@
 package com.killard.web.jdo.card;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 import com.killard.web.jdo.DescriptableDO;
-import com.killard.web.jdo.board.BoardManagerDO;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.Collections;
 import java.util.Date;
 import java.util.SortedSet;
@@ -23,6 +25,13 @@ import java.util.TreeSet;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
+
+    @Persistent
+    private String id;
 
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<User> managers = new TreeSet<User>();
@@ -42,12 +51,6 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<ElementSchoolDO> elementSchools = new TreeSet<ElementSchoolDO>();
 
-    @Persistent(defaultFetchGroup = "false")
-    private SortedSet<BoardManagerDO> boards = new TreeSet<BoardManagerDO>();
-
-    @Persistent(defaultFetchGroup = "false")
-    private SortedSet<PackageDescriptorDO> descriptors = new TreeSet<PackageDescriptorDO>();
-
     @Persistent
     private Boolean clonable = true;
 
@@ -57,11 +60,25 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     @Persistent
     private Boolean open = false;
 
+    @Persistent
+    private SortedSet<PackageDescriptorDO> descriptors = new TreeSet<PackageDescriptorDO>();
+
     public PackageDO(String id, User creator) {
-        super(id);
+        this.id = id;
         addManager(creator);
         this.createDate = new Date();
         this.modifiedDate = createDate;
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public SortedSet<User> getManagers() {
@@ -112,14 +129,6 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return elementSchools.toArray(new ElementSchoolDO[elementSchools.size()]);
     }
 
-    public BoardManagerDO[] getBoards() {
-        return boards.toArray(new BoardManagerDO[boards.size()]);
-    }
-
-    public SortedSet<PackageDescriptorDO> getDescriptors() {
-        return descriptors;
-    }
-
     public boolean isClonable() {
         return clonable;
     }
@@ -142,6 +151,10 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public SortedSet<PackageDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 
     public PackageDO clone(String id, User creator) {

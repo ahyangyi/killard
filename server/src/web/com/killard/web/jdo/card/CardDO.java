@@ -2,21 +2,14 @@ package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
-import com.killard.card.Attack;
 import com.killard.card.AttackType;
-import com.killard.card.Attribute;
-import com.killard.card.Card;
-import com.killard.card.ElementSchool;
-import com.killard.card.Skill;
-import com.killard.web.PersistenceHelper;
 import com.killard.web.jdo.DescriptableDO;
 
-import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import java.util.ArrayList;
-import java.util.List;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -30,11 +23,17 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardDO extends DescriptableDO<CardDescriptorDO> implements Card {
+public class CardDO extends DescriptableDO<CardDescriptorDO> {
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
 
     @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key elementSchoolKey;
+    private ElementSchoolDO elementSchool;
+
+    @Persistent
+    private String id;
 
     @Persistent
     private Key packageKey;
@@ -57,42 +56,47 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> implements Card {
     @Persistent
     private Integer attackValue;
 
-    @Persistent(defaultFetchGroup = "false")
-    private List<SkillDO> skills = new ArrayList<SkillDO>();
+    @Persistent(mappedBy = "card", defaultFetchGroup = "false")
+    private SortedSet<SkillDO> skills = new TreeSet<SkillDO>();
 
-    @Persistent(defaultFetchGroup = "false")
-    private List<AttributeDO> visibleAttributes = new ArrayList<AttributeDO>();
+    @Persistent
+    private SortedSet<String> visibleAttributes = new TreeSet<String>();
 
-    @Persistent(defaultFetchGroup = "false")
-    private List<AttributeDO> hiddenAttributes = new ArrayList<AttributeDO>();
-
-    @Persistent(defaultFetchGroup = "false")
-    private List<AttributeDO> newRecords = new ArrayList<AttributeDO>();
+    @Persistent
+    private SortedSet<String> hiddenAttributes = new TreeSet<String>();
 
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<CardDescriptorDO> descriptors = new TreeSet<CardDescriptorDO>();
 
     public CardDO(String id, ElementSchoolDO elementSchool, String definition) {
-        super(id);
-        this.elementSchoolKey = elementSchool.getKey();
+        this.id = id;
+        this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
         this.definition = new Text(definition);
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Text getDefinition() {
         return definition;
     }
 
-    public Key getElementSchoolKey() {
-        return elementSchoolKey;
-    }
-
     public Key getPackageKey() {
         return packageKey;
     }
 
-    public ElementSchool getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(ElementSchoolDO.class, getElementSchoolKey());
+    public ElementSchoolDO getElementSchool() {
+        return elementSchool;
     }
 
     public int getLevel() {
@@ -107,45 +111,70 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> implements Card {
         return maxHealth;
     }
 
-    public Attack getAttack() {
-        return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
+    public String getAttackType() {
+        return attackType;
+    }
+
+    public Integer getAttackValue() {
+        return attackValue;
     }
 
     public boolean hasSkill() {
         return !skills.isEmpty();
     }
 
-    public Skill[] getSkills() {
-        return skills.toArray(new Skill[skills.size()]);
+    public SkillDO[] getSkills() {
+        return skills.toArray(new SkillDO[skills.size()]);
     }
 
     public boolean hasAttribute() {
         return hasVisibleAttribute() || hasHiddenAttribute();
     }
 
-    public Attribute[] getAttributes() {
-        Attribute[] attributes = new Attribute[hiddenAttributes.size() + visibleAttributes.size()];
-        for (int i = 0; i < hiddenAttributes.size(); i++)
-            attributes[i] = hiddenAttributes.get(i);
-        for (int i = 0; i < visibleAttributes.size(); i++)
-            attributes[hiddenAttributes.size() + i] = visibleAttributes.get(i);
-        return attributes;
+    public AttributeDO[] getAttributes() {
+        AttributeDO[] result = new AttributeDO[hiddenAttributes.size() + visibleAttributes.size()];
+        int i = 0;
+        for (String id : hiddenAttributes) {
+            result[i] = elementSchool.getAttribute(id);
+            i++;
+        }
+
+        i = 0;
+        for (String id : visibleAttributes) {
+            result[i] = elementSchool.getAttribute(id);
+            i++;
+        }
+        return result;
     }
 
     public boolean hasVisibleAttribute() {
         return !visibleAttributes.isEmpty();
     }
 
-    public Attribute[] getVisibleAttributes() {
-        return visibleAttributes.toArray(new Attribute[visibleAttributes.size()]);
+    public AttributeDO[] getVisibleAttributes() {
+        if (visibleAttributes == null) return new AttributeDO[0];
+        AttributeDO[] result = new AttributeDO[visibleAttributes.size()];
+        int i = 0;
+        for (String id : visibleAttributes) {
+            result[i] = elementSchool.getAttribute(id);
+            i++;
+        }
+        return result;
     }
 
     public boolean hasHiddenAttribute() {
         return !hiddenAttributes.isEmpty();
     }
 
-    public Attribute[] getHiddenAttributes() {
-        return hiddenAttributes.toArray(new Attribute[hiddenAttributes.size()]);
+    public AttributeDO[] getHiddenAttributes() {
+        if (hiddenAttributes == null) return new AttributeDO[0];
+        AttributeDO[] result = new AttributeDO[hiddenAttributes.size()];
+        int i = 0;
+        for (String id : hiddenAttributes) {
+            result[i] = elementSchool.getAttribute(id);
+            i++;
+        }
+        return result;
     }
 
     // Setters
@@ -178,15 +207,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> implements Card {
         return skills.add(skill);
     }
 
-    public boolean addAttribute(AttributeDO attribute) {
-        if (attribute.isHidden()) return hiddenAttributes.add(attribute);
-        else return visibleAttributes.add(attribute);
-    }
-
-    public boolean addNewRecord(AttributeDO record) {
-        return newRecords.add(record);
-    }
-
     protected SortedSet<CardDescriptorDO> getDescriptors() {
         return descriptors;
     }
@@ -201,14 +221,9 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> implements Card {
         for (SkillDO skill : skills) {
             card.addSkill(skill.clone(card));
         }
-        for (AttributeDO attribute : visibleAttributes) {
-            card.addAttribute(attribute.clone(card));
+        for (String attribute : visibleAttributes) {
         }
-        for (AttributeDO attribute : hiddenAttributes) {
-            card.addAttribute(attribute.clone(card));
-        }
-        for (AttributeDO attribute : newRecords) {
-            card.addAttribute(attribute.clone(card));
+        for (String attribute : hiddenAttributes) {
         }
         for (CardDescriptorDO descriptor : descriptors) {
             CardDescriptorDO cloneDescriptor = new CardDescriptorDO(card, descriptor.getLocale());

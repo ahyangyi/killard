@@ -71,7 +71,7 @@ public class JdoCardBuilder {
         card.setAttackValue(getInt(map, "attack"));
 
         buildSkills(card, map);
-        buildAttributes(card, map);
+        buildAttributes(elementSchool, map);
 
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");
@@ -106,31 +106,31 @@ public class JdoCardBuilder {
         card.addSkill(skill);
     }
 
-    public void buildAttributes(CardDO card, Map map) throws InvalidCardException {
+    public void buildAttributes(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         Object value = map.get("attribute");
         if (value instanceof Map) {
-            buildAttribute(card, (Map) value);
+            buildAttribute(elementSchool, (Map) value);
         }
         if (value instanceof List) {
             for (Object def : (List) value) {
                 if (def instanceof Map) {
-                    buildAttribute(card, (Map) def);
+                    buildAttribute(elementSchool, (Map) def);
                 }
             }
         }
     }
 
-    public void buildAttribute(CardDO card, Map map) throws InvalidCardException {
+    public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         String id = getString(map, "id");
         boolean hidden = getBoolean(map, "hidden");
         boolean useful = getBoolean(map, "useful");
         boolean harmful = getBoolean(map, "harmful");
-        AttributeDO attribute = new AttributeDO(id, card, hidden, useful, harmful,
+        AttributeDO attribute = new AttributeDO(id, elementSchool, hidden, useful, harmful,
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));
         PersistenceHelper.getPersistenceManager().makePersistent(attribute);
-        card.addAttribute(attribute);
+        elementSchool.addAttribute(attribute);
 
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");

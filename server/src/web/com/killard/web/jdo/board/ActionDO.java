@@ -9,10 +9,10 @@ import com.killard.card.action.ChangeCardAttackAction;
 import com.killard.card.action.ChangeCardHealthAction;
 import com.killard.card.action.ChangePlayerElementAction;
 import com.killard.card.action.ChangePlayerHealthAction;
+import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.KillPlayerAction;
 import com.killard.card.action.NewCardAction;
-import com.killard.card.action.NextTurnAction;
 import com.killard.card.action.PlayerAction;
 import com.killard.card.action.RemoveCardAttributeAction;
 import com.killard.web.PersistenceHelper;
@@ -224,7 +224,7 @@ public class ActionDO {
         if (action instanceof KillPlayerAction) populate((KillPlayerAction) action);
         if (action instanceof NewCardAction) populate((NewCardAction) action);
         if (action instanceof CastCardAction) populate((CastCardAction) action);
-        if (action instanceof NextTurnAction) populate((NextTurnAction) action);
+        if (action instanceof EndTurnAction) populate((EndTurnAction) action);
         if (action instanceof RemoveCardAttributeAction) populate((RemoveCardAttributeAction) action);
     }
 
@@ -276,7 +276,7 @@ public class ActionDO {
         this.targetCardPosition = action.getTarget().getPosition();
     }
 
-    protected void populate(NextTurnAction action) {
+    protected void populate(EndTurnAction action) {
     }
 
     protected void populate(RemoveCardAttributeAction action) {

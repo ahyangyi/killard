@@ -1,22 +1,14 @@
 package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.card.Action;
-import com.killard.card.CardInstance;
-import com.killard.card.ElementSchool;
-import com.killard.card.Skill;
-import com.killard.parser.Context;
-import com.killard.parser.ExecutionException;
 import com.killard.parser.Function;
-import com.killard.parser.GlobalContext;
-import com.killard.web.PersistenceHelper;
 import com.killard.web.jdo.DescriptableDO;
 
-import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import java.util.List;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -30,11 +22,17 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class SkillDO extends DescriptableDO<SkillDescriptorDO> implements Skill {
+public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
 
     @Persistent
-    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
-    private Key cardKey;
+    private String id;
+
+    @Persistent
+    private CardDO card;
 
     @Persistent
     private Integer cost;
@@ -46,32 +44,30 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> implements Skill 
     private SortedSet<SkillDescriptorDO> descriptors = new TreeSet<SkillDescriptorDO>();
 
     public SkillDO(String id, CardDO card, int cost, Function function) {
-        super(id);
-        this.cardKey = card.getKey();
+        this.id = id;
+        this.card = card;
         this.cost = cost;
         this.function = function;
     }
 
-    public Key getCardKey() {
-        return cardKey;
+    public Key getKey() {
+        return key;
     }
 
-    public ElementSchool getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(CardDO.class, getCardKey()).getElementSchool();
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public CardDO getCard() {
+        return card;
     }
 
     public int getCost() {
         return cost;
-    }
-
-    public List<Action> execute(CardInstance owner, CardInstance target) {
-        Context ctx = new GlobalContext(owner);
-        try {
-            function.execute(ctx);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return ctx.getActions();
     }
 
     public Function getFunction() {

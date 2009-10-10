@@ -157,12 +157,14 @@ public class ManageController extends BasicController {
                 elementDesc.setName(sub.getName());
                 elementDesc.setDescription("Element school: " + sub.getName());
                 pm.makePersistent(elementDesc);
+                PersistenceHelper.doTransaction();
 
                 for (File file : sub.listFiles()) {
                     if (file.getName().endsWith(".js")) {
                         String name = file.getName().substring(0, file.getName().length() - 3);
                         CardDO card = new CardDO(name, elementSchool, getString(file));
-                        pm.makePersistent(card);
+                        elementSchool.addCard(card);
+                        pm.makePersistent(elementSchool);
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         pm.makePersistent(card);
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {

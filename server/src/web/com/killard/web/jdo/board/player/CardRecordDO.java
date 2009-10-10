@@ -1,4 +1,4 @@
-package com.killard.web.jdo.board;
+package com.killard.web.jdo.board.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.Attack;
@@ -9,9 +9,11 @@ import com.killard.card.Player;
 import com.killard.card.Skill;
 import com.killard.environment.record.CardRecord;
 import com.killard.web.PersistenceHelper;
-import com.killard.web.jdo.card.AttributeDO;
-import com.killard.web.jdo.card.CardDO;
-import com.killard.web.jdo.card.ElementSchoolDO;
+import com.killard.web.jdo.board.BoardAttributeDO;
+import com.killard.web.jdo.board.BoardCardDO;
+import com.killard.web.jdo.board.BoardElementSchoolDO;
+import com.killard.web.jdo.board.BoardManagerDO;
+import com.killard.web.jdo.board.BoardSkillDO;
 import com.killard.web.jdo.card.SkillDO;
 
 import javax.jdo.annotations.Extension;
@@ -94,11 +96,11 @@ public class CardRecordDO extends CardRecord {
         super(null, 0, 0, 0, 0, null);
     }
 
-    public CardRecordDO(CardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target, int position) {
+    public CardRecordDO(BoardCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target, int position) {
         super(card, boardManager, owner, target, position);
         this.ownerKey = owner.getKey();
         this.cardKey = card.getKey();
-        this.elementSchoolKey = ((ElementSchoolDO)card.getElementSchool()).getKey();
+        this.elementSchoolKey = ((BoardElementSchoolDO)card.getElementSchool()).getKey();
         this.targetPlayerKey = target.getKey();
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
@@ -109,7 +111,7 @@ public class CardRecordDO extends CardRecord {
 
         this.skills = Arrays.asList(card.getSkills());
         this.skillKeys = new ArrayList<Key>(skills.size());
-        for (Skill skill : this.skills) this.skillKeys.add(((SkillDO)skill).getKey());
+        for (Skill skill : this.skills) this.skillKeys.add(((BoardSkillDO)skill).getKey());
 
         Attribute[] hidden = card.getHiddenAttributes();
         Attribute[] visible = card.getVisibleAttributes();
@@ -118,11 +120,11 @@ public class CardRecordDO extends CardRecord {
         this.attributeKeys = new ArrayList<Key>(hidden.length + visible.length);
         for (Attribute attribute : card.getHiddenAttributes()) {
             this.hiddenAttributes.add(attribute);
-            this.attributeKeys.add(((AttributeDO)attribute).getKey());
+            this.attributeKeys.add(((BoardAttributeDO)attribute).getKey());
         }
         for (Attribute attribute : visible) {
             this.visibleAttributes.add(attribute);
-            this.attributeKeys.add(((AttributeDO)attribute).getKey());
+            this.attributeKeys.add(((BoardAttributeDO)attribute).getKey());
         }
 
         this.casted = false;
@@ -142,10 +144,10 @@ public class CardRecordDO extends CardRecord {
             if (record.getKey().equals(targetPlayerKey)) setTarget(record);
         }
         for (Key key : skillKeys) {
-            addSkillDO(PersistenceHelper.getPersistenceManager().getObjectById(SkillDO.class, key));
+            addBoardSkill(PersistenceHelper.getPersistenceManager().getObjectById(BoardSkillDO.class, key));
         }
         for (Key key : attributeKeys) {
-            addAttributeDO(PersistenceHelper.getPersistenceManager().getObjectById(AttributeDO.class, key));
+            addBoardAttribute(PersistenceHelper.getPersistenceManager().getObjectById(BoardAttributeDO.class, key));
         }
         addStateListener(boardManager);
     }
@@ -154,18 +156,18 @@ public class CardRecordDO extends CardRecord {
         return key;
     }
 
-    public CardDO getCard() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(CardDO.class, cardKey);
+    public BoardCardDO getCard() {
+        return PersistenceHelper.getPersistenceManager().getObjectById(BoardCardDO.class, cardKey);
     }
 
     @Override
     public String getId() {
-        return getCard().getDescriptor().getName();
+        return getCard().getId();
     }
 
     @Override
     public ElementSchool getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(ElementSchoolDO.class, elementSchoolKey);
+        return PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
     }
 
     @Override
@@ -255,33 +257,33 @@ public class CardRecordDO extends CardRecord {
     @Override
     protected boolean removeSkill(Skill skill) {
         SkillDO record = (SkillDO) skill;
-        removeSkillDO(skill);
+        removeBoardSkill(skill);
         return skillKeys.remove(record.getKey());
     }
 
     @Override
     protected boolean addAttribute(Attribute attribute) {
-        AttributeDO record = (AttributeDO)attribute;
-        addAttributeDO(attribute);
+        BoardAttributeDO record = (BoardAttributeDO)attribute;
+        addBoardAttribute(attribute);
         return attributeKeys.add(record.getKey());
     }
 
     @Override
     protected boolean removeAttribute(Attribute attribute) {
-        AttributeDO record = (AttributeDO)attribute;
-        removeAttributeDO(attribute);
+        BoardAttributeDO record = (BoardAttributeDO)attribute;
+        removeBoardAttribute(attribute);
         return attributeKeys.remove(record.getKey());
     }
 
-    protected boolean addSkillDO(Skill skill) {
+    protected boolean addBoardSkill(Skill skill) {
         return skills.add(skill);
     }
 
-    protected boolean removeSkillDO(Skill skill) {
+    protected boolean removeBoardSkill(Skill skill) {
         return skills.remove(skill);
     }
 
-    protected boolean addAttributeDO(Attribute attribute) {
+    protected boolean addBoardAttribute(Attribute attribute) {
         if (attribute.isHidden()) {
             return hiddenAttributes.add(attribute);
         } else {
@@ -289,7 +291,7 @@ public class CardRecordDO extends CardRecord {
         }
     }
 
-    protected boolean removeAttributeDO(Attribute attribute) {
+    protected boolean removeBoardAttribute(Attribute attribute) {
         if (attribute.isHidden()) {
             return hiddenAttributes.remove(attribute);
         } else {

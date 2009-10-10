@@ -40,9 +40,6 @@ public class PlayerRecordDO extends PlayerRecord {
     private Key boardManagerKey;
 
     @Persistent
-    private Key profileKey;
-
-    @Persistent
     private String name;
 
     @Persistent
@@ -51,7 +48,7 @@ public class PlayerRecordDO extends PlayerRecord {
     @Persistent
     private Boolean cardPlayed;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private List<CardRecordDO> livingCards;
 
     @Persistent(defaultFetchGroup = "false")

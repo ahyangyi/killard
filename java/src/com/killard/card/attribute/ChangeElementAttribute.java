@@ -4,7 +4,7 @@ import com.killard.card.Action;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.card.action.ChangePlayerElementAction;
-import com.killard.card.action.NextTurnAction;
+import com.killard.card.action.EndTurnAction;
 import com.killard.environment.AfterAction;
 
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class ChangeElementAttribute extends BasicAttribute {
         return value;
     }
 
-    @AfterAction(actionClass = NextTurnAction.class, selfTargeted = false)
-    public List<Action> reactAction(CardInstance owner, NextTurnAction action) {
+    @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
+    public List<Action> reactAction(CardInstance owner, EndTurnAction action) {
         List<Action> actions = new ArrayList<Action>();
         if (owner.getOwner() == action.getTarget())
             actions.add(new ChangePlayerElementAction(owner, owner.getOwner(), elementSchool, value));

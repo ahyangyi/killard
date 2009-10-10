@@ -6,7 +6,7 @@ import com.killard.card.CardInstance;
 import com.killard.card.Player;
 import com.killard.card.action.CastCardAction;
 import com.killard.card.action.NewCardAction;
-import com.killard.card.action.NextTurnAction;
+import com.killard.card.action.EndTurnAction;
 import com.killard.environment.event.ActionEvent;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.event.StateEvent;
@@ -60,7 +60,7 @@ public abstract class BoardManager implements StateListener {
     }
 
     public void endTurn() {
-        executeAction(new NextTurnAction(getCurrentPlayer()));
+        executeAction(new EndTurnAction(getCurrentPlayer()));
     }
 
     public void addActionListener(ActionListener listener, Object host) {

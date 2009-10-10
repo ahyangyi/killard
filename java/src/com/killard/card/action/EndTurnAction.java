@@ -11,9 +11,9 @@ import com.killard.card.Player;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class NextTurnAction extends PlayerAction<Player> {
+public final class EndTurnAction extends PlayerAction<Player> {
 
-    public NextTurnAction(Player player) {
+    public EndTurnAction(Player player) {
         super(player, player);
     }
 }

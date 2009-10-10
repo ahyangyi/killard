@@ -10,7 +10,7 @@ import com.killard.card.action.ChangePlayerElementAction;
 import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.NewCardAction;
-import com.killard.card.action.NextTurnAction;
+import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.RemoveCardAttributeAction;
 import com.killard.card.action.RemoveSkillAction;
 import com.killard.environment.ExecutableAction;
@@ -40,7 +40,7 @@ public class ExecutableActionUtil {
         map.put(ChangeCardMaxHealthAction.class, new ExecutableChangeCardMaxHealthAction());
         map.put(ChangePlayerElementAction.class, new ExecutableChangePlayerElementAction());
         map.put(ChangePlayerHealthAction.class, new ExecutableChangePlayerHealthAction());
-        map.put(NextTurnAction.class, new ExecutableNextTurnAction());
+        map.put(EndTurnAction.class, new ExecutableNextTurnAction());
         map.put(RemoveCardAttributeAction.class, new ExecutableAddCardAttributeAction());
         map.put(RemoveSkillAction.class, new ExecutableRemoveSkillAction());
         return map;

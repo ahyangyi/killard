@@ -13,7 +13,7 @@ import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.KillPlayerAction;
 import com.killard.card.action.NewCardAction;
-import com.killard.card.action.NextTurnAction;
+import com.killard.card.action.EndTurnAction;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.record.CardRecord;
 import com.killard.environment.record.PlayerRecord;
@@ -87,8 +87,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         return new CardRecord(card, this, owner, target, cardPosition);
     }
 
-    @AfterAction(actionClass = NextTurnAction.class, selfTargeted = false)
-    public Object after(BoardManager boardManager, NextTurnAction action) {
+    @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
+    public Object after(BoardManager boardManager, EndTurnAction action) {
         boardManager.moveToNext();
         List<Action> actions = new ArrayList<Action>();
         for (ElementSchool elementSchool : action.getTarget().getAllElementSchool())

@@ -1,6 +1,6 @@
 package com.killard.environment.record;
 
-import com.killard.card.action.NextTurnAction;
+import com.killard.card.action.EndTurnAction;
 
 /**
  * <p>
@@ -11,9 +11,9 @@ import com.killard.card.action.NextTurnAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ExecutableNextTurnAction extends ExecutablePlayerAction<NextTurnAction> {
+public class ExecutableNextTurnAction extends ExecutablePlayerAction<EndTurnAction> {
 
-    public void execute(PlayerRecord record, NextTurnAction action) {
+    public void execute(PlayerRecord record, EndTurnAction action) {
         record.nextTurn(action);
     }
 }

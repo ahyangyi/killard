@@ -1,6 +1,8 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
 
 import com.google.appengine.api.users.User;
+import com.killard.web.jdo.DescriptableDO;
+import com.killard.web.jdo.board.BoardManagerDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;

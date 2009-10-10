@@ -1,8 +1,10 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.web.PersistenceHelper;
+import com.killard.web.jdo.card.CardDO;
+import com.killard.web.jdo.card.ElementSchoolDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

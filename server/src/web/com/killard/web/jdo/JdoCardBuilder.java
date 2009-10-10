@@ -6,6 +6,14 @@ import com.killard.parser.Function;
 import com.killard.parser.Node;
 import com.killard.web.PersistenceHelper;
 import com.killard.web.context.BoardContext;
+import com.killard.web.jdo.card.AttributeDO;
+import com.killard.web.jdo.card.AttributeDescriptorDO;
+import com.killard.web.jdo.card.CardDO;
+import com.killard.web.jdo.card.CardDescriptorDO;
+import com.killard.web.jdo.card.ElementSchoolDO;
+import com.killard.web.jdo.card.PackageDO;
+import com.killard.web.jdo.card.RuleDO;
+import com.killard.web.jdo.card.SkillDO;
 
 import java.util.LinkedList;
 import java.util.List;

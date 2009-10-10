@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
@@ -11,6 +11,9 @@ import com.killard.environment.ActionValidator;
 import com.killard.environment.AfterAction;
 import com.killard.environment.BeforeAction;
 import com.killard.environment.event.ActionListener;
+import com.killard.web.jdo.AttributeHandler;
+import com.killard.web.jdo.FunctionHelper;
+import com.killard.web.jdo.board.BoardManagerDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;

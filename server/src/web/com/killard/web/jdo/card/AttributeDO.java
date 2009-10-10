@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.Action;
@@ -7,6 +7,9 @@ import com.killard.card.CardInstance;
 import com.killard.environment.ActionValidator;
 import com.killard.environment.AfterAction;
 import com.killard.environment.BeforeAction;
+import com.killard.web.jdo.AttributeHandler;
+import com.killard.web.jdo.DescriptableDO;
+import com.killard.web.jdo.FunctionHelper;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;

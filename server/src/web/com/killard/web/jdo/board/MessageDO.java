@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 

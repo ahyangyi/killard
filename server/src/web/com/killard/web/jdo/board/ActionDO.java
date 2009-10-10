@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.Action;
@@ -16,6 +16,7 @@ import com.killard.card.action.NextTurnAction;
 import com.killard.card.action.PlayerAction;
 import com.killard.card.action.RemoveCardAttributeAction;
 import com.killard.web.PersistenceHelper;
+import com.killard.web.jdo.card.ElementSchoolDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;

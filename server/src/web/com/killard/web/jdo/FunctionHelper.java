@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public final class FunctionHelper {
 
-    protected static List<Action> handler(Object owner, Action action, List<AttributeHandler> handlers) {
+    public static List<Action> handler(Object owner, Action action, List<AttributeHandler> handlers) {
         if (handlers == null || handlers.isEmpty()) return null;
         getLog().fine("handle action: " + action + " on " + owner);
         Context context = new GlobalContext(owner, action);

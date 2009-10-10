@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.Attack;
@@ -9,6 +9,10 @@ import com.killard.card.Player;
 import com.killard.card.Skill;
 import com.killard.environment.record.CardRecord;
 import com.killard.web.PersistenceHelper;
+import com.killard.web.jdo.card.AttributeDO;
+import com.killard.web.jdo.card.CardDO;
+import com.killard.web.jdo.card.ElementSchoolDO;
+import com.killard.web.jdo.card.SkillDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;

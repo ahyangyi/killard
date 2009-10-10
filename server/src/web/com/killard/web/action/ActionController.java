@@ -2,7 +2,7 @@ package com.killard.web.action;
 
 import com.killard.web.BasicController;
 import com.killard.web.PersistenceHelper;
-import com.killard.web.jdo.BoardManagerDO;
+import com.killard.web.jdo.board.BoardManagerDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

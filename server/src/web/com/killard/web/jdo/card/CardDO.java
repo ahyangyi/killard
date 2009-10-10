@@ -1,4 +1,4 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
@@ -9,6 +9,7 @@ import com.killard.card.Card;
 import com.killard.card.ElementSchool;
 import com.killard.card.Skill;
 import com.killard.web.PersistenceHelper;
+import com.killard.web.jdo.DescriptableDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;

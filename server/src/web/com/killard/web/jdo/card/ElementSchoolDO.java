@@ -1,7 +1,8 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.ElementSchool;
+import com.killard.web.jdo.DescriptableDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;

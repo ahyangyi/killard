@@ -2,9 +2,9 @@ package com.killard.web.game;
 
 import com.killard.web.BasicController;
 import com.killard.web.PersistenceHelper;
-import com.killard.web.jdo.BoardManagerDO;
-import com.killard.web.jdo.PackageDO;
-import com.killard.web.jdo.PlayerRecordDO;
+import com.killard.web.jdo.board.BoardManagerDO;
+import com.killard.web.jdo.board.PlayerRecordDO;
+import com.killard.web.jdo.card.PackageDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

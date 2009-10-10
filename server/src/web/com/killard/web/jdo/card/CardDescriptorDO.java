@@ -1,4 +1,6 @@
-package com.killard.web.jdo;
+package com.killard.web.jdo.card;
+
+import com.killard.web.jdo.DescriptorDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;

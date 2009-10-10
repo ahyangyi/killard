@@ -9,7 +9,7 @@ import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.killard.web.BasicController;
 import com.killard.web.PersistenceHelper;
 import com.killard.web.game.GameController;
-import com.killard.web.jdo.board.BoardManagerDO;
+import com.killard.jdo.board.BoardManagerDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

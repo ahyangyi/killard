@@ -104,7 +104,7 @@ public class ManageController extends BasicController {
 
         defaultPackageKey = pack.getKey();
 
-        redirect("/game/manage/load", request, response);
+        redirect("/manage/load", request, response);
     }
 
     @RequestMapping(value = "/manage/onepiece.*", method = RequestMethod.GET)
@@ -130,7 +130,7 @@ public class ManageController extends BasicController {
 
         defaultPackageKey = pack.getKey();
 
-        redirect("/game/manage/load", request, response);
+        redirect("/manage/load", request, response);
     }
 
     @RequestMapping(value = "/manage/load.*", method = RequestMethod.GET)
@@ -176,11 +176,11 @@ public class ManageController extends BasicController {
                         }
                     }
                 }
-                redirect("/game/manage/load", request, response);
+                redirect("/manage/load", request, response);
                 return;
             }
         }
-        redirect("/game/list", request, response);
+        redirect("/index", request, response);
     }
 
     protected String getString(File file) throws IOException {

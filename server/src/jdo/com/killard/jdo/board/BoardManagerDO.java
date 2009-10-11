@@ -40,13 +40,13 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     private int maxPlayerNumber;
 
     @Persistent
-    private List<PlayerRecordDO> roundQueue = new ArrayList<PlayerRecordDO>();
+    private List<PlayerRecordDO> roundQueue;
 
     @Persistent
-    private List<ActionDO> actions = new ArrayList<ActionDO>();
+    private List<ActionDO> actions;
 
     @Persistent
-    private List<MessageDO> messages = new ArrayList<MessageDO>();
+    private List<MessageDO> messages;
 
     @Persistent
     private Date startDate;
@@ -55,6 +55,9 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         this.pack = new BoardPackageDO(packageDO);
         this.maxPlayerNumber = maxPlayerNumber;
         this.currentPlayerPosition = 0;
+        this.roundQueue = new ArrayList<PlayerRecordDO>();
+        this.actions = new ArrayList<ActionDO>();
+        this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
     }
 

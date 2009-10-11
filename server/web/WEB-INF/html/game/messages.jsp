@@ -13,8 +13,8 @@
             </select>
         </td>
         <td>
-            <input type="text" name="message">
-            <input type="submit" value="Send">
+            <input type="text" name="message"/>
+            <input type="submit" value="Send"/>
         </td>
     </form>
     </thead>

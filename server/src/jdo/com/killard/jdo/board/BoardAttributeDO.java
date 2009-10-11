@@ -46,7 +46,7 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
     private String id;
 
     @Persistent
-    private Boolean hidden;
+    private Boolean visible;
 
     @Persistent
     private Boolean useful;
@@ -55,13 +55,13 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
     private Boolean harmful;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> validators = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> validators;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> before = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> before;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> after = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> after;
 
     @Persistent
     private String name;
@@ -79,19 +79,17 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
 
         this.elementSchool = elementSchool;
         this.id = attribute.getId();
-        this.hidden = attribute.isHidden();
+        this.visible = attribute.isVisible();
         this.useful = attribute.isUseful();
         this.harmful = attribute.isHarmful();
 
-        validators.addAll(Arrays.asList(attribute.getValidators()));
-        before.addAll(Arrays.asList(attribute.getBefore()));
-        after.addAll(Arrays.asList(attribute.getAfter()));
+        this.validators = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getValidators()));
+        this.before = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getBefore()));
+        this.after = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getAfter()));
 
-        if (attribute.getDescriptor() != null) {
         this.name = attribute.getDescriptor().getName();
-        this.description = new Text(attribute.getDescriptor().getDescription());
-        this.image = new Blob(attribute.getDescriptor().getImageData());
-        }
+//        this.description = new Text(attribute.getDescriptor().getDescription());
+//        this.image = new Blob(attribute.getDescriptor().getImageData());
     }
 
     public Key getKey() {
@@ -110,8 +108,8 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
         this.id = id;
     }
 
-    public boolean isHidden() {
-        return hidden;
+    public boolean isVisible() {
+        return visible;
     }
 
     public boolean isUseful() {

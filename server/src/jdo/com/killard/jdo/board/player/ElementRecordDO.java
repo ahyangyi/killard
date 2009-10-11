@@ -7,6 +7,7 @@ import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardElementSchoolDO;
 import com.killard.jdo.board.BoardManagerDO;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -42,13 +43,13 @@ public class ElementRecordDO implements Comparator<BoardCardDO> {
     private int amount;
 
     @Persistent
-    private List<Key> holdedCardKeys = new ArrayList<Key>();
+    private List<Key> holdedCardKeys;
 
     @NotPersistent
     private BoardElementSchoolDO elementSchool;
 
     @NotPersistent
-    private SortedSet<BoardCardDO> holdedCards = new TreeSet<BoardCardDO>(this);
+    private SortedSet<BoardCardDO> holdedCards;
 
     public ElementRecordDO(BoardElementSchoolDO elementSchool, int amount, List<BoardCardDO> cards) {
         this.elementSchoolKey = elementSchool.getKey();
@@ -58,17 +59,18 @@ public class ElementRecordDO implements Comparator<BoardCardDO> {
         for (BoardCardDO card : cards) holdedCardKeys.add(card.getKey());
 
         this.elementSchool = elementSchool;
-        this.holdedCards.addAll(cards);
+        this.holdedCards = new TreeSet<BoardCardDO>(cards);
     }
 
     public void restore(BoardManagerDO boardManager) {
-        elementSchool = PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
-        if (holdedCardKeys == null) {
-            holdedCardKeys = new ArrayList<Key>();
-        }
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        elementSchool = pm.getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
+//        if (holdedCardKeys == null) {
+//            holdedCardKeys = new ArrayList<Key>();
+//        }
         holdedCards = new TreeSet<BoardCardDO>(this);
         for (Key key : holdedCardKeys) {
-            holdedCards.add(PersistenceHelper.getPersistenceManager().getObjectById(BoardCardDO.class, key));
+            holdedCards.add(pm.getObjectById(BoardCardDO.class, key));
         }
     }
 

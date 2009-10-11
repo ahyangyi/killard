@@ -115,9 +115,10 @@ public class GameController extends BasicController {
 
     protected void join(BoardManagerDO boardManager) {
         PersistenceHelper.doTransaction();
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        pm.makePersistent(boardManager);
         boardManager.addPlayer(getPlayerName(), INIT_HEALTH);
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
+        pm.makePersistent(boardManager);
     }
 
     protected void quit() {

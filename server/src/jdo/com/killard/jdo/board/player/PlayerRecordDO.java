@@ -7,7 +7,6 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.environment.record.PlayerRecord;
-import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardManagerDO;
 
@@ -80,9 +79,6 @@ public class PlayerRecordDO extends PlayerRecord {
     }
 
     public void restore(BoardManagerDO boardManager) {
-        PersistenceHelper.doTransaction();
-        PersistenceHelper.doTransaction();
-
         for (ElementRecordDO element : elementRecords) {
             element.restore(boardManager);
         }

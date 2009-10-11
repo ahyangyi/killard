@@ -37,7 +37,7 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
     private String id;
 
     @Persistent
-    private Boolean hidden;
+    private Boolean visible;
 
     @Persistent
     private Boolean useful;
@@ -46,29 +46,30 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
     private Boolean harmful;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> validators = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> validators;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> before = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> before;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> after = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> after;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<AttributeDescriptorDO> descriptors = new TreeSet<AttributeDescriptorDO>();
+    private SortedSet<AttributeDescriptorDO> descriptors;
 
-    public AttributeDO(String id, ElementSchoolDO elementSchool, boolean hidden, boolean useful, boolean harmful,
+    public AttributeDO(String id, ElementSchoolDO elementSchool, boolean visible, boolean useful, boolean harmful,
                        List<AttributeHandler> validators,
                        List<AttributeHandler> before,
                        List<AttributeHandler> after) {
         this.id = id;
         this.elementSchool = elementSchool;
-        this.hidden = hidden;
+        this.visible = visible;
         this.useful = useful;
         this.harmful = harmful;
-        this.validators = validators;
-        this.before = before;
-        this.after = after;
+        this.validators = new ArrayList<AttributeHandler>(validators);
+        this.before = new ArrayList<AttributeHandler>(before);
+        this.after = new ArrayList<AttributeHandler>(after);
+        this.descriptors = new TreeSet<AttributeDescriptorDO>();
     }
 
     public Key getKey() {
@@ -87,8 +88,8 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
         this.id = id;
     }
 
-    public boolean isHidden() {
-        return hidden;
+    public boolean isVisible() {
+        return visible;
     }
 
     public boolean isUseful() {
@@ -105,7 +106,7 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
 
     public AttributeDO clone(CardDO card) {
         AttributeDO attribute = new AttributeDO(getId(),
-                getElementSchool(), isHidden(), isUseful(), isHarmful(), validators, before, after);
+                getElementSchool(), isVisible(), isUseful(), isHarmful(), validators, before, after);
         for (AttributeDescriptorDO descriptor : descriptors) {
             AttributeDescriptorDO cloneDescriptor = new AttributeDescriptorDO(attribute, descriptor.getLocale());
             attribute.addDescriptor(cloneDescriptor);

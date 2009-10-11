@@ -34,10 +34,10 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     private String id;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<User> managers = new TreeSet<User>();
+    private SortedSet<User> managers;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<User> players = new TreeSet<User>();
+    private SortedSet<User> players;
 
     @Persistent
     private Date createDate;
@@ -49,25 +49,33 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     private RuleDO rule;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<ElementSchoolDO> elementSchools = new TreeSet<ElementSchoolDO>();
+    private SortedSet<ElementSchoolDO> elementSchools;
 
     @Persistent
-    private Boolean clonable = true;
+    private Boolean clonable;
 
     @Persistent
-    private Boolean published = false;
+    private Boolean published;
 
     @Persistent
-    private Boolean open = false;
+    private Boolean open;
 
     @Persistent
-    private SortedSet<PackageDescriptorDO> descriptors = new TreeSet<PackageDescriptorDO>();
+    private SortedSet<PackageDescriptorDO> descriptors;
 
     public PackageDO(String id, User creator) {
         this.id = id;
-        addManager(creator);
+        this.managers = new TreeSet<User>();
+        this.players = new TreeSet<User>();
+        this.elementSchools = new TreeSet<ElementSchoolDO>();
+        this.clonable = true;
+        this.published = false;
+        this.open = false;
+        this.descriptors = new TreeSet<PackageDescriptorDO>();
         this.createDate = new Date();
         this.modifiedDate = createDate;
+
+        addManager(creator);
     }
 
     public Key getKey() {

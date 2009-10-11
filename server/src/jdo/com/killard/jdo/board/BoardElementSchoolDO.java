@@ -40,10 +40,10 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
     private String id;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<BoardCardDO> cards = new TreeSet<BoardCardDO>();
+    private SortedSet<BoardCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
-    private SortedSet<BoardAttributeDO> attributes = new TreeSet<BoardAttributeDO>();
+    private SortedSet<BoardAttributeDO> attributes;
 
     @Persistent
     private String name;
@@ -61,15 +61,20 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
 
         this.pack = pack;
         this.id = elementSchool.getId();
-        this.name = elementSchool.getDescriptor().getName();
+
+        this.cards = new TreeSet<BoardCardDO>();
         for (CardDO card : elementSchool.getCards()) {
             cards.add(new BoardCardDO(this, card));
         }
+
+        this.attributes = new TreeSet<BoardAttributeDO>();
         for (AttributeDO attribute : elementSchool.getAttributes()) {
             attributes.add(new BoardAttributeDO(this, attribute));
         }
-        this.description = new Text(elementSchool.getDescriptor().getDescription());
-        this.image = new Blob(elementSchool.getDescriptor().getImageData());
+
+        this.name = elementSchool.getDescriptor().getName();
+//        this.description = new Text(elementSchool.getDescriptor().getDescription());
+//        this.image = new Blob(elementSchool.getDescriptor().getImageData());
     }
 
     public Key getKey() {

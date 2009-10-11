@@ -29,4 +29,4 @@
         <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/index.jsp")%>">Logout</a></li>
     </ul>
 </div>
-<div class="line"></div>
+<hr/>

@@ -1,6 +1,9 @@
 package com.killard.web.manage;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.labs.taskqueue.Queue;
+import com.google.appengine.api.labs.taskqueue.QueueFactory;
+import com.google.appengine.api.labs.taskqueue.TaskOptions;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.jdo.JdoCardBuilder;
 import com.killard.jdo.PersistenceHelper;
@@ -50,6 +53,18 @@ public class ManageController extends BasicController {
     private final ScriptEngine engine = new ScriptEngine();
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
+
+    static {
+        Queue queue = QueueFactory.getQueue("rss-fetch");
+        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
+    }
+
+    @RequestMapping(value = "/manage/task.*", method = RequestMethod.GET)
+    public void setupTask(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Queue queue = QueueFactory.getQueue("rss-fetch");
+        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
+        redirect("/index", request, response);
+    }
 
     @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
     public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {

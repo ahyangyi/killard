@@ -16,6 +16,7 @@ import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardSkillDO;
 import com.killard.jdo.card.SkillDO;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -126,17 +127,16 @@ public class CardRecordDO extends CardRecord {
             this.visibleAttributes.add(attribute);
             this.attributeKeys.add(((BoardAttributeDO)attribute).getKey());
         }
-
         this.casted = false;
     }
 
     public void restore(BoardManagerDO boardManager) {
-
-        if (skillKeys == null) skillKeys = new ArrayList<Key>();
-        if (attributeKeys == null) attributeKeys = new ArrayList<Key>();
-        if (skills == null) skills = new ArrayList<Skill>();
-        if (hiddenAttributes == null) hiddenAttributes = new ArrayList<Attribute>();
-        if (visibleAttributes == null) visibleAttributes = new ArrayList<Attribute>();
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+//        if (skillKeys == null) skillKeys = new ArrayList<Key>();
+//        if (attributeKeys == null) attributeKeys = new ArrayList<Key>();
+        skills = new ArrayList<Skill>();
+        hiddenAttributes = new ArrayList<Attribute>();
+        visibleAttributes = new ArrayList<Attribute>();
 
         for (Player player : boardManager.getPlayers()) {
             PlayerRecordDO record = (PlayerRecordDO) player;
@@ -144,10 +144,10 @@ public class CardRecordDO extends CardRecord {
             if (record.getKey().equals(targetPlayerKey)) setTarget(record);
         }
         for (Key key : skillKeys) {
-            addBoardSkill(PersistenceHelper.getPersistenceManager().getObjectById(BoardSkillDO.class, key));
+            addBoardSkill(pm.getObjectById(BoardSkillDO.class, key));
         }
         for (Key key : attributeKeys) {
-            addBoardAttribute(PersistenceHelper.getPersistenceManager().getObjectById(BoardAttributeDO.class, key));
+            addBoardAttribute(pm.getObjectById(BoardAttributeDO.class, key));
         }
         addStateListener(boardManager);
     }
@@ -284,7 +284,7 @@ public class CardRecordDO extends CardRecord {
     }
 
     protected boolean addBoardAttribute(Attribute attribute) {
-        if (attribute.isHidden()) {
+        if (attribute.isVisible()) {
             return hiddenAttributes.add(attribute);
         } else {
             return visibleAttributes.add(attribute);
@@ -292,7 +292,7 @@ public class CardRecordDO extends CardRecord {
     }
 
     protected boolean removeBoardAttribute(Attribute attribute) {
-        if (attribute.isHidden()) {
+        if (attribute.isVisible()) {
             return hiddenAttributes.remove(attribute);
         } else {
             return visibleAttributes.remove(attribute);

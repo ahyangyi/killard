@@ -8,8 +8,8 @@
                 <option value="${package.key.id}">${package.descriptor.name}</option>
             </c:forEach>
         </select>
-        <input type="hidden" name="maxPlayerNumber" value="2">
-        <input type="submit" value="New Game">
+        <input type="hidden" name="maxPlayerNumber" value="2"/>
+        <input type="submit" value="New Game"/>
     </fieldset>
 </form>
 <%--<table style="width:100%;">--%>
@@ -30,8 +30,8 @@
                     <%--<tr>--%>
                         <%--<td colspan="2">--%>
                             <%--<form action="/game/join.html" method="POST">--%>
-                                <%--<input name="boardId" type="hidden" value="${board.key.id}">--%>
-                                <%--<input type="submit" value="Join">--%>
+                                <%--<input name="boardId" type="hidden" value="${board.key.id}"/>--%>
+                                <%--<input type="submit" value="Join"/>--%>
                             <%--</form>--%>
                         <%--</td>--%>
                     <%--</tr>--%>

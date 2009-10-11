@@ -40,7 +40,7 @@ public class BoardPackageDO extends BoardDescriptableDO {
     private BoardRuleDO rule;
 
     @Persistent(mappedBy = "pack", defaultFetchGroup = "false")
-    private SortedSet<BoardElementSchoolDO> elementSchools = new TreeSet<BoardElementSchoolDO>();
+    private SortedSet<BoardElementSchoolDO> elementSchools;
 
     @Persistent
     private String name;
@@ -54,12 +54,13 @@ public class BoardPackageDO extends BoardDescriptableDO {
     public BoardPackageDO(PackageDO pack) {
         this.packageKey = pack.getKey();
         this.id = pack.getId();
-        this.rule = null;
+        this.rule = new BoardRuleDO(this, pack.getRule());
+        this.elementSchools = new TreeSet<BoardElementSchoolDO>();
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
             elementSchools.add(new BoardElementSchoolDO(this, elementSchool));
         }
         this.name = pack.getDescriptor().getName();
-        this.description = new Text(pack.getDescriptor().getDescription());
+//        this.description = new Text(pack.getDescriptor().getDescription());
 //        this.image = new Blob(pack.getDescriptor().getImageData());
     }
 

@@ -46,19 +46,19 @@ public class BoardRuleDO extends BoardDescriptableDO implements ActionListener {
     private Key packageKey;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> validators = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> validators;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> before = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> before;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> after = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> after;
 
     public BoardRuleDO(BoardPackageDO pack, RuleDO rule) {
         this.packageKey = pack.getPackageKey();
-        validators.addAll(Arrays.asList(rule.getValidators()));
-        before.addAll(Arrays.asList(rule.getBefore()));
-        after.addAll(Arrays.asList(rule.getAfter()));
+        validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
+        before = new ArrayList<AttributeHandler>(Arrays.asList(rule.getBefore()));
+        after = new ArrayList<AttributeHandler>(Arrays.asList(rule.getAfter()));
     }
 
     public Key getKey() {

@@ -36,17 +36,20 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     private String id;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<CardDO> cards = new TreeSet<CardDO>();
+    private SortedSet<CardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
-    private SortedSet<AttributeDO> attributes = new TreeSet<AttributeDO>();
+    private SortedSet<AttributeDO> attributes;
 
     @Persistent
-    private SortedSet<ElementSchoolDescriptorDO> descriptors = new TreeSet<ElementSchoolDescriptorDO>();
+    private SortedSet<ElementSchoolDescriptorDO> descriptors;
 
     public ElementSchoolDO(String id, PackageDO pack) {
         this.id = id;
         this.packageKey = pack.getKey();
+        this.cards = new TreeSet<CardDO>();
+        this.attributes = new TreeSet<AttributeDO>();
+        this.descriptors = new TreeSet<ElementSchoolDescriptorDO>();
     }
 
     public Key getKey() {

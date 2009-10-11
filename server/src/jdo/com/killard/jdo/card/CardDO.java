@@ -51,27 +51,31 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     private Integer maxHealth;
 
     @Persistent
-    private String attackType = AttackType.PHYSICAL.name();
+    private String attackType;
 
     @Persistent
     private Integer attackValue;
 
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
-    private SortedSet<SkillDO> skills = new TreeSet<SkillDO>();
+    private SortedSet<SkillDO> skills;
 
     @Persistent
-    private SortedSet<String> visibleAttributes = new TreeSet<String>();
+    private SortedSet<String> visibleAttributes;
 
     @Persistent
-    private SortedSet<String> hiddenAttributes = new TreeSet<String>();
+    private SortedSet<String> hiddenAttributes;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<CardDescriptorDO> descriptors = new TreeSet<CardDescriptorDO>();
+    private SortedSet<CardDescriptorDO> descriptors;
 
     public CardDO(String id, ElementSchoolDO elementSchool, String definition) {
         this.id = id;
         this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
+        this.attackType = AttackType.PHYSICAL.name();
+        this.skills = new TreeSet<SkillDO>();
+        this.visibleAttributes = new TreeSet<String>();
+        this.descriptors = new TreeSet<CardDescriptorDO>();
         this.definition = new Text(definition);
     }
 

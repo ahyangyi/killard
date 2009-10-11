@@ -42,7 +42,7 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     @Persistent
     private String name;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text description;
 
     @Persistent(defaultFetchGroup = "false")

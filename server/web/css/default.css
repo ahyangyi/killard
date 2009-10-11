@@ -1,5 +1,7 @@
 div.menu {
     width: 100%;
+    padding-top:0;
+    padding-bottom:0;
     text-align:center;
 }
 
@@ -11,10 +13,8 @@ div.menu li {
     display: inline;
 }
 
-div.line {
-    border: 1px solid;
-    width: 100%;
-    color: gray;
+div.error {
+    width:100%;
 }
 
 div.copyright {

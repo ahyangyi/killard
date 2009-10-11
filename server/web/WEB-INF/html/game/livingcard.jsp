@@ -9,16 +9,14 @@
         ${card.id}
     </c:otherwise>
 </c:choose>
-
-<form action="/card/instantedit.html" method="POST"
-      enctype="multipart/form-data">
-    <input type="hidden" name="packageId" value="${card.id}">
-    <input type="hidden" name="elementSchoolId" value="${card.id}">
-    <input type="hidden" name="cardId" value="${card.key.id}">
+<form action="/card/instantedit.html" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="packageId" value="${card.id}"/>
+    <input type="hidden" name="elementSchoolId" value="${card.id}"/>
+    <input type="hidden" name="cardId" value="${card.key.id}"/>
     <table style="width:100%;table-layout:fixed;">
         <tr>
-            <td><input type="file" name="image" size="1"></td>
-            <td><input type="submit" value="U"></td>
+            <td><input type="file" name="image" size="1"/></td>
+            <td><input type="submit" value="U"/></td>
         </tr>
     </table>
 </form>

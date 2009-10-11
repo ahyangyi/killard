@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         version="2.5">
-    <display-name>One Board</display-name>
+    <display-name>Killard</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -17,7 +17,7 @@
     </context-param>
 
     <!--<listener>-->
-        <!--<listener-class>flex.messaging.HttpFlexSession</listener-class>-->
+    <!--<listener-class>flex.messaging.HttpFlexSession</listener-class>-->
     <!--</listener>-->
 
     <filter>
@@ -37,17 +37,17 @@
     </servlet>
 
     <!--<servlet>-->
-        <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
-        <!--<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>-->
-        <!--<init-param>-->
-            <!--<param-name>services.configuration.file</param-name>-->
-            <!--<param-value>/WEB-INF/flex/services-config.xml</param-value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-            <!--<param-name>flex.write.path</param-name>-->
-            <!--<param-value>/WEB-INF/flex</param-value>-->
-        <!--</init-param>-->
-        <!--<load-on-startup>1</load-on-startup>-->
+    <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
+    <!--<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>-->
+    <!--<init-param>-->
+    <!--<param-name>services.configuration.file</param-name>-->
+    <!--<param-value>/WEB-INF/flex/services-config.xml</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+    <!--<param-name>flex.write.path</param-name>-->
+    <!--<param-value>/WEB-INF/flex</param-value>-->
+    <!--</init-param>-->
+    <!--<load-on-startup>1</load-on-startup>-->
     <!--</servlet>-->
 
     <servlet-mapping>
@@ -71,8 +71,8 @@
     </servlet-mapping>
 
     <!--<servlet-mapping>-->
-        <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
-        <!--<url-pattern>/messagebroker/*</url-pattern>-->
+    <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
+    <!--<url-pattern>/messagebroker/*</url-pattern>-->
     <!--</servlet-mapping>-->
 
     <session-config>
@@ -99,8 +99,28 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>cron</web-resource-name>
+            <url-pattern>/cron/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/html/error/notfound.jsp</location>
+    </error-page>
+
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/html/error/exception.jsp</location>
+    </error-page>
 
 </web-app>

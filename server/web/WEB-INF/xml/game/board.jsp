@@ -39,7 +39,7 @@
                                         <c:forEach var="attribute" items="${card.visibleAttributes}">
                                             <attribute>
                                                 <name>${attribute.name}</name>
-                                                <hidden>${attribute.hidden}</hidden>
+                                                <hidden>${attribute.visible}</hidden>
                                             </attribute>
                                         </c:forEach>
                                     </attributes>
@@ -68,7 +68,7 @@
                             <c:forEach var="attribute" items="${card.visibleAttributes}">
                                 <attribute>
                                     <name>${attribute.name}</name>
-                                    <hidden>${attribute.hidden}</hidden>
+                                    <hidden>${attribute.visible}</hidden>
                                 </attribute>
                             </c:forEach>
                         </attributes>

@@ -54,19 +54,19 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
     private Integer maxHealth;
 
     @Persistent
-    private String attackType = AttackType.PHYSICAL.name();
+    private String attackType;
 
     @Persistent
     private Integer attackValue;
 
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
-    private SortedSet<BoardSkillDO> skills = new TreeSet<BoardSkillDO>();
+    private SortedSet<BoardSkillDO> skills;
 
     @Persistent
-    private SortedSet<String> visibleAttributes = new TreeSet<String>();
+    private SortedSet<String> visibleAttributes;
 
     @Persistent
-    private SortedSet<String> hiddenAttributes = new TreeSet<String>();
+    private SortedSet<String> hiddenAttributes;
 
     @Persistent
     private String name;
@@ -90,19 +90,22 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
         this.attackType = card.getAttackType();
         this.attackValue = card.getAttackValue();
 
+        this.skills = new TreeSet<BoardSkillDO>();
         for (SkillDO skill : card.getSkills()) {
             skills.add(new BoardSkillDO(this, skill));
         }
+        this.visibleAttributes = new TreeSet<String>();
         for (AttributeDO attribute : card.getHiddenAttributes()) {
             hiddenAttributes.add(attribute.getId());
         }
+        this.hiddenAttributes = new TreeSet<String>();
         for (AttributeDO attribute : card.getVisibleAttributes()) {
             visibleAttributes.add(attribute.getId());
         }
 
         this.name = card.getDescriptor().getName();
-        this.description = new Text(card.getDescriptor().getDescription());
-        this.image = new Blob(card.getDescriptor().getImageData());
+//        this.description = new Text(card.getDescriptor().getDescription());
+//        this.image = new Blob(card.getDescriptor().getImageData());
     }
 
     public Key getKey() {

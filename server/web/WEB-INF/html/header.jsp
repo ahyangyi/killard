@@ -1,5 +1,6 @@
 <html xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/html/includes.jsp" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <%--<c:if test="${board != null}">--%>

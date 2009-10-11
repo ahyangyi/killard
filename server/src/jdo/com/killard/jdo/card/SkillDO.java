@@ -1,8 +1,8 @@
 package com.killard.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.parser.Function;
 import com.killard.jdo.DescriptableDO;
+import com.killard.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -41,13 +41,14 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     private Function function;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<SkillDescriptorDO> descriptors = new TreeSet<SkillDescriptorDO>();
+    private SortedSet<SkillDescriptorDO> descriptors;
 
     public SkillDO(String id, CardDO card, int cost, Function function) {
         this.id = id;
         this.card = card;
         this.cost = cost;
         this.function = function;
+        this.descriptors = new TreeSet<SkillDescriptorDO>();
     }
 
     public Key getKey() {

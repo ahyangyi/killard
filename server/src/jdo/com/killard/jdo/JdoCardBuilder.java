@@ -121,10 +121,10 @@ public class JdoCardBuilder {
 
     public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         String id = getString(map, "id");
-        boolean hidden = getBoolean(map, "hidden");
+        boolean visible = getBoolean(map, "visible");
         boolean useful = getBoolean(map, "useful");
         boolean harmful = getBoolean(map, "harmful");
-        AttributeDO attribute = new AttributeDO(id, elementSchool, hidden, useful, harmful,
+        AttributeDO attribute = new AttributeDO(id, elementSchool, visible, useful, harmful,
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));
@@ -140,9 +140,9 @@ public class JdoCardBuilder {
                 attribute.addDescriptor(descriptor);
             }
         }
-        if (attribute.getDescriptor() == null && map.containsKey("name")) {
+        if (attribute.getDescriptor() == null) {
             AttributeDescriptorDO descriptor = new AttributeDescriptorDO(attribute, BoardContext.getLocale());
-            descriptor.setName(((Expression) map.get("name")).getText());
+            descriptor.setName(((Expression) map.get("id")).getText());
             attribute.addDescriptor(descriptor);
         }
         PersistenceHelper.getPersistenceManager().makePersistent(attribute);

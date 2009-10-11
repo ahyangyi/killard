@@ -37,22 +37,22 @@ public class RuleDO {
     private Text definition;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> validators = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> validators;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> before = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> before;
 
     @Persistent(serialized = "true")
-    private List<AttributeHandler> after = new ArrayList<AttributeHandler>();
+    private List<AttributeHandler> after;
 
     public RuleDO(PackageDO pack,
                   List<AttributeHandler> validators,
                   List<AttributeHandler> before,
                   List<AttributeHandler> after) {
         this.packageKey = pack.getKey();
-        if (validators != null) this.validators.addAll(validators);
-        if (before != null) this.before.addAll(before);
-        if (after != null) this.after.addAll(after);
+        this.validators = new ArrayList<AttributeHandler>(validators);
+        this.before = new ArrayList<AttributeHandler>(before);
+        this.after = new ArrayList<AttributeHandler>(after);
     }
 
     public Key getKey() {

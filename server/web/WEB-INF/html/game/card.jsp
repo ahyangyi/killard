@@ -22,9 +22,9 @@
                     </c:forEach>
                 </select>
             </div>
-            <input type="hidden" name="targetPosition" value="1">
             <c:if test="${not empty player.availablePositions and myturn and not player.cardPlayed}">
-                <input type="submit" value="New">
+                <input type="hidden" name="targetPosition" value="1"/>
+                <input type="submit" value="New"/>
             </c:if>
         </form>
     </c:if>

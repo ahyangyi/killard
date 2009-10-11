@@ -93,10 +93,10 @@ public class XmppController extends BasicController {
 //        if (args.length < 2) throw new IllegalArgumentException();
 //        PlayerRecordDO player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException();
-//        BoardManagerDO boardManager = getBoardManager(player.getName());
+//        BoardManagerDO boardManager = getBoardManager(player.getId());
 //        joinGame(from, boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getName(), getUsername(from) + " joined game.");
+//            sendMessage(p.getId(), getUsername(from) + " joined game.");
 //        }
 //    }
 //
@@ -137,8 +137,8 @@ public class XmppController extends BasicController {
 //    protected void playCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getName());
-//        if (!boardManager.getCurrentPlayer().getName().equals(player.getName()))
+//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardIndex = Integer.parseInt(args[1]);
 //        int cardPosition = Integer.parseInt(args[2]);
@@ -149,15 +149,15 @@ public class XmppController extends BasicController {
 //        boardManager.playCard(cardIndex, cardPosition, targetPosition);
 //        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getName(), player.getName() + " plays card at " + cardPosition);
+//            sendMessage(p.getId(), player.getId() + " plays card at " + cardPosition);
 //        }
 //    }
 //
 //    protected void castCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getName());
-//        if (!boardManager.getCurrentPlayer().getName().equals(player.getName()))
+//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardPosition = Integer.parseInt(args[1]);
 //        if (args.length == 2) {
@@ -170,15 +170,15 @@ public class XmppController extends BasicController {
 //        }
 //        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getName(), player.getName() + " cast card at " + cardPosition);
+//            sendMessage(p.getId(), player.getId() + " cast card at " + cardPosition);
 //        }
 //    }
 //
 //    protected void endTurn(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getName());
-//        if (!boardManager.getCurrentPlayer().getName().equals(player.getName()))
+//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        boardManager.endTurn();
 //        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
@@ -202,7 +202,7 @@ public class XmppController extends BasicController {
 //
 //        if (boardManager != null) {
 //            for (Player p : boardManager.getPlayers()) {
-//                sendMessage(p.getName(), getUsername(from) + " quit game.");
+//                sendMessage(p.getId(), getUsername(from) + " quit game.");
 //            }
 //        }
 //

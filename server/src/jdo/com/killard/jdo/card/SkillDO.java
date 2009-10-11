@@ -2,6 +2,7 @@ package com.killard.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.card.descriptor.SkillDescriptorDO;
 import com.killard.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -29,7 +30,7 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     private Key key;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private CardDO card;
@@ -43,8 +44,8 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDescriptorDO> descriptors;
 
-    public SkillDO(String id, CardDO card, int cost, Function function) {
-        this.id = id;
+    public SkillDO(String name, CardDO card, int cost, Function function) {
+        this.name = name;
         this.card = card;
         this.cost = cost;
         this.function = function;
@@ -55,12 +56,12 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
         return key;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CardDO getCard() {
@@ -80,7 +81,7 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     }
 
     public SkillDO clone(CardDO card) {
-        SkillDO skill = new SkillDO(getId(), card, cost, function);
+        SkillDO skill = new SkillDO(getName(), card, cost, function);
         for (SkillDescriptorDO descriptor : descriptors) {
             SkillDescriptorDO cloneDescriptor = new SkillDescriptorDO(skill, descriptor.getLocale());
             skill.addDescriptor(cloneDescriptor);

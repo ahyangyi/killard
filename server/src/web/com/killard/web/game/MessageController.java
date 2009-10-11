@@ -32,7 +32,7 @@ public class MessageController extends BasicController {
                           @RequestParam("message") String message,
                           ModelMap modelMap) throws Exception {
         BoardManagerDO boardManager = getBoardManager();
-        boardManager.postMessage(getPlayerName(), to, message);
+        boardManager.postMessage(getPlayerId(), to, message);
         modelMap.put("messages", boardManager.getMessages());
         return "action/messages";
     }

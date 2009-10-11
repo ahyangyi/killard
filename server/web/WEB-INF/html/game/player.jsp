@@ -6,7 +6,7 @@
     <c:when test="${player.health == 0}">
         <c:set var="playerColor" value="#808080"/>
     </c:when>
-    <c:when test="${board.currentPlayer.name == player.name}">
+    <c:when test="${board.currentPlayer.id == player.id}">
         <c:set var="playerColor" value="#7cfc00"/>
     </c:when>
     <c:otherwise>
@@ -15,21 +15,21 @@
 </c:choose>
 <table style="width:1000px;border: 1px solid ${playerColor};margin:auto;">
     <c:set var="myturn" scope="page"
-           value="${board.currentPlayer.name == player.name and player.name == playerName}"/>
+           value="${board.currentPlayer.id == player.id and player.id == playerName}"/>
     <tr>
         <td style="width:100%;" colspan="5">
             <table style="width:100%;background-color:${playerColor};">
                 <tr>
                     <td>
                         <c:choose>
-                            <c:when test="${player.name == playerName}">
+                            <c:when test="${player.id == playerName}">
                                 <c:set var="facebookUID" value="loggedinuser"/>
                             </c:when>
                             <c:otherwise>
                                 <c:set var="facebookUID" value="${facebookUID}"/>
                             </c:otherwise>
                         </c:choose>
-                        ${player.name}
+                        ${player.id}
                         <%--<fb:if-can-see uid="${facebookUID}" what="profile">--%>
                             <%--<fb:profile-pic uid="${facebookUID}" size="square" facebook-logo="false"></fb:profile-pic>--%>
                             <%--<fb:else>${player.name}</fb:else>--%>

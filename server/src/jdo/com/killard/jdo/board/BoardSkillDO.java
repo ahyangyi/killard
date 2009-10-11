@@ -11,6 +11,9 @@ import com.killard.parser.ExecutionException;
 import com.killard.parser.Function;
 import com.killard.parser.GlobalContext;
 import com.killard.jdo.card.SkillDO;
+import com.killard.jdo.DescriptorDO;
+import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.board.descriptor.BoardSkillDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -18,6 +21,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * <p>
@@ -29,7 +33,7 @@ import java.util.List;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardSkillDO extends BoardDescriptableDO implements Skill {
+public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> implements Skill {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -39,7 +43,7 @@ public class BoardSkillDO extends BoardDescriptableDO implements Skill {
     private BoardCardDO card;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private Integer cost;
@@ -47,13 +51,16 @@ public class BoardSkillDO extends BoardDescriptableDO implements Skill {
     @Persistent(serialized = "true")
     private Function function;
 
+    @Persistent
+    private SortedSet<BoardSkillDescriptorDO> descriptors;
+
     public BoardSkillDO(BoardCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), skill.getId());
+        keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
         this.key = keyBuilder.getKey();
 
         this.card = card;
-        this.id = skill.getId();
+        this.name = skill.getName();
         this.cost = skill.getCost();
         this.function = skill.getFunction();
     }
@@ -66,8 +73,12 @@ public class BoardSkillDO extends BoardDescriptableDO implements Skill {
         return card;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
+    }
+
+    protected SortedSet<BoardSkillDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 
     public ElementSchool getElementSchool() {

@@ -50,18 +50,18 @@ public class BasicController {
         return userService.getCurrentUser();
     }
 
-    protected String getPlayerName() {
+    protected String getPlayerId() {
         UserService userService = UserServiceFactory.getUserService();
-        return userService.getCurrentUser().getEmail();
+        return userService.getCurrentUser().getUserId();
     }
 
     protected PlayerRecordDO getPlayer() {
-        String playerName = getPlayerName();
+        String playerId = getPlayerId();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(PlayerRecordDO.class);
-        query.setFilter("name == playerName");
-        query.declareParameters("String playerName");
-        Collection collection = (Collection) query.execute(playerName);
+        query.setFilter("uid == playerId");
+        query.declareParameters("String playerId");
+        Collection collection = (Collection) query.execute(playerId);
         if (collection.isEmpty()) return null;
         return (PlayerRecordDO) collection.iterator().next();
     }

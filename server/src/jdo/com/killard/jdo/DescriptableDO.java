@@ -5,6 +5,7 @@ import com.killard.jdo.context.BoardContext;
 
 import java.util.Locale;
 import java.util.SortedSet;
+import java.util.Collections;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ public abstract class DescriptableDO<T extends DescriptorDO> implements Comparab
 
     public abstract Key getKey();
 
-    public abstract String getId();
+    public abstract String getName();
 
     public T getDescriptor() {
         return getDescriptor(BoardContext.getLocale());
@@ -51,6 +52,10 @@ public abstract class DescriptableDO<T extends DescriptorDO> implements Comparab
 
     public int compareTo(DescriptableDO descriptableDO) {
         return getKey().compareTo(descriptableDO.getKey());
+    }
+
+    public SortedSet<T> getAllDescriptors() {
+        return Collections.unmodifiableSortedSet(getDescriptors());
     }
 
     protected abstract SortedSet<T> getDescriptors();

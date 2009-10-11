@@ -2,6 +2,7 @@ package com.killard.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.card.descriptor.ElementSchoolDescriptorDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -33,7 +34,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     private Key packageKey;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent(mappedBy = "elementSchool")
     private SortedSet<CardDO> cards;
@@ -44,8 +45,8 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     @Persistent
     private SortedSet<ElementSchoolDescriptorDO> descriptors;
 
-    public ElementSchoolDO(String id, PackageDO pack) {
-        this.id = id;
+    public ElementSchoolDO(String name, PackageDO pack) {
+        this.name = name;
         this.packageKey = pack.getKey();
         this.cards = new TreeSet<CardDO>();
         this.attributes = new TreeSet<AttributeDO>();
@@ -60,11 +61,11 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
         return packageKey;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CardDO[] getCards() {
@@ -85,7 +86,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
 
     public AttributeDO getAttribute(String id) {
         for (AttributeDO attribute : attributes) {
-            if (attribute.getId().equals(id)) return attribute;
+            if (attribute.getName().equals(id)) return attribute;
         }
         return null;
     }
@@ -103,7 +104,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     }
 
     public ElementSchoolDO clone(PackageDO pack) {
-        ElementSchoolDO elementSchool = new ElementSchoolDO(getId(), pack);
+        ElementSchoolDO elementSchool = new ElementSchoolDO(getName(), pack);
         for (CardDO card : cards) {
             elementSchool.cards.add(card);
         }

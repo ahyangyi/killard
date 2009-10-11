@@ -3,6 +3,7 @@ package com.killard.jdo.card;
 import com.google.appengine.api.datastore.Key;
 import com.killard.jdo.AttributeHandler;
 import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -34,7 +35,7 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
     private ElementSchoolDO elementSchool;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private Boolean visible;
@@ -57,11 +58,11 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<AttributeDescriptorDO> descriptors;
 
-    public AttributeDO(String id, ElementSchoolDO elementSchool, boolean visible, boolean useful, boolean harmful,
+    public AttributeDO(String name, ElementSchoolDO elementSchool, boolean visible, boolean useful, boolean harmful,
                        List<AttributeHandler> validators,
                        List<AttributeHandler> before,
                        List<AttributeHandler> after) {
-        this.id = id;
+        this.name = name;
         this.elementSchool = elementSchool;
         this.visible = visible;
         this.useful = useful;
@@ -80,12 +81,12 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
         return elementSchool;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isVisible() {
@@ -105,7 +106,7 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
     }
 
     public AttributeDO clone(CardDO card) {
-        AttributeDO attribute = new AttributeDO(getId(),
+        AttributeDO attribute = new AttributeDO(getName(),
                 getElementSchool(), isVisible(), isUseful(), isHarmful(), validators, before, after);
         for (AttributeDescriptorDO descriptor : descriptors) {
             AttributeDescriptorDO cloneDescriptor = new AttributeDescriptorDO(attribute, descriptor.getLocale());

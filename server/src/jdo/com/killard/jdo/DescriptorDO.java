@@ -48,9 +48,6 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
 
-    protected DescriptorDO() {
-    }
-
     protected DescriptorDO(DescriptableDO owner, String locale) {
         this.locale = locale;
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
@@ -63,6 +60,17 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), this.locale);
         this.key = keyBuilder.getKey();
+    }
+
+    protected DescriptorDO(DescriptableDO owner, DescriptorDO origin) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), origin.getLocale());
+        this.key = keyBuilder.getKey();
+
+        this.locale = origin.getLocale();
+        this.name = origin.getName();
+        this.description = new Text(origin.getDescription());
+        this.image = origin.getImageData() == null ? null : new Blob(origin.getImageData());
     }
 
     public Key getKey() {

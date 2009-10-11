@@ -4,7 +4,7 @@
     <c:forEach var="board" items="${boards}">
         <board>
             <c:forEach var="player" items="${board.players}">
-                <player>${player.name}</player>
+                <player>${player.id}</player>
             </c:forEach>
         </board>
     </c:forEach>

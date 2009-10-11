@@ -1,32 +1,30 @@
 package com.killard.jdo.board.player;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.card.Attack;
 import com.killard.card.AttackType;
 import com.killard.card.Attribute;
 import com.killard.card.ElementSchool;
 import com.killard.card.Player;
 import com.killard.card.Skill;
-import com.killard.environment.record.CardRecord;
+import com.killard.environment.record.AbstractCardRecord;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardAttributeDO;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardElementSchoolDO;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardSkillDO;
-import com.killard.jdo.card.SkillDO;
 
 import javax.jdo.PersistenceManager;
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * <p>
@@ -38,15 +36,11 @@ import java.util.List;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardRecordDO extends CardRecord {
+public class CardRecordDO extends AbstractCardRecord {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
-
-    @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key ownerKey;
 
     @Persistent
     private Key cardKey;
@@ -55,7 +49,10 @@ public class CardRecordDO extends CardRecord {
     private Key elementSchoolKey;
 
     @Persistent
-    private Key targetPlayerKey;
+    private Key ownerKey;
+
+    @Persistent
+    private Key targetKey;
 
     @Persistent
     private Integer level;
@@ -73,16 +70,28 @@ public class CardRecordDO extends CardRecord {
     private Integer attackValue;
 
     @Persistent
-    private List<Key> skillKeys;
-
-    @Persistent
     private Integer position;
 
-    @Persistent
+    @Persistent(serialized = "true")
+    private List<Key> skillKeys;
+
+    @Persistent(serialized = "true")
     private List<Key> attributeKeys;
 
     @Persistent
     private Boolean casted;
+
+    @NotPersistent
+    private BoardCardDO card;
+
+    @NotPersistent
+    private BoardElementSchoolDO elementSchool;
+
+    @NotPersistent
+    private PlayerRecordDO owner;
+
+    @NotPersistent
+    private PlayerRecordDO target;
 
     @NotPersistent
     private List<Skill> skills;
@@ -94,15 +103,27 @@ public class CardRecordDO extends CardRecord {
     private List<Attribute> hiddenAttributes;
 
     public CardRecordDO() {
-        super(null, 0, 0, 0, 0, null);
+        skills = new LinkedList<Skill>();
+        hiddenAttributes = new LinkedList<Attribute>();
+        visibleAttributes = new LinkedList<Attribute>();
     }
 
-    public CardRecordDO(BoardCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target, int position) {
-        super(card, boardManager, owner, target, position);
-        this.ownerKey = owner.getKey();
+    public CardRecordDO(BoardCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
+                        int position) {
+        this();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), position);
+        this.key = keyBuilder.getKey();
+
+        this.card = card;
         this.cardKey = card.getKey();
-        this.elementSchoolKey = ((BoardElementSchoolDO)card.getElementSchool()).getKey();
-        this.targetPlayerKey = target.getKey();
+
+        this.elementSchool = (BoardElementSchoolDO) card.getElementSchool();
+        this.elementSchoolKey = this.elementSchool.getKey();
+
+        setOwner(owner);
+        setTarget(target);
+
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
         this.health = card.getHealth();
@@ -110,44 +131,28 @@ public class CardRecordDO extends CardRecord {
         this.attackValue = card.getAttack().getValue();
         this.position = position;
 
-        this.skills = Arrays.asList(card.getSkills());
-        this.skillKeys = new ArrayList<Key>(skills.size());
-        for (Skill skill : this.skills) this.skillKeys.add(((BoardSkillDO)skill).getKey());
+        this.skillKeys = new LinkedList<Key>();
+        for (Skill skill : card.getSkills()) addSkill(skill);
 
-        Attribute[] hidden = card.getHiddenAttributes();
-        Attribute[] visible = card.getVisibleAttributes();
-        this.hiddenAttributes = new ArrayList<Attribute>(hidden.length);
-        this.visibleAttributes = new ArrayList<Attribute>(visible.length);
-        this.attributeKeys = new ArrayList<Key>(hidden.length + visible.length);
-        for (Attribute attribute : card.getHiddenAttributes()) {
-            this.hiddenAttributes.add(attribute);
-            this.attributeKeys.add(((BoardAttributeDO)attribute).getKey());
-        }
-        for (Attribute attribute : visible) {
-            this.visibleAttributes.add(attribute);
-            this.attributeKeys.add(((BoardAttributeDO)attribute).getKey());
-        }
+        this.attributeKeys = new LinkedList<Key>();
+        for (Attribute attribute : card.getAttributes()) addAttribute(attribute);
+
         this.casted = false;
+
+        this.addStateListener(boardManager);
     }
 
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-//        if (skillKeys == null) skillKeys = new ArrayList<Key>();
-//        if (attributeKeys == null) attributeKeys = new ArrayList<Key>();
-        skills = new ArrayList<Skill>();
-        hiddenAttributes = new ArrayList<Attribute>();
-        visibleAttributes = new ArrayList<Attribute>();
-
-        for (Player player : boardManager.getPlayers()) {
-            PlayerRecordDO record = (PlayerRecordDO) player;
-            if (record.getKey().equals(ownerKey)) setOwner(record);
-            if (record.getKey().equals(targetPlayerKey)) setTarget(record);
-        }
+        this.card = pm.getObjectById(BoardCardDO.class, cardKey);
+        this.elementSchool = pm.getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
+        this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
+        this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
-            addBoardSkill(pm.getObjectById(BoardSkillDO.class, key));
+            addSkill(pm.getObjectById(BoardSkillDO.class, key));
         }
         for (Key key : attributeKeys) {
-            addBoardAttribute(pm.getObjectById(BoardAttributeDO.class, key));
+            addAttribute(pm.getObjectById(BoardAttributeDO.class, key));
         }
         addStateListener(boardManager);
     }
@@ -157,145 +162,123 @@ public class CardRecordDO extends CardRecord {
     }
 
     public BoardCardDO getCard() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(BoardCardDO.class, cardKey);
+        return card;
     }
 
-    @Override
-    public String getId() {
-        return getCard().getId();
+    public String getName() {
+        return getCard().getName();
     }
 
-    @Override
     public ElementSchool getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
+        return elementSchool;
     }
 
-    @Override
     public int getLevel() {
         return level;
     }
 
-    @Override
     public int getHealth() {
         return health;
     }
 
-    @Override
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    @Override
     public Attack getAttack() {
         return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
     }
 
-    @Override
     public Skill[] getSkills() {
         return skills.toArray(new Skill[skills.size()]);
     }
 
-    @Override
     public Attribute[] getHiddenAttributes() {
         return hiddenAttributes.toArray(new Attribute[hiddenAttributes.size()]);
     }
 
-    @Override
     public Attribute[] getVisibleAttributes() {
         return visibleAttributes.toArray(new Attribute[visibleAttributes.size()]);
     }
 
-    @Override
+    public Player getOwner() {
+        return owner;
+    }
+
+    public Player getTarget() {
+        return target;
+    }
+
     public int getPosition() {
         return position;
     }
 
-    @Override
     public boolean isCasted() {
         return casted;
     }
 
-    @Override
     protected void setCasted(boolean casted) {
         this.casted = casted;
     }
 
-    @Override
     protected void setHealth(int health) {
-        System.out.println("set health: " + health + " " + getId());
         this.health = health;
     }
 
-    @Override
     protected void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
-    @Override
     protected void setAttack(Attack attack) {
         this.attackType = attack.getType().name();
         this.attackValue = attack.getValue();
     }
 
-    @Override
     protected void setOwner(Player owner) {
-        this.ownerKey = ((PlayerRecordDO)owner).getKey();
-        super.setOwner(owner);
+        this.owner = (PlayerRecordDO) owner;
+        this.ownerKey = this.owner.getKey();
     }
 
-    @Override
     protected void setTarget(Player target) {
-        this.targetPlayerKey = ((PlayerRecordDO)target).getKey();
-        super.setTarget(target);
+        this.target = (PlayerRecordDO) target;
+        this.targetKey = this.target.getKey();
     }
 
-    @Override
     protected void setPosition(int position) {
         this.position = position;
     }
 
-    @Override
+    protected boolean addSkill(Skill skill) {
+        BoardSkillDO record = (BoardSkillDO) skill;
+        return skills.add(skill) && skillKeys.add(record.getKey());
+    }
+
     protected boolean removeSkill(Skill skill) {
-        SkillDO record = (SkillDO) skill;
-        removeBoardSkill(skill);
-        return skillKeys.remove(record.getKey());
+        BoardSkillDO record = (BoardSkillDO) skill;
+        return skills.remove(skill) && skillKeys.remove(record.getKey());
     }
 
-    @Override
     protected boolean addAttribute(Attribute attribute) {
-        BoardAttributeDO record = (BoardAttributeDO)attribute;
-        addBoardAttribute(attribute);
-        return attributeKeys.add(record.getKey());
+        BoardAttributeDO record = (BoardAttributeDO) attribute;
+        if (attributeKeys.contains(record.getKey())) {
+            if (attribute.isVisible()) {
+                if (visibleAttributes.add(attribute)) return attributeKeys.add(record.getKey());
+            } else {
+                if (hiddenAttributes.add(attribute)) return attributeKeys.add(record.getKey());
+            }
+        }
+        return false;
     }
 
-    @Override
     protected boolean removeAttribute(Attribute attribute) {
-        BoardAttributeDO record = (BoardAttributeDO)attribute;
-        removeBoardAttribute(attribute);
-        return attributeKeys.remove(record.getKey());
-    }
-
-    protected boolean addBoardSkill(Skill skill) {
-        return skills.add(skill);
-    }
-
-    protected boolean removeBoardSkill(Skill skill) {
-        return skills.remove(skill);
-    }
-
-    protected boolean addBoardAttribute(Attribute attribute) {
-        if (attribute.isVisible()) {
-            return hiddenAttributes.add(attribute);
-        } else {
-            return visibleAttributes.add(attribute);
+        BoardAttributeDO record = (BoardAttributeDO) attribute;
+        if (attributeKeys.contains(record.getKey())) {
+            if (attribute.isVisible()) {
+                if (visibleAttributes.remove(attribute)) return attributeKeys.remove(record.getKey());
+            } else {
+                if (hiddenAttributes.remove(attribute)) return attributeKeys.remove(record.getKey());
+            }
         }
-    }
-
-    protected boolean removeBoardAttribute(Attribute attribute) {
-        if (attribute.isVisible()) {
-            return hiddenAttributes.remove(attribute);
-        } else {
-            return visibleAttributes.remove(attribute);
-        }
+        return false;
     }
 }

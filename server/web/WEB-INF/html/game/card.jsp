@@ -4,7 +4,7 @@
 <%--@elvariable id="player" type="com.killard.jdo.board.player.PlayerRecordDO"--%>
 <div class="elementschool">
     ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
-    <c:if test="${player.name == playerName}">
+    <c:if test="${player.id == playerName}">
         <form action="/game/playcard.html" method="POST">
             <div id="newcard">
                 <select name="cardIndex">

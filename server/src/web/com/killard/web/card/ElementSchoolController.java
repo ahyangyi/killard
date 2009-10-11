@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.card.ElementSchoolDO;
-import com.killard.jdo.card.ElementSchoolDescriptorDO;
+import com.killard.jdo.card.descriptor.ElementSchoolDescriptorDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.context.BoardContext;
 import com.killard.web.BasicController;

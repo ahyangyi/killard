@@ -12,7 +12,10 @@ import com.killard.environment.AfterAction;
 import com.killard.environment.BeforeAction;
 import com.killard.jdo.AttributeHandler;
 import com.killard.jdo.FunctionHelper;
+import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.board.descriptor.BoardAttributeDescriptorDO;
 import com.killard.jdo.card.AttributeDO;
+import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -22,6 +25,9 @@ import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -33,7 +39,7 @@ import java.util.List;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
+public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO> implements Attribute {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -43,7 +49,7 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
     private BoardElementSchoolDO elementSchool;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private Boolean visible;
@@ -64,21 +70,15 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
     private List<AttributeHandler> after;
 
     @Persistent
-    private String name;
-
-    @Persistent
-    private Text description;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private SortedSet<BoardAttributeDescriptorDO> descriptors;
 
     public BoardAttributeDO(BoardElementSchoolDO elementSchool, AttributeDO attribute) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), attribute.getId());
+        keyBuilder.addChild(getClass().getSimpleName(), attribute.getKey().getId());
         this.key = keyBuilder.getKey();
-
+        
         this.elementSchool = elementSchool;
-        this.id = attribute.getId();
+        this.name = attribute.getName();
         this.visible = attribute.isVisible();
         this.useful = attribute.isUseful();
         this.harmful = attribute.isHarmful();
@@ -87,9 +87,10 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
         this.before = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getBefore()));
         this.after = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getAfter()));
 
-        this.name = attribute.getDescriptor().getName();
-//        this.description = new Text(attribute.getDescriptor().getDescription());
-//        this.image = new Blob(attribute.getDescriptor().getImageData());
+        this.descriptors = new TreeSet<BoardAttributeDescriptorDO>();
+        for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
+            this.descriptors.add(new BoardAttributeDescriptorDO(this, descriptor));
+        }
     }
 
     public Key getKey() {
@@ -100,12 +101,12 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
         return elementSchool;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    protected SortedSet<BoardAttributeDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 
     public boolean isVisible() {
@@ -118,18 +119,6 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
 
     public boolean isHarmful() {
         return harmful;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description.getValue();
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
@@ -146,5 +135,4 @@ public class BoardAttributeDO extends BoardDescriptableDO implements Attribute {
     public List<Action> afterAction(CardInstance card, Action action) {
         return FunctionHelper.handler(card, action, after);
     }
-
 }

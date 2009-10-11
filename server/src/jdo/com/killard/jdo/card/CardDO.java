@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.card.AttackType;
 import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.card.descriptor.CardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -33,7 +34,7 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     private ElementSchoolDO elementSchool;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private Key packageKey;
@@ -59,21 +60,22 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private SortedSet<String> visibleAttributes;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private SortedSet<String> hiddenAttributes;
 
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<CardDescriptorDO> descriptors;
 
-    public CardDO(String id, ElementSchoolDO elementSchool, String definition) {
-        this.id = id;
+    public CardDO(String name, ElementSchoolDO elementSchool, String definition) {
+        this.name = name;
         this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
         this.attackType = AttackType.PHYSICAL.name();
         this.skills = new TreeSet<SkillDO>();
+        this.hiddenAttributes = new TreeSet<String>();
         this.visibleAttributes = new TreeSet<String>();
         this.descriptors = new TreeSet<CardDescriptorDO>();
         this.definition = new Text(definition);
@@ -83,12 +85,12 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         return key;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Text getDefinition() {
@@ -156,7 +158,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     }
 
     public AttributeDO[] getVisibleAttributes() {
-        if (visibleAttributes == null) return new AttributeDO[0];
         AttributeDO[] result = new AttributeDO[visibleAttributes.size()];
         int i = 0;
         for (String id : visibleAttributes) {
@@ -171,7 +172,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     }
 
     public AttributeDO[] getHiddenAttributes() {
-        if (hiddenAttributes == null) return new AttributeDO[0];
         AttributeDO[] result = new AttributeDO[hiddenAttributes.size()];
         int i = 0;
         for (String id : hiddenAttributes) {
@@ -216,7 +216,7 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     }
 
     public CardDO clone(ElementSchoolDO elementSchool) {
-        CardDO card = new CardDO(getId(), elementSchool, definition.getValue());
+        CardDO card = new CardDO(getName(), elementSchool, definition.getValue());
         card.setAttackType(AttackType.valueOf(attackType));
         card.setAttackValue(attackValue);
         card.setHealth(health);

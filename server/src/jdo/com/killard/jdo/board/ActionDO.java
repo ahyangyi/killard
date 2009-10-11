@@ -108,8 +108,8 @@ public class ActionDO {
         return playerHealthChange;
     }
 
-    public ElementSchoolDO getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(ElementSchoolDO.class, elementSchoolKey);
+    public BoardElementSchoolDO getElementSchool() {
+        return PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
     }
 
     public int getElementChange() {
@@ -229,11 +229,11 @@ public class ActionDO {
     }
 
     protected void populate(PlayerAction<Object> action) {
-        this.playerName = action.getTarget().getName();
+        this.playerName = action.getTarget().getId();
     }
 
     protected void populate(CardAction<Object> action) {
-        this.playerName = action.getTarget().getOwner().getName();
+        this.playerName = action.getTarget().getOwner().getId();
         this.cardPosition = action.getTarget().getPosition();
     }
 
@@ -250,7 +250,7 @@ public class ActionDO {
     }
 
     protected void populate(ChangePlayerElementAction action) {
-        this.elementSchoolKey = ((ElementSchoolDO) action.getElementSchool()).getKey();
+        this.elementSchoolKey = ((BoardElementSchoolDO) action.getElementSchool()).getKey();
         this.elementChange = action.getValue();
     }
 
@@ -269,9 +269,9 @@ public class ActionDO {
 
     protected void populate(CastCardAction action) {
         if (action.getTargetCard() != null) {
-            this.targetPlayer = action.getTargetCard().getOwner().getName();
+            this.targetPlayer = action.getTargetCard().getOwner().getId();
         } else {
-            this.targetPlayer = action.getTarget().getTarget().getName();
+            this.targetPlayer = action.getTarget().getTarget().getId();
         }
         this.targetCardPosition = action.getTarget().getPosition();
     }

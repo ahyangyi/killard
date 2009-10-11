@@ -3,6 +3,7 @@ package com.killard.jdo.card;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
 import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.card.descriptor.PackageDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -13,6 +14,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * <p>
@@ -31,13 +34,13 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     private Key key;
 
     @Persistent
-    private String id;
+    private String name;
 
-    @Persistent(defaultFetchGroup = "false")
-    private SortedSet<User> managers;
+    @Persistent
+    private Set<User> managers;
 
-    @Persistent(defaultFetchGroup = "false")
-    private SortedSet<User> players;
+    @Persistent
+    private Set<User> players;
 
     @Persistent
     private Date createDate;
@@ -48,7 +51,7 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     @Persistent
     private RuleDO rule;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     private SortedSet<ElementSchoolDO> elementSchools;
 
     @Persistent
@@ -63,10 +66,10 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
 
-    public PackageDO(String id, User creator) {
-        this.id = id;
-        this.managers = new TreeSet<User>();
-        this.players = new TreeSet<User>();
+    public PackageDO(String name, User creator) {
+        this.name = name;
+        this.managers = new HashSet<User>();
+        this.players = new HashSet<User>();
         this.elementSchools = new TreeSet<ElementSchoolDO>();
         this.clonable = true;
         this.published = false;
@@ -82,15 +85,15 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return key;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public SortedSet<User> getManagers() {
-        return Collections.unmodifiableSortedSet(managers);
+    public Set<User> getManagers() {
+        return Collections.unmodifiableSet(managers);
     }
 
     public boolean addManager(User manager) {
@@ -101,8 +104,8 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return managers.remove(manager);
     }
 
-    public SortedSet<User> getPlayers() {
-        return Collections.unmodifiableSortedSet(players);
+    public Set<User> getPlayers() {
+        return Collections.unmodifiableSet(players);
     }
 
     public boolean addPlayer(User player) {

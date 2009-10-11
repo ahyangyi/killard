@@ -2,9 +2,9 @@ package com.killard.jdo;
 
 import com.killard.card.AttackType;
 import com.killard.jdo.card.AttributeDO;
-import com.killard.jdo.card.AttributeDescriptorDO;
+import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
 import com.killard.jdo.card.CardDO;
-import com.killard.jdo.card.CardDescriptorDO;
+import com.killard.jdo.card.descriptor.CardDescriptorDO;
 import com.killard.jdo.card.ElementSchoolDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.card.RuleDO;

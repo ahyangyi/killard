@@ -10,7 +10,7 @@
         <c:set var="player" scope="page" value="${player}"/>
         <%PlayerRecordDO player = (PlayerRecordDO) pageContext.getAttribute("player");%>
         <player>
-            <name>${player.name}</name>
+            <name>${player.id}</name>
             <health>${player.health}</health>
             <elements>
                 <c:forEach var="elementSchool" items="${player.allElementSchool}">
@@ -21,7 +21,7 @@
                         <amount>
                             <%=player.getElementAmount(elementSchool)%>
                         </amount>
-                        <c:if test="${player.name == playerName}">
+                        <c:if test="${player.id == playerName}">
                             <holdedcards>
                                 <%
                                     for (Card card : player.getHoldedCards(elementSchool)) {

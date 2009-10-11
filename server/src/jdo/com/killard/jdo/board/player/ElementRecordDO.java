@@ -42,7 +42,7 @@ public class ElementRecordDO implements Comparator<BoardCardDO> {
     @Persistent
     private int amount;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private List<Key> holdedCardKeys;
 
     @NotPersistent
@@ -65,9 +65,6 @@ public class ElementRecordDO implements Comparator<BoardCardDO> {
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
-//        if (holdedCardKeys == null) {
-//            holdedCardKeys = new ArrayList<Key>();
-//        }
         holdedCards = new TreeSet<BoardCardDO>(this);
         for (Key key : holdedCardKeys) {
             holdedCards.add(pm.getObjectById(BoardCardDO.class, key));

@@ -2,9 +2,11 @@ package com.killard.web.game;
 
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
+import com.killard.jdo.board.BoardPackageDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.web.BasicController;
+import com.google.appengine.api.datastore.Key;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +37,7 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/list.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ModelMap modelMap) throws Exception {
-        String playerName = getPlayerName();
+        String playerName = getPlayerId();
         getLog().fine("Get game board list: " + playerName);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -61,7 +63,7 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
-        String playerName = getPlayerName();
+        String playerName = getPlayerId();
         getLog().fine("Get game board information: " + playerName);
         BoardManagerDO boardManager = getBoardManager();
         if (boardManager == null) {
@@ -82,9 +84,19 @@ public class GameController extends BasicController {
         PlayerRecordDO player = getPlayer();
         if (player != null) {
             quit();
-            PersistenceHelper.doTransaction();
         }
-        join(new BoardManagerDO(getPackage(packageId), maxPlayerNumber));
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        BoardManagerDO board = new BoardManagerDO(maxPlayerNumber);
+        Key boardManagerKey = pm.makePersistent(board).getKey();
+        PersistenceHelper.doTransaction();
+
+        BoardPackageDO boardPackage = new BoardPackageDO(boardManagerKey, getPackage(packageId));
+        PersistenceHelper.doTransaction();
+
+        board.init(boardPackage);
+        pm.makePersistent(board);
+
+        join(board);
         redirect("board", request, response);
     }
 
@@ -92,12 +104,11 @@ public class GameController extends BasicController {
     public void join(@RequestParam("packageId") long packageId,
                      @RequestParam("boardId") long boardId,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("Join game for " + getPlayerName());
+        getLog().fine("Join game for " + getPlayerId());
 
         PlayerRecordDO player = getPlayer();
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
             quit();
-            PersistenceHelper.doTransaction();
             join(getBoardManager(boardId));
         }
 
@@ -106,7 +117,7 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/quit.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("Quit game for " + getPlayerName());
+        getLog().fine("Quit game for " + getPlayerId());
 
         quit();
 
@@ -114,10 +125,8 @@ public class GameController extends BasicController {
     }
 
     protected void join(BoardManagerDO boardManager) {
-        PersistenceHelper.doTransaction();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        pm.makePersistent(boardManager);
-        boardManager.addPlayer(getPlayerName(), INIT_HEALTH);
+        PlayerRecordDO player = (PlayerRecordDO) boardManager.addPlayer(getPlayerId(), INIT_HEALTH);
         pm.makePersistent(boardManager);
     }
 
@@ -126,13 +135,14 @@ public class GameController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(PlayerRecordDO.class);
-        query.setFilter("name == playerName");
-        query.declareParameters("String playerName");
-        query.deletePersistentAll(getPlayerName());
+        query.setFilter("uid == playerId");
+        query.declareParameters("String playerId");
+        query.deletePersistentAll(getPlayerId());
 
         if (boardManager != null && boardManager.getPlayers().size() < 2) {
             pm.deletePersistent(boardManager);
         }
+        PersistenceHelper.doTransaction();
     }
 
 }

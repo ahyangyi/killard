@@ -1,6 +1,7 @@
-package com.killard.jdo.card;
+package com.killard.jdo.card.descriptor;
 
 import com.killard.jdo.DescriptorDO;
+import com.killard.jdo.card.CardDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -16,14 +17,14 @@ import java.util.Locale;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class SkillDescriptorDO extends DescriptorDO {
+public class CardDescriptorDO extends DescriptorDO {
 
-    public SkillDescriptorDO(SkillDO skill, String locale) {
-        super(skill, locale);
+    public CardDescriptorDO(CardDO card, String locale) {
+        super(card, locale);
     }
 
-    public SkillDescriptorDO(SkillDO skill, Locale locale) {
-        super(skill, locale);
+    public CardDescriptorDO(CardDO card, Locale locale) {
+        super(card, locale);
     }
 
 }

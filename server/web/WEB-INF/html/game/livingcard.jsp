@@ -2,16 +2,16 @@
 <%--@elvariable id="record" type="com.killard.jdo.board.player.CardRecordDO"--%>
 <c:set var="card" value="${record.card}"/>
 <c:choose>
-    <c:when test="${card.imageData != null}">
-        <img src="/image/card/${card.id}_${card.id}_${card.key.id}.png">
+    <c:when test="${card.descriptor.imageData != null}">
+        <img src="/image/card/${card.name}_${card.name}_${card.key.id}.png">
     </c:when>
     <c:otherwise>
-        ${card.id}
+        ${card.name}
     </c:otherwise>
 </c:choose>
 <form action="/card/instantedit.html" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="packageId" value="${card.id}"/>
-    <input type="hidden" name="elementSchoolId" value="${card.id}"/>
+    <input type="hidden" name="packageId" value="${card.name}"/>
+    <input type="hidden" name="elementSchoolId" value="${card.name}"/>
     <input type="hidden" name="cardId" value="${card.key.id}"/>
     <table style="width:100%;table-layout:fixed;">
         <tr>

@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.jdo.JdoCardBuilder;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.card.CardDO;
-import com.killard.jdo.card.CardDescriptorDO;
+import com.killard.jdo.card.descriptor.CardDescriptorDO;
 import com.killard.jdo.card.ElementSchoolDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.context.BoardContext;

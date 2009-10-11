@@ -37,7 +37,7 @@
     <tbody>
     <c:forEach var="card" items="${elementSchool.cards}">
         <tr>
-            <td>${card.id}</td>
+            <td>${card.name}</td>
             <td>${card.level}</td>
             <td>${card.health}</td>
             <td>${card.attackValue}</td>
@@ -88,7 +88,7 @@
     <tbody>
     <c:forEach var="attribute" items="${elementSchool.attributes}">
         <tr>
-            <td>${attribute.id}:${attribute.descriptor.imageData == null}</td>
+            <td>${attribute.name}:${attribute.descriptor.imageData == null}</td>
             <td>${attribute.visible}</td>
             <td>${attribute.useful}</td>
             <td>${attribute.harmful}</td>

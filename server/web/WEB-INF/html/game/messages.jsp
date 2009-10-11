@@ -1,12 +1,13 @@
 <%@ include file="../includes.jsp" %>
+<%--@elvariable id="players" type="java.util.List<com.killard.jdo.board.player.PlayerRecordDO>"--%>
 <table width="100%" style="vertical-align:top;background:lightcyan">
     <thead>
     <form action="/message.html" method="POST">
         <td>
             <select name="to" title="To">
-                <c:forEach var="player" items="${board.players}">
-                    <c:if test="${player.name != playerName}">
-                        <option value="${player.name}">${player.name}</option>
+                <c:forEach var="player" items="${players}">
+                    <c:if test="${player.id != playerName}">
+                        <option value="${player.id}">${player.id}</option>
                     </c:if>
                 </c:forEach>
                 <option value="">All</option>

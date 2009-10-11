@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardRuleDO extends BoardDescriptableDO implements ActionListener {
+public class BoardRuleDO implements ActionListener {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -55,7 +55,7 @@ public class BoardRuleDO extends BoardDescriptableDO implements ActionListener {
     private List<AttributeHandler> after;
 
     public BoardRuleDO(BoardPackageDO pack, RuleDO rule) {
-        this.packageKey = pack.getPackageKey();
+        this.packageKey = pack.getKey();
         validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
         before = new ArrayList<AttributeHandler>(Arrays.asList(rule.getBefore()));
         after = new ArrayList<AttributeHandler>(Arrays.asList(rule.getAfter()));

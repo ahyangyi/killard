@@ -7,7 +7,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.jdo.AttributeHandler;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.card.PackageDO;
-import com.killard.jdo.card.PackageDescriptorDO;
+import com.killard.jdo.card.descriptor.PackageDescriptorDO;
 import com.killard.jdo.card.RuleDO;
 import com.killard.jdo.context.BoardContext;
 import com.killard.web.BasicController;

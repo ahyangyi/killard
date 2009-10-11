@@ -38,7 +38,7 @@ public class PlayerRecordDO extends PlayerRecord {
     private Key boardManagerKey;
 
     @Persistent
-    private String name;
+    private String uid;
 
     @Persistent
     private Integer health;
@@ -59,16 +59,16 @@ public class PlayerRecordDO extends PlayerRecord {
         super("", 0);
     }
 
-    public PlayerRecordDO(BoardManagerDO boardManager, String name, int health, List<ElementRecordDO> elementRecords) {
-        super(name, health, boardManager);
+    public PlayerRecordDO(BoardManagerDO boardManager, String uid, int health, List<ElementRecordDO> elementRecords) {
+        super(uid, health, boardManager);
 
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
+        keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
 
         this.boardManagerKey = boardManager.getKey();
 
-        this.name = name;
+        this.uid = uid;
         this.health = health;
         this.cardPlayed = false;
         this.livingCards = new ArrayList<CardRecordDO>();
@@ -76,6 +76,7 @@ public class PlayerRecordDO extends PlayerRecord {
         for (ElementRecordDO element : elementRecords) {
             element.setPlayer(this);
         }
+        this.turnCount = 0;
     }
 
     public void restore(BoardManagerDO boardManager) {
@@ -102,8 +103,8 @@ public class PlayerRecordDO extends PlayerRecord {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getId() {
+        return uid;
     }
 
     @Override
@@ -188,16 +189,16 @@ public class PlayerRecordDO extends PlayerRecord {
     }
 
     @Override
-    protected void removeLivingCard(CardInstance card) {
+    protected boolean removeLivingCard(CardInstance card) {
         CardRecordDO record = (CardRecordDO) card;
-        livingCards.remove(record);
+        return livingCards.remove(record);
     }
 
     @Override
-    protected void addLivingCard(CardInstance card) {
-        CardRecordDO record = (CardRecordDO) card;
-        livingCards.add(record);
+    protected boolean addLivingCard(CardInstance card) {
         setCardPlayed(true);
+        CardRecordDO record = (CardRecordDO) card;
+        return livingCards.add(record);
     }
 
     public ElementRecordDO[] getElementRecords() {

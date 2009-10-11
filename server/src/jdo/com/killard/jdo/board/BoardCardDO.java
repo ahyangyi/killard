@@ -13,6 +13,9 @@ import com.killard.card.Skill;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.CardDO;
 import com.killard.jdo.card.SkillDO;
+import com.killard.jdo.card.descriptor.CardDescriptorDO;
+import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.board.descriptor.BoardCardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -32,7 +35,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardCardDO extends BoardDescriptableDO implements Card {
+public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implements Card {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -42,7 +45,7 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
     private BoardElementSchoolDO elementSchool;
 
     @Persistent
-    private String id;
+    private String name;
 
     @Persistent
     private Integer level;
@@ -62,28 +65,22 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
     private SortedSet<BoardSkillDO> skills;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private SortedSet<String> visibleAttributes;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private SortedSet<String> hiddenAttributes;
 
     @Persistent
-    private String name;
-
-    @Persistent
-    private Text description;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private SortedSet<BoardCardDescriptorDO> descriptors;
 
     public BoardCardDO(BoardElementSchoolDO elementSchool, CardDO card) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), card.getId());
+        keyBuilder.addChild(getClass().getSimpleName(), card.getKey().getId());
         this.key = keyBuilder.getKey();
 
         this.elementSchool = elementSchool;
-        this.id = card.getId();
+        this.name = card.getName();
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
         this.health = card.getHealth();
@@ -94,29 +91,31 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
         for (SkillDO skill : card.getSkills()) {
             skills.add(new BoardSkillDO(this, skill));
         }
-        this.visibleAttributes = new TreeSet<String>();
-        for (AttributeDO attribute : card.getHiddenAttributes()) {
-            hiddenAttributes.add(attribute.getId());
-        }
         this.hiddenAttributes = new TreeSet<String>();
+        for (AttributeDO attribute : card.getHiddenAttributes()) {
+            hiddenAttributes.add(attribute.getName());
+        }
+        this.visibleAttributes = new TreeSet<String>();
         for (AttributeDO attribute : card.getVisibleAttributes()) {
-            visibleAttributes.add(attribute.getId());
+            visibleAttributes.add(attribute.getName());
         }
 
-        this.name = card.getDescriptor().getName();
-//        this.description = new Text(card.getDescriptor().getDescription());
-//        this.image = new Blob(card.getDescriptor().getImageData());
+        this.descriptors = new TreeSet<BoardCardDescriptorDO>();
+        for (CardDescriptorDO descriptor : card.getAllDescriptors()) {
+            this.descriptors.add(new BoardCardDescriptorDO(this, descriptor));
+        }
     }
 
     public Key getKey() {
         return key;
     }
 
-    public String getId() {
-        return id;
-    }
     public ElementSchool getElementSchool() {
         return elementSchool;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getLevel() {
@@ -191,15 +190,7 @@ public class BoardCardDO extends BoardDescriptableDO implements Card {
         return result;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description.getValue();
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
+    protected SortedSet<BoardCardDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 }

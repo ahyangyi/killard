@@ -1,13 +1,14 @@
 package com.killard.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.card.ElementSchool;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.CardDO;
 import com.killard.jdo.card.ElementSchoolDO;
+import com.killard.jdo.card.descriptor.ElementSchoolDescriptorDO;
+import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.board.descriptor.BoardElementSchoolDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -27,17 +28,14 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardElementSchoolDO extends BoardDescriptableDO implements ElementSchool {
+public class BoardElementSchoolDO extends DescriptableDO<BoardElementSchoolDescriptorDO> implements ElementSchool {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private BoardPackageDO pack;
-
-    @Persistent
-    private String id;
+    private String name;
 
     @Persistent(mappedBy = "elementSchool")
     private SortedSet<BoardCardDO> cards;
@@ -46,21 +44,14 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
     private SortedSet<BoardAttributeDO> attributes;
 
     @Persistent
-    private String name;
-
-    @Persistent
-    private Text description;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private SortedSet<BoardElementSchoolDescriptorDO> descriptors;
 
     public BoardElementSchoolDO(BoardPackageDO pack, ElementSchoolDO elementSchool) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), elementSchool.getId());
+        keyBuilder.addChild(getClass().getSimpleName(), elementSchool.getKey().getId());
         this.key = keyBuilder.getKey();
 
-        this.pack = pack;
-        this.id = elementSchool.getId();
+        this.name = elementSchool.getName();
 
         this.cards = new TreeSet<BoardCardDO>();
         for (CardDO card : elementSchool.getCards()) {
@@ -72,21 +63,14 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
             attributes.add(new BoardAttributeDO(this, attribute));
         }
 
-        this.name = elementSchool.getDescriptor().getName();
-//        this.description = new Text(elementSchool.getDescriptor().getDescription());
-//        this.image = new Blob(elementSchool.getDescriptor().getImageData());
+        this.descriptors = new TreeSet<BoardElementSchoolDescriptorDO>();
+        for (ElementSchoolDescriptorDO descriptor : elementSchool.getAllDescriptors()) {
+            this.descriptors.add(new BoardElementSchoolDescriptorDO(this, descriptor));
+        }
     }
 
     public Key getKey() {
         return key;
-    }
-
-    public BoardPackageDO getBoardPackage() {
-        return pack;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public BoardCardDO[] getCards() {
@@ -95,7 +79,7 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
 
     public BoardAttributeDO getAttribute(String id) {
         for (BoardAttributeDO attribute : attributes) {
-            if (attribute.getId().equals(id)) return attribute;
+            if (attribute.getName().equals(id)) return attribute;
         }
         return null;
     }
@@ -104,11 +88,7 @@ public class BoardElementSchoolDO extends BoardDescriptableDO implements Element
         return name;
     }
 
-    public String getDescription() {
-        return description.getValue();
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
+    protected SortedSet<BoardElementSchoolDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 }

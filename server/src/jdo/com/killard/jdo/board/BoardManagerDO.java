@@ -10,7 +10,6 @@ import com.killard.environment.event.ActionEvent;
 import com.killard.jdo.board.player.CardRecordDO;
 import com.killard.jdo.board.player.ElementRecordDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
-import com.killard.jdo.card.PackageDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -31,7 +30,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     private Key key;
 
     @Persistent
-    private BoardPackageDO pack;
+    private BoardPackageDO boardPackage;
 
     @Persistent
     private int currentPlayerPosition;
@@ -51,8 +50,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     @Persistent
     private Date startDate;
 
-    public BoardManagerDO(PackageDO packageDO, int maxPlayerNumber) {
-        this.pack = new BoardPackageDO(packageDO);
+    public BoardManagerDO(int maxPlayerNumber) {
         this.maxPlayerNumber = maxPlayerNumber;
         this.currentPlayerPosition = 0;
         this.roundQueue = new ArrayList<PlayerRecordDO>();
@@ -67,11 +65,15 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     public BoardRuleDO getRule() {
-        return getPackage().getRule();
+        return getBoardPackage().getRule();
     }
 
-    public BoardPackageDO getPackage() {
-        return pack;
+    public BoardPackageDO getBoardPackage() {
+        return boardPackage;
+    }
+
+    public void init(BoardPackageDO boardPackage) {
+        this.boardPackage = boardPackage;
     }
 
     public Key getKey() {
@@ -96,7 +98,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         List<Player> players = new ArrayList<Player>();
         int position;
         for (position = 0; position < roundQueue.size(); position++)
-            if (roundQueue.get(position).getName().equals(playerName)) break;
+            if (roundQueue.get(position).getId().equals(playerName)) break;
         position = position - currentPlayerPosition;
         if (position < 0) position = roundQueue.size() + position;
         for (int i = 0; i < roundQueue.size(); i++)
@@ -120,8 +122,8 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     @Override
-    public List<Player> getPlayers() {
-        return new ArrayList<Player>(roundQueue);
+    public Player[] getPlayers() {
+        return roundQueue.toArray(new Player[roundQueue.size()]);
     }
 
     @Override
@@ -175,7 +177,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     public List<ElementRecordDO> allocateCardsForNextPlayer(int cardAmount) {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
-        for (BoardElementSchoolDO elementSchool : getPackage().getElementSchools()) {
+        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             List<BoardCardDO> remaining = getRemainingCards(elementSchool);
             randomSelect(remaining, cardAmount);
             record.add(new ElementRecordDO(elementSchool, (int) (3 + Math.random() * 4), remaining));

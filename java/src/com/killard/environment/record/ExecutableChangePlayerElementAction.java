@@ -13,7 +13,7 @@ import com.killard.card.action.ChangePlayerElementAction;
  */
 public class ExecutableChangePlayerElementAction extends ExecutablePlayerAction<ChangePlayerElementAction> {
 
-    public void execute(PlayerRecord record, ChangePlayerElementAction action) {
+    public void execute(AbstractPlayerRecord record, ChangePlayerElementAction action) {
         record.changeElementForSchool(action.getElementSchool(), action.getValue(), action);
     }
 }

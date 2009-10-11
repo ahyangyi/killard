@@ -13,7 +13,7 @@ import com.killard.card.action.EndTurnAction;
  */
 public class ExecutableNextTurnAction extends ExecutablePlayerAction<EndTurnAction> {
 
-    public void execute(PlayerRecord record, EndTurnAction action) {
+    public void execute(AbstractPlayerRecord record, EndTurnAction action) {
         record.nextTurn(action);
     }
 }

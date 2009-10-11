@@ -44,7 +44,7 @@ public class GameBoard extends JFrame {
     private void end() {
         for (PlayerPanel p : playerPanels.values()) {
             if (p.getPlayer().getHealth() > 0) {
-                System.out.println(p.getPlayer().getName() + " wins!");
+                System.out.println(p.getPlayer().getId() + " wins!");
             }
         }
         System.exit(0);

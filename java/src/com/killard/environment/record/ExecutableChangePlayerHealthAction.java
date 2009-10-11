@@ -13,7 +13,7 @@ import com.killard.card.action.ChangePlayerHealthAction;
  */
 public class ExecutableChangePlayerHealthAction extends ExecutablePlayerAction<ChangePlayerHealthAction> {
 
-    public void execute(PlayerRecord record, ChangePlayerHealthAction action) {
+    public void execute(AbstractPlayerRecord record, ChangePlayerHealthAction action) {
         record.changeHealth(action.getHealthChange(), action);
     }
 }

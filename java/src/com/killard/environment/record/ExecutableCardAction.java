@@ -12,6 +12,6 @@ import com.killard.environment.ExecutableAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class ExecutableCardAction<A extends Action> implements ExecutableAction<CardRecord, A> {
+public abstract class ExecutableCardAction<A extends Action> implements ExecutableAction<AbstractCardRecord, A> {
 
 }

@@ -2,7 +2,7 @@ package com.killard.card;
 
 public interface Player {
 
-    public String getName();
+    public String getId();
 
     public int getHealth();
 
@@ -19,4 +19,6 @@ public interface Player {
     public CardInstance getLivingCard(Integer position);
 
     public boolean isCardPlayed();
+
+    public int getTurnCount();
 }

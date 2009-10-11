@@ -12,7 +12,7 @@ public enum MagicElementSchool implements ElementSchool {
     LIFE,
     DEATH;
 
-    public String getId() {
+    public String getName() {
         return name();
     }
 

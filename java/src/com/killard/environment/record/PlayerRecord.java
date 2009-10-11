@@ -1,23 +1,18 @@
 package com.killard.environment.record;
 
-import com.killard.card.Action;
-import com.killard.card.Attack;
 import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
-import com.killard.card.Player;
-import com.killard.environment.Record;
-import com.killard.environment.event.StateEvent;
 import com.killard.environment.event.StateListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -28,7 +23,7 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class PlayerRecord implements Player, Record {
+public class PlayerRecord extends AbstractPlayerRecord {
 
     private final String name;
 
@@ -40,9 +35,7 @@ public class PlayerRecord implements Player, Record {
 
     private final List<Card> holdedCards = new ArrayList<Card>();
 
-    private final Set<CardInstance> livingCards = new HashSet<CardInstance>();
-
-    private final Set<StateListener> stateListeners = new HashSet<StateListener>();
+    private final SortedSet<CardInstance> livingCards = new TreeSet<CardInstance>();
 
     private int turnCount = 0;
 
@@ -53,7 +46,7 @@ public class PlayerRecord implements Player, Record {
 
     public PlayerRecord(String name, int health, StateListener listener) {
         this(name, health);
-        this.stateListeners.add(listener);
+        addStateListener(listener);
     }
 
     public PlayerRecord(String name, int health, List<Card> cards) {
@@ -70,10 +63,10 @@ public class PlayerRecord implements Player, Record {
     public PlayerRecord(String name, int health, List<Card> cards,
                         Map<ElementSchool, Integer> elements, StateListener listener) {
         this(name, health, cards, elements);
-        this.stateListeners.add(listener);
+        addStateListener(listener);
     }
 
-    public String getName() {
+    public String getId() {
         return name;
     }
 
@@ -102,13 +95,7 @@ public class PlayerRecord implements Player, Record {
     }
 
     public CardInstance[] getLivingCards() {
-        List<CardInstance> copy = new ArrayList<CardInstance>(livingCards);
-        Collections.sort(copy, new Comparator<CardInstance>() {
-            public int compare(CardInstance card1, CardInstance card2) {
-                return card1.getPosition() - card2.getPosition();
-            }
-        });
-        return copy.toArray(new CardInstance[copy.size()]);
+        return livingCards.toArray(new CardInstance[livingCards.size()]);
     }
 
     public CardInstance getLivingCard(Integer pos) {
@@ -124,25 +111,17 @@ public class PlayerRecord implements Player, Record {
         return turnCount;
     }
 
-    public void addStateListener(StateListener listener) {
-        stateListeners.add(listener);
-    }
-
-    public void removeStateListener(StateListener listener) {
-        stateListeners.remove(listener);
-    }
-
     protected void setCardPlayed(boolean cardPlayed) {
         this.cardPlayed = cardPlayed;
     }
 
-    protected void addLivingCard(CardInstance card) {
-        livingCards.add(card);
+    protected boolean addLivingCard(CardInstance card) {
         setCardPlayed(true);
+        return livingCards.add(card);
     }
 
-    protected void removeLivingCard(CardInstance card) {
-        livingCards.remove(card);
+    protected boolean removeLivingCard(CardInstance card) {
+        return livingCards.remove(card);
     }
 
     protected void setHealth(int health) {
@@ -155,45 +134,6 @@ public class PlayerRecord implements Player, Record {
 
     protected void setTurnCount(int turnCount) {
         this.turnCount = turnCount;
-    }
-
-    protected void nextTurn() {
-        for (CardInstance instance : getLivingCards()) {
-            CardRecord record = (CardRecord) instance;
-            record.setCasted(false);
-        }
-        setCardPlayed(false);
-        setTurnCount(getTurnCount() + 1);
-    }
-
-    protected void changeHealth(Attack healthChange, Action action) {
-        setHealth(getHealth() - healthChange.getValue());
-        if (getHealth() < 0) setHealth(0);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void changeElementForSchool(ElementSchool elementSchool, int elementChange, Action action) {
-        setElementAmount(elementSchool, getElementAmount(elementSchool) + elementChange);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void addLivingCard(CardInstance card, Action action) {
-        addLivingCard(card);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void removeLivingCard(CardInstance card, Action action) {
-        removeLivingCard(card);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void nextTurn(Action action) {
-        nextTurn();
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void fireStateChanged(StateEvent event) {
-        for (StateListener listener : stateListeners) listener.stateChanged(event);
     }
 
 }

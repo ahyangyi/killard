@@ -5,8 +5,8 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.Player;
 import com.killard.card.action.CastCardAction;
-import com.killard.card.action.NewCardAction;
 import com.killard.card.action.EndTurnAction;
+import com.killard.card.action.NewCardAction;
 import com.killard.environment.event.ActionEvent;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.event.StateEvent;
@@ -167,7 +167,7 @@ public abstract class BoardManager implements StateListener {
 
     public abstract Player addPlayer(String playerName, int health);
 
-    public abstract List<Player> getPlayers();
+    public abstract Player[] getPlayers();
 
     public abstract Player getCurrentPlayer();
 

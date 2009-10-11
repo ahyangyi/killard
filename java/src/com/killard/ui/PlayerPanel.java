@@ -44,7 +44,7 @@ public class PlayerPanel {
         this.player = player;
         this.board = board;
         this.top = top;
-        nameLbl = new JLabel(player.getName());
+        nameLbl = new JLabel(player.getId());
         hpLbl = new JLabel("HP:" + player.getHealth());
         board.add(nameLbl);
         board.add(hpLbl);

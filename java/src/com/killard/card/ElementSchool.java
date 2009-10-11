@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public interface ElementSchool extends Serializable {
 
-    public String getId();
+    public String getName();
 
     public Card[] getCards();
 }

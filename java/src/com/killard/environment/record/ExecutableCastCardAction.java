@@ -13,7 +13,7 @@ import com.killard.card.action.CastCardAction;
  */
 public class ExecutableCastCardAction extends ExecutableCardAction<CastCardAction> {
 
-    public void execute(CardRecord record, CastCardAction action) {
+    public void execute(AbstractCardRecord record, CastCardAction action) {
         // cast magic card
         if (record.getMaxHealth() <= 0) {
             PlayerRecord player = (PlayerRecord) record.getOwner();

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Skill {
 
-    public String getId();
+    public String getName();
 
     public ElementSchool getElementSchool();
 

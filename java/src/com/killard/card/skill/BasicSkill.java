@@ -33,7 +33,7 @@ public abstract class BasicSkill implements Skill {
         this.cost = cost;
     }
 
-    public String getId() {
+    public String getName() {
         return getClass().getSimpleName();
     }
 

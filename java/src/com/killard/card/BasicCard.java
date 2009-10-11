@@ -122,7 +122,7 @@ public abstract class BasicCard implements Card {
         this(elementSchool, level, maxHealth, health, attack, skills, Arrays.asList(attributes));
     }
 
-    public String getId() {
+    public String getName() {
         return getClass().getSimpleName();
     }
 

@@ -13,8 +13,8 @@ import com.killard.card.action.NewCardAction;
  */
 public class ExecutableNewCardAction extends ExecutableCardAction<NewCardAction> {
 
-    public void execute(CardRecord record, NewCardAction action) {
-        PlayerRecord player = (PlayerRecord) record.getOwner();
+    public void execute(AbstractCardRecord record, NewCardAction action) {
+        AbstractPlayerRecord player = (AbstractPlayerRecord) record.getOwner();
         player.addLivingCard(record, action);
     }
 }

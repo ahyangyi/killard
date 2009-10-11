@@ -1,25 +1,17 @@
 package com.killard.environment.record;
 
-import com.killard.card.Action;
 import com.killard.card.Attack;
+import com.killard.card.AttackType;
 import com.killard.card.Attribute;
-import com.killard.card.BasicCard;
 import com.killard.card.Card;
-import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.card.Player;
 import com.killard.card.Skill;
-import com.killard.card.action.ChangeCardHealthAction;
-import com.killard.card.action.ChangePlayerHealthAction;
-import com.killard.environment.Record;
-import com.killard.environment.event.StateEvent;
 import com.killard.environment.event.StateListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -31,7 +23,13 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CardRecord extends BasicCard implements CardInstance, Record {
+public class CardRecord extends AbstractCardRecord {
+
+    private String name;
+
+    private ElementSchool elementSchool;
+
+    private int level;
 
     private int health;
 
@@ -47,19 +45,26 @@ public class CardRecord extends BasicCard implements CardInstance, Record {
 
     private List<Skill> skills = new ArrayList<Skill>();
 
-    private final List<Attribute> attributes = new ArrayList<Attribute>();
+    private final List<Attribute> visibleAttributes = new ArrayList<Attribute>();
+
+    private final List<Attribute> hiddenAttributes = new ArrayList<Attribute>();
 
     private boolean casted;
 
-    private final Set<StateListener> stateListeners = new HashSet<StateListener>();
-
     public CardRecord(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill) {
-        super(elementSchool, level, maxHealth, health, attack, skill);
+        this.name = getClass().getSimpleName();
+        this.elementSchool = elementSchool;
+        this.level = level;
+        this.maxHealth = maxHealth;
+        this.health = health;
+        this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
+        this.skills.add(skill);
     }
 
     public CardRecord(Card card, Player owner, Player target, int position) {
-        super(card.getElementSchool(), card.getLevel(), card.getMaxHealth(), card.getHealth(),
-                card.getAttack().getValue(), card.getSkills(), card.getVisibleAttributes());
+        this.name = card.getName();
+        this.elementSchool = card.getElementSchool();
+        this.level = card.getLevel();
         this.health = card.getHealth();
         this.maxHealth = card.getMaxHealth();
         this.attack = card.getAttack();
@@ -67,27 +72,36 @@ public class CardRecord extends BasicCard implements CardInstance, Record {
         this.target = target;
         this.position = position;
         this.skills.addAll(Arrays.asList(card.getSkills()));
-        attributes.addAll(Arrays.asList(card.getVisibleAttributes()));
+        visibleAttributes.addAll(Arrays.asList(card.getVisibleAttributes()));
+        hiddenAttributes.addAll(Arrays.asList(card.getHiddenAttributes()));
         this.casted = false;
     }
 
-    public CardRecord(Card card, StateListener listener, Player owner,
-                      Player target, int position) {
+    public CardRecord(Card card, StateListener listener, Player owner, Player target, int position) {
         this(card, owner, target, position);
-        stateListeners.add(listener);
+        addStateListener(listener);
     }
 
-    @Override
+    public String getName() {
+        return name;
+    }
+
+    public ElementSchool getElementSchool() {
+        return elementSchool;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     public int getHealth() {
         return health;
     }
 
-    @Override
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    @Override
     public Attack getAttack() {
         return attack;
     }
@@ -104,49 +118,25 @@ public class CardRecord extends BasicCard implements CardInstance, Record {
         return position;
     }
 
-    @Override
     public Skill[] getSkills() {
         return skills.toArray(new Skill[skills.size()]);
     }
 
-    @Override
     public Attribute[] getVisibleAttributes() {
-        return attributes.toArray(new Attribute[attributes.size()]);
+        return visibleAttributes.toArray(new Attribute[visibleAttributes.size()]);
+    }
+
+    public Attribute[] getHiddenAttributes() {
+        return hiddenAttributes.toArray(new Attribute[hiddenAttributes.size()]);
     }
 
     public boolean isCasted() {
         return casted;
     }
 
-    public List<Action> cast(Integer skill, CardInstance target) {
-        if (getSkills().length > skill)
-            return getSkills()[skill].execute(this, target);
-        else return new ArrayList<Action>();
-    }
-
-    public List<Action> attack() {
-        List<Action> actions = new ArrayList<Action>();
-        if (getTarget() != null && getTarget() != getOwner()) {
-            if (getTarget().getLivingCard(getPosition()) != null) {
-                actions.add(new ChangeCardHealthAction(this, getTarget().getLivingCard(getPosition()), getAttack()));
-            } else {
-                actions.add(new ChangePlayerHealthAction(this, getTarget(), getAttack()));
-            }
-        }
-        return actions;
-    }
-
-    @Override
     protected boolean addAttribute(Attribute attribute) {
-        return attributes.add(attribute);
-    }
-
-    public boolean addStateListener(StateListener listener) {
-        return stateListeners.add(listener);
-    }
-
-    public boolean removeStateListener(StateListener listener) {
-        return stateListeners.remove(listener);
+        if (attribute.isVisible()) return visibleAttributes.add(attribute);
+        else return hiddenAttributes.add(attribute);
     }
 
     protected void setHealth(int health) {
@@ -170,7 +160,8 @@ public class CardRecord extends BasicCard implements CardInstance, Record {
     }
 
     protected boolean removeAttribute(Attribute attribute) {
-        return attributes.remove(attribute);
+        if (attribute.isVisible()) return visibleAttributes.remove(attribute);
+        else return hiddenAttributes.remove(attribute);
     }
 
     protected void setPosition(int position) {
@@ -181,48 +172,7 @@ public class CardRecord extends BasicCard implements CardInstance, Record {
         return skills.remove(skill);
     }
 
-    protected void addAttribute(Attribute attribute, Action action) {
-        addAttribute(attribute);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void removeAttribute(Attribute attribute, Action action) {
-        removeAttribute(attribute);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
     protected void setCasted(boolean casted) {
         this.casted = casted;
-    }
-
-    protected void changeHealth(Attack healthChange, Action action) {
-        setHealth(getHealth() - healthChange.getValue());
-        if (getHealth() < 0) setHealth(0);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void changeMaxHealth(Attack maxHealthChange, Action action) {
-        setMaxHealth(getMaxHealth() + maxHealthChange.getValue());
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void changeAttack(Attack attackChange, Action action) {
-        setAttack(new Attack(getAttack().getElementSchool(), getAttack().getType(),
-                getAttack().getValue() + attackChange.getValue()));
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void changeSkill(Skill skill, Action action) {
-        removeSkill(skill);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void changeCasted(boolean casted, Action action) {
-        setCasted(casted);
-        fireStateChanged(new StateEvent(this, action));
-    }
-
-    protected void fireStateChanged(StateEvent event) {
-        for (StateListener listener : stateListeners) listener.stateChanged(event);
     }
 }

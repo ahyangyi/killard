@@ -2,7 +2,7 @@ package com.killard.card;
 
 public interface Card {
 
-    public String getId();
+    public String getName();
 
     public ElementSchool getElementSchool();
 

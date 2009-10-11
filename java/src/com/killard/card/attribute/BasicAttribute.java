@@ -47,7 +47,7 @@ public abstract class BasicAttribute implements Attribute {
         this.harmful = harmful;
     }
 
-    public String getId() {
+    public String getName() {
         return getClass().getSimpleName();
     }
 

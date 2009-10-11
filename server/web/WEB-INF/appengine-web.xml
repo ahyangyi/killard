@@ -17,7 +17,6 @@
     </static-files>
 
     <resource-files>
-        <include path="/WEB-INF/card/**.png"/>
         <include path="/**.png"/>
         <include path="/**.xml"/>
     </resource-files>

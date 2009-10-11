@@ -1,4 +1,4 @@
-package com.killard.web;
+package com.killard.jdo;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;

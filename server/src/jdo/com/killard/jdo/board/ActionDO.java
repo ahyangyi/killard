@@ -15,7 +15,7 @@ import com.killard.card.action.KillPlayerAction;
 import com.killard.card.action.NewCardAction;
 import com.killard.card.action.PlayerAction;
 import com.killard.card.action.RemoveCardAttributeAction;
-import com.killard.web.PersistenceHelper;
+import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.card.ElementSchoolDO;
 
 import javax.jdo.annotations.Extension;

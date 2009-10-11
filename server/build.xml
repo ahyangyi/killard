@@ -12,6 +12,19 @@ local property file with the path to the SDK from that workspace. -->
     <property name="war.dir" location="${build.dir}/server"/>
     <property name="webclass.dir" location="${war.dir}/WEB-INF/classes"/>
 
+    <path id="classpath">
+        <fileset dir="${webclass.dir}"/>
+        <fileset dir="${appengine.sdk}/lib/user">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${appengine.sdk}/lib/shared">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="../lib/java">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
     <!-- Check that the SDK value is set and seems sane, so we can give a nicer
 error if not.  -->
     <fail message="Please define the appengine.sdk property to point to your SDK directory">
@@ -81,21 +94,26 @@ error if not.  -->
             description="Compile the application servlet code">
         <mkdir dir="${webclass.dir}"/>
         <javac srcdir="../java/src" destdir="${webclass.dir}" debug="true"/>
+        <javac srcdir="src/parser" destdir="${webclass.dir}" debug="true">
+            <classpath refid="classpath"/>
+        </javac>
+        <javac srcdir="src/jdo" destdir="${webclass.dir}" debug="true">
+            <classpath refid="classpath"/>
+        </javac>
         <javac srcdir="src/web" destdir="${webclass.dir}" debug="true">
-            <classpath>
-                <fileset dir="${webclass.dir}"/>
-                <fileset dir="${appengine.sdk}/lib/user">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${appengine.sdk}/lib/shared">
-                    <include name="*.jar"/>
-                </fileset>
-                <fileset dir="../lib/java">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
+            <classpath refid="classpath"/>
         </javac>
         <copy todir="${webclass.dir}">
+            <fileset dir="src/parser">
+                <exclude name="**/.svn/**"/>
+                <exclude name="**/*~"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+            <fileset dir="src/jdo">
+                <exclude name="**/.svn/**"/>
+                <exclude name="**/*~"/>
+                <exclude name="**/*.java"/>
+            </fileset>
             <fileset dir="src/web">
                 <exclude name="**/.svn/**"/>
                 <exclude name="**/*~"/>

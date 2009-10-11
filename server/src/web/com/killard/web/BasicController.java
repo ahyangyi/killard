@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.PackageDO;

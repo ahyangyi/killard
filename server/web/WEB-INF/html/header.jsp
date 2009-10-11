@@ -6,7 +6,7 @@
     <%--<meta http-equiv="refresh" content="10">--%>
     <%--</c:if>--%>
     <link href="/css/default.css" rel="stylesheet" type="text/css"/>
-    <link rel="alternate" type="application/rss+xml" title="Killard RSS Feed" href="http://www.killard.com/rss.xml"/>
+    <link rel="alternate" type="application/rss+xml" title="Killard RSS Feed" href="<c:url value="/rss.xml"/>"/>
     <title>Killard</title>
 </head>
 <body>

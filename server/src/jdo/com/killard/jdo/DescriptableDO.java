@@ -1,7 +1,7 @@
 package com.killard.jdo;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.web.context.BoardContext;
+import com.killard.jdo.context.BoardContext;
 
 import java.util.Locale;
 import java.util.SortedSet;

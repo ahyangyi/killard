@@ -1,4 +1,4 @@
-package com.killard.web.context;
+package com.killard.jdo.context;
 
 import java.util.Locale;
 

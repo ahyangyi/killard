@@ -1,5 +1,6 @@
 package com.killard.web.context;
 
+import com.killard.jdo.context.BoardContext;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContext;

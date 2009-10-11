@@ -8,7 +8,7 @@ import com.killard.card.ElementSchool;
 import com.killard.card.Player;
 import com.killard.card.Skill;
 import com.killard.environment.record.CardRecord;
-import com.killard.web.PersistenceHelper;
+import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardAttributeDO;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardElementSchoolDO;

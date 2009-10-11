@@ -1,11 +1,6 @@
 package com.killard.jdo;
 
 import com.killard.card.AttackType;
-import com.killard.parser.Expression;
-import com.killard.parser.Function;
-import com.killard.parser.Node;
-import com.killard.web.PersistenceHelper;
-import com.killard.web.context.BoardContext;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.AttributeDescriptorDO;
 import com.killard.jdo.card.CardDO;
@@ -14,6 +9,10 @@ import com.killard.jdo.card.ElementSchoolDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.card.RuleDO;
 import com.killard.jdo.card.SkillDO;
+import com.killard.jdo.context.BoardContext;
+import com.killard.parser.Expression;
+import com.killard.parser.Function;
+import com.killard.parser.Node;
 
 import java.util.LinkedList;
 import java.util.List;

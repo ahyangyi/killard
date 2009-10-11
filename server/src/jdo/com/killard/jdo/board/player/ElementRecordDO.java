@@ -2,7 +2,7 @@ package com.killard.jdo.board.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.web.PersistenceHelper;
+import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardElementSchoolDO;
 import com.killard.jdo.board.BoardManagerDO;

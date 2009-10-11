@@ -51,7 +51,7 @@ public abstract class BasicAttribute implements Attribute {
         return getClass().getSimpleName();
     }
 
-    public boolean isHidden() {
+    public boolean isVisible() {
         return hidden;
     }
 

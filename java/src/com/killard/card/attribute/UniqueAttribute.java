@@ -33,7 +33,7 @@ public class UniqueAttribute extends BasicAttribute {
     protected List<Action> after(CardInstance owner, AddCardAttributeAction action) {
         List<Action> actions = new ArrayList<Action>();
         for (Attribute attribute : owner.getVisibleAttributes()) {
-            if (!attribute.isHidden() && attribute != action.getAttribute()) {
+            if (!attribute.isVisible() && attribute != action.getAttribute()) {
                 actions.add(new RemoveCardAttributeAction(owner, owner, attribute));
             }
         }

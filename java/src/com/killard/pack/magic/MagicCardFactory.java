@@ -74,7 +74,7 @@ public class MagicCardFactory {
     }
 
     protected boolean isCardAllocated(List<Player> players, ElementSchool elementSchool, Card card) {
-        for (Player player : players) if (isCardAllocated(player.getHoldedCards(elementSchool), card)) return true;
+        for (Player player : players) if (isCardAllocated(player.getDealtCards(elementSchool), card)) return true;
         return false;
     }
 

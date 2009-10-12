@@ -8,10 +8,8 @@ import com.killard.environment.event.StateListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -36,9 +34,15 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private final Map<ElementSchool, Integer> elements = new HashMap<ElementSchool, Integer>();
 
-    private final List<Card> holdedCards = new ArrayList<Card>();
+    private final List<Card> dealtCards = new ArrayList<Card>();
 
-    private final SortedSet<CardInstance> livingCards = new TreeSet<CardInstance>();
+    private final SortedSet<CardInstance> equippedCards = new TreeSet<CardInstance>();
+
+    private boolean alive;
+
+    private boolean winner;
+
+    private boolean loser;
 
     private int turnCount = 0;
 
@@ -56,7 +60,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
     public PlayerRecord(String name, int health, List<Card> cards) {
         this.name = name;
         this.health = health;
-        this.holdedCards.addAll(cards);
+        this.dealtCards.addAll(cards);
         this.role = null;
     }
 
@@ -87,22 +91,22 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return elements.get(elementSchool);
     }
 
-    public Card getHoldedCard(Integer cardIndex) {
-        return holdedCards.get(cardIndex);
+    public Card getDealtCard(Integer cardIndex) {
+        return dealtCards.get(cardIndex);
     }
 
-    public Card[] getHoldedCards(ElementSchool elementSchool) {
+    public Card[] getDealtCards(ElementSchool elementSchool) {
         List<Card> cards = new ArrayList<Card>();
-        for (Card card : holdedCards) if (card.getElementSchool() == elementSchool) cards.add(card);
+        for (Card card : dealtCards) if (card.getElementSchool() == elementSchool) cards.add(card);
         return cards.toArray(new Card[cards.size()]);
     }
 
-    public CardInstance[] getLivingCards() {
-        return livingCards.toArray(new CardInstance[livingCards.size()]);
+    public CardInstance[] getEquippedCards() {
+        return equippedCards.toArray(new CardInstance[equippedCards.size()]);
     }
 
-    public CardInstance getLivingCard(Integer pos) {
-        for (CardInstance card : livingCards) if (card.getPosition() == pos) return card;
+    public CardInstance getEquippedCard(Integer pos) {
+        for (CardInstance card : equippedCards) if (card.getPosition() == pos) return card;
         return null;
     }
 
@@ -110,21 +114,41 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return cardPlayed;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public boolean isLoser() {
+        return loser;
+    }
+
     public int getTurnCount() {
         return turnCount;
+    }
+
+    protected boolean addDealtCard(Card card) {
+        return dealtCards.add(card);
+    }
+
+    protected boolean removeDealtCard(Card card) {
+        return dealtCards.remove(card);
     }
 
     protected void setCardPlayed(boolean cardPlayed) {
         this.cardPlayed = cardPlayed;
     }
 
-    protected boolean addLivingCard(CardInstance card) {
+    protected boolean addEquippedCard(CardInstance card) {
         setCardPlayed(true);
-        return livingCards.add(card);
+        return equippedCards.add(card);
     }
 
-    protected boolean removeLivingCard(CardInstance card) {
-        return livingCards.remove(card);
+    protected boolean removeEquippedCard(CardInstance card) {
+        return equippedCards.remove(card);
     }
 
     protected void setHealth(int health) {
@@ -133,6 +157,18 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     protected void setElementAmount(ElementSchool elementSchool, int amount) {
         elements.put(elementSchool, amount);
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+
+    public void setLoser(boolean loser) {
+        this.loser = loser;
     }
 
     protected void setTurnCount(int turnCount) {

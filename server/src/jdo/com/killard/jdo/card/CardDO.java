@@ -46,9 +46,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     private Integer level;
 
     @Persistent
-    private Integer health;
-
-    @Persistent
     private Integer maxHealth;
 
     @Persistent
@@ -56,6 +53,9 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
 
     @Persistent
     private Integer attackValue;
+
+    @Persistent
+    private Boolean equippable;
 
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
@@ -109,10 +109,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         return level;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -123,6 +119,10 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
 
     public Integer getAttackValue() {
         return attackValue;
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 
     public boolean hasSkill() {
@@ -191,10 +191,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         this.level = level;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
@@ -219,7 +215,6 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         CardDO card = new CardDO(getName(), elementSchool, definition.getValue());
         card.setAttackType(AttackType.valueOf(attackType));
         card.setAttackValue(attackValue);
-        card.setHealth(health);
         card.setMaxHealth(maxHealth);
         card.setLevel(level);
         for (SkillDO skill : skills) {

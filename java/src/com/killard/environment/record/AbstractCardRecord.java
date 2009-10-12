@@ -59,25 +59,6 @@ public abstract class AbstractCardRecord implements CardInstance, Record, Compar
         return getVisibleAttributes().length > 0;
     }
 
-
-    public List<Action> cast(Integer skill, CardInstance target) {
-        if (getSkills().length > skill)
-            return getSkills()[skill].execute(this, target);
-        else return new ArrayList<Action>();
-    }
-
-    public List<Action> attack() {
-        List<Action> actions = new ArrayList<Action>();
-        if (getTarget() != null && getTarget() != getOwner()) {
-            if (getTarget().getLivingCard(getPosition()) != null) {
-                actions.add(new ChangeCardHealthAction(this, getTarget().getLivingCard(getPosition()), getAttack()));
-            } else {
-                actions.add(new ChangePlayerHealthAction(this, getTarget(), getAttack()));
-            }
-        }
-        return actions;
-    }
-
     public boolean addStateListener(StateListener listener) {
         return stateListeners.add(listener);
     }

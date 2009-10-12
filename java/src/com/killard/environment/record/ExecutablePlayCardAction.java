@@ -15,6 +15,6 @@ public class ExecutablePlayCardAction extends ExecutableCardAction<PlayCardActio
 
     public void execute(AbstractCardRecord record, PlayCardAction action) {
         AbstractPlayerRecord player = (AbstractPlayerRecord) record.getOwner();
-        player.addLivingCard(record, action);
+        player.addEquippedCard(record, action);
     }
 }

@@ -70,6 +70,9 @@ public class CardRecordDO extends AbstractCardRecord {
     private Integer attackValue;
 
     @Persistent
+    private Boolean equippable;
+
+    @Persistent
     private Integer position;
 
     @Persistent(serialized = "true")
@@ -129,6 +132,7 @@ public class CardRecordDO extends AbstractCardRecord {
         this.health = card.getHealth();
         this.attackType = card.getAttack().getType().name();
         this.attackValue = card.getAttack().getValue();
+        this.equippable = card.isEquippable();
         this.position = position;
 
         this.skillKeys = new LinkedList<Key>();
@@ -187,6 +191,10 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public Attack getAttack() {
         return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 
     public Skill[] getSkills() {

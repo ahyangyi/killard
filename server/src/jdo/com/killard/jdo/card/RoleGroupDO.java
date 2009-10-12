@@ -32,11 +32,11 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     private Key packageKey;
 
     @Persistent(serialized = "true")
-    private List<Key> roles;
+    private List<Key> roleKeys;
 
     public RoleGroupDO(PackageDO pack) {
         this.packageKey = pack.getKey();
-        this.roles = new ArrayList<Key>();
+        this.roleKeys = new ArrayList<Key>();
     }
 
     public Key getKey() {
@@ -48,19 +48,19 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     }
 
     public RoleDO[] getRoles() {
-        return roles.toArray(new RoleDO[roles.size()]);
+        return roleKeys.toArray(new RoleDO[roleKeys.size()]);
     }
 
     public int getRoleAmount() {
-        return roles.size();
+        return roleKeys.size();
     }
 
     public boolean addRole(RoleDO role) {
-        return roles.add(role.getKey());
+        return roleKeys.add(role.getKey());
     }
 
     public boolean removeRole(RoleDO role) {
-        return roles.remove(role.getKey());
+        return roleKeys.remove(role.getKey());
     }
 
     public int compareTo(RoleGroupDO group) {

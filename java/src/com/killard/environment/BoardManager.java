@@ -40,7 +40,7 @@ public abstract class BoardManager implements Board, StateListener {
 
     public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) {
         Player owner = getCurrentPlayer();
-        Card card = owner.getHoldedCard(cardIndex);
+        Card card = owner.getDealtCard(cardIndex);
         Player target = getPlayer(targetPlayerPosition);
         executeAction(new PlayCardAction(owner, createCardRecord(card, owner, target, cardPosition)));
     }
@@ -51,10 +51,10 @@ public abstract class BoardManager implements Board, StateListener {
 
     public void cast(int cardPosition, int skillIndex, int targetPlayerPosition, int targetCardPosition) {
         Player player = getCurrentPlayer();
-        CardInstance card = player.getLivingCard(cardPosition);
+        CardInstance card = player.getEquippedCard(cardPosition);
 
         Player targetPlayer = getPlayer(targetPlayerPosition);
-        CardInstance targetCard = targetPlayer.getLivingCard(targetCardPosition);
+        CardInstance targetCard = targetPlayer.getEquippedCard(targetCardPosition);
         if (targetCard == null) targetCard = card;
 
         executeAction(new CastCardAction(player, card, card.getSkills()[skillIndex], targetCard));

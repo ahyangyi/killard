@@ -43,31 +43,31 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     private int amount;
 
     @Persistent(serialized = "true")
-    private List<Key> holdedCardKeys;
+    private List<Key> dealtCardKeys;
 
     @NotPersistent
     private BoardElementSchoolDO elementSchool;
 
     @NotPersistent
-    private SortedSet<BoardCardDO> holdedCards;
+    private SortedSet<BoardCardDO> dealtCards;
 
     public ElementRecordDO(BoardElementSchoolDO elementSchool, int amount, List<BoardCardDO> cards) {
         this.elementSchoolKey = elementSchool.getKey();
         this.amount = amount;
 
-        this.holdedCardKeys = new ArrayList<Key>(cards.size());
-        for (BoardCardDO card : cards) holdedCardKeys.add(card.getKey());
+        this.dealtCardKeys = new ArrayList<Key>(cards.size());
+        for (BoardCardDO card : cards) dealtCardKeys.add(card.getKey());
 
         this.elementSchool = elementSchool;
-        this.holdedCards = new TreeSet<BoardCardDO>(cards);
+        this.dealtCards = new TreeSet<BoardCardDO>(cards);
     }
 
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
-        holdedCards = new TreeSet<BoardCardDO>(this);
-        for (Key key : holdedCardKeys) {
-            holdedCards.add(pm.getObjectById(BoardCardDO.class, key));
+        dealtCards = new TreeSet<BoardCardDO>(this);
+        for (Key key : dealtCardKeys) {
+            dealtCards.add(pm.getObjectById(BoardCardDO.class, key));
         }
     }
 
@@ -91,8 +91,16 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
         this.amount = amount;
     }
 
-    public BoardCardDO[] getHoldedCards() {
-        return holdedCards.toArray(new BoardCardDO[holdedCardKeys.size()]);
+    public BoardCardDO[] getDealtCards() {
+        return dealtCards.toArray(new BoardCardDO[dealtCardKeys.size()]);
+    }
+
+    public boolean addDealtCard(BoardCardDO card) {
+        return dealtCardKeys.contains(card.getKey()) && dealtCards.add(card) && dealtCardKeys.add(card.getKey());
+    }
+
+    public boolean removeDealtCard(BoardCardDO card) {
+        return dealtCardKeys.contains(card.getKey()) && dealtCards.remove(card) && dealtCardKeys.remove(card.getKey());
     }
 
     protected void setPlayer(PlayerRecordDO player) {

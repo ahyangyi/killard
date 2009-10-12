@@ -95,6 +95,7 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
 
     public List<Action> execute(CardInstance owner, CardInstance target) {
         Context ctx = new GlobalContext(owner);
+        ctx.addVariable("target", target);
         try {
             function.execute(ctx);
         } catch (ExecutionException e) {

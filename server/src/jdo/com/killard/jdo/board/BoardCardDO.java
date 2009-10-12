@@ -62,6 +62,9 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
     @Persistent
     private Integer attackValue;
 
+    @Persistent
+    private Boolean equippable;
+
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
     private SortedSet<BoardSkillDO> skills;
 
@@ -83,9 +86,10 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
         this.name = card.getName();
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
-        this.health = card.getHealth();
+        this.health = card.getMaxHealth();
         this.attackType = card.getAttackType();
         this.attackValue = card.getAttackValue();
+        this.equippable = card.isEquippable();
 
         this.skills = new TreeSet<BoardSkillDO>();
         for (SkillDO skill : card.getSkills()) {
@@ -132,6 +136,10 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
 
     public Attack getAttack() {
         return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 
     public boolean hasSkill() {

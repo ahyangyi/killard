@@ -2,6 +2,7 @@ package com.killard.parser;
 
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,13 +28,15 @@ public class ArrayCall extends Call {
 
     public Object execute(Context context) throws ExecutionException {
         Object owner = context.pop();
-        Integer index = (Integer) getIndex().execute(context);
+        Object index = getIndex().execute(context);
         if (owner.getClass().isArray()) {
-            return Array.get(owner, index);
-        }
-        else if (owner instanceof List) {
+            return Array.get(owner, (Integer) index);
+        } else if (owner instanceof List) {
             List list = (List) owner;
-            return list.get(index);
+            return list.get((Integer) index);
+        } else if (owner instanceof Map) {
+            Map map = (Map) owner;
+            return map.get(index);
         }
         return null;
     }

@@ -7,7 +7,6 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.card.Role;
-import com.killard.environment.record.PlayerRecord;
 import com.killard.environment.record.AbstractPlayerRecord;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardManagerDO;
@@ -51,10 +50,19 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     private Boolean cardPlayed;
 
     @Persistent
-    private SortedSet<CardRecordDO> livingCards;
+    private SortedSet<CardRecordDO> equippedCards;
 
     @Persistent
     private SortedSet<ElementRecordDO> elementRecords;
+
+    @Persistent
+    private Boolean alive;
+
+    @Persistent
+    private Boolean winner;
+
+    @Persistent
+    private Boolean loser;
 
     @Persistent
     private Integer turnCount;
@@ -69,7 +77,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         this.uid = uid;
         this.health = health;
         this.cardPlayed = false;
-        this.livingCards = new TreeSet<CardRecordDO>();
+        this.equippedCards = new TreeSet<CardRecordDO>();
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
 
@@ -80,10 +88,10 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         for (ElementRecordDO element : elementRecords) {
             element.restore(boardManager);
         }
-        for (CardRecordDO card : livingCards) {
+        for (CardRecordDO card : equippedCards) {
             card.restore(boardManager);
         }
-        for (CardRecordDO card : livingCards) {
+        for (CardRecordDO card : equippedCards) {
             for (Attribute attribute : card.getVisibleAttributes()) {
                 boardManager.addActionListener(attribute, card);
             }
@@ -115,34 +123,42 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         return cardPlayed;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public boolean isLoser() {
+        return loser;
+    }
+
     public int getTurnCount() {
         return turnCount;
     }
 
-    protected void setCardPlayed(boolean cardPlayed) {
-        this.cardPlayed = cardPlayed;
-    }
-
-    public Card getHoldedCard(Integer cardIndex) {
+    public Card getDealtCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (BoardCardDO card : element.getHoldedCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (BoardCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
         }
         return null;
     }
 
-    public Card[] getHoldedCards(ElementSchool elementSchool) {
+    public Card[] getDealtCards(ElementSchool elementSchool) {
         for (ElementRecordDO element : elementRecords) {
-            if (element.getElementSchool().equals(elementSchool)) return element.getHoldedCards();
+            if (element.getElementSchool().equals(elementSchool)) return element.getDealtCards();
         }
         return new Card[0];
     }
 
-    public CardInstance[] getLivingCards() {
-        return livingCards.toArray(new CardInstance[livingCards.size()]);
+    public CardInstance[] getEquippedCards() {
+        return equippedCards.toArray(new CardInstance[equippedCards.size()]);
     }
 
-    public CardInstance getLivingCard(Integer pos) {
-        for (CardInstance card : livingCards) if (card.getPosition() == pos) return card;
+    public CardInstance getEquippedCard(Integer pos) {
+        for (CardInstance card : equippedCards) if (card.getPosition() == pos) return card;
         return null;
     }
 
@@ -160,15 +176,15 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     public Integer[] getAvailablePositions() {
         List<Integer> positions = new ArrayList<Integer>();
         for (int i = 1; i <= 5; i++) {
-            if (getLivingCard(i) == null) positions.add(i);
+            if (getEquippedCard(i) == null) positions.add(i);
         }
         return positions.toArray(new Integer[positions.size()]);
     }
 
-    public CardInstance[] getLivingCardsView() {
+    public CardInstance[] getEquippedCardsView() {
         CardInstance[] view = new CardInstance[5];
         for (int i = 0; i < view.length; i++) {
-            view[i] = getLivingCard(i + 1);
+            view[i] = getEquippedCard(i + 1);
         }
         return view;
     }
@@ -183,18 +199,50 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         }
     }
 
-    protected void setTurnCount(int turnCount) {
-        this.turnCount = turnCount;
+    protected boolean addDealtCard(Card card) {
+        BoardCardDO record = (BoardCardDO) card;
+        for (ElementRecordDO element : elementRecords) {
+            if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
+        }
+        return false;
     }
 
-    protected boolean removeLivingCard(CardInstance card) {
+    protected boolean removeDealtCard(Card card) {
+        BoardCardDO record = (BoardCardDO) card;
+        for (ElementRecordDO element : elementRecords) {
+            if (record.getElementSchool().equals(element)) return element.removeDealtCard(record);
+        }
+        return false;
+    }
+
+    protected boolean removeEquippedCard(CardInstance card) {
         CardRecordDO record = (CardRecordDO) card;
-        return livingCards.remove(record);
+        return equippedCards.remove(record);
     }
 
-    protected boolean addLivingCard(CardInstance card) {
+    protected boolean addEquippedCard(CardInstance card) {
         setCardPlayed(true);
         CardRecordDO record = (CardRecordDO) card;
-        return livingCards.add(record);
+        return equippedCards.add(record);
+    }
+
+    protected void setCardPlayed(boolean cardPlayed) {
+        this.cardPlayed = cardPlayed;
+    }
+
+    protected void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    protected void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+
+    protected void setLoser(boolean loser) {
+        this.loser = loser;
+    }
+
+    protected void setTurnCount(int turnCount) {
+        this.turnCount = turnCount;
     }
 }

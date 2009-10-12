@@ -202,6 +202,17 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return descriptors;
     }
 
+    public int compareTo(DescriptableDO descriptableDO) {
+        if (descriptableDO instanceof PackageDO) {
+            PackageDO packageDO = (PackageDO) descriptableDO;
+            if (getRating() == packageDO.getRating()) {
+                return (int) (packageDO.getKey().getId() - getKey().getId());
+            }
+            return getRating() - packageDO.getRating();
+        }
+        return getKey().compareTo(descriptableDO.getKey());
+    }
+
     public PackageDO clone(String id, User creator) {
         PackageDO pack = new PackageDO(id, creator);
         pack.rule = rule.clone(pack);

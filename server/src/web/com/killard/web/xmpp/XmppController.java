@@ -109,7 +109,7 @@ public class XmppController extends BasicController {
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
 //        for (ElementSchool elementSchool : player.getAllElementSchool()) {
 //            StringBuilder msg = new StringBuilder("You has these cards in element " + elementSchool.toString() + " : ");
-//            for (Card card : player.getHoldedCards(elementSchool)) {
+//            for (Card card : player.getDealtCards(elementSchool)) {
 //                msg.append("Level " + card.getLevel() + " " + card + ", ");
 //            }
 //            msg.append("and " + player.getElementAmount(elementSchool) + " elements.");
@@ -122,7 +122,7 @@ public class XmppController extends BasicController {
 //        if (args.length == 1) player = getPlayer(getUsername(from));
 //        else player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        for (CardInstance card : player.getLivingCards()) {
+//        for (CardInstance card : player.getEquippedCards()) {
 //            sendMessage(getUsername(from),
 //                    "[" + card.getPosition() + "] " + card + " level " + card.getLevel() + " health "
 //                            + card.getHealth() + " attack " + card.getAttack().getValue());

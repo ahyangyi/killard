@@ -15,6 +15,6 @@ public class ExecutableKillCardAction extends ExecutableCardAction<KillCardActio
 
     public void execute(AbstractCardRecord record, KillCardAction action) {
         AbstractPlayerRecord player = (AbstractPlayerRecord) record.getOwner();
-        player.removeLivingCard(record, action);
+        player.removeEquippedCard(record, action);
     }
 }

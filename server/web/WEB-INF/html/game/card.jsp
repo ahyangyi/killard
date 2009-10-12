@@ -9,7 +9,7 @@
             <div id="newcard">
                 <select name="cardIndex">
                     <c:forEach var="card"
-                               items="${elementRecord.holdedCards}">
+                               items="${elementRecord.dealtCards}">
                         <option value="${card.key.id}">
                             <span style="font-size:10px;">${card.name},${card.level}</span>
                         </option>

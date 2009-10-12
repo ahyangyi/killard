@@ -26,7 +26,7 @@ public class AttackSkill extends BasicSkill {
     public List<Action> execute(CardInstance owner, CardInstance target) {
         List<Action> actions = super.execute(owner, target);
         if (owner.getTarget() != null && owner.getTarget() != owner.getOwner()) {
-            CardInstance opponent = owner.getTarget().getLivingCard(owner.getPosition());
+            CardInstance opponent = owner.getTarget().getEquippedCard(owner.getPosition());
             if (opponent != null) {
                 actions.add(new ChangePlayerHealthAction(owner, owner.getTarget(), getAttack()));
             } else {

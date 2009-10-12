@@ -12,6 +12,8 @@ public interface Card {
 
     public Attack getAttack();
 
+    public boolean isEquippable();
+
     public boolean hasSkill();
 
     public Skill[] getSkills();

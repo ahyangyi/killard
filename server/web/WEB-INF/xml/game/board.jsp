@@ -24,7 +24,7 @@
                         <c:if test="${player.id == playerName}">
                             <holdedcards>
                                 <%
-                                    for (Card card : player.getHoldedCards(elementSchool)) {
+                                    for (Card card : player.getDealtCards(elementSchool)) {
                                         pageContext.setAttribute("card", card);
                                 %>
                                 <card>
@@ -53,7 +53,7 @@
                 </c:forEach>
             </elements>
             <livingcards>
-                <c:forEach var="card" items="${player.livingCards}">
+                <c:forEach var="card" items="${player.equippedCards}">
                     <cardinstance>
                         <name>${card.name}</name>
                         <position>${card.position}</position>

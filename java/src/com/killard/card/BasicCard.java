@@ -19,11 +19,11 @@ public abstract class BasicCard implements Card {
 
     private final int level;
 
-    private final int health;
-
     private final int maxHealth;
 
     private final Attack attack;
+
+    private final boolean equippable;
 
     private final List<Skill> skills = new ArrayList<Skill>();
 
@@ -35,8 +35,8 @@ public abstract class BasicCard implements Card {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
-        this.health = maxHealth;
         this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
+        this.equippable = true;
     }
 
     protected BasicCard(ElementSchool elementSchool, int level, Skill skill) {
@@ -51,18 +51,18 @@ public abstract class BasicCard implements Card {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
-        this.health = health;
         this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
         this.skills.add(skill);
+        this.equippable = true;
     }
 
     protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skill) {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
-        this.health = health;
         this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
         this.skills.addAll(Arrays.asList(skill));
+        this.equippable = true;
     }
 
     protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack,
@@ -134,16 +134,16 @@ public abstract class BasicCard implements Card {
         return level;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
     public int getMaxHealth() {
         return maxHealth;
     }
 
     public Attack getAttack() {
         return attack;
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 
     public boolean hasSkill() {

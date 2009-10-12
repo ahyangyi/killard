@@ -14,6 +14,6 @@ import com.killard.card.action.EndTurnAction;
 public class ExecutableEndTurnAction extends ExecutablePlayerAction<EndTurnAction> {
 
     public void execute(AbstractPlayerRecord record, EndTurnAction action) {
-        record.nextTurn(action);
+        record.endTurn(action);
     }
 }

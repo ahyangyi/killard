@@ -65,7 +65,6 @@ public class JdoCardBuilder {
 
         card.setLevel(getInt(map, "level"));
         card.setMaxHealth(getInt(map, "health"));
-        card.setHealth(getInt(map, "health"));
         card.setAttackType(AttackType.PHYSICAL);
         card.setAttackValue(getInt(map, "attack"));
 

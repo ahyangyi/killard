@@ -37,6 +37,8 @@ public class CardRecord extends AbstractCardRecord {
 
     private Attack attack;
 
+    private boolean equippable;
+
     private Player owner;
 
     private Player target;
@@ -58,6 +60,7 @@ public class CardRecord extends AbstractCardRecord {
         this.maxHealth = maxHealth;
         this.health = health;
         this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
+        this.equippable = true;
         this.skills.add(skill);
     }
 
@@ -68,6 +71,7 @@ public class CardRecord extends AbstractCardRecord {
         this.health = card.getMaxHealth();
         this.maxHealth = card.getMaxHealth();
         this.attack = card.getAttack();
+        this.equippable = true;
         this.owner = owner;
         this.target = target;
         this.position = position;
@@ -104,6 +108,10 @@ public class CardRecord extends AbstractCardRecord {
 
     public Attack getAttack() {
         return attack;
+    }
+
+    public boolean isEquippable() {
+        return equippable;
     }
 
     public Player getOwner() {

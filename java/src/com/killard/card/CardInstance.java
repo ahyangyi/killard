@@ -17,6 +17,8 @@ public interface CardInstance extends Card {
 
     public Player getTarget();
 
+    public int getHealth();
+
     public List<Action> cast(Integer skill, CardInstance target);
 
     public List<Action> attack();

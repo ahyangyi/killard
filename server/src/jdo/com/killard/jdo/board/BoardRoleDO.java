@@ -1,28 +1,30 @@
 package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.card.Action;
-import com.killard.card.Attribute;
-import com.killard.card.action.EndTurnAction;
-import com.killard.card.action.KillCardAction;
-import com.killard.card.action.PlayCardAction;
-import com.killard.environment.ActionValidator;
-import com.killard.environment.AfterAction;
-import com.killard.environment.BeforeAction;
-import com.killard.environment.event.ActionListener;
 import com.killard.jdo.AttributeHandler;
 import com.killard.jdo.FunctionHelper;
-import com.killard.jdo.card.RuleDO;
+import com.killard.jdo.DescriptableDO;
+import com.killard.jdo.board.descriptor.BoardRoleDescriptorDO;
+import com.killard.jdo.board.descriptor.BoardAttributeDescriptorDO;
+import com.killard.jdo.card.RoleDO;
+import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
+import com.killard.jdo.card.descriptor.RoleDescriptorDO;
+import com.killard.environment.ActionValidator;
+import com.killard.environment.BeforeAction;
+import com.killard.environment.AfterAction;
+import com.killard.card.Action;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Extension;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
@@ -35,7 +37,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardRuleDO implements ActionListener {
+public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -44,6 +46,9 @@ public class BoardRuleDO implements ActionListener {
     @Persistent
     @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
     private Key packageKey;
+
+    @Persistent
+    private String name;
 
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
@@ -54,11 +59,20 @@ public class BoardRuleDO implements ActionListener {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    public BoardRuleDO(BoardPackageDO pack, RuleDO rule) {
+    @Persistent
+    private SortedSet<BoardRoleDescriptorDO> descriptors;
+
+    public BoardRoleDO(BoardPackageDO pack, RoleDO role) {
         this.packageKey = pack.getKey();
-        validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
-        before = new ArrayList<AttributeHandler>(Arrays.asList(rule.getBefore()));
-        after = new ArrayList<AttributeHandler>(Arrays.asList(rule.getAfter()));
+        this.name = role.getName();
+        validators = new ArrayList<AttributeHandler>(Arrays.asList(role.getValidators()));
+        before = new ArrayList<AttributeHandler>(Arrays.asList(role.getBefore()));
+        after = new ArrayList<AttributeHandler>(Arrays.asList(role.getAfter()));
+
+        this.descriptors = new TreeSet<BoardRoleDescriptorDO>();
+        for (RoleDescriptorDO descriptor : role.getAllDescriptors()) {
+            this.descriptors.add(new BoardRoleDescriptorDO(this, descriptor));
+        }
     }
 
     public Key getKey() {
@@ -67,6 +81,14 @@ public class BoardRuleDO implements ActionListener {
 
     public Key getPackageKey() {
         return packageKey;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected SortedSet<BoardRoleDescriptorDO> getDescriptors() {
+        return descriptors;
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
@@ -84,24 +106,6 @@ public class BoardRuleDO implements ActionListener {
     @AfterAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> afterAction(BoardManagerDO owner, Action action) {
         return FunctionHelper.handler(owner, action, after);
-    }
-
-    @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public Object after(BoardManagerDO boardManager, EndTurnAction action) {
-        boardManager.moveToNext();
-        return null;
-    }
-
-    @AfterAction(actionClass = PlayCardAction.class, selfTargeted = false)
-    public void after(BoardManagerDO boardManager, PlayCardAction action) {
-        for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.addActionListener(attribute, action.getTarget());
-    }
-
-    @BeforeAction(actionClass = KillCardAction.class, selfTargeted = false)
-    public void before(BoardManagerDO boardManager, KillCardAction action) {
-        for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.removeActionListener(attribute);
     }
 
     public Logger getLog() {

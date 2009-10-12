@@ -1,7 +1,5 @@
 package com.killard.environment.event;
 
-import java.io.Serializable;
-
 /**
  * <p>
  * This interface defines the contract for .
@@ -11,6 +9,6 @@ import java.io.Serializable;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface ActionListener extends Serializable {
+public interface ActionListener {
 
 }

@@ -3,6 +3,7 @@ package com.killard.environment.record;
 import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
+import com.killard.card.Role;
 import com.killard.environment.event.StateListener;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private final String name;
 
+    private final Role role;
+
     private int health;
 
     private boolean cardPlayed = false;
@@ -42,6 +45,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
     public PlayerRecord(String name, int health) {
         this.name = name;
         this.health = health;
+        this.role = null;
     }
 
     public PlayerRecord(String name, int health, StateListener listener) {
@@ -53,6 +57,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
         this.name = name;
         this.health = health;
         this.holdedCards.addAll(cards);
+        this.role = null;
     }
 
     public PlayerRecord(String name, int health, List<Card> cards, Map<ElementSchool, Integer> elements) {
@@ -70,18 +75,16 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return name;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public int getHealth() {
         return health;
     }
 
     public int getElementAmount(ElementSchool elementSchool) {
         return elements.get(elementSchool);
-    }
-
-    public ElementSchool[] getAllElementSchool() {
-        Set<ElementSchool> list = new HashSet<ElementSchool>();
-        for (Card card : holdedCards) list.add(card.getElementSchool());
-        return list.toArray(new ElementSchool[list.size()]);
     }
 
     public Card getHoldedCard(Integer cardIndex) {

@@ -5,6 +5,7 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.card.Player;
+import com.killard.card.BoardPackage;
 import com.killard.environment.BoardManager;
 import com.killard.environment.event.ActionEvent;
 import com.killard.jdo.board.player.CardRecordDO;
@@ -21,6 +22,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BoardManagerDO extends BoardManager implements Comparable<BoardManagerDO> {
@@ -29,17 +32,17 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private BoardPackageDO boardPackage;
 
     @Persistent
-    private int currentPlayerPosition;
-
-    @Persistent
-    private int maxPlayerNumber;
+    private Integer currentPlayerPosition;
 
     @Persistent
     private List<PlayerRecordDO> roundQueue;
+
+    @Persistent(serialized = "true")
+    private Set<Key> dealtCards;
 
     @Persistent
     private List<ActionDO> actions;
@@ -50,38 +53,33 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     @Persistent
     private Date startDate;
 
-    public BoardManagerDO(int maxPlayerNumber) {
-        this.maxPlayerNumber = maxPlayerNumber;
+    public BoardManagerDO() {
         this.currentPlayerPosition = 0;
         this.roundQueue = new ArrayList<PlayerRecordDO>();
+        this.dealtCards = new HashSet<Key>();
         this.actions = new ArrayList<ActionDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
     }
 
-    public void restore() {
-        for (PlayerRecordDO player : roundQueue) player.restore(this);
-        addActionListener(getRule(), this);
+    public void init(BoardPackageDO boardPackage) {
+        if (this.boardPackage != null) {
+            this.boardPackage = boardPackage;
+        }
     }
 
-    public BoardRuleDO getRule() {
-        return getBoardPackage().getRule();
+    public void restore() {
+        for (PlayerRecordDO player : roundQueue) player.restore(this);
+        addActionListener(getBoardPackage().getRule(), this);
+        for (PlayerRecordDO player : roundQueue) addActionListener(player.getRole(), this);
     }
 
     public BoardPackageDO getBoardPackage() {
         return boardPackage;
     }
 
-    public void init(BoardPackageDO boardPackage) {
-        this.boardPackage = boardPackage;
-    }
-
     public Key getKey() {
         return key;
-    }
-
-    public int getMaxPlayerNumber() {
-        return maxPlayerNumber;
     }
 
     public Date getStartDate() {
@@ -90,7 +88,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     public List<ActionDO> getActions() {
         List<ActionDO> result = new ArrayList<ActionDO>(actions.size());
-        for (int i = actions.size() -1; i >= 0; i--) result.add(actions.get(i));
+        for (int i = actions.size() - 1; i >= 0; i--) result.add(actions.get(i));
         return result;
     }
 
@@ -114,41 +112,49 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         messages.add(new MessageDO(this, from, to, message));
     }
 
+    public int compareTo(BoardManagerDO boardManagerDO) {
+        return getKey().compareTo(boardManagerDO.getKey());
+    }
+
     @Override
     public Player addPlayer(String playerName, int health) {
-        PlayerRecordDO player = new PlayerRecordDO(this, playerName, health, allocateCardsForNextPlayer(4));
+        PlayerRecordDO player = new PlayerRecordDO(this, playerName, health, dealCards(4));
         roundQueue.add(player);
         return player;
     }
 
-    @Override
+    public BoardPackage getPackage() {
+        return boardPackage;
+    }
+
+    public int getPlayerAmount() {
+        return boardPackage.getRoles().length;
+    }
+
     public Player[] getPlayers() {
         return roundQueue.toArray(new Player[roundQueue.size()]);
     }
 
-    @Override
     public Player getCurrentPlayer() {
         return roundQueue.get(getCurrentPlayerPosition());
     }
 
-    @Override
     public Player getNextPlayer() {
         return roundQueue.get(getPlayerPosition(1));
     }
 
-    @Override
     public Player getPreviousPlayer() {
         return roundQueue.get(getPlayerPosition(-1));
     }
 
-    @Override
     public Player getPlayer(int position) {
         return roundQueue.get(getPlayerPosition(position));
     }
 
     @Override
     protected CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition) {
-        return new CardRecordDO((BoardCardDO) card, this, (PlayerRecordDO)owner, (PlayerRecordDO)target, cardPosition);
+        return new CardRecordDO((BoardCardDO) card, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
+                cardPosition);
     }
 
     @Override
@@ -175,48 +181,26 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return currentPlayerPosition;
     }
 
-    public List<ElementRecordDO> allocateCardsForNextPlayer(int cardAmount) {
+    protected List<ElementRecordDO> dealCards(int cardAmount) {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
         for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            List<BoardCardDO> remaining = getRemainingCards(elementSchool);
+            List<BoardCardDO> remaining = new LinkedList<BoardCardDO>();
+            for (BoardCardDO card : elementSchool.getCards()) {
+                if (dealtCards.contains(card.getKey())) continue;
+                remaining.add(card);
+            }
             randomSelect(remaining, cardAmount);
+            for (BoardCardDO card : remaining) dealtCards.add(card.getKey());
             record.add(new ElementRecordDO(elementSchool, (int) (3 + Math.random() * 4), remaining));
         }
         return record;
     }
 
-    protected List<BoardCardDO> getRemainingCards(BoardElementSchoolDO elementSchool) {
-        List<BoardCardDO> remaining = new LinkedList<BoardCardDO>();
-        for (BoardCardDO card : elementSchool.getCards()) {
-            if (isCardAllocated(elementSchool, card)) continue;
-            remaining.add(card);
-        }
-        return remaining;
-    }
-
-    protected boolean isCardAllocated(ElementSchool elementSchool, BoardCardDO card) {
-        for (PlayerRecordDO player : roundQueue)
-            if (isCardAllocated(player.getHoldedCards(elementSchool), card)) return true;
-        return false;
-    }
-
-    protected boolean isCardAllocated(Card[] allocatedCards, BoardCardDO card) {
-        for (Card c : allocatedCards) {
-            BoardCardDO allocated = (BoardCardDO) c;
-            if (card.getKey().equals(allocated.getKey())) return true;
-        }
-        return false;
-    }
-
     protected void randomSelect(List<BoardCardDO> remainingCards, int cardAmount) {
         int size = remainingCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
-            int index = (int)Math.floor(remainingCards.size() * Math.random());
+            int index = (int) Math.floor(remainingCards.size() * Math.random());
             remainingCards.remove(index);
         }
-    }
-
-    public int compareTo(BoardManagerDO boardManagerDO) {
-        return getKey().compareTo(boardManagerDO.getKey());
     }
 }

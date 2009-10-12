@@ -5,16 +5,16 @@ import com.killard.card.Board;
 
 /**
  * <p>
- * This class defines .
+ * This class defines end game action.
  * </p>
  * <p>
  * <strong>Thread safety:</strong>
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class EndTurnAction extends PlayerAction<Board> {
+public class EndGameAction extends PlayerAction<Board> {
 
-    public EndTurnAction(Board source, Player player) {
-        super(source, player);
+    public EndGameAction(Board source, Player target) {
+        super(source, target);
     }
 }

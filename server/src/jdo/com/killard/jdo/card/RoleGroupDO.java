@@ -1,0 +1,69 @@
+package com.killard.jdo.card;
+
+import com.google.appengine.api.datastore.Key;
+
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Extension;
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * <p>
+ * This class defines .
+ * </p>
+ * <p>
+ * <strong>Thread safety:</strong>
+ * This class is mutable and not thread safe.
+ * </p>
+ */
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class RoleGroupDO implements Comparable<RoleGroupDO> {
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
+
+    @Persistent
+    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
+    private Key packageKey;
+
+    @Persistent(serialized = "true")
+    private List<Key> roles;
+
+    public RoleGroupDO(PackageDO pack) {
+        this.packageKey = pack.getKey();
+        this.roles = new ArrayList<Key>();
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public Key getPackageKey() {
+        return packageKey;
+    }
+
+    public RoleDO[] getRoles() {
+        return roles.toArray(new RoleDO[roles.size()]);
+    }
+
+    public int getRoleAmount() {
+        return roles.size();
+    }
+
+    public boolean addRole(RoleDO role) {
+        return roles.add(role.getKey());
+    }
+
+    public boolean removeRole(RoleDO role) {
+        return roles.remove(role.getKey());
+    }
+
+    public int compareTo(RoleGroupDO group) {
+        return getRoleAmount() - group.getRoleAmount();
+    }
+}

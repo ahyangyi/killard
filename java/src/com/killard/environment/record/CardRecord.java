@@ -65,7 +65,7 @@ public class CardRecord extends AbstractCardRecord {
         this.name = card.getName();
         this.elementSchool = card.getElementSchool();
         this.level = card.getLevel();
-        this.health = card.getHealth();
+        this.health = card.getMaxHealth();
         this.maxHealth = card.getMaxHealth();
         this.attack = card.getAttack();
         this.owner = owner;

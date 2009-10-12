@@ -4,9 +4,10 @@ import com.killard.card.Action;
 import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.Player;
+import com.killard.card.Board;
 import com.killard.card.action.CastCardAction;
 import com.killard.card.action.EndTurnAction;
-import com.killard.card.action.NewCardAction;
+import com.killard.card.action.PlayCardAction;
 import com.killard.environment.event.ActionEvent;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.event.StateEvent;
@@ -27,7 +28,7 @@ import java.util.Map;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BoardManager implements StateListener {
+public abstract class BoardManager implements Board, StateListener {
 
     private final Map<ActionListener, Object> listeners = new HashMap<ActionListener, Object>();
 
@@ -41,7 +42,7 @@ public abstract class BoardManager implements StateListener {
         Player owner = getCurrentPlayer();
         Card card = owner.getHoldedCard(cardIndex);
         Player target = getPlayer(targetPlayerPosition);
-        executeAction(new NewCardAction(owner, createCardRecord(card, owner, target, cardPosition)));
+        executeAction(new PlayCardAction(owner, createCardRecord(card, owner, target, cardPosition)));
     }
 
     public void cast(int cardPosition, int skillIndex) {
@@ -60,7 +61,7 @@ public abstract class BoardManager implements StateListener {
     }
 
     public void endTurn() {
-        executeAction(new EndTurnAction(getCurrentPlayer()));
+        executeAction(new EndTurnAction(this, getCurrentPlayer()));
     }
 
     public void addActionListener(ActionListener listener, Object host) {
@@ -166,16 +167,6 @@ public abstract class BoardManager implements StateListener {
     }
 
     public abstract Player addPlayer(String playerName, int health);
-
-    public abstract Player[] getPlayers();
-
-    public abstract Player getCurrentPlayer();
-
-    public abstract Player getNextPlayer();
-
-    public abstract Player getPreviousPlayer();
-
-    public abstract Player getPlayer(int position);
 
     protected abstract CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition);
 

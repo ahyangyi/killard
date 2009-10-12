@@ -1,6 +1,6 @@
 package com.killard.environment.record;
 
-import com.killard.card.action.NewCardAction;
+import com.killard.card.action.PlayCardAction;
 
 /**
  * <p>
@@ -11,9 +11,9 @@ import com.killard.card.action.NewCardAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ExecutableNewCardAction extends ExecutableCardAction<NewCardAction> {
+public class ExecutablePlayCardAction extends ExecutableCardAction<PlayCardAction> {
 
-    public void execute(AbstractCardRecord record, NewCardAction action) {
+    public void execute(AbstractCardRecord record, PlayCardAction action) {
         AbstractPlayerRecord player = (AbstractPlayerRecord) record.getOwner();
         player.addLivingCard(record, action);
     }

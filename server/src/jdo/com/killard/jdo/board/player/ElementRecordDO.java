@@ -30,7 +30,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementRecordDO implements Comparator<BoardCardDO> {
+public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<BoardCardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -104,5 +104,9 @@ public class ElementRecordDO implements Comparator<BoardCardDO> {
     public int compare(BoardCardDO card1, BoardCardDO card2) {
         if (card1.getLevel() == card2.getLevel()) return card1.compareTo(card2);
         return card1.getLevel() - card2.getLevel();
+    }
+
+    public int compareTo(ElementRecordDO elementRecord) {
+        return getElementSchool().compareTo(elementRecord.getElementSchool());
     }
 }

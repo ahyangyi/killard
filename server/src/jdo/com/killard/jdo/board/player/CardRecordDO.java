@@ -250,17 +250,17 @@ public class CardRecordDO extends AbstractCardRecord {
 
     protected boolean addSkill(Skill skill) {
         BoardSkillDO record = (BoardSkillDO) skill;
-        return skills.add(skill) && skillKeys.add(record.getKey());
+        return !skillKeys.contains(record.getKey()) && skills.add(skill) && skillKeys.add(record.getKey());
     }
 
     protected boolean removeSkill(Skill skill) {
         BoardSkillDO record = (BoardSkillDO) skill;
-        return skills.remove(skill) && skillKeys.remove(record.getKey());
+        return skillKeys.contains(record.getKey()) && skills.remove(skill) && skillKeys.remove(record.getKey());
     }
 
     protected boolean addAttribute(Attribute attribute) {
         BoardAttributeDO record = (BoardAttributeDO) attribute;
-        if (attributeKeys.contains(record.getKey())) {
+        if (!attributeKeys.contains(record.getKey())) {
             if (attribute.isVisible()) {
                 if (visibleAttributes.add(attribute)) return attributeKeys.add(record.getKey());
             } else {

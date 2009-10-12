@@ -6,9 +6,11 @@ import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.jdo.card.ElementSchoolDO;
 import com.killard.jdo.card.PackageDO;
+import com.killard.jdo.card.RoleDO;
 import com.killard.jdo.card.descriptor.PackageDescriptorDO;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.board.descriptor.BoardPackageDescriptorDO;
+import com.killard.card.BoardPackage;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -17,6 +19,8 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -28,7 +32,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> {
+public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> implements BoardPackage {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -43,18 +47,26 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> {
     @Persistent
     private BoardRuleDO rule;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
+    private List<BoardRoleDO> roles;
+
+    @Persistent
     private SortedSet<BoardElementSchoolDO> elementSchools;
 
     @Persistent
     private SortedSet<BoardPackageDescriptorDO> descriptors;
 
-    public BoardPackageDO(Key boardManagerKey, PackageDO pack) {
+    public BoardPackageDO(Key boardManagerKey, PackageDO pack, int playerNumber) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManagerKey);
         keyBuilder.addChild(getClass().getSimpleName(), pack.getKey().getId());
         this.key = keyBuilder.getKey();
+
         this.packageKey = pack.getKey();
         this.rule = new BoardRuleDO(this, pack.getRule());
+
+        this.roles = new ArrayList<BoardRoleDO>();
+//        for (RoleDO role : pack)
+
         this.elementSchools = new TreeSet<BoardElementSchoolDO>();
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
             elementSchools.add(new BoardElementSchoolDO(this, elementSchool));
@@ -81,6 +93,14 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> {
 
     public BoardRuleDO getRule() {
         return rule;
+    }
+
+    public BoardRoleDO[] getRoles() {
+        return roles.toArray(new BoardRoleDO[roles.size()]);
+    }
+
+    public BoardRoleDO getRandomRole() {
+        return null;
     }
 
     public BoardElementSchoolDO[] getElementSchools() {

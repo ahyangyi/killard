@@ -6,13 +6,14 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.ElementSchool;
 import com.killard.card.Player;
+import com.killard.card.BoardPackage;
 import com.killard.card.action.CastCardAction;
 import com.killard.card.action.ChangeCardHealthAction;
 import com.killard.card.action.ChangePlayerElementAction;
 import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.KillPlayerAction;
-import com.killard.card.action.NewCardAction;
+import com.killard.card.action.PlayCardAction;
 import com.killard.card.action.EndTurnAction;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.record.CardRecord;
@@ -22,6 +23,7 @@ import com.killard.pack.magic.MagicCardFactory;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -34,6 +36,8 @@ import java.util.List;
  */
 public class DefaultBoardManager extends BoardManager implements ActionListener {
 
+    private final BoardPackage boardPackage = null;
+
     private final List<PlayerRecord> roundQueue = new LinkedList<PlayerRecord>();
 
     public DefaultBoardManager() {
@@ -44,34 +48,37 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     public Player addPlayer(String playerName, int health) {
         MagicCardFactory factory = new MagicCardFactory();
         PlayerRecord player = new PlayerRecord(playerName, health,
-                factory.allocateCardsForNextPlayer(getPlayers(), 2),
+                factory.allocateCardsForNextPlayer(Arrays.asList(getPlayers()), 2),
                 factory.allocateElementsForNextPlayer(),
                 this);
         roundQueue.add(player);
         return player;
     }
 
-    @Override
-    public List<Player> getPlayers() {
-        return new ArrayList<Player>(roundQueue);
+    public BoardPackage getPackage() {
+        return boardPackage;
     }
 
-    @Override
+    public int getPlayerAmount() {
+        return roundQueue.size();
+    }
+
+    public Player[] getPlayers() {
+        return roundQueue.toArray(new Player[roundQueue.size()]);
+    }
+
     public Player getCurrentPlayer() {
         return roundQueue.get(0);
     }
 
-    @Override
     public Player getNextPlayer() {
         return roundQueue.get(1);
     }
 
-    @Override
     public Player getPreviousPlayer() {
         return roundQueue.get(roundQueue.size() - 1);
     }
 
-    @Override
     public Player getPlayer(int position) {
         return roundQueue.get(position);
     }
@@ -91,7 +98,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     public Object after(BoardManager boardManager, EndTurnAction action) {
         boardManager.moveToNext();
         List<Action> actions = new ArrayList<Action>();
-        for (ElementSchool elementSchool : action.getTarget().getAllElementSchool())
+        for (ElementSchool elementSchool : getPackage().getElementSchools())
             actions.add(new ChangePlayerElementAction(boardManager, action.getTarget(), elementSchool, 1));
         return actions;
     }
@@ -103,8 +110,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         else return null;
     }
 
-    @ActionValidator(actionClass = NewCardAction.class, selfTargeted = false)
-    public Object validator(BoardManager boardManager, NewCardAction action) {
+    @ActionValidator(actionClass = PlayCardAction.class, selfTargeted = false)
+    public Object validator(BoardManager boardManager, PlayCardAction action) {
         CardInstance card = action.getTarget();
         if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
             if (card.getMaxHealth() > 0) return null;
@@ -113,8 +120,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         return false;
     }
 
-    @AfterAction(actionClass = NewCardAction.class, selfTargeted = false)
-    public Object after(BoardManager boardManager, NewCardAction action) {
+    @AfterAction(actionClass = PlayCardAction.class, selfTargeted = false)
+    public Object after(BoardManager boardManager, PlayCardAction action) {
         CardInstance card = action.getTarget();
         for (Attribute attribute : card.getAttributes()) boardManager.addActionListener(attribute, card);
         return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());

@@ -8,8 +8,6 @@ public interface Card {
 
     public int getLevel();
 
-    public int getHealth();
-
     public int getMaxHealth();
 
     public Attack getAttack();

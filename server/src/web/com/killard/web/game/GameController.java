@@ -78,19 +78,18 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/new.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void newGame(@RequestParam("packageId") long packageId,
-                        @RequestParam(value = "maxPlayerNumber", required = false, defaultValue = "2")
-                        int maxPlayerNumber,
+                        @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
         if (player != null) {
             quit();
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        BoardManagerDO board = new BoardManagerDO(maxPlayerNumber);
+        BoardManagerDO board = new BoardManagerDO();
         Key boardManagerKey = pm.makePersistent(board).getKey();
         PersistenceHelper.doTransaction();
 
-        BoardPackageDO boardPackage = new BoardPackageDO(boardManagerKey, getPackage(packageId));
+        BoardPackageDO boardPackage = new BoardPackageDO(boardManagerKey, getPackage(packageId), playerNumber);
         PersistenceHelper.doTransaction();
 
         board.init(boardPackage);
@@ -139,7 +138,7 @@ public class GameController extends BasicController {
         query.declareParameters("String playerId");
         query.deletePersistentAll(getPlayerId());
 
-        if (boardManager != null && boardManager.getPlayers().size() < 2) {
+        if (boardManager != null && boardManager.getPlayers().length < 2) {
             pm.deletePersistent(boardManager);
         }
         PersistenceHelper.doTransaction();

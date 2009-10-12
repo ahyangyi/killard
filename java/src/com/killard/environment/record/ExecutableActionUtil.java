@@ -9,7 +9,7 @@ import com.killard.card.action.ChangeCardMaxHealthAction;
 import com.killard.card.action.ChangePlayerElementAction;
 import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.KillCardAction;
-import com.killard.card.action.NewCardAction;
+import com.killard.card.action.PlayCardAction;
 import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.RemoveCardAttributeAction;
 import com.killard.card.action.RemoveSkillAction;
@@ -31,7 +31,7 @@ public class ExecutableActionUtil {
 
     public static Map<Class<? extends Action>, ExecutableAction> buildExecutableActionsMap() {
         Map<Class<? extends Action>, ExecutableAction> map = new HashMap<Class<? extends Action>, ExecutableAction>();
-        map.put(NewCardAction.class, new ExecutableNewCardAction());
+        map.put(PlayCardAction.class, new ExecutablePlayCardAction());
         map.put(CastCardAction.class, new ExecutableCastCardAction());
         map.put(KillCardAction.class, new ExecutableKillCardAction());
         map.put(AddCardAttributeAction.class, new ExecutableAddCardAttributeAction());
@@ -40,7 +40,7 @@ public class ExecutableActionUtil {
         map.put(ChangeCardMaxHealthAction.class, new ExecutableChangeCardMaxHealthAction());
         map.put(ChangePlayerElementAction.class, new ExecutableChangePlayerElementAction());
         map.put(ChangePlayerHealthAction.class, new ExecutableChangePlayerHealthAction());
-        map.put(EndTurnAction.class, new ExecutableNextTurnAction());
+        map.put(EndTurnAction.class, new ExecutableEndTurnAction());
         map.put(RemoveCardAttributeAction.class, new ExecutableAddCardAttributeAction());
         map.put(RemoveSkillAction.class, new ExecutableRemoveSkillAction());
         return map;

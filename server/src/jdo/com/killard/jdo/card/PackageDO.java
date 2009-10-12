@@ -1,6 +1,7 @@
 package com.killard.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.users.User;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.card.descriptor.PackageDescriptorDO;
@@ -52,6 +53,12 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     private RuleDO rule;
 
     @Persistent
+    private SortedSet<RoleDO> roles;
+
+    @Persistent
+    private SortedSet<RoleGroupDO> roleGroups;
+
+    @Persistent
     private SortedSet<ElementSchoolDO> elementSchools;
 
     @Persistent
@@ -64,21 +71,28 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     private Boolean open;
 
     @Persistent
+    private Rating rating;
+
+    @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
 
     public PackageDO(String name, User creator) {
         this.name = name;
         this.managers = new HashSet<User>();
         this.players = new HashSet<User>();
+        this.roles = new TreeSet<RoleDO>();
+        this.roleGroups = new TreeSet<RoleGroupDO>();
         this.elementSchools = new TreeSet<ElementSchoolDO>();
         this.clonable = true;
         this.published = false;
         this.open = false;
-        this.descriptors = new TreeSet<PackageDescriptorDO>();
         this.createDate = new Date();
         this.modifiedDate = createDate;
+        this.rating = new Rating(0);
+        this.descriptors = new TreeSet<PackageDescriptorDO>();
 
         addManager(creator);
+        addPlayer(creator);
     }
 
     public Key getKey() {
@@ -136,6 +150,18 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         this.rule = rule;
     }
 
+    public RoleDO[] getRoles() {
+        return roles.toArray(new RoleDO[roles.size()]);
+    }
+
+    public RoleDO[] getRolesFromGroup(int group) {
+        return roles.toArray(new RoleDO[roles.size()]);
+    }
+
+    public SortedSet<RoleGroupDO> getRoleGroups() {
+        return roleGroups;
+    }
+
     public ElementSchoolDO[] getElementSchools() {
         return elementSchools.toArray(new ElementSchoolDO[elementSchools.size()]);
     }
@@ -162,6 +188,14 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public int getRating() {
+        return rating.getRating();
+    }
+
+    public void setRating(int rating) {
+        this.rating = new Rating(rating);
     }
 
     public SortedSet<PackageDescriptorDO> getDescriptors() {

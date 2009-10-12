@@ -4,11 +4,11 @@ public interface Player {
 
     public String getId();
 
+    public Role getRole();
+
     public int getHealth();
 
     public int getElementAmount(ElementSchool elementSchool);
-
-    public ElementSchool[] getAllElementSchool();
 
     public Card[] getHoldedCards(ElementSchool elementSchool);
 

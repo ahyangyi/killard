@@ -11,7 +11,7 @@ import com.killard.card.action.EndTurnAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ExecutableNextTurnAction extends ExecutablePlayerAction<EndTurnAction> {
+public class ExecutableEndTurnAction extends ExecutablePlayerAction<EndTurnAction> {
 
     public void execute(AbstractPlayerRecord record, EndTurnAction action) {
         record.nextTurn(action);

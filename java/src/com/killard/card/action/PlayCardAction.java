@@ -1,7 +1,7 @@
 package com.killard.card.action;
 
+import com.killard.card.CardInstance;
 import com.killard.card.Player;
-import com.killard.card.Board;
 
 /**
  * <p>
@@ -12,9 +12,9 @@ import com.killard.card.Board;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class EndTurnAction extends PlayerAction<Board> {
+public final class PlayCardAction extends CardAction<Player> {
 
-    public EndTurnAction(Board source, Player player) {
-        super(source, player);
+    public PlayCardAction(Player source, CardInstance target) {
+        super(source, target);
     }
 }

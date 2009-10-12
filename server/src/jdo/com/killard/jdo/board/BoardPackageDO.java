@@ -21,6 +21,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * <p>
@@ -95,8 +97,12 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> imp
         return rule;
     }
 
-    public BoardRoleDO[] getRoles() {
-        return roles.toArray(new BoardRoleDO[roles.size()]);
+    public SortedMap<String, BoardRoleDO> getRoles() {
+        SortedMap<String, BoardRoleDO> map = new TreeMap<String, BoardRoleDO>();
+        for (BoardRoleDO role : roles) {
+            map.put(role.getName(), role);
+        }
+        return map;
     }
 
     public BoardRoleDO getRandomRole() {

@@ -12,9 +12,9 @@ import com.killard.card.Player;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class PlayCardAction extends CardAction<Player> {
+public final class EquipCardAction extends CardAction<Player> {
 
-    public PlayCardAction(Player source, CardInstance target) {
+    public EquipCardAction(Player source, CardInstance target) {
         super(source, target);
     }
 }

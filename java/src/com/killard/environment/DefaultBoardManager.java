@@ -13,7 +13,7 @@ import com.killard.card.action.ChangePlayerElementAction;
 import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.KillPlayerAction;
-import com.killard.card.action.PlayCardAction;
+import com.killard.card.action.EquipCardAction;
 import com.killard.card.action.EndTurnAction;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.record.CardRecord;
@@ -110,8 +110,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         else return null;
     }
 
-    @ActionValidator(actionClass = PlayCardAction.class, selfTargeted = false)
-    public Object validator(BoardManager boardManager, PlayCardAction action) {
+    @ActionValidator(actionClass = EquipCardAction.class, selfTargeted = false)
+    public Object validator(BoardManager boardManager, EquipCardAction action) {
         CardInstance card = action.getTarget();
         if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
             if (card.getMaxHealth() > 0) return null;
@@ -120,8 +120,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         return false;
     }
 
-    @AfterAction(actionClass = PlayCardAction.class, selfTargeted = false)
-    public Object after(BoardManager boardManager, PlayCardAction action) {
+    @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
+    public Object after(BoardManager boardManager, EquipCardAction action) {
         CardInstance card = action.getTarget();
         for (Attribute attribute : card.getAttributes()) boardManager.addActionListener(attribute, card);
         return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());

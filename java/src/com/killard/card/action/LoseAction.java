@@ -2,6 +2,7 @@ package com.killard.card.action;
 
 import com.killard.card.Role;
 import com.killard.card.Player;
+import com.killard.card.Board;
 
 /**
  * <p>
@@ -12,9 +13,9 @@ import com.killard.card.Player;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class LoseAction extends PlayerAction<Role> {
+public class LoseAction extends PlayerAction<Board> {
 
-    public LoseAction(Role source, Player target) {
-        super(source, target);
+    public LoseAction(Board source, Player player) {
+        super(source, player);
     }
 }

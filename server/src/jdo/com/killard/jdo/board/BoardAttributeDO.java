@@ -22,6 +22,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.NotPersistent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,6 +73,9 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
     @Persistent
     private SortedSet<BoardAttributeDescriptorDO> descriptors;
 
+    @NotPersistent
+    private BoardManagerDO boardManager;
+
     public BoardAttributeDO(BoardElementSchoolDO elementSchool, AttributeDO attribute) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), attribute.getKey().getId());
@@ -91,6 +95,10 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
         for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
             this.descriptors.add(new BoardAttributeDescriptorDO(this, descriptor));
         }
+    }
+
+    public void restore(BoardManagerDO boardManager) {
+        this.boardManager = boardManager;
     }
 
     public Key getKey() {
@@ -123,16 +131,16 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
     public List<Action> validateAction(CardInstance card, Action action) {
-        return FunctionHelper.handler(card, action, validators);
+        return FunctionHelper.handler(boardManager, card, action, validators);
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> beforeAction(CardInstance card, Action action) {
-        return FunctionHelper.handler(card, action, before);
+        return FunctionHelper.handler(boardManager, card, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> afterAction(CardInstance card, Action action) {
-        return FunctionHelper.handler(card, action, after);
+        return FunctionHelper.handler(boardManager, card, action, after);
     }
 }

@@ -12,7 +12,7 @@ import com.killard.card.action.ChangePlayerHealthAction;
 import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.KillPlayerAction;
-import com.killard.card.action.PlayCardAction;
+import com.killard.card.action.EquipCardAction;
 import com.killard.card.action.PlayerAction;
 import com.killard.card.action.RemoveCardAttributeAction;
 import com.killard.jdo.PersistenceHelper;
@@ -221,7 +221,7 @@ public class ActionDO {
         if (action instanceof ChangePlayerHealthAction) populate((ChangePlayerHealthAction) action);
         if (action instanceof KillCardAction) populate((KillCardAction) action);
         if (action instanceof KillPlayerAction) populate((KillPlayerAction) action);
-        if (action instanceof PlayCardAction) populate((PlayCardAction) action);
+        if (action instanceof EquipCardAction) populate((EquipCardAction) action);
         if (action instanceof CastCardAction) populate((CastCardAction) action);
         if (action instanceof EndTurnAction) populate((EndTurnAction) action);
         if (action instanceof RemoveCardAttributeAction) populate((RemoveCardAttributeAction) action);
@@ -263,7 +263,7 @@ public class ActionDO {
     protected void populate(KillPlayerAction action) {
     }
 
-    protected void populate(PlayCardAction action) {
+    protected void populate(EquipCardAction action) {
     }
 
     protected void populate(CastCardAction action) {

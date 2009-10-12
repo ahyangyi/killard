@@ -154,8 +154,11 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return roles.toArray(new RoleDO[roles.size()]);
     }
 
-    public RoleDO[] getRolesFromGroup(int group) {
-        return roles.toArray(new RoleDO[roles.size()]);
+    public RoleGroupDO getRoleGroup(int n) {
+        for (RoleGroupDO group : roleGroups) {
+            if (group.getRoles().length == n) return group;
+        }
+        return null;
     }
 
     public SortedSet<RoleGroupDO> getRoleGroups() {

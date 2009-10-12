@@ -57,6 +57,9 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     @Persistent
     private Boolean equippable;
 
+    @Persistent
+    private Boolean visible;
+
     @Persistent(mappedBy = "card", defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
 
@@ -125,6 +128,10 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         return equippable;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
     public boolean hasSkill() {
         return !skills.isEmpty();
     }
@@ -140,14 +147,14 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     public AttributeDO[] getAttributes() {
         AttributeDO[] result = new AttributeDO[hiddenAttributes.size() + visibleAttributes.size()];
         int i = 0;
-        for (String id : hiddenAttributes) {
-            result[i] = elementSchool.getAttribute(id);
+        for (String name : hiddenAttributes) {
+            result[i] = elementSchool.getAttribute(name);
             i++;
         }
 
         i = 0;
-        for (String id : visibleAttributes) {
-            result[i] = elementSchool.getAttribute(id);
+        for (String name : visibleAttributes) {
+            result[i] = elementSchool.getAttribute(name);
             i++;
         }
         return result;
@@ -160,8 +167,8 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     public AttributeDO[] getVisibleAttributes() {
         AttributeDO[] result = new AttributeDO[visibleAttributes.size()];
         int i = 0;
-        for (String id : visibleAttributes) {
-            result[i] = elementSchool.getAttribute(id);
+        for (String name : visibleAttributes) {
+            result[i] = elementSchool.getAttribute(name);
             i++;
         }
         return result;
@@ -174,8 +181,8 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     public AttributeDO[] getHiddenAttributes() {
         AttributeDO[] result = new AttributeDO[hiddenAttributes.size()];
         int i = 0;
-        for (String id : hiddenAttributes) {
-            result[i] = elementSchool.getAttribute(id);
+        for (String name : hiddenAttributes) {
+            result[i] = elementSchool.getAttribute(name);
             i++;
         }
         return result;
@@ -201,6 +208,14 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
 
     public void setAttackValue(int attackValue) {
         this.attackValue = attackValue;
+    }
+
+    public void setEquippable(boolean equippable) {
+        this.equippable = equippable;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public boolean addSkill(SkillDO skill) {

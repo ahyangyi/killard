@@ -31,12 +31,13 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
     private Key packageKey;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<Key> roleKeys;
 
-    public RoleGroupDO(PackageDO pack) {
+    public RoleGroupDO(PackageDO pack, RoleDO role) {
         this.packageKey = pack.getKey();
         this.roleKeys = new ArrayList<Key>();
+        this.roleKeys.add(role.getKey());
     }
 
     public Key getKey() {

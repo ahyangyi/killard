@@ -20,6 +20,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.NotPersistent;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -54,6 +55,9 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
     @Persistent
     private SortedSet<BoardSkillDescriptorDO> descriptors;
 
+    @NotPersistent
+    private BoardManagerDO boardManager;
+
     public BoardSkillDO(BoardCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
@@ -63,6 +67,10 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
         this.name = skill.getName();
         this.cost = skill.getCost();
         this.function = skill.getFunction();
+    }
+
+    public void restore(BoardManagerDO boardManager) {
+        this.boardManager = boardManager;
     }
 
     public Key getKey() {
@@ -96,6 +104,7 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
     public List<Action> execute(CardInstance owner, CardInstance target) {
         Context ctx = new GlobalContext(owner);
         ctx.addVariable("target", target);
+        ctx.addVariable("board", boardManager);
         try {
             function.execute(ctx);
         } catch (ExecutionException e) {

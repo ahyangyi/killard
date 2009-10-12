@@ -84,9 +84,9 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
         return cards.remove(card);
     }
 
-    public AttributeDO getAttribute(String id) {
+    public AttributeDO getAttribute(String name) {
         for (AttributeDO attribute : attributes) {
-            if (attribute.getName().equals(id)) return attribute;
+            if (attribute.getName().equals(name)) return attribute;
         }
         return null;
     }

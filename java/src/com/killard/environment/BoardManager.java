@@ -5,9 +5,10 @@ import com.killard.card.Card;
 import com.killard.card.CardInstance;
 import com.killard.card.Player;
 import com.killard.card.Board;
+import com.killard.card.Skill;
 import com.killard.card.action.CastCardAction;
 import com.killard.card.action.EndTurnAction;
-import com.killard.card.action.PlayCardAction;
+import com.killard.card.action.EquipCardAction;
 import com.killard.environment.event.ActionEvent;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.event.StateEvent;
@@ -38,18 +39,26 @@ public abstract class BoardManager implements Board, StateListener {
     public BoardManager() {
     }
 
-    public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) {
+    public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) throws BoardException {
         Player owner = getCurrentPlayer();
         Card card = owner.getDealtCard(cardIndex);
         Player target = getPlayer(targetPlayerPosition);
-        executeAction(new PlayCardAction(owner, createCardRecord(card, owner, target, cardPosition)));
+        CardInstance instance = createCardRecord(card, owner, target, cardPosition);
+        if (instance.isEquippable()) {
+            executeAction(new EquipCardAction(owner, instance));
+        } else {
+            for (Skill skill : instance.getSkills()) {
+                executeAction(new CastCardAction(owner, instance, skill, instance));
+            }
+        }
     }
 
-    public void cast(int cardPosition, int skillIndex) {
+    public void cast(int cardPosition, int skillIndex) throws BoardException {
         cast(cardPosition, skillIndex, 1, cardPosition);
     }
 
-    public void cast(int cardPosition, int skillIndex, int targetPlayerPosition, int targetCardPosition) {
+    public void cast(int cardPosition, int skillIndex, int targetPlayerPosition, int targetCardPosition)
+            throws BoardException {
         Player player = getCurrentPlayer();
         CardInstance card = player.getEquippedCard(cardPosition);
 
@@ -60,7 +69,7 @@ public abstract class BoardManager implements Board, StateListener {
         executeAction(new CastCardAction(player, card, card.getSkills()[skillIndex], targetCard));
     }
 
-    public void endTurn() {
+    public void endTurn() throws BoardException {
         executeAction(new EndTurnAction(this, getCurrentPlayer()));
     }
 
@@ -77,7 +86,6 @@ public abstract class BoardManager implements Board, StateListener {
     }
 
     public void stateChanged(StateEvent event) {
-        fireActionEventAfter(new ActionEvent(this, event.getAction()));
     }
 
     protected Object getActionListenerHost(ActionListener listener) {
@@ -85,7 +93,8 @@ public abstract class BoardManager implements Board, StateListener {
     }
 
     protected boolean invokeActionListener(Action action, ActionListener listener,
-                                           Method method, Class actionClass, boolean selfTargeted) {
+                                           Method method, Class actionClass, boolean selfTargeted)
+            throws BoardException {
         if (!actionClass.isAssignableFrom(action.getClass())) return false;
 
         Object host = getActionListenerHost(listener);
@@ -108,7 +117,7 @@ public abstract class BoardManager implements Board, StateListener {
         return true;
     }
 
-    protected boolean validateAction(ActionEvent event) {
+    protected boolean validateAction(ActionEvent event) throws BoardException {
         for (ActionListener listener : getActionListeners()) {
             for (Method method : listener.getClass().getMethods()) {
                 ActionValidator annotation = method.getAnnotation(ActionValidator.class);
@@ -121,7 +130,7 @@ public abstract class BoardManager implements Board, StateListener {
         return true;
     }
 
-    protected void fireActionEventBefore(ActionEvent event) {
+    protected void fireActionEventBefore(ActionEvent event) throws BoardException {
         for (ActionListener listener : getActionListeners()) {
             for (Method method : listener.getClass().getMethods()) {
                 BeforeAction annotation = method.getAnnotation(BeforeAction.class);
@@ -133,7 +142,7 @@ public abstract class BoardManager implements Board, StateListener {
         }
     }
 
-    protected void fireActionEventAfter(ActionEvent event) {
+    protected void fireActionEventAfter(ActionEvent event) throws BoardException {
         for (ActionListener listener : getActionListeners()) {
             for (Method method : listener.getClass().getMethods()) {
                 Object host = getActionListenerHost(listener);
@@ -150,20 +159,19 @@ public abstract class BoardManager implements Board, StateListener {
         return executables.get(action.getClass());
     }
 
-    protected void executeActions(List<Action> actions) {
+    protected void executeActions(List<Action> actions) throws BoardException {
         for (Action action : actions) executeAction(action);
     }
 
-    protected void executeAction(Action action) {
+    protected void executeAction(Action action) throws BoardException {
         ActionEvent event = new ActionEvent(this, action);
         if (!validateAction(event)) return;
         fireActionEventBefore(event);
         ExecutableAction executable = getExecutableAction(action);
         if (executable != null) {
             executable.execute(action.getTarget(), action);
-        } else {
-            fireActionEventAfter(new ActionEvent(this, action));
         }
+        fireActionEventAfter(new ActionEvent(this, action));
     }
 
     public abstract Player addPlayer(String playerName, int health);

@@ -7,6 +7,7 @@ import com.killard.card.ElementSchool;
 import com.killard.card.Player;
 import com.killard.card.BoardPackage;
 import com.killard.environment.BoardManager;
+import com.killard.environment.BoardException;
 import com.killard.environment.event.ActionEvent;
 import com.killard.jdo.board.player.CardRecordDO;
 import com.killard.jdo.board.player.ElementRecordDO;
@@ -70,8 +71,14 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     public void restore() {
         for (PlayerRecordDO player : roundQueue) player.restore(this);
+
+        getBoardPackage().getRule().restore(this);
         addActionListener(getBoardPackage().getRule(), this);
-        for (PlayerRecordDO player : roundQueue) addActionListener(player.getRole(), this);
+
+        for (PlayerRecordDO player : roundQueue) {
+            player.getBoardRole().restore(this);
+            addActionListener(player.getBoardRole(), player);
+        }
     }
 
     public BoardPackageDO getBoardPackage() {
@@ -113,7 +120,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     public int compareTo(BoardManagerDO boardManagerDO) {
-        return getKey().compareTo(boardManagerDO.getKey());
+        return boardManagerDO.getStartDate().compareTo(getStartDate());
     }
 
     @Override
@@ -158,9 +165,9 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     @Override
-    protected void fireActionEventBefore(ActionEvent event) {
-        super.fireActionEventBefore(event);
+    protected void fireActionEventBefore(ActionEvent event) throws BoardException {
         actions.add(new ActionDO(this, event.getAction()));
+        super.fireActionEventBefore(event);
     }
 
     @Override

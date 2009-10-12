@@ -5,7 +5,7 @@ import com.killard.card.Action;
 import com.killard.card.Attribute;
 import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.KillCardAction;
-import com.killard.card.action.PlayCardAction;
+import com.killard.card.action.EquipCardAction;
 import com.killard.environment.ActionValidator;
 import com.killard.environment.AfterAction;
 import com.killard.environment.BeforeAction;
@@ -20,6 +20,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.NotPersistent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,9 @@ public class BoardRuleDO implements ActionListener {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
+    @NotPersistent
+    private BoardManagerDO boardManager;
+
     public BoardRuleDO(BoardPackageDO pack, RuleDO rule) {
         this.packageKey = pack.getKey();
         validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
@@ -69,21 +73,25 @@ public class BoardRuleDO implements ActionListener {
         return packageKey;
     }
 
+    public void restore(BoardManagerDO boardManager) {
+        this.boardManager = boardManager;
+    }
+
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
     public List<Action> validateAction(BoardManagerDO owner, Action action) {
-        List<Action> result = FunctionHelper.handler(owner, action, validators);
+        List<Action> result = FunctionHelper.handler(boardManager, owner, action, validators);
         getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
         return result;
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> beforeAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(owner, action, before);
+        return FunctionHelper.handler(boardManager, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> afterAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(owner, action, after);
+        return FunctionHelper.handler(boardManager, owner, action, after);
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
@@ -92,8 +100,8 @@ public class BoardRuleDO implements ActionListener {
         return null;
     }
 
-    @AfterAction(actionClass = PlayCardAction.class, selfTargeted = false)
-    public void after(BoardManagerDO boardManager, PlayCardAction action) {
+    @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
+    public void after(BoardManagerDO boardManager, EquipCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
             boardManager.addActionListener(attribute, action.getTarget());
     }

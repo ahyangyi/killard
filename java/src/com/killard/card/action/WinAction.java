@@ -2,6 +2,7 @@ package com.killard.card.action;
 
 import com.killard.card.Player;
 import com.killard.card.Role;
+import com.killard.card.Board;
 
 /**
  * <p>
@@ -12,9 +13,9 @@ import com.killard.card.Role;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class WinAction extends PlayerAction<Role> {
+public class WinAction extends PlayerAction<Board> {
 
-    public WinAction(Role source, Player target) {
+    public WinAction(Board source, Player target) {
         super(source, target);
     }
 }

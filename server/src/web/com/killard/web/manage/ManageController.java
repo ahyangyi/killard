@@ -100,17 +100,17 @@ public class ManageController extends BasicController {
         }
         extent.closeAll();
 
-        PackageDO pack = new PackageDO("Magic", UserServiceFactory.getUserService().getCurrentUser());
+        PackageDO pack = new PackageDO("Orions", UserServiceFactory.getUserService().getCurrentUser());
         pack.setPublished(true);
         pack.setOpen(true);
         pm.makePersistent(pack);
 
         PackageDescriptorDO desc = new PackageDescriptorDO(pack, Locale.ENGLISH);
-        desc.setName("Magic");
-        desc.setDescription("Magic cards");
+        desc.setName("Orions");
+        desc.setDescription("Orions Cards");
         pm.makePersistent(desc);
 
-        baseDirectory = "WEB-INF/magic/";
+        baseDirectory = "WEB-INF/orions/";
 
         File ruleFile = new File(baseDirectory + "Rule.js");
         RuleDO rule = builder.buildRule(pack, engine.parse(ruleFile));
@@ -122,21 +122,21 @@ public class ManageController extends BasicController {
         redirect("/manage/load", request, response);
     }
 
-    @RequestMapping(value = "/manage/onepiece.*", method = RequestMethod.GET)
-    public void oneboard(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/manage/bang.*", method = RequestMethod.GET)
+    public void bang(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        PackageDO pack = new PackageDO("One Piece", UserServiceFactory.getUserService().getCurrentUser());
+        PackageDO pack = new PackageDO("Bang!", UserServiceFactory.getUserService().getCurrentUser());
         pack.setPublished(true);
         pack.setOpen(true);
         pm.makePersistent(pack);
 
         PackageDescriptorDO desc = new PackageDescriptorDO(pack, Locale.ENGLISH);
-        desc.setName("Magic");
-        desc.setDescription("Magic cards");
+        desc.setName("Bang!");
+        desc.setDescription("Bang!");
         pm.makePersistent(desc);
 
-        baseDirectory = "WEB-INF/killard/";
+        baseDirectory = "WEB-INF/bang/";
 
         File ruleFile = new File(baseDirectory + "Rule.js");
         RuleDO rule = builder.buildRule(pack, engine.parse(ruleFile));

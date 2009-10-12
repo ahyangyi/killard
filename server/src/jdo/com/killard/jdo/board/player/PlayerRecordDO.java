@@ -10,6 +10,7 @@ import com.killard.card.Role;
 import com.killard.environment.record.AbstractPlayerRecord;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardManagerDO;
+import com.killard.jdo.board.BoardRoleDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -91,11 +92,6 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         for (CardRecordDO card : equippedCards) {
             card.restore(boardManager);
         }
-        for (CardRecordDO card : equippedCards) {
-            for (Attribute attribute : card.getVisibleAttributes()) {
-                boardManager.addActionListener(attribute, card);
-            }
-        }
         addStateListener(boardManager);
     }
 
@@ -112,6 +108,10 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     }
 
     public Role getRole() {
+        return null;
+    }
+
+    public BoardRoleDO getBoardRole() {
         return null;
     }
 

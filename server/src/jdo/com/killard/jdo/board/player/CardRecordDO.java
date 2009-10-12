@@ -73,6 +73,9 @@ public class CardRecordDO extends AbstractCardRecord {
     private Boolean equippable;
 
     @Persistent
+    private Boolean visible;
+
+    @Persistent
     private Integer position;
 
     @Persistent(serialized = "true")
@@ -133,6 +136,7 @@ public class CardRecordDO extends AbstractCardRecord {
         this.attackType = card.getAttack().getType().name();
         this.attackValue = card.getAttack().getValue();
         this.equippable = card.isEquippable();
+        this.visible = card.isVisible();
         this.position = position;
 
         this.skillKeys = new LinkedList<Key>();
@@ -153,10 +157,15 @@ public class CardRecordDO extends AbstractCardRecord {
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
-            addSkill(pm.getObjectById(BoardSkillDO.class, key));
+            BoardSkillDO skill = pm.getObjectById(BoardSkillDO.class, key);
+            skill.restore(boardManager);
+            addSkill(skill);
         }
         for (Key key : attributeKeys) {
-            addAttribute(pm.getObjectById(BoardAttributeDO.class, key));
+            BoardAttributeDO attribute = pm.getObjectById(BoardAttributeDO.class, key);
+            attribute.restore(boardManager);
+            addAttribute(attribute);
+            boardManager.addActionListener(attribute, card);
         }
         addStateListener(boardManager);
     }
@@ -195,6 +204,10 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public boolean isEquippable() {
         return equippable;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
     public Skill[] getSkills() {
@@ -240,6 +253,10 @@ public class CardRecordDO extends AbstractCardRecord {
     protected void setAttack(Attack attack) {
         this.attackType = attack.getType().name();
         this.attackValue = attack.getValue();
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     protected void setOwner(Player owner) {

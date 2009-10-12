@@ -1,6 +1,5 @@
 package com.killard.environment.record;
 
-import com.killard.card.action.PlayCardAction;
 import com.killard.card.action.DiscardCardAction;
 
 /**

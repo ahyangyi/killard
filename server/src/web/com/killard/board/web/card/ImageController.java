@@ -8,9 +8,9 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.card.CardDO;
-import com.killard.board.jdo.card.ElementSchoolDO;
-import com.killard.board.jdo.card.PackageDO;
+import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,13 +81,13 @@ public class ImageController extends BasicController {
 
             response.getOutputStream().write(finalImage.getImageData());
         } else {
-            throw new IOException("This card has no image.");
+            throw new IOException("This board has no image.");
         }
     }
 
     public Image makeNumberImage(int number, HttpServletRequest request) throws IOException {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        InputStream in = new FileInputStream(request.getRealPath("/WEB-INF/card/" + String.valueOf(number) + ".png"));
+        InputStream in = new FileInputStream(request.getRealPath("/WEB-INF/board/" + String.valueOf(number) + ".png"));
         byte[] data = new byte[256];
         int length;
         try {

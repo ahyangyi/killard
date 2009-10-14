@@ -32,8 +32,8 @@ public class CardPanel extends JPanel {
         setPreferredSize(new Dimension(100, 120));
         setLayout(null);
         if (card != null) {
-            //add(new JLabel("A:" + card.getHealthChange()), BorderLayout.NORTH);
-            //add(new JLabel(card.getName()), BorderLayout.CENTER);
+            //add(new JLabel("A:" + board.getHealthChange()), BorderLayout.NORTH);
+            //add(new JLabel(board.getName()), BorderLayout.CENTER);
 
             add(skillBtn);
             skillBtn.setBounds(20,80,60,30);

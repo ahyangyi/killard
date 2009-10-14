@@ -8,10 +8,10 @@ import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
-import com.killard.board.jdo.card.AttributeDO;
-import com.killard.board.jdo.card.CardDO;
-import com.killard.board.jdo.card.SkillDO;
-import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.BoardCardDescriptorDO;
 
@@ -66,7 +66,7 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
     @Persistent
     private Boolean visible;
 
-    @Persistent(mappedBy = "card", defaultFetchGroup = "false")
+    @Persistent(mappedBy = "board", defaultFetchGroup = "false")
     private SortedSet<BoardSkillDO> skills;
 
     @Persistent(serialized = "true")

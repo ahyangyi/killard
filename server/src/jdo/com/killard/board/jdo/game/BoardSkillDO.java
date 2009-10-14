@@ -10,7 +10,7 @@ import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
-import com.killard.board.jdo.card.SkillDO;
+import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.BoardSkillDescriptorDO;
 

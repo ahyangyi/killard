@@ -1,10 +1,10 @@
-package com.killard.board.jdo.card;
+package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -60,7 +60,7 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     @Persistent
     private Boolean visible;
 
-    @Persistent(mappedBy = "card", defaultFetchGroup = "false")
+    @Persistent(mappedBy = "board", defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
 
     @Persistent(serialized = "true")

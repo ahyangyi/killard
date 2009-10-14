@@ -3,10 +3,10 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.ElementSchool;
-import com.killard.board.jdo.card.AttributeDO;
-import com.killard.board.jdo.card.CardDO;
-import com.killard.board.jdo.card.ElementSchoolDO;
-import com.killard.board.jdo.card.descriptor.ElementSchoolDescriptorDO;
+import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.BoardElementSchoolDescriptorDO;
 

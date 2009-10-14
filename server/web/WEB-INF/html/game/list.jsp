@@ -1,5 +1,5 @@
 <%@ include file="../header.jsp" %>
-<%--@elvariable id="packages" type="java.util.List<com.killard.board.jdo.card.PackageDO>"--%>
+<%--@elvariable id="packages" type="java.util.List<com.killard.board.jdo.board.PackageDO>"--%>
 <%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.game.BoardManagerDO>"--%>
 <form action="/game/new.html" method="POST">
     <fieldset title="Create New Game">

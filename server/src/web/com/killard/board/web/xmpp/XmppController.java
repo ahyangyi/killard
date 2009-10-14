@@ -72,7 +72,7 @@ public class XmppController extends BasicController {
 //        else if (args[0].equals("quit")) quit(from, args);
 //        else if (args[0].equals("hold")) queryHoldedCards(from, args);
 //        else if (args[0].equals("view")) queryLivingCards(from, args);
-//        else if (args[0].equals("card")) queryLivingCard(from, args);
+//        else if (args[0].equals("board")) queryLivingCard(from, args);
 //        else if (args[0].equals("play")) playCard(from, args);
 //        else if (args[0].equals("cast")) castCard(from, args);
 //        else if (args[0].equals("end")) endTurn(from, args);
@@ -110,8 +110,8 @@ public class XmppController extends BasicController {
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
 //        for (ElementSchool elementSchool : player.getAllElementSchool()) {
 //            StringBuilder msg = new StringBuilder("You has these cards in element " + elementSchool.toString() + " : ");
-//            for (Card card : player.getDealtCards(elementSchool)) {
-//                msg.append("Level " + card.getLevel() + " " + card + ", ");
+//            for (Card board : player.getDealtCards(elementSchool)) {
+//                msg.append("Level " + board.getLevel() + " " + board + ", ");
 //            }
 //            msg.append("and " + player.getElementAmount(elementSchool) + " elements.");
 //            sendMessage(getUsername(from), msg.toString());
@@ -123,10 +123,10 @@ public class XmppController extends BasicController {
 //        if (args.length == 1) player = getPlayer(getUsername(from));
 //        else player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        for (CardInstance card : player.getEquippedCards()) {
+//        for (CardInstance board : player.getEquippedCards()) {
 //            sendMessage(getUsername(from),
-//                    "[" + card.getPosition() + "] " + card + " level " + card.getLevel() + " health "
-//                            + card.getHealth() + " attack " + card.getAttack().getValue());
+//                    "[" + board.getPosition() + "] " + board + " level " + board.getLevel() + " health "
+//                            + board.getHealth() + " attack " + board.getAttack().getValue());
 //        }
 //    }
 //
@@ -150,7 +150,7 @@ public class XmppController extends BasicController {
 //        boardManager.playCard(cardIndex, cardPosition, targetPosition);
 //        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getId(), player.getId() + " plays card at " + cardPosition);
+//            sendMessage(p.getId(), player.getId() + " plays board at " + cardPosition);
 //        }
 //    }
 //
@@ -171,7 +171,7 @@ public class XmppController extends BasicController {
 //        }
 //        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getId(), player.getId() + " cast card at " + cardPosition);
+//            sendMessage(p.getId(), player.getId() + " cast board at " + cardPosition);
 //        }
 //    }
 //

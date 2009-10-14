@@ -12,8 +12,8 @@ import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.BoardAttributeDescriptorDO;
-import com.killard.board.jdo.card.AttributeDO;
-import com.killard.board.jdo.card.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

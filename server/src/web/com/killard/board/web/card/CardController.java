@@ -4,10 +4,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.card.CardDO;
-import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
-import com.killard.board.jdo.card.ElementSchoolDO;
-import com.killard.board.jdo.card.PackageDO;
+import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
@@ -49,8 +49,8 @@ public class CardController extends BasicController {
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
         CardDO card = pm.getObjectById(CardDO.class, cardKey);
-        modelMap.put("card", card);
-        return "card/card";
+        modelMap.put("board", card);
+        return "board/board";
     }
 
     @RequestMapping(value = "/card.*", method = RequestMethod.POST)
@@ -71,8 +71,8 @@ public class CardController extends BasicController {
         card.setDefinition(definition);
 
 //        Map map = engine.parse(definition);
-//        builder.buildCard(elementSchool, card, map);
-//        pm.makePersistent(card);
+//        builder.buildCard(elementSchool, board, map);
+//        pm.makePersistent(board);
 
         if (file.getBytes().length > 0) {
             CardDescriptorDO descriptor = card.getDescriptor();
@@ -82,8 +82,8 @@ public class CardController extends BasicController {
 
         pm.makePersistent(card);
         PersistenceHelper.doTransaction();
-        modelMap.put("card", card);
-        return "card/card";
+        modelMap.put("board", card);
+        return "board/board";
     }
 
     @RequestMapping(value = "/card/instantedit.*", method = RequestMethod.POST)
@@ -127,8 +127,8 @@ public class CardController extends BasicController {
         pm.makePersistent(card);
 
         PersistenceHelper.doTransaction();
-        modelMap.put("card", card);
-        return "card/card";
+        modelMap.put("board", card);
+        return "board/board";
     }
 
     @RequestMapping(value = "/card/delete.*", method = RequestMethod.POST)
@@ -145,6 +145,6 @@ public class CardController extends BasicController {
         pm.deletePersistent(card);
         PersistenceHelper.doTransaction();
         modelMap.put("package", pm.getObjectById(PackageDO.class, packageKey));
-        return "card/package";
+        return "board/package";
     }
 }

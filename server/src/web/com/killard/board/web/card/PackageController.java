@@ -6,9 +6,9 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.card.PackageDO;
-import com.killard.board.jdo.card.descriptor.PackageDescriptorDO;
-import com.killard.board.jdo.card.RuleDO;
+import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
+import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -48,7 +48,7 @@ public class PackageController extends BasicController {
         }
         extent.closeAll();
         modelMap.put("packages", packages);
-        return "card/packages";
+        return "board/packages";
     }
 
     @RequestMapping(value = "/package/my.*", method = RequestMethod.GET)
@@ -63,7 +63,7 @@ public class PackageController extends BasicController {
         }
         extent.closeAll();
         modelMap.put("packages", packages);
-        return "card/packages";
+        return "board/packages";
     }
 
     @RequestMapping(value = "/package/custom.*", method = RequestMethod.GET)
@@ -77,7 +77,7 @@ public class PackageController extends BasicController {
         }
         extent.closeAll();
         modelMap.put("packages", packages);
-        return "card/packages";
+        return "board/packages";
     }
 
     @RequestMapping(value = "/package/private.*", method = RequestMethod.GET)
@@ -93,7 +93,7 @@ public class PackageController extends BasicController {
         }
         extent.closeAll();
         modelMap.put("packages", packages);
-        return "card/packages";
+        return "board/packages";
     }
 
     @RequestMapping(value = "/package.*", method = RequestMethod.GET)
@@ -101,7 +101,7 @@ public class PackageController extends BasicController {
                              ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         modelMap.put("package", PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, key));
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/add.*", method = RequestMethod.POST)
@@ -120,7 +120,7 @@ public class PackageController extends BasicController {
         pm.makePersistent(pack);
 
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -141,7 +141,7 @@ public class PackageController extends BasicController {
         pack.addManager(new User(manager, UserServiceFactory.getUserService().getCurrentUser().getAuthDomain()));
         PersistenceHelper.getPersistenceManager().makePersistent(pack);
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/manager/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -158,7 +158,7 @@ public class PackageController extends BasicController {
         if (delete != null) pack.removeManager(delete);
         pm.makePersistent(pack);
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/player/add.*", method = RequestMethod.POST)
@@ -170,7 +170,7 @@ public class PackageController extends BasicController {
         pack.addPlayer(new User(player, UserServiceFactory.getUserService().getCurrentUser().getAuthDomain()));
         PersistenceHelper.getPersistenceManager().makePersistent(pack);
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/player/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -187,7 +187,7 @@ public class PackageController extends BasicController {
         if (delete != null) pack.removeManager(delete);
         pm.makePersistent(pack);
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/rule.*", method = RequestMethod.POST)
@@ -201,7 +201,7 @@ public class PackageController extends BasicController {
         oldRule.setDefinition(definition);
         pm.makePersistent(pack);
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
 }

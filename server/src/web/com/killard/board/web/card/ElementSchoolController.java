@@ -4,9 +4,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.card.ElementSchoolDO;
-import com.killard.board.jdo.card.descriptor.ElementSchoolDescriptorDO;
-import com.killard.board.jdo.card.PackageDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class ElementSchoolController extends BasicController {
 
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "card/element";
+        return "board/element";
     }
 
     @RequestMapping(value = "/package/elementschool/add.*", method = RequestMethod.POST)
@@ -66,7 +66,7 @@ public class ElementSchoolController extends BasicController {
         }
 
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
     @RequestMapping(value = "/package/elementschool/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -85,7 +85,7 @@ public class ElementSchoolController extends BasicController {
             pm.deletePersistent(elementSchool);
         }
         modelMap.put("package", pack);
-        return "card/package";
+        return "board/package";
     }
 
 }

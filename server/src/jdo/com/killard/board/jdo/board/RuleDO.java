@@ -1,21 +1,17 @@
-package com.killard.board.jdo.card;
+package com.killard.board.jdo.board;
 
-import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.AttributeHandler;
-import com.killard.board.jdo.card.descriptor.RoleDescriptorDO;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.killard.board.jdo.AttributeHandler;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Extension;
-import java.util.SortedSet;
-import java.util.List;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * <p>
@@ -27,7 +23,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
+public class RuleDO {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -36,12 +32,6 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
     @Persistent
     @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
     private Key packageKey;
-
-    @Persistent
-    private String name;
-
-    @Persistent
-    private Boolean visible;
 
     @Persistent
     private Text definition;
@@ -55,36 +45,18 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @Persistent
-    private SortedSet<RoleDescriptorDO> descriptors;
-
-    public RoleDO(PackageDO pack, String name, boolean visible,
+    public RuleDO(PackageDO pack,
                   List<AttributeHandler> validators,
                   List<AttributeHandler> before,
                   List<AttributeHandler> after) {
         this.packageKey = pack.getKey();
-        this.name = name;
-        this.visible = visible;
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
-        this.descriptors = new TreeSet<RoleDescriptorDO>();
     }
 
     public Key getKey() {
         return key;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    protected SortedSet<RoleDescriptorDO> getDescriptors() {
-        return descriptors;
     }
 
     public Key getPackageKey() {
@@ -111,7 +83,7 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
         this.definition = new Text(definition);
     }
 
-    public RoleDO clone(PackageDO pack) {
-        return new RoleDO(pack, getName(), isVisible(), validators, before, after);
+    public RuleDO clone(PackageDO pack) {
+        return new RuleDO(pack, validators, before, after);
     }
 }

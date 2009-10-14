@@ -148,7 +148,7 @@ public class ActionDO {
         } else if (actionClass.equals(BeginTurnAction.class.getSimpleName())) {
             return "Turn begin";
         } else if (actionClass.equals(CastCardAction.class.getSimpleName())) {
-            return playerId + " cast card " + cardName;
+            return playerId + " cast board " + cardName;
         } else if (actionClass.equals(ChangeCardAttackAction.class.getSimpleName())) {
             return playerId + " ";
         } else if (actionClass.equals(ChangeCardHealthAction.class.getSimpleName())) {

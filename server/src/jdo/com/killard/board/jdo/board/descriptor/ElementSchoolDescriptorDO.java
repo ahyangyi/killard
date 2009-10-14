@@ -1,7 +1,7 @@
-package com.killard.board.jdo.card.descriptor;
+package com.killard.board.jdo.board.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
-import com.killard.board.jdo.card.ElementSchoolDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;

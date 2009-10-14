@@ -25,7 +25,7 @@
                             <holdedcards>
                                 <%
                                     for (Card card : player.getDealtCards(elementSchool)) {
-                                        pageContext.setAttribute("card", card);
+                                        pageContext.setAttribute("board", card);
                                 %>
                                 <card>
                                     <name>${card.name}</name>

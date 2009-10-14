@@ -4,7 +4,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.game.BoardPackageDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
-import com.killard.board.jdo.card.PackageDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.BasicController;
 import com.killard.board.environment.BoardException;
 import com.google.appengine.api.datastore.Key;

@@ -14,7 +14,7 @@ import com.killard.board.environment.BeforeAction;
 import com.killard.board.environment.event.ActionListener;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
-import com.killard.board.jdo.card.RuleDO;
+import com.killard.board.jdo.board.RuleDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;

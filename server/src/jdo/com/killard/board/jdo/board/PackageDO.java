@@ -1,10 +1,10 @@
-package com.killard.board.jdo.card;
+package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.users.User;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.card.descriptor.PackageDescriptorDO;
+import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

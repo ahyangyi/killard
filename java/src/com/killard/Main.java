@@ -23,7 +23,7 @@ public class Main {
         Iterator writers = ImageIO.getImageWritersByFormatName("png");
         ImageWriter writer = (ImageWriter) writers.next();
         ImageIO.setUseCache(false);
-        ImageOutputStream ios = ImageIO.createImageOutputStream(new File("server/web/images/card/" + String.valueOf(number) + ".png"));
+        ImageOutputStream ios = ImageIO.createImageOutputStream(new File("server/web/images/board/" + String.valueOf(number) + ".png"));
         writer.setOutput(ios);
         writer.write(image);
         writer.dispose();

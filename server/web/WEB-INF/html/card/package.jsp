@@ -1,6 +1,6 @@
 <%@ include file="../header.jsp" %>
-<%@ page import="com.killard.board.jdo.card.CardDO" %>
-<%--@elvariable id="package" type="com.killard.board.jdo.card.PackageDO"--%>
+<%@ page import="com.killard.board.jdo.board.CardDO" %>
+<%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <h1>${package.descriptor.name}</h1>
 <table style="border-style:solid">
     <c:forEach var="user" items="${package.managers}">

@@ -1,14 +1,14 @@
 package com.killard.board.jdo;
 
 import com.killard.board.card.AttackType;
-import com.killard.board.jdo.card.AttributeDO;
-import com.killard.board.jdo.card.descriptor.AttributeDescriptorDO;
-import com.killard.board.jdo.card.CardDO;
-import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
-import com.killard.board.jdo.card.ElementSchoolDO;
-import com.killard.board.jdo.card.PackageDO;
-import com.killard.board.jdo.card.RuleDO;
-import com.killard.board.jdo.card.SkillDO;
+import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.RuleDO;
+import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.Expression;
 import com.killard.board.parser.Function;
@@ -51,7 +51,7 @@ public class JdoCardBuilder {
         try {
             Node[] args = function.getArguments().getChildren();
             if (args.length < 1) return false;
-            Class actionClass = Class.forName("com.killard.game.card.action." + ((Expression) args[0]).getText());
+            Class actionClass = Class.forName("com.killard.game.board.action." + ((Expression) args[0]).getText());
             Boolean selfTargeted = true;
             if (args.length > 1 && ((Expression) args[1]).getText().equalsIgnoreCase("All")) selfTargeted = false;
             AttributeHandler handler = new AttributeHandler(actionClass, selfTargeted, function);

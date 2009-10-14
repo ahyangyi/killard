@@ -2,7 +2,7 @@ package com.killard.ui;
 
 import com.killard.card.Card;
 import com.killard.card.Player;
-import com.killard.pack.magic.MagicElementSchool;
+import com.killard.packages.magic.MagicElementSchool;
 import com.killard.ui.event.PlayerActionListener;
 
 import javax.swing.*;

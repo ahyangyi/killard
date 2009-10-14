@@ -1,6 +1,6 @@
 package com.killard.ui;
 
-import com.killard.pack.magic.MagicElementSchool;
+import com.killard.packages.magic.MagicElementSchool;
 import com.killard.ui.event.ElementListener;
 
 import javax.swing.*;

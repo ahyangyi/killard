@@ -18,7 +18,7 @@ import com.killard.card.action.EndTurnAction;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.record.CardRecord;
 import com.killard.environment.record.PlayerRecord;
-import com.killard.pack.magic.MagicCardFactory;
+import com.killard.packages.magic.MagicCardFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

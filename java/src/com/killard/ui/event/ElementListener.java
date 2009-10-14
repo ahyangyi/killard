@@ -1,6 +1,6 @@
 package com.killard.ui.event;
 
-import com.killard.pack.magic.MagicElementSchool;
+import com.killard.packages.magic.MagicElementSchool;
 import com.killard.ui.PlayerPanel;
 
 import java.awt.event.MouseEvent;

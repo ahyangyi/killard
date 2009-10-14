@@ -200,6 +200,8 @@ public abstract class BoardManager<T extends BoardManager> implements Board<T>, 
 
     public abstract Player addPlayer(String playerName, int health) throws BoardException;
 
+    protected abstract void setProperty(String name, Object data);
+
     protected abstract Card createCardRecord(MetaCard card, Player owner, Player target, int cardPosition);
 
     protected abstract void moveToNext();

@@ -12,6 +12,8 @@ import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.game.player.CardRecordDO;
 import com.killard.board.jdo.game.player.ElementRecordDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
+import com.killard.board.jdo.game.player.property.PlayerRecordPropertyDO;
+import com.killard.board.jdo.game.property.BoardPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -25,6 +27,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BoardManagerDO extends BoardManager<BoardManagerDO> {
@@ -46,6 +50,9 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
     private Set<Key> dealtCardKeys;
 
     @Persistent
+    private SortedSet<BoardPropertyDO> properties;
+
+    @Persistent
     private List<ActionDO> actions;
 
     @Persistent
@@ -58,6 +65,7 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
         this.currentPlayerPosition = 0;
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
+        this.properties = new TreeSet<BoardPropertyDO>();
         this.actions = new ArrayList<ActionDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
@@ -112,6 +120,10 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
 
     public int compareTo(BoardManagerDO boardManagerDO) {
         return boardManagerDO.getStartDate().compareTo(getStartDate());
+    }
+
+    public BoardPropertyDO[] getProperties() {
+        return properties.toArray(new BoardPropertyDO[properties.size()]);
     }
 
     @Override
@@ -216,5 +228,22 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
             int index = (int) Math.floor(remainingCards.size() * Math.random());
             remainingCards.remove(index);
         }
+    }
+
+    public Object getProperty(String name) {
+        for (BoardPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) return property.getData();
+        }
+        return null;
+    }
+
+    protected void setProperty(String name, Object data) {
+        for (BoardPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) {
+                property.setData(data.toString());
+                return;
+            }
+        }
+        properties.add(new BoardPropertyDO(this, name, data.toString()));
     }
 }

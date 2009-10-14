@@ -47,7 +47,7 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDescriptorDO> descriptors;
 
-    public SkillDO(String name, CardDO card, int cost, Function function) {
+    public SkillDO(String name, MetaCardDO card, int cost, Function function) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
@@ -87,7 +87,7 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
         return descriptors;
     }
 
-    public SkillDO clone(CardDO card) {
+    public SkillDO clone(MetaCardDO card) {
         SkillDO skill = new SkillDO(getName(), card, cost, function);
         for (SkillDescriptorDO descriptor : descriptors) {
             SkillDescriptorDO cloneDescriptor = new SkillDescriptorDO(skill, descriptor.getLocale());

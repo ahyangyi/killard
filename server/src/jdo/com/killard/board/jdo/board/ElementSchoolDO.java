@@ -37,7 +37,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<CardDO> cards;
+    private SortedSet<MetaCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
     private SortedSet<AttributeDO> attributes;
@@ -48,7 +48,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
     public ElementSchoolDO(String name, PackageDO pack) {
         this.name = name;
         this.packageKey = pack.getKey();
-        this.cards = new TreeSet<CardDO>();
+        this.cards = new TreeSet<MetaCardDO>();
         this.attributes = new TreeSet<AttributeDO>();
         this.descriptors = new TreeSet<ElementSchoolDescriptorDO>();
     }
@@ -68,19 +68,19 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
         this.name = name;
     }
 
-    public CardDO[] getCards() {
-        return cards.toArray(new CardDO[cards.size()]);
+    public MetaCardDO[] getCards() {
+        return cards.toArray(new MetaCardDO[cards.size()]);
     }
 
     public AttributeDO[] getAttributes() {
         return attributes.toArray(new AttributeDO[attributes.size()]);
     }
 
-    public boolean addCard(CardDO card) {
+    public boolean addCard(MetaCardDO card) {
         return cards.add(card);
     }
 
-    public boolean removeCard(CardDO card) {
+    public boolean removeCard(MetaCardDO card) {
         return cards.remove(card);
     }
 
@@ -105,7 +105,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
 
     public ElementSchoolDO clone(PackageDO pack) {
         ElementSchoolDO elementSchool = new ElementSchoolDO(getName(), pack);
-        for (CardDO card : cards) {
+        for (MetaCardDO card : cards) {
             elementSchool.cards.add(card);
         }
         for (ElementSchoolDescriptorDO descriptor : descriptors) {

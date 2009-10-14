@@ -3,8 +3,8 @@ package com.killard.board.jdo;
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
-import com.killard.board.jdo.board.CardDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
@@ -61,7 +61,7 @@ public class JdoCardBuilder {
         }
     }
 
-    public void buildCard(ElementSchoolDO elementSchool, CardDO card, Map map) throws InvalidCardException {
+    public void buildCard(ElementSchoolDO elementSchool, MetaCardDO card, Map map) throws InvalidCardException {
 
         card.setLevel(getInt(map, "level"));
         card.setMaxHealth(getInt(map, "health"));
@@ -74,7 +74,7 @@ public class JdoCardBuilder {
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");
             for (Object key : descriptors.keySet()) {
-                CardDescriptorDO descriptor = new CardDescriptorDO(card, key.toString());
+                MetaCardDescriptorDO descriptor = new MetaCardDescriptorDO(card, key.toString());
                 Map descMap = (Map) descriptors.get(key);
                 descriptor.setName(((Expression) descMap.get("name")).getText());
                 card.addDescriptor(descriptor);
@@ -82,7 +82,7 @@ public class JdoCardBuilder {
         }
     }
 
-    public void buildSkills(CardDO card, Map map) throws InvalidCardException {
+    public void buildSkills(MetaCardDO card, Map map) throws InvalidCardException {
         Object value = map.get("skill");
         if (value instanceof Map) {
             buildSkill(card, (Map) value);
@@ -96,7 +96,7 @@ public class JdoCardBuilder {
         }
     }
 
-    public void buildSkill(CardDO card, Map map) throws InvalidCardException {
+    public void buildSkill(MetaCardDO card, Map map) throws InvalidCardException {
         String id = getString(map, "id");
         int cost = getInt(map, "cost");
         Function function = (Function) map.get("execute");

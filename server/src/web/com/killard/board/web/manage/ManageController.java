@@ -8,8 +8,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.game.BoardManagerDO;
-import com.killard.board.jdo.board.CardDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -177,13 +177,13 @@ public class ManageController extends BasicController {
                 for (File file : sub.listFiles()) {
                     if (file.getName().endsWith(".js")) {
                         String name = file.getName().substring(0, file.getName().length() - 3);
-                        CardDO card = new CardDO(name, elementSchool, getString(file));
+                        MetaCardDO card = new MetaCardDO(name, elementSchool, getString(file));
                         elementSchool.addCard(card);
                         pm.makePersistent(elementSchool);
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         pm.makePersistent(card);
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
-                            CardDescriptorDO descriptor = new CardDescriptorDO(card, BoardContext.getLocale());
+                            MetaCardDescriptorDO descriptor = new MetaCardDescriptorDO(card, BoardContext.getLocale());
                             descriptor.setName(name);
                             pm.makePersistent(descriptor);
                         }

@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -24,7 +24,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardDO extends DescriptableDO<CardDescriptorDO> {
+public class MetaCardDO extends DescriptableDO<MetaCardDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -70,9 +70,9 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     private SortedSet<String> hiddenAttributes;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<CardDescriptorDO> descriptors;
+    private SortedSet<MetaCardDescriptorDO> descriptors;
 
-    public CardDO(String name, ElementSchoolDO elementSchool, String definition) {
+    public MetaCardDO(String name, ElementSchoolDO elementSchool, String definition) {
         this.name = name;
         this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
@@ -80,7 +80,7 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         this.skills = new TreeSet<SkillDO>();
         this.hiddenAttributes = new TreeSet<String>();
         this.visibleAttributes = new TreeSet<String>();
-        this.descriptors = new TreeSet<CardDescriptorDO>();
+        this.descriptors = new TreeSet<MetaCardDescriptorDO>();
         this.definition = new Text(definition);
     }
 
@@ -222,12 +222,12 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         return skills.add(skill);
     }
 
-    protected SortedSet<CardDescriptorDO> getDescriptors() {
+    protected SortedSet<MetaCardDescriptorDO> getDescriptors() {
         return descriptors;
     }
 
-    public CardDO clone(ElementSchoolDO elementSchool) {
-        CardDO card = new CardDO(getName(), elementSchool, definition.getValue());
+    public MetaCardDO clone(ElementSchoolDO elementSchool) {
+        MetaCardDO card = new MetaCardDO(getName(), elementSchool, definition.getValue());
         card.setAttackType(AttackType.valueOf(attackType));
         card.setAttackValue(attackValue);
         card.setMaxHealth(maxHealth);
@@ -239,8 +239,8 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
         }
         for (String attribute : hiddenAttributes) {
         }
-        for (CardDescriptorDO descriptor : descriptors) {
-            CardDescriptorDO cloneDescriptor = new CardDescriptorDO(card, descriptor.getLocale());
+        for (MetaCardDescriptorDO descriptor : descriptors) {
+            MetaCardDescriptorDO cloneDescriptor = new MetaCardDescriptorDO(card, descriptor.getLocale());
             card.addDescriptor(cloneDescriptor);
         }
         return card;

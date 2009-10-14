@@ -1,7 +1,7 @@
 package com.killard.board.jdo.game.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.game.GameMetaCardDO;
 
 import javax.jdo.annotations.PersistenceCapable;
@@ -19,7 +19,7 @@ import javax.jdo.annotations.IdentityType;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class GameCardDescriptorDO extends DescriptorDO {
 
-    public GameCardDescriptorDO(GameMetaCardDO owner, CardDescriptorDO descriptor) {
+    public GameCardDescriptorDO(GameMetaCardDO owner, MetaCardDescriptorDO descriptor) {
         super(owner, descriptor);
     }
 }

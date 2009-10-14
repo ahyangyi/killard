@@ -1,7 +1,7 @@
 package com.killard.board.jdo.board.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
-import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.MetaCardDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -17,13 +17,13 @@ import java.util.Locale;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardDescriptorDO extends DescriptorDO {
+public class MetaCardDescriptorDO extends DescriptorDO {
 
-    public CardDescriptorDO(CardDO card, String locale) {
+    public MetaCardDescriptorDO(MetaCardDO card, String locale) {
         super(card, locale);
     }
 
-    public CardDescriptorDO(CardDO card, Locale locale) {
+    public MetaCardDescriptorDO(MetaCardDO card, Locale locale) {
         super(card, locale);
     }
 

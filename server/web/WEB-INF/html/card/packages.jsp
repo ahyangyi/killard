@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/html/header.jsp" %>
-<%@ page import="com.killard.board.jdo.board.CardDO" %>
+<%@ page import="com.killard.board.jdo.board.MetaCardDO" %>
 <%--@elvariable id="packages" type="java.util.List<com.killard.board.jdo.board.PackageDO>"--%>
 <table style="width:100%;">
     <c:forEach var="package" items="${packages}">
@@ -32,7 +32,7 @@
                                 <td>${elementSchool.descriptor.name}</td>
                                 <td>
                                     <c:set var="cards" value="${elementSchool.cards}"/>
-                                    <%=((CardDO[]) pageContext.getAttribute("cards")).length%>
+                                    <%=((MetaCardDO[]) pageContext.getAttribute("cards")).length%>
                                 </td>
                                 <td><input type="submit" value="Details"/></td>
                             </tr>

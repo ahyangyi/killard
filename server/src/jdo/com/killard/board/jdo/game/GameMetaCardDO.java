@@ -9,9 +9,9 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.SkillDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.GameCardDescriptorDO;
 
@@ -78,7 +78,7 @@ public class GameMetaCardDO extends DescriptableDO<GameCardDescriptorDO> impleme
     @Persistent
     private SortedSet<GameCardDescriptorDO> descriptors;
 
-    public GameMetaCardDO(GameElementSchoolDO elementSchool, CardDO card) {
+    public GameMetaCardDO(GameElementSchoolDO elementSchool, MetaCardDO card) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), card.getKey().getId());
         this.key = keyBuilder.getKey();
@@ -107,7 +107,7 @@ public class GameMetaCardDO extends DescriptableDO<GameCardDescriptorDO> impleme
         }
 
         this.descriptors = new TreeSet<GameCardDescriptorDO>();
-        for (CardDescriptorDO descriptor : card.getAllDescriptors()) {
+        for (MetaCardDescriptorDO descriptor : card.getAllDescriptors()) {
             this.descriptors.add(new GameCardDescriptorDO(this, descriptor));
         }
     }

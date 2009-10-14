@@ -1,5 +1,5 @@
 <%@ include file="../header.jsp" %>
-<%--@elvariable id="card" type="com.killard.board.jdo.board.CardDO"--%>
+<%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <table>
     <tr>
         <td>${card.descriptor.name}</td>

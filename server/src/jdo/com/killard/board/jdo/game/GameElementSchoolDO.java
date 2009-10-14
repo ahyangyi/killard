@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
@@ -54,7 +54,7 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescrip
         this.name = elementSchool.getName();
 
         this.cards = new TreeSet<GameMetaCardDO>();
-        for (CardDO card : elementSchool.getCards()) {
+        for (MetaCardDO card : elementSchool.getCards()) {
             cards.add(new GameMetaCardDO(this, card));
         }
 

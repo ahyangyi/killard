@@ -4,8 +4,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.CardDO;
-import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
+import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.context.BoardContext;
@@ -47,8 +47,8 @@ public class CardController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
-        CardDO card = pm.getObjectById(CardDO.class, cardKey);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         modelMap.put("board", card);
         return "board/board";
     }
@@ -66,8 +66,8 @@ public class CardController extends BasicController {
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
-        CardDO card = pm.getObjectById(CardDO.class, cardKey);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         card.setDefinition(definition);
 
 //        Map map = engine.parse(definition);
@@ -75,7 +75,7 @@ public class CardController extends BasicController {
 //        pm.makePersistent(board);
 
         if (file.getBytes().length > 0) {
-            CardDescriptorDO descriptor = card.getDescriptor();
+            MetaCardDescriptorDO descriptor = card.getDescriptor();
             descriptor.setImageData(file.getBytes());
             pm.makePersistent(descriptor);
         }
@@ -96,10 +96,10 @@ public class CardController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
-        CardDO card = pm.getObjectById(CardDO.class, cardKey);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
 
-        CardDescriptorDO descriptor = card.getDescriptor();
+        MetaCardDescriptorDO descriptor = card.getDescriptor();
         descriptor.setImageData(file.getBytes());
         pm.makePersistent(descriptor);
 
@@ -118,10 +118,10 @@ public class CardController extends BasicController {
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
-        CardDO card = new CardDO(cardName, elementSchool, "");
+        MetaCardDO card = new MetaCardDO(cardName, elementSchool, "");
         pm.makePersistent(card);
 
-        CardDescriptorDO descriptor = new CardDescriptorDO(card, BoardContext.getLocale());
+        MetaCardDescriptorDO descriptor = new MetaCardDescriptorDO(card, BoardContext.getLocale());
         descriptor.setName(cardName);
         card.addDescriptor(descriptor);
         pm.makePersistent(card);
@@ -140,8 +140,8 @@ public class CardController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
-        CardDO card = pm.getObjectById(CardDO.class, cardKey);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         pm.deletePersistent(card);
         PersistenceHelper.doTransaction();
         modelMap.put("package", pm.getObjectById(PackageDO.class, packageKey));

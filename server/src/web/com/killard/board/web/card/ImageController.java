@@ -8,7 +8,7 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.CardDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.BasicController;
@@ -50,8 +50,8 @@ public class ImageController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, CardDO.class.getSimpleName(), cardId);
-        CardDO card = pm.getObjectById(CardDO.class, cardKey);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         response.setContentType("image/png");
         if (card.getDescriptor() != null && card.getDescriptor().getImageData() != null) {
             byte[] data = card.getDescriptor().getImageData();

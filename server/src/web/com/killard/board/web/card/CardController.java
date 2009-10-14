@@ -1,4 +1,4 @@
-package com.killard.web.card;
+package com.killard.board.web.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -10,7 +10,7 @@ import com.killard.jdo.card.ElementSchoolDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
-import com.killard.web.BasicController;
+import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

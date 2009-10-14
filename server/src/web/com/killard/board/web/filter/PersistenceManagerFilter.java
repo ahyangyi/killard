@@ -1,4 +1,4 @@
-package com.killard.web.filter;
+package com.killard.board.web.filter;
 
 import com.killard.jdo.PersistenceHelper;
 

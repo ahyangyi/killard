@@ -1,6 +1,6 @@
-package com.killard.web.game;
+package com.killard.board.web.game;
 
-import com.killard.web.BasicController;
+import com.killard.board.web.BasicController;
 import com.killard.jdo.board.BoardManagerDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

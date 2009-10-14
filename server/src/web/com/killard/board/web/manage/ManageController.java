@@ -1,4 +1,4 @@
-package com.killard.web.manage;
+package com.killard.board.web.manage;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.labs.taskqueue.Queue;
@@ -17,7 +17,7 @@ import com.killard.jdo.card.descriptor.PackageDescriptorDO;
 import com.killard.jdo.card.RuleDO;
 import com.killard.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
-import com.killard.web.BasicController;
+import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

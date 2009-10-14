@@ -1,4 +1,4 @@
-package com.killard.web.xmpp;
+package com.killard.board.web.xmpp;
 
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
@@ -8,8 +8,8 @@ import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
-import com.killard.web.BasicController;
-import com.killard.web.game.GameController;
+import com.killard.board.web.BasicController;
+import com.killard.board.web.game.GameController;
 import com.killard.board.environment.BoardException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

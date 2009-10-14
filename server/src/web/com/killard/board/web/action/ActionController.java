@@ -1,8 +1,8 @@
-package com.killard.web.action;
+package com.killard.board.web.action;
 
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
-import com.killard.web.BasicController;
+import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

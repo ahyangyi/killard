@@ -1,4 +1,4 @@
-package com.killard.web.multipart;
+package com.killard.board.web.multipart;
 
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.io.IOUtils;

@@ -1,4 +1,4 @@
-package com.killard.web.qos;
+package com.killard.board.web.qos;
 
 import flex.messaging.MessageClient;
 import flex.messaging.client.FlexClient;

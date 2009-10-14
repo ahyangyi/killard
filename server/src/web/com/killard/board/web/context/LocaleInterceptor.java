@@ -1,4 +1,4 @@
-package com.killard.web.context;
+package com.killard.board.web.context;
 
 import com.killard.jdo.context.BoardContext;
 import org.springframework.web.servlet.HandlerInterceptor;

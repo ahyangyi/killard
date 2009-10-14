@@ -1,11 +1,11 @@
-package com.killard.web.game;
+package com.killard.board.web.game;
 
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardPackageDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.PackageDO;
-import com.killard.web.BasicController;
+import com.killard.board.web.BasicController;
 import com.killard.board.environment.BoardException;
 import com.google.appengine.api.datastore.Key;
 import org.springframework.stereotype.Controller;

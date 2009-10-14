@@ -1,4 +1,4 @@
-package com.killard.web;
+package com.killard.board.web;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;

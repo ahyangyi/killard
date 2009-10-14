@@ -12,7 +12,7 @@ import java.io.Serializable;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class Attack implements Serializable {
+public class Attack {
 
     private final ElementSchool elementSchool;
 

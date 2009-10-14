@@ -3,9 +3,12 @@ package com.killard.web.game;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardPackageDO;
+import com.killard.jdo.board.ActionDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.web.BasicController;
+import com.killard.card.Action;
+import com.killard.environment.BoardException;
 import com.google.appengine.api.datastore.Key;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -37,8 +43,8 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/list.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ModelMap modelMap) throws Exception {
-        String playerName = getPlayerId();
-        getLog().fine("Get game board list: " + playerName);
+        String playerId = getPlayerId();
+        getLog().fine("Get game board list: " + playerId);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -63,15 +69,16 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
-        String playerName = getPlayerId();
-        getLog().fine("Get game board information: " + playerName);
+        String playerId = getPlayerId();
+        getLog().fine("Get game board information: " + playerId);
         BoardManagerDO boardManager = getBoardManager();
         if (boardManager == null) {
             return list(modelMap);
         }
+
         modelMap.put("board", boardManager);
-        modelMap.put("playerName", playerName);
-        modelMap.put("players", boardManager.getPlayers(playerName));
+        modelMap.put("playerId", playerId);
+        modelMap.put("players", boardManager.getPlayers(playerId));
         modelMap.put("actions", boardManager.getActions());
         return "game/board";
     }
@@ -123,7 +130,7 @@ public class GameController extends BasicController {
         redirect("list", request, response);
     }
 
-    protected void join(BoardManagerDO boardManager) {
+    protected void join(BoardManagerDO boardManager) throws BoardException {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PlayerRecordDO player = (PlayerRecordDO) boardManager.addPlayer(getPlayerId(), INIT_HEALTH);
         pm.makePersistent(boardManager);

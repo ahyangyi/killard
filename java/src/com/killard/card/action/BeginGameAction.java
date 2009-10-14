@@ -12,9 +12,9 @@ import com.killard.card.Board;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class BeginGameAction extends PlayerAction<Board> {
+public class BeginGameAction extends BasicAction<Board, Board> {
 
-    public BeginGameAction(Board source, Player target) {
-        super(source, target);
+    public BeginGameAction(Board board) {
+        super(board, board);
     }
 }

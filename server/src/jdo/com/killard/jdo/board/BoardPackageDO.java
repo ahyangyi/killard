@@ -67,7 +67,7 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> imp
         this.rule = new BoardRuleDO(this, pack.getRule());
 
         this.roles = new ArrayList<BoardRoleDO>();
-//        for (RoleDO role : pack)
+        for (RoleDO role : pack.getRoleGroup(playerNumber).getRoles()) this.roles.add(new BoardRoleDO(this, role));
 
         this.elementSchools = new TreeSet<BoardElementSchoolDO>();
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {

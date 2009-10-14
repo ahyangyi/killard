@@ -13,4 +13,6 @@ import com.killard.environment.event.ActionListener;
  */
 public interface Role extends ActionListener {
 
+    public boolean isVisible();
+
 }

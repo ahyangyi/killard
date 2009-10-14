@@ -4,7 +4,7 @@
         <tr>
             <td>
                 <c:choose>
-                    <c:when test="${action.playerName == playerName}">
+                    <c:when test="${action.playerId == playerId}">
                         <span style="color:black">${action}</span>
                     </c:when>
                     <c:otherwise>

@@ -1,5 +1,5 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="playerName" type="java.lang.String"--%>
+<%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="board" type="com.killard.jdo.board.BoardManagerDO"--%>
 <%--@elvariable id="player" type="com.killard.jdo.board.player.PlayerRecordDO"--%>
 <c:choose>
@@ -13,16 +13,15 @@
         <c:set var="playerColor" value="#ffe4b5"/>
     </c:otherwise>
 </c:choose>
+<c:set var="active" scope="page" value="${board.activePlayer.id == player.id and player.id == playerId}"/>
 <table style="width:1000px;border: 1px solid ${playerColor};margin:auto;">
-    <c:set var="myturn" scope="page"
-           value="${board.currentPlayer.id == player.id and player.id == playerName}"/>
     <tr>
         <td style="width:100%;" colspan="5">
             <table style="width:100%;background-color:${playerColor};">
                 <tr>
                     <td>
                         <c:choose>
-                            <c:when test="${player.id == playerName}">
+                            <c:when test="${player.id == playerId}">
                                 <c:set var="facebookUID" value="loggedinuser"/>
                             </c:when>
                             <c:otherwise>
@@ -38,7 +37,7 @@
                     <td>HP:${player.health}</td>
                     <td style="width:50%;"></td>
                     <td style="width:150px;">
-                        <c:if test="${myturn}"><a href="/game/endturn.html">End Turn</a></c:if>
+                        <c:if test="${active}"><a href="/game/endturn.html">End Turn</a></c:if>
                         <c:if test="${player.health <= 0}">Game Over</c:if>
                     </td>
                 </tr>

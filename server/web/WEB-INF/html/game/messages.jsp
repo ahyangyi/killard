@@ -6,7 +6,7 @@
         <td>
             <select name="to" title="To">
                 <c:forEach var="player" items="${players}">
-                    <c:if test="${player.id != playerName}">
+                    <c:if test="${player.id != playerId}">
                         <option value="${player.id}">${player.id}</option>
                     </c:if>
                 </c:forEach>
@@ -21,7 +21,7 @@
     </thead>
     <tbody>
     <c:forEach var="message" items="${board.messages}">
-        <c:if test="${message.from == playerName or message.to == playerName or message.to == null or empty message.to}">
+        <c:if test="${message.from == playerId or message.to == playerId or message.to == null or empty message.to}">
             <tr>
                 <td>${message.from}:</td>
                 <td>${message.message}</td>

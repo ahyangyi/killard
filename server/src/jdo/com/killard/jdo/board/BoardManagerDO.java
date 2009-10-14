@@ -3,9 +3,9 @@ package com.killard.jdo.board;
 import com.google.appengine.api.datastore.Key;
 import com.killard.card.Card;
 import com.killard.card.CardInstance;
-import com.killard.card.ElementSchool;
 import com.killard.card.Player;
 import com.killard.card.BoardPackage;
+import com.killard.card.action.BeginGameAction;
 import com.killard.environment.BoardManager;
 import com.killard.environment.BoardException;
 import com.killard.environment.event.ActionEvent;
@@ -43,7 +43,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     private List<PlayerRecordDO> roundQueue;
 
     @Persistent(serialized = "true")
-    private Set<Key> dealtCards;
+    private Set<Key> dealtCardKeys;
 
     @Persistent
     private List<ActionDO> actions;
@@ -57,7 +57,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     public BoardManagerDO() {
         this.currentPlayerPosition = 0;
         this.roundQueue = new ArrayList<PlayerRecordDO>();
-        this.dealtCards = new HashSet<Key>();
+        this.dealtCardKeys = new HashSet<Key>();
         this.actions = new ArrayList<ActionDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
@@ -74,11 +74,6 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
         getBoardPackage().getRule().restore(this);
         addActionListener(getBoardPackage().getRule(), this);
-
-        for (PlayerRecordDO player : roundQueue) {
-            player.getBoardRole().restore(this);
-            addActionListener(player.getBoardRole(), player);
-        }
     }
 
     public BoardPackageDO getBoardPackage() {
@@ -93,10 +88,8 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return startDate;
     }
 
-    public List<ActionDO> getActions() {
-        List<ActionDO> result = new ArrayList<ActionDO>(actions.size());
-        for (int i = actions.size() - 1; i >= 0; i--) result.add(actions.get(i));
-        return result;
+    public ActionDO[] getActions() {
+        return actions.toArray(new ActionDO[actions.size()]);
     }
 
     public List<Player> getPlayers(String playerName) {
@@ -124,9 +117,10 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     @Override
-    public Player addPlayer(String playerName, int health) {
-        PlayerRecordDO player = new PlayerRecordDO(this, playerName, health, dealCards(4));
+    public Player addPlayer(String playerName, int health) throws BoardException {
+        PlayerRecordDO player = new PlayerRecordDO(this, boardPackage.getRandomRole(), playerName, makeElementRecords());
         roundQueue.add(player);
+        if (boardPackage.getRoles().size() == roundQueue.size()) executeAction(new BeginGameAction(this));
         return player;
     }
 
@@ -135,11 +129,15 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     public int getPlayerAmount() {
-        return boardPackage.getRoles().length;
+        return boardPackage.getRoles().size();
     }
 
     public Player[] getPlayers() {
-        return roundQueue.toArray(new Player[roundQueue.size()]);
+        int n = roundQueue.size();
+        Player[] players = new Player[n];
+        for (int i = currentPlayerPosition; i < n; i++) players[i] = roundQueue.get(i);
+        for (int i = 0; i < currentPlayerPosition; i++) players[n - currentPlayerPosition + i] = roundQueue.get(i);
+        return players;
     }
 
     public Player getCurrentPlayer() {
@@ -166,7 +164,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     @Override
     protected void fireActionEventBefore(ActionEvent event) throws BoardException {
-        actions.add(new ActionDO(this, event.getAction()));
+        actions.add(0, new ActionDO(this, event.getAction()));
         super.fireActionEventBefore(event);
     }
 
@@ -188,17 +186,28 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return currentPlayerPosition;
     }
 
-    protected List<ElementRecordDO> dealCards(int cardAmount) {
+    protected BoardCardDO dealCard() {
+        List<BoardCardDO> cards = new ArrayList<BoardCardDO>();
+        int n = 0;
+        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+            n += elementSchool.getCards().length;
+        }
+        if (n == dealtCardKeys.size()) dealtCardKeys.clear();
+        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+            for (BoardCardDO card : elementSchool.getCards()) {
+                if (dealtCardKeys.contains(card.getKey())) continue;
+                dealtCardKeys.add(card.getKey());
+                cards.add(card);
+            }
+        }
+        int index = (int) (cards.size() * Math.random());
+        return cards.get(index);
+    }
+
+    protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
         for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            List<BoardCardDO> remaining = new LinkedList<BoardCardDO>();
-            for (BoardCardDO card : elementSchool.getCards()) {
-                if (dealtCards.contains(card.getKey())) continue;
-                remaining.add(card);
-            }
-            randomSelect(remaining, cardAmount);
-            for (BoardCardDO card : remaining) dealtCards.add(card.getKey());
-            record.add(new ElementRecordDO(elementSchool, (int) (3 + Math.random() * 4), remaining));
+            record.add(new ElementRecordDO(elementSchool));
         }
         return record;
     }

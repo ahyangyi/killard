@@ -6,6 +6,8 @@ import com.killard.card.Attribute;
 import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.KillCardAction;
 import com.killard.card.action.EquipCardAction;
+import com.killard.card.action.DrawCardAction;
+import com.killard.card.action.DealCardAction;
 import com.killard.environment.ActionValidator;
 import com.killard.environment.AfterAction;
 import com.killard.environment.BeforeAction;
@@ -95,9 +97,13 @@ public class BoardRuleDO implements ActionListener {
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public Object after(BoardManagerDO boardManager, EndTurnAction action) {
+    public void after(BoardManagerDO boardManager, EndTurnAction action) {
         boardManager.moveToNext();
-        return null;
+    }
+
+    @AfterAction(actionClass = DrawCardAction.class, selfTargeted = false)
+    public Action before(BoardManagerDO boardManager, DrawCardAction action) {
+        return new DealCardAction(action.getTarget(), boardManager.dealCard());
     }
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)

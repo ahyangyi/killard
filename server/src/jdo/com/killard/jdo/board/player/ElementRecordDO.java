@@ -51,15 +51,12 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     @NotPersistent
     private SortedSet<BoardCardDO> dealtCards;
 
-    public ElementRecordDO(BoardElementSchoolDO elementSchool, int amount, List<BoardCardDO> cards) {
+    public ElementRecordDO(BoardElementSchoolDO elementSchool) {
         this.elementSchoolKey = elementSchool.getKey();
-        this.amount = amount;
-
-        this.dealtCardKeys = new ArrayList<Key>(cards.size());
-        for (BoardCardDO card : cards) dealtCardKeys.add(card.getKey());
-
+        this.amount = 0;
+        this.dealtCardKeys = new ArrayList<Key>();
         this.elementSchool = elementSchool;
-        this.dealtCards = new TreeSet<BoardCardDO>(cards);
+        this.dealtCards = new TreeSet<BoardCardDO>();
     }
 
     public void restore(BoardManagerDO boardManager) {

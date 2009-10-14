@@ -9,6 +9,7 @@ import com.killard.card.Skill;
 import com.killard.card.action.CastCardAction;
 import com.killard.card.action.EndTurnAction;
 import com.killard.card.action.EquipCardAction;
+import com.killard.card.action.EndPlayerCallAction;
 import com.killard.environment.event.ActionEvent;
 import com.killard.environment.event.ActionListener;
 import com.killard.environment.event.StateEvent;
@@ -37,6 +38,13 @@ public abstract class BoardManager implements Board, StateListener {
             ExecutableActionUtil.buildExecutableActionsMap();
 
     public BoardManager() {
+    }
+
+    public Player getActivePlayer() {
+        for (Player player : getPlayers()) {
+            if (player.isCalled()) return player;
+        }
+        return getCurrentPlayer();
     }
 
     public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) throws BoardException {
@@ -71,6 +79,10 @@ public abstract class BoardManager implements Board, StateListener {
 
     public void endTurn() throws BoardException {
         executeAction(new EndTurnAction(this, getCurrentPlayer()));
+    }
+
+    public void endCall() throws BoardException {
+        executeAction(new EndPlayerCallAction(getCurrentPlayer(), getCurrentPlayer()));
     }
 
     public void addActionListener(ActionListener listener, Object host) {
@@ -174,7 +186,7 @@ public abstract class BoardManager implements Board, StateListener {
         fireActionEventAfter(new ActionEvent(this, action));
     }
 
-    public abstract Player addPlayer(String playerName, int health);
+    public abstract Player addPlayer(String playerName, int health) throws BoardException;
 
     protected abstract CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition);
 

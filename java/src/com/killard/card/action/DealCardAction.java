@@ -2,20 +2,19 @@ package com.killard.card.action;
 
 import com.killard.card.Player;
 import com.killard.card.Card;
-import com.killard.card.Board;
 
 /**
  * <p>
- * This class defines draw card action.
+ * This class defines .
  * </p>
  * <p>
  * <strong>Thread safety:</strong>
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DrawCardAction extends BasicAction<Board, Player> {
+public class DealCardAction extends BasicAction<Player, Card> {
 
-    public DrawCardAction(Board source, Player target) {
+    public DealCardAction(Player source, Card target) {
         super(source, target);
     }
 }

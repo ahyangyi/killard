@@ -8,8 +8,13 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.NotPersistent;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -32,12 +37,17 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     private Key packageKey;
 
     @Persistent
-    private List<Key> roleKeys;
+    private List<String> roleNames;
+
+    @NotPersistent
+    private List<RoleDO> roles;
 
     public RoleGroupDO(PackageDO pack, RoleDO role) {
         this.packageKey = pack.getKey();
-        this.roleKeys = new ArrayList<Key>();
-        this.roleKeys.add(role.getKey());
+        this.roleNames = new ArrayList<String>();
+        this.roleNames.add(role.getName());
+        this.roles = new ArrayList<RoleDO>();
+        this.roles.add(role);
     }
 
     public Key getKey() {
@@ -49,22 +59,39 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     }
 
     public RoleDO[] getRoles() {
-        return roleKeys.toArray(new RoleDO[roleKeys.size()]);
+        return roles.toArray(new RoleDO[roles.size()]);
     }
 
     public int getRoleAmount() {
-        return roleKeys.size();
+        return roleNames.size();
     }
 
     public boolean addRole(RoleDO role) {
-        return roleKeys.add(role.getKey());
+        roles.add(role);
+        return roleNames.add(role.getName());
     }
 
     public boolean removeRole(RoleDO role) {
-        return roleKeys.remove(role.getKey());
+        roles.remove(role);
+        return roleNames.remove(role.getName());
     }
 
     public int compareTo(RoleGroupDO group) {
         return getRoleAmount() - group.getRoleAmount();
+    }
+
+    protected void restore(Set<RoleDO> roles) {
+        List<String> invalid = new ArrayList<String>();
+        Map<String, RoleDO> rolesMap = new HashMap<String, RoleDO>(roles.size());
+        for (RoleDO role : roles) {
+            rolesMap.put(role.getName(), role);
+        }
+        for (String name : roleNames) {
+            if (!rolesMap.containsKey(name)) invalid.add(name);
+        }
+        roleNames.removeAll(invalid);
+        for (String name : roleNames) {
+            this.roles.add(rolesMap.get(name));
+        }
     }
 }

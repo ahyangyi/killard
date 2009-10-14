@@ -14,6 +14,5 @@ import com.killard.card.action.DrawCardAction;
 public class ExecutableDrawCardAction extends ExecutablePlayerAction<DrawCardAction> {
 
     public void execute(AbstractPlayerRecord record, DrawCardAction action) {
-        record.addDealtCard(action.getTarget(), action);
     }
 }

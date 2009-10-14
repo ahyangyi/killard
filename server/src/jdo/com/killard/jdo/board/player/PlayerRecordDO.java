@@ -11,12 +11,15 @@ import com.killard.environment.record.AbstractPlayerRecord;
 import com.killard.jdo.board.BoardCardDO;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardRoleDO;
+import com.killard.jdo.PersistenceHelper;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.NotPersistent;
+import javax.jdo.PersistenceManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -42,6 +45,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     private Key boardManagerKey;
 
     @Persistent
+    private RoleRecordDO role;
+
+    @Persistent
     private String uid;
 
     @Persistent
@@ -60,6 +66,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     private Boolean alive;
 
     @Persistent
+    private Boolean called;
+
+    @Persistent
     private Boolean winner;
 
     @Persistent
@@ -68,15 +77,16 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     @Persistent
     private Integer turnCount;
 
-    public PlayerRecordDO(BoardManagerDO boardManager, String uid, int health, List<ElementRecordDO> elementRecords) {
+    public PlayerRecordDO(BoardManagerDO boardManager, BoardRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
 
         this.boardManagerKey = boardManager.getKey();
 
+        this.role = new RoleRecordDO(this, role, boardManager);
         this.uid = uid;
-        this.health = health;
+        this.health = 0;
         this.cardPlayed = false;
         this.equippedCards = new TreeSet<CardRecordDO>();
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
@@ -92,6 +102,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         for (CardRecordDO card : equippedCards) {
             card.restore(boardManager);
         }
+        role.restore(boardManager);
+        boardManager.addActionListener(role, this);
         addStateListener(boardManager);
     }
 
@@ -108,11 +120,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     }
 
     public Role getRole() {
-        return null;
-    }
-
-    public BoardRoleDO getBoardRole() {
-        return null;
+        return role;
     }
 
     public int getHealth() {
@@ -125,6 +133,10 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
 
     public boolean isAlive() {
         return alive;
+    }
+
+    public boolean isCalled() {
+        return called;
     }
 
     public boolean isWinner() {
@@ -232,6 +244,14 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
 
     protected void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    protected void setCalled(boolean called) {
+        this.called = called;
+    }
+
+    protected void setRoleVisible(boolean visible) {
+        role.setVisible(visible);
     }
 
     protected void setWinner(boolean winner) {

@@ -17,6 +17,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -154,15 +156,17 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return roles.toArray(new RoleDO[roles.size()]);
     }
 
-    public RoleGroupDO getRoleGroup(int n) {
-        for (RoleGroupDO group : roleGroups) {
-            if (group.getRoles().length == n) return group;
+    public RoleGroupDO getRoleGroup(int playerNumber) {
+        List<RoleGroupDO> candidates = new ArrayList<RoleGroupDO>();
+        for (RoleGroupDO group : getRoleGroups()) {
+            if (group.getRoles().length == playerNumber) candidates.add(group);
         }
-        return null;
+        return candidates.get((int) (candidates.size() * Math.random()));
     }
 
     public SortedSet<RoleGroupDO> getRoleGroups() {
-        return roleGroups;
+        for (RoleGroupDO group : roleGroups) group.restore(this.roles);
+        return Collections.unmodifiableSortedSet(roleGroups);
     }
 
     public ElementSchoolDO[] getElementSchools() {

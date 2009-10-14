@@ -16,6 +16,7 @@ import com.killard.environment.AfterAction;
 import com.killard.environment.event.ActionListener;
 import com.killard.card.Action;
 import com.killard.card.Player;
+import com.killard.card.Role;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 /**
@@ -41,7 +43,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> implements ActionListener {
+public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -53,6 +55,9 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> implement
 
     @Persistent
     private String name;
+
+    @Persistent
+    private Boolean visible;
 
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
@@ -66,12 +71,11 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> implement
     @Persistent
     private SortedSet<BoardRoleDescriptorDO> descriptors;
 
-    @NotPersistent
-    private BoardManagerDO boardManager;
-
     public BoardRoleDO(BoardPackageDO pack, RoleDO role) {
         this.packageKey = pack.getKey();
         this.name = role.getName();
+        this.visible = role.isVisible();
+
         validators = new ArrayList<AttributeHandler>(Arrays.asList(role.getValidators()));
         before = new ArrayList<AttributeHandler>(Arrays.asList(role.getBefore()));
         after = new ArrayList<AttributeHandler>(Arrays.asList(role.getAfter()));
@@ -80,10 +84,6 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> implement
         for (RoleDescriptorDO descriptor : role.getAllDescriptors()) {
             this.descriptors.add(new BoardRoleDescriptorDO(this, descriptor));
         }
-    }
-
-    public void restore(BoardManagerDO boardManager) {
-        this.boardManager = boardManager;
     }
 
     public Key getKey() {
@@ -98,28 +98,23 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> implement
         return name;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public List<AttributeHandler> getValidators() {
+        return Collections.unmodifiableList(validators);
+    }
+
+    public List<AttributeHandler> getBefore() {
+        return Collections.unmodifiableList(before);
+    }
+
+    public List<AttributeHandler> getAfter() {
+        return Collections.unmodifiableList(after);
+    }
+
     protected SortedSet<BoardRoleDescriptorDO> getDescriptors() {
         return descriptors;
-    }
-
-    @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(Player owner, Action action) {
-        List<Action> result = FunctionHelper.handler(boardManager, owner, action, validators);
-        getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
-        return result;
-    }
-
-    @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(Player owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, before);
-    }
-
-    @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(Player owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, after);
-    }
-
-    public Logger getLog() {
-        return Logger.getLogger(getClass().getName());
     }
 }

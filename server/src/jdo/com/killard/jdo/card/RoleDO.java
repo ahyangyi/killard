@@ -41,6 +41,9 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
     private String name;
 
     @Persistent
+    private Boolean visible;
+
+    @Persistent
     private Text definition;
 
     @Persistent(serialized = "true")
@@ -55,12 +58,13 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
     @Persistent
     private SortedSet<RoleDescriptorDO> descriptors;
 
-    public RoleDO(PackageDO pack, String name,
+    public RoleDO(PackageDO pack, String name, boolean visible,
                   List<AttributeHandler> validators,
                   List<AttributeHandler> before,
                   List<AttributeHandler> after) {
         this.packageKey = pack.getKey();
         this.name = name;
+        this.visible = visible;
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
@@ -73,6 +77,10 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
     protected SortedSet<RoleDescriptorDO> getDescriptors() {
@@ -104,6 +112,6 @@ public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
     }
 
     public RoleDO clone(PackageDO pack) {
-        return new RoleDO(pack, getName(), validators, before, after);
+        return new RoleDO(pack, getName(), isVisible(), validators, before, after);
     }
 }

@@ -19,6 +19,10 @@ import com.killard.card.action.DiscardCardAction;
 import com.killard.card.action.LoseAction;
 import com.killard.card.action.WinAction;
 import com.killard.card.action.RevivePlayerAction;
+import com.killard.card.action.RevealRoleAction;
+import com.killard.card.action.BeginPlayerCallAction;
+import com.killard.card.action.EndPlayerCallAction;
+import com.killard.card.action.DealCardAction;
 import com.killard.environment.ExecutableAction;
 
 import java.util.HashMap;
@@ -38,6 +42,7 @@ public final class ExecutableActionUtil {
     public static Map<Class<? extends Action>, ExecutableAction> buildExecutableActionsMap() {
         Map<Class<? extends Action>, ExecutableAction> map = new HashMap<Class<? extends Action>, ExecutableAction>();
         map.put(AddCardAttributeAction.class, new ExecutableAddCardAttributeAction());
+        map.put(BeginPlayerCallAction.class, new ExecutableBeginPlayerCallAction());
         map.put(BeginTurnAction.class, new ExecutableBeginTurnAction());
         map.put(CastCardAction.class, new ExecutableCastCardAction());
         map.put(ChangeCardAttackAction.class, new ExecutableChangeCardAttackAction());
@@ -45,14 +50,17 @@ public final class ExecutableActionUtil {
         map.put(ChangeCardMaxHealthAction.class, new ExecutableChangeCardMaxHealthAction());
         map.put(ChangePlayerElementAction.class, new ExecutableChangePlayerElementAction());
         map.put(ChangePlayerHealthAction.class, new ExecutableChangePlayerHealthAction());
+        map.put(DealCardAction.class, new ExecutableDealCardAction());
         map.put(DiscardCardAction.class, new ExecutableDiscardCardAction());
         map.put(DrawCardAction.class, new ExecutableDrawCardAction());
+        map.put(EndPlayerCallAction.class, new ExecutableEndPlayerCallAction());
         map.put(EndTurnAction.class, new ExecutableEndTurnAction());
         map.put(EquipCardAction.class, new ExecutableEquipCardAction());
         map.put(KillCardAction.class, new ExecutableKillCardAction());
         map.put(LoseAction.class, new ExecutableLoseAction());
         map.put(RemoveCardAttributeAction.class, new ExecutableRemoveCardAttributeAction());
         map.put(RemoveSkillAction.class, new ExecutableRemoveSkillAction());
+        map.put(RevealRoleAction.class, new ExecutableRevealRoleAction());
         map.put(RevivePlayerAction.class, new ExecutableRevivePlayerAction());
         map.put(WinAction.class, new ExecutableWinAction());
         return map;

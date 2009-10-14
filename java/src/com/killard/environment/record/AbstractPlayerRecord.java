@@ -54,6 +54,10 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     protected abstract void setAlive(boolean alive);
 
+    protected abstract void setCalled(boolean called);
+
+    protected abstract void setRoleVisible(boolean visible);
+
     protected abstract void setWinner(boolean winner);
 
     protected abstract void setLoser(boolean loser);
@@ -119,6 +123,16 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     protected void setAlive(boolean alive, Action action) {
         setAlive(alive);
+        fireStateChanged(new StateEvent(this, action));
+    }
+
+    protected void setCalled(boolean called, Action action) {
+        setCalled(called);
+        fireStateChanged(new StateEvent(this, action));
+    }
+
+    protected void setRoleVisible(boolean visible, Action action) {
+        setRoleVisible(visible);
         fireStateChanged(new StateEvent(this, action));
     }
 

@@ -22,6 +22,8 @@ public interface Player {
 
     public boolean isAlive();
 
+    public boolean isCalled();
+
     public boolean isWinner();
 
     public boolean isLoser();

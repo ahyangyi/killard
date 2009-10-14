@@ -29,9 +29,16 @@ public class Main {
         writer.dispose();
     }
 
+    public void random() {
+        for (int i = 0; i < 20; i++) {
+            System.out.print((int) (1 * Math.random()) + " ");
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 //        new GameBoard();
         Main main = new Main();
-        for (int i = 0; i < 100; i++) main.makeNumberImage(i);
+        main.random();
+//        for (int i = 0; i < 100; i++) main.makeNumberImage(i);
     }
 }

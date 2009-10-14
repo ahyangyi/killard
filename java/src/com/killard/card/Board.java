@@ -17,6 +17,8 @@ public interface Board {
 
     public Player[] getPlayers();
 
+    public Player getActivePlayer();
+
     public Player getCurrentPlayer();
 
     public Player getNextPlayer();

@@ -26,7 +26,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private final String name;
 
-    private final Role role;
+    private final RoleRecord role;
 
     private int health;
 
@@ -40,38 +40,42 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private boolean alive;
 
+    private boolean called;
+
     private boolean winner;
 
     private boolean loser;
 
     private int turnCount = 0;
 
-    public PlayerRecord(String name, int health) {
+    public PlayerRecord(Role role, String name, int health) {
         this.name = name;
         this.health = health;
-        this.role = null;
+        this.role = new RoleRecord(role);
+        this.called = false;
     }
 
-    public PlayerRecord(String name, int health, StateListener listener) {
-        this(name, health);
+    public PlayerRecord(Role role, String name, int health, StateListener listener) {
+        this(role, name, health);
         addStateListener(listener);
     }
 
-    public PlayerRecord(String name, int health, List<Card> cards) {
+    public PlayerRecord(Role role, String name, int health, List<Card> cards) {
         this.name = name;
         this.health = health;
+        this.called = false;
         this.dealtCards.addAll(cards);
-        this.role = null;
+        this.role = new RoleRecord(role);
     }
 
-    public PlayerRecord(String name, int health, List<Card> cards, Map<ElementSchool, Integer> elements) {
-        this(name, health, cards);
+    public PlayerRecord(Role role, String name, int health, List<Card> cards, Map<ElementSchool, Integer> elements) {
+        this(role, name, health, cards);
         this.elements.putAll(elements);
     }
 
-    public PlayerRecord(String name, int health, List<Card> cards,
+    public PlayerRecord(Role role, String name, int health, List<Card> cards,
                         Map<ElementSchool, Integer> elements, StateListener listener) {
-        this(name, health, cards, elements);
+        this(role, name, health, cards, elements);
         addStateListener(listener);
     }
 
@@ -118,6 +122,10 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return alive;
     }
 
+    public boolean isCalled() {
+        return called;
+    }
+
     public boolean isWinner() {
         return winner;
     }
@@ -161,6 +169,14 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    protected void setCalled(boolean called) {
+        this.called = called;
+    }
+
+    protected void setRoleVisible(boolean visible) {
+        role.setVisible(visible);
     }
 
     public void setWinner(boolean winner) {

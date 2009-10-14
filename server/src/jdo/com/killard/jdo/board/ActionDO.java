@@ -1,6 +1,7 @@
 package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.card.Action;
 import com.killard.card.action.AddCardAttributeAction;
 import com.killard.card.action.CardAction;
@@ -15,9 +16,19 @@ import com.killard.card.action.KillPlayerAction;
 import com.killard.card.action.EquipCardAction;
 import com.killard.card.action.PlayerAction;
 import com.killard.card.action.RemoveCardAttributeAction;
-import com.killard.jdo.PersistenceHelper;
+import com.killard.card.action.BeginGameAction;
+import com.killard.card.action.BeginTurnAction;
+import com.killard.card.action.ChangeCardMaxHealthAction;
+import com.killard.card.action.DiscardCardAction;
+import com.killard.card.action.DrawCardAction;
+import com.killard.card.action.EndGameAction;
+import com.killard.card.action.EndPlayerCallAction;
+import com.killard.card.action.LoseAction;
+import com.killard.card.action.RemoveSkillAction;
+import com.killard.card.action.RevealRoleAction;
+import com.killard.card.action.RevivePlayerAction;
+import com.killard.card.action.WinAction;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -42,47 +53,48 @@ public class ActionDO {
     private Key key;
 
     @Persistent
-    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
-    private Key boardManagerKey;
+    private String actionClass;
 
     @Persistent
-    private String actionName;
+    private String playerId;
 
     @Persistent
-    private String playerName;
+    private String cardElementSchoolName;
 
     @Persistent
-    private Integer playerHealthChange;
-
-    @Persistent
-    private Key elementSchoolKey;
-
-    @Persistent
-    private Integer elementChange;
+    private String cardName;
 
     @Persistent
     private Integer cardPosition;
 
     @Persistent
-    private Integer cardHealthChange;
-
-    @Persistent
-    private Integer cardAttackChange;
-
-    @Persistent
-    private String attribute;
-
-    @Persistent
-    private String targetPlayer;
+    private String targetPlayerId;
 
     @Persistent
     private Integer targetCardPosition;
 
     @Persistent
+    private String elementSchoolName;
+
+    @Persistent
+    private String attackType;
+
+    @Persistent
+    private Integer attackValue;
+
+    @Persistent
+    private Integer element;
+
+    @Persistent
+    private String attributeName;
+
+    @Persistent
     private Date date;
 
     public ActionDO(BoardManagerDO boardManager, Action action) {
-        this.boardManagerKey = boardManager.getKey();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), boardManager.getActions().length);
+        this.key = keyBuilder.getKey();
         this.date = new Date();
         init(action);
     }
@@ -91,48 +103,32 @@ public class ActionDO {
         return key;
     }
 
-    public Key getBoardManagerKey() {
-        return boardManagerKey;
+    public String getActionClass() {
+        return actionClass;
     }
 
-    public String getActionName() {
-        return actionName;
+    public String getPlayerId() {
+        return playerId;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public int getAttackValue() {
+        return attackValue;
     }
 
-    public int getPlayerHealthChange() {
-        return playerHealthChange;
-    }
-
-    public BoardElementSchoolDO getElementSchool() {
-        return PersistenceHelper.getPersistenceManager().getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
-    }
-
-    public int getElementChange() {
-        return elementChange;
+    public int getElement() {
+        return element;
     }
 
     public int getCardPosition() {
         return cardPosition;
     }
 
-    public int getCardHealthChange() {
-        return cardHealthChange;
+    public String getAttributeName() {
+        return attributeName;
     }
 
-    public int getCardAttackChange() {
-        return cardAttackChange;
-    }
-
-    public String getAttribute() {
-        return attribute;
-    }
-
-    public String getTargetPlayer() {
-        return targetPlayer;
+    public String getTargetPlayerId() {
+        return targetPlayerId;
     }
 
     public int getTargetCardPosition() {
@@ -145,73 +141,58 @@ public class ActionDO {
 
     @Override
     public String toString() {
-        String playerHead = "Player " + playerName;
-        if (cardPosition != null) {
-            String cardHead = playerHead + "'s card at position " + cardPosition;
-            if (cardHealthChange != null)
-                return cardHead + " is changed health by " + cardHealthChange;
-            if (cardAttackChange != null)
-                return cardHead + " is changed attack by " + cardAttackChange;
-            if (attribute != null) {
-                if (actionName.equals(AddCardAttributeAction.class.getSimpleName()))
-                    return cardHead + " is added attribute " + attribute;
-                else
-                    return cardHead + " is removed attribute " + attribute;
-            }
-            if (targetPlayer != null) return playerHead + " cast card to " + targetPlayer;
-            return playerHead + " plays card";
+        if (actionClass.equals(AddCardAttributeAction.class.getSimpleName())) {
+            return "Add attribute " + attributeName;
+        } else if (actionClass.equals(BeginGameAction.class.getSimpleName())) {
+            return "Game begin";
+        } else if (actionClass.equals(BeginTurnAction.class.getSimpleName())) {
+            return "Turn begin";
+        } else if (actionClass.equals(CastCardAction.class.getSimpleName())) {
+            return playerId + " cast card " + cardName;
+        } else if (actionClass.equals(ChangeCardAttackAction.class.getSimpleName())) {
+            return playerId + " ";
+        } else if (actionClass.equals(ChangeCardHealthAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(ChangeCardMaxHealthAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(ChangePlayerElementAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(ChangePlayerHealthAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(DiscardCardAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(DrawCardAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(EndGameAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(EndPlayerCallAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(EndTurnAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(EquipCardAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(KillCardAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(KillPlayerAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(LoseAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(RemoveCardAttributeAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(RemoveSkillAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(RevealRoleAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(RevivePlayerAction.class.getSimpleName())) {
+            ;
+        } else if (actionClass.equals(WinAction.class.getSimpleName())) {
+            ;
         }
-        if (playerHealthChange != null) {
-            return playerHead + "'s health is changed by " + playerHealthChange;
-        }
-        if (elementChange != null) {
-            return playerHead + "'s element of " + getElementSchool().getDescriptor().getName() + " is changed by "
-                    + elementChange;
-        }
-        return actionName + " for player " + playerName;
-    }
-
-    public String getXml() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(begin("action", "type", actionName));
-
-        if (cardPosition != null) {
-            buf.append(begin("card"));
-            buf.append(tag("cardPosition", String.valueOf(cardPosition)));
-
-            if (cardHealthChange != null)
-                buf.append(tag("healthChange", String.valueOf(cardHealthChange)));
-            if (cardAttackChange != null)
-                buf.append(tag("attackChange", String.valueOf(cardAttackChange)));
-            if (attribute != null) {
-                if (actionName.equals(AddCardAttributeAction.class.getSimpleName()))
-                    buf.append(tag("operation", "add"));
-                else
-                    buf.append(tag("operation", "remove"));
-                buf.append(tag("attribute", attribute));
-            }
-            if (targetPlayer != null) {
-                buf.append(tag("targetPlayer", targetPlayer));
-                buf.append(tag("targetCardPosition", String.valueOf(targetCardPosition)));
-            }
-            buf.append(end("card"));
-        } else {
-            buf.append(begin("player"));
-            if (playerHealthChange != null) {
-                buf.append(tag("healthChange", String.valueOf(playerHealthChange)));
-            } else if (elementChange != null) {
-                buf.append(tag("elementSchool", getElementSchool().getDescriptor().getName()));
-                buf.append(tag("elementChange", String.valueOf(elementChange)));
-            }
-            buf.append(end("player"));
-        }
-
-        buf.append(end("action"));
-        return buf.toString();
+        return actionClass + " : " + playerId;
     }
 
     protected void init(Action action) {
-        this.actionName = action.getClass().getSimpleName();
+        this.actionClass = action.getClass().getSimpleName();
         if (action instanceof PlayerAction) populate((PlayerAction) action);
         if (action instanceof CardAction) populate((CardAction) action);
         if (action instanceof AddCardAttributeAction) populate((AddCardAttributeAction) action);
@@ -228,33 +209,35 @@ public class ActionDO {
     }
 
     protected void populate(PlayerAction<Object> action) {
-        this.playerName = action.getTarget().getId();
+        this.playerId = action.getTarget().getId();
     }
 
     protected void populate(CardAction<Object> action) {
-        this.playerName = action.getTarget().getOwner().getId();
+        this.playerId = action.getTarget().getOwner().getId();
         this.cardPosition = action.getTarget().getPosition();
     }
 
     protected void populate(AddCardAttributeAction action) {
-        this.attribute = action.getAttribute().getClass().getSimpleName();
+        this.attributeName = action.getAttribute().getName();
     }
 
     protected void populate(ChangeCardAttackAction action) {
-        this.cardAttackChange = action.getAttack().getValue();
+        this.attackType = action.getAttack().getType().name();
+        this.attackValue = action.getAttack().getValue();
     }
 
     protected void populate(ChangeCardHealthAction action) {
-        this.cardHealthChange = action.getHealthChange().getValue();
+        this.attackType = action.getHealthChange().getType().name();
+        this.attackValue = action.getHealthChange().getValue();
     }
 
     protected void populate(ChangePlayerElementAction action) {
-        this.elementSchoolKey = ((BoardElementSchoolDO) action.getElementSchool()).getKey();
-        this.elementChange = action.getValue();
+        this.elementSchoolName = action.getElementSchool().getName();
+        this.element = action.getValue();
     }
 
     protected void populate(ChangePlayerHealthAction action) {
-        this.playerHealthChange = action.getHealthChange().getValue();
+        this.attackValue = action.getHealthChange().getValue();
     }
 
     protected void populate(KillCardAction action) {
@@ -267,10 +250,11 @@ public class ActionDO {
     }
 
     protected void populate(CastCardAction action) {
+        this.playerId = action.getSource().getId();
         if (action.getTargetCard() != null) {
-            this.targetPlayer = action.getTargetCard().getOwner().getId();
+            this.targetPlayerId = action.getTargetCard().getOwner().getId();
         } else {
-            this.targetPlayer = action.getTarget().getTarget().getId();
+            this.targetPlayerId = action.getTarget().getTarget().getId();
         }
         this.targetCardPosition = action.getTarget().getPosition();
     }
@@ -279,7 +263,7 @@ public class ActionDO {
     }
 
     protected void populate(RemoveCardAttributeAction action) {
-        this.attribute = action.getAttribute().getClass().getSimpleName();
+        this.attributeName = action.getAttribute().getName();
     }
 
     protected String tag(String tag, String value, String... attributes) {

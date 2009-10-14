@@ -46,6 +46,10 @@ public class GlobalFunctionCall extends Call {
             return false;
         }
 
+        if (getText().equals("random")) {
+            return (int) (101 * Math.random());
+        }
+
         Expression[] argNodes = getArguments();
         Class[] argTypes = new Class[argNodes.length];
         Object[] args = new Object[argNodes.length];

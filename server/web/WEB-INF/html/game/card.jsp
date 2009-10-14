@@ -1,10 +1,10 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="playerName" type="java.lang.String"--%>
+<%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="elementRecord" type="com.killard.jdo.board.player.ElementRecordDO"--%>
 <%--@elvariable id="player" type="com.killard.jdo.board.player.PlayerRecordDO"--%>
 <div class="elementschool">
     ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
-    <c:if test="${player.id == playerName}">
+    <c:if test="${player.id == playerId}">
         <form action="/game/playcard.html" method="POST">
             <div id="newcard">
                 <select name="cardIndex">
@@ -22,7 +22,7 @@
                     </c:forEach>
                 </select>
             </div>
-            <c:if test="${not empty player.availablePositions and myturn and not player.cardPlayed}">
+            <c:if test="${not empty player.availablePositions and active}">
                 <input type="hidden" name="targetPosition" value="1"/>
                 <input type="submit" value="New"/>
             </c:if>

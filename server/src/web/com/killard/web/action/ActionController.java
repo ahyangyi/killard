@@ -43,7 +43,7 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/endturn.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/game/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
         BoardManagerDO boardManager = getBoardManager();
         boardManager.endTurn();
@@ -52,9 +52,13 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/endturn.*", method = RequestMethod.POST)
-    public String postEndTurn(ModelMap modelMap) throws Exception {
-        return endTurn(modelMap);
+    @RequestMapping(value = "/game/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
+    public String endCall(ModelMap modelMap) throws Exception {
+        BoardManagerDO boardManager = getBoardManager();
+        boardManager.endCall();
+        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
+        modelMap.put("actions", boardManager.getActions());
+        return "action/result";
     }
 
     @RequestMapping(value = "/game/actions.*", method = RequestMethod.GET)

@@ -3,7 +3,6 @@ package com.killard.board.jdo.game.player;
 import com.killard.board.card.Role;
 import com.killard.board.card.Action;
 import com.killard.board.card.Player;
-import com.killard.board.card.Record;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.environment.AfterAction;
@@ -34,7 +33,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleRecordDO implements Role<RoleRecordDO>, Record {
+public class RoleRecordDO implements Role<RoleRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

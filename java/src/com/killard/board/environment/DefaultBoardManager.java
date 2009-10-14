@@ -11,7 +11,7 @@ import com.killard.board.card.action.CastCardAction;
 import com.killard.board.card.action.ChangeCardHealthAction;
 import com.killard.board.card.action.ChangePlayerElementAction;
 import com.killard.board.card.action.ChangePlayerHealthAction;
-import com.killard.board.card.action.KillCardAction;
+import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.KillPlayerAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.EndTurnAction;
@@ -127,15 +127,15 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
         return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());
     }
 
-    @BeforeAction(actionClass = KillCardAction.class, selfTargeted = false)
-    public void before(BoardManager boardManager, KillCardAction action) {
+    @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
+    public void before(BoardManager boardManager, DropCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes()) boardManager.removeActionListener(attribute);
     }
 
     @AfterAction(actionClass = ChangeCardHealthAction.class, selfTargeted = false)
     public Object after(BoardManager boardManager, ChangeCardHealthAction action) {
         if (action.getHealthChange().getValue() > action.getTarget().getHealth())
-            return new KillCardAction(action.getSource(), action.getTarget());
+            return new DropCardAction(action.getSource(), action.getTarget());
         else return null;
     }
 

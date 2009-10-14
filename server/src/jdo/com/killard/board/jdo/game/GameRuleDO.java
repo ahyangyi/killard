@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.action.EndTurnAction;
-import com.killard.board.card.action.KillCardAction;
+import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.DrawCardAction;
 import com.killard.board.card.action.DealCardAction;
@@ -112,8 +112,8 @@ public class GameRuleDO implements ActionListener {
             boardManager.addActionListener(attribute, action.getTarget());
     }
 
-    @BeforeAction(actionClass = KillCardAction.class, selfTargeted = false)
-    public void before(BoardManagerDO boardManager, KillCardAction action) {
+    @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
+    public void before(BoardManagerDO boardManager, DropCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
             boardManager.removeActionListener(attribute);
     }

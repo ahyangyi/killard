@@ -11,9 +11,9 @@ import com.killard.board.card.CardInstance;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class KillCardAction extends CardAction<CardInstance> {
+public final class DropCardAction extends CardAction<CardInstance> {
 
-    public KillCardAction(CardInstance source, CardInstance target) {
+    public DropCardAction(CardInstance source, CardInstance target) {
         super(source, target);
     }
 }

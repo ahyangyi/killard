@@ -8,7 +8,7 @@ import com.killard.board.card.action.ChangeCardHealthAction;
 import com.killard.board.card.action.ChangeCardMaxHealthAction;
 import com.killard.board.card.action.ChangePlayerElementAction;
 import com.killard.board.card.action.ChangePlayerHealthAction;
-import com.killard.board.card.action.KillCardAction;
+import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.RemoveCardAttributeAction;
@@ -56,7 +56,7 @@ public final class ExecutableActionUtil {
         map.put(EndPlayerCallAction.class, new ExecutableEndPlayerCallAction());
         map.put(EndTurnAction.class, new ExecutableEndTurnAction());
         map.put(EquipCardAction.class, new ExecutableEquipCardAction());
-        map.put(KillCardAction.class, new ExecutableKillCardAction());
+        map.put(DropCardAction.class, new ExecutableDropCardAction());
         map.put(LoseAction.class, new ExecutableLoseAction());
         map.put(RemoveCardAttributeAction.class, new ExecutableRemoveCardAttributeAction());
         map.put(RemoveSkillAction.class, new ExecutableRemoveSkillAction());

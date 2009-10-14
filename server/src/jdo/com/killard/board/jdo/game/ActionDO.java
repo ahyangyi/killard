@@ -11,7 +11,7 @@ import com.killard.board.card.action.ChangeCardHealthAction;
 import com.killard.board.card.action.ChangePlayerElementAction;
 import com.killard.board.card.action.ChangePlayerHealthAction;
 import com.killard.board.card.action.EndTurnAction;
-import com.killard.board.card.action.KillCardAction;
+import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.KillPlayerAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.PlayerAction;
@@ -171,7 +171,7 @@ public class ActionDO {
             ;
         } else if (actionClass.equals(EquipCardAction.class.getSimpleName())) {
             ;
-        } else if (actionClass.equals(KillCardAction.class.getSimpleName())) {
+        } else if (actionClass.equals(DropCardAction.class.getSimpleName())) {
             ;
         } else if (actionClass.equals(KillPlayerAction.class.getSimpleName())) {
             ;
@@ -200,7 +200,7 @@ public class ActionDO {
         if (action instanceof ChangeCardHealthAction) populate((ChangeCardHealthAction) action);
         if (action instanceof ChangePlayerElementAction) populate((ChangePlayerElementAction) action);
         if (action instanceof ChangePlayerHealthAction) populate((ChangePlayerHealthAction) action);
-        if (action instanceof KillCardAction) populate((KillCardAction) action);
+        if (action instanceof DropCardAction) populate((DropCardAction) action);
         if (action instanceof KillPlayerAction) populate((KillPlayerAction) action);
         if (action instanceof EquipCardAction) populate((EquipCardAction) action);
         if (action instanceof CastCardAction) populate((CastCardAction) action);
@@ -240,7 +240,7 @@ public class ActionDO {
         this.attackValue = action.getHealthChange().getValue();
     }
 
-    protected void populate(KillCardAction action) {
+    protected void populate(DropCardAction action) {
     }
 
     protected void populate(KillPlayerAction action) {

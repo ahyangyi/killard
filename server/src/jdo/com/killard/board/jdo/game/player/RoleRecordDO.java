@@ -7,7 +7,7 @@ import com.killard.board.environment.Record;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.environment.AfterAction;
-import com.killard.board.jdo.game.BoardRoleDO;
+import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.AttributeHandler;
@@ -55,7 +55,7 @@ public class RoleRecordDO implements Role, Record {
     @NotPersistent
     private BoardManagerDO boardManager;
 
-    public RoleRecordDO(PlayerRecordDO player, BoardRoleDO role, BoardManagerDO boardManager) {
+    public RoleRecordDO(PlayerRecordDO player, GameRoleDO role, BoardManagerDO boardManager) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), role.getName());
         this.key = keyBuilder.getKey();

@@ -10,11 +10,11 @@ import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.environment.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardAttributeDO;
-import com.killard.board.jdo.game.BoardCardDO;
-import com.killard.board.jdo.game.BoardElementSchoolDO;
+import com.killard.board.jdo.game.GameAttributeDO;
+import com.killard.board.jdo.game.GameCardDO;
+import com.killard.board.jdo.game.GameElementSchoolDO;
 import com.killard.board.jdo.game.BoardManagerDO;
-import com.killard.board.jdo.game.BoardSkillDO;
+import com.killard.board.jdo.game.GameSkillDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -88,10 +88,10 @@ public class CardRecordDO extends AbstractCardRecord {
     private Boolean casted;
 
     @NotPersistent
-    private BoardCardDO card;
+    private GameCardDO card;
 
     @NotPersistent
-    private BoardElementSchoolDO elementSchool;
+    private GameElementSchoolDO elementSchool;
 
     @NotPersistent
     private PlayerRecordDO owner;
@@ -114,7 +114,7 @@ public class CardRecordDO extends AbstractCardRecord {
         visibleAttributes = new LinkedList<Attribute>();
     }
 
-    public CardRecordDO(BoardCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
+    public CardRecordDO(GameCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
                         int position) {
         this();
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
@@ -124,7 +124,7 @@ public class CardRecordDO extends AbstractCardRecord {
         this.card = card;
         this.cardKey = card.getKey();
 
-        this.elementSchool = (BoardElementSchoolDO) card.getElementSchool();
+        this.elementSchool = (GameElementSchoolDO) card.getElementSchool();
         this.elementSchoolKey = this.elementSchool.getKey();
 
         setOwner(owner);
@@ -152,17 +152,17 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        this.card = pm.getObjectById(BoardCardDO.class, cardKey);
-        this.elementSchool = pm.getObjectById(BoardElementSchoolDO.class, elementSchoolKey);
+        this.card = pm.getObjectById(GameCardDO.class, cardKey);
+        this.elementSchool = pm.getObjectById(GameElementSchoolDO.class, elementSchoolKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
-            BoardSkillDO skill = pm.getObjectById(BoardSkillDO.class, key);
+            GameSkillDO skill = pm.getObjectById(GameSkillDO.class, key);
             skill.restore(boardManager);
             addSkill(skill);
         }
         for (Key key : attributeKeys) {
-            BoardAttributeDO attribute = pm.getObjectById(BoardAttributeDO.class, key);
+            GameAttributeDO attribute = pm.getObjectById(GameAttributeDO.class, key);
             attribute.restore(boardManager);
             addAttribute(attribute);
             boardManager.addActionListener(attribute, card);
@@ -174,7 +174,7 @@ public class CardRecordDO extends AbstractCardRecord {
         return key;
     }
 
-    public BoardCardDO getCard() {
+    public GameCardDO getCard() {
         return card;
     }
 
@@ -274,17 +274,17 @@ public class CardRecordDO extends AbstractCardRecord {
     }
 
     protected boolean addSkill(Skill skill) {
-        BoardSkillDO record = (BoardSkillDO) skill;
+        GameSkillDO record = (GameSkillDO) skill;
         return !skillKeys.contains(record.getKey()) && skills.add(skill) && skillKeys.add(record.getKey());
     }
 
     protected boolean removeSkill(Skill skill) {
-        BoardSkillDO record = (BoardSkillDO) skill;
+        GameSkillDO record = (GameSkillDO) skill;
         return skillKeys.contains(record.getKey()) && skills.remove(skill) && skillKeys.remove(record.getKey());
     }
 
     protected boolean addAttribute(Attribute attribute) {
-        BoardAttributeDO record = (BoardAttributeDO) attribute;
+        GameAttributeDO record = (GameAttributeDO) attribute;
         if (!attributeKeys.contains(record.getKey())) {
             if (attribute.isVisible()) {
                 if (visibleAttributes.add(attribute)) return attributeKeys.add(record.getKey());
@@ -296,7 +296,7 @@ public class CardRecordDO extends AbstractCardRecord {
     }
 
     protected boolean removeAttribute(Attribute attribute) {
-        BoardAttributeDO record = (BoardAttributeDO) attribute;
+        GameAttributeDO record = (GameAttributeDO) attribute;
         if (attributeKeys.contains(record.getKey())) {
             if (attribute.isVisible()) {
                 if (visibleAttributes.remove(attribute)) return attributeKeys.remove(record.getKey());

@@ -2,7 +2,7 @@ package com.killard.board.jdo.game.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
-import com.killard.board.jdo.game.BoardPackageDO;
+import com.killard.board.jdo.game.GamePackageDO;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
@@ -17,9 +17,9 @@ import javax.jdo.annotations.IdentityType;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardPackageDescriptorDO extends DescriptorDO {
+public class GamePackageDescriptorDO extends DescriptorDO {
 
-    public BoardPackageDescriptorDO(BoardPackageDO owner, PackageDescriptorDO descriptor) {
+    public GamePackageDescriptorDO(GamePackageDO owner, PackageDescriptorDO descriptor) {
         super(owner, descriptor);
     }
 }

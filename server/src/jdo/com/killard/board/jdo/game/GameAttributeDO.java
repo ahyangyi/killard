@@ -11,7 +11,7 @@ import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardAttributeDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameAttributeDescriptorDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 
@@ -37,14 +37,14 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO> implements Attribute {
+public class GameAttributeDO extends DescriptableDO<GameAttributeDescriptorDO> implements Attribute {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private BoardElementSchoolDO elementSchool;
+    private GameElementSchoolDO elementSchool;
 
     @Persistent
     private String name;
@@ -68,12 +68,12 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
     private List<AttributeHandler> after;
 
     @Persistent
-    private SortedSet<BoardAttributeDescriptorDO> descriptors;
+    private SortedSet<GameAttributeDescriptorDO> descriptors;
 
     @NotPersistent
     private BoardManagerDO boardManager;
 
-    public BoardAttributeDO(BoardElementSchoolDO elementSchool, AttributeDO attribute) {
+    public GameAttributeDO(GameElementSchoolDO elementSchool, AttributeDO attribute) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), attribute.getKey().getId());
         this.key = keyBuilder.getKey();
@@ -88,9 +88,9 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
         this.before = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getBefore()));
         this.after = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getAfter()));
 
-        this.descriptors = new TreeSet<BoardAttributeDescriptorDO>();
+        this.descriptors = new TreeSet<GameAttributeDescriptorDO>();
         for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
-            this.descriptors.add(new BoardAttributeDescriptorDO(this, descriptor));
+            this.descriptors.add(new GameAttributeDescriptorDO(this, descriptor));
         }
     }
 
@@ -102,7 +102,7 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
         return key;
     }
 
-    public BoardElementSchoolDO getElementSchool() {
+    public GameElementSchoolDO getElementSchool() {
         return elementSchool;
     }
 
@@ -110,7 +110,7 @@ public class BoardAttributeDO extends DescriptableDO<BoardAttributeDescriptorDO>
         return name;
     }
 
-    protected SortedSet<BoardAttributeDescriptorDO> getDescriptors() {
+    protected SortedSet<GameAttributeDescriptorDO> getDescriptors() {
         return descriptors;
     }
 

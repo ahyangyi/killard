@@ -13,7 +13,7 @@ import com.killard.board.jdo.board.CardDO;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.board.descriptor.CardDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardCardDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameCardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -33,14 +33,14 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implements Card {
+public class GameCardDO extends DescriptableDO<GameCardDescriptorDO> implements Card {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private BoardElementSchoolDO elementSchool;
+    private GameElementSchoolDO elementSchool;
 
     @Persistent
     private String name;
@@ -67,7 +67,7 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
     private Boolean visible;
 
     @Persistent(mappedBy = "board", defaultFetchGroup = "false")
-    private SortedSet<BoardSkillDO> skills;
+    private SortedSet<GameSkillDO> skills;
 
     @Persistent(serialized = "true")
     private SortedSet<String> visibleAttributes;
@@ -76,9 +76,9 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
     private SortedSet<String> hiddenAttributes;
 
     @Persistent
-    private SortedSet<BoardCardDescriptorDO> descriptors;
+    private SortedSet<GameCardDescriptorDO> descriptors;
 
-    public BoardCardDO(BoardElementSchoolDO elementSchool, CardDO card) {
+    public GameCardDO(GameElementSchoolDO elementSchool, CardDO card) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), card.getKey().getId());
         this.key = keyBuilder.getKey();
@@ -93,9 +93,9 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
         this.equippable = card.isEquippable();
         this.visible = card.isVisible();
 
-        this.skills = new TreeSet<BoardSkillDO>();
+        this.skills = new TreeSet<GameSkillDO>();
         for (SkillDO skill : card.getSkills()) {
-            skills.add(new BoardSkillDO(this, skill));
+            skills.add(new GameSkillDO(this, skill));
         }
         this.hiddenAttributes = new TreeSet<String>();
         for (AttributeDO attribute : card.getHiddenAttributes()) {
@@ -106,9 +106,9 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
             visibleAttributes.add(attribute.getName());
         }
 
-        this.descriptors = new TreeSet<BoardCardDescriptorDO>();
+        this.descriptors = new TreeSet<GameCardDescriptorDO>();
         for (CardDescriptorDO descriptor : card.getAllDescriptors()) {
-            this.descriptors.add(new BoardCardDescriptorDO(this, descriptor));
+            this.descriptors.add(new GameCardDescriptorDO(this, descriptor));
         }
     }
 
@@ -204,7 +204,7 @@ public class BoardCardDO extends DescriptableDO<BoardCardDescriptorDO> implement
         return result;
     }
 
-    protected SortedSet<BoardCardDescriptorDO> getDescriptors() {
+    protected SortedSet<GameCardDescriptorDO> getDescriptors() {
         return descriptors;
     }
 }

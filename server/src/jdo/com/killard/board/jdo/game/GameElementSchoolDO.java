@@ -8,7 +8,7 @@ import com.killard.board.jdo.board.CardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardElementSchoolDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameElementSchoolDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -28,7 +28,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardElementSchoolDO extends DescriptableDO<BoardElementSchoolDescriptorDO> implements ElementSchool {
+public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescriptorDO> implements ElementSchool {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -38,34 +38,34 @@ public class BoardElementSchoolDO extends DescriptableDO<BoardElementSchoolDescr
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<BoardCardDO> cards;
+    private SortedSet<GameCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
-    private SortedSet<BoardAttributeDO> attributes;
+    private SortedSet<GameAttributeDO> attributes;
 
     @Persistent
-    private SortedSet<BoardElementSchoolDescriptorDO> descriptors;
+    private SortedSet<GameElementSchoolDescriptorDO> descriptors;
 
-    public BoardElementSchoolDO(BoardPackageDO pack, ElementSchoolDO elementSchool) {
+    public GameElementSchoolDO(GamePackageDO pack, ElementSchoolDO elementSchool) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), elementSchool.getKey().getId());
         this.key = keyBuilder.getKey();
 
         this.name = elementSchool.getName();
 
-        this.cards = new TreeSet<BoardCardDO>();
+        this.cards = new TreeSet<GameCardDO>();
         for (CardDO card : elementSchool.getCards()) {
-            cards.add(new BoardCardDO(this, card));
+            cards.add(new GameCardDO(this, card));
         }
 
-        this.attributes = new TreeSet<BoardAttributeDO>();
+        this.attributes = new TreeSet<GameAttributeDO>();
         for (AttributeDO attribute : elementSchool.getAttributes()) {
-            attributes.add(new BoardAttributeDO(this, attribute));
+            attributes.add(new GameAttributeDO(this, attribute));
         }
 
-        this.descriptors = new TreeSet<BoardElementSchoolDescriptorDO>();
+        this.descriptors = new TreeSet<GameElementSchoolDescriptorDO>();
         for (ElementSchoolDescriptorDO descriptor : elementSchool.getAllDescriptors()) {
-            this.descriptors.add(new BoardElementSchoolDescriptorDO(this, descriptor));
+            this.descriptors.add(new GameElementSchoolDescriptorDO(this, descriptor));
         }
     }
 
@@ -73,12 +73,12 @@ public class BoardElementSchoolDO extends DescriptableDO<BoardElementSchoolDescr
         return key;
     }
 
-    public BoardCardDO[] getCards() {
-        return cards.toArray(new BoardCardDO[cards.size()]);
+    public GameCardDO[] getCards() {
+        return cards.toArray(new GameCardDO[cards.size()]);
     }
 
-    public BoardAttributeDO getAttribute(String id) {
-        for (BoardAttributeDO attribute : attributes) {
+    public GameAttributeDO getAttribute(String id) {
+        for (GameAttributeDO attribute : attributes) {
             if (attribute.getName().equals(id)) return attribute;
         }
         return null;
@@ -88,7 +88,7 @@ public class BoardElementSchoolDO extends DescriptableDO<BoardElementSchoolDescr
         return name;
     }
 
-    protected SortedSet<BoardElementSchoolDescriptorDO> getDescriptors() {
+    protected SortedSet<GameElementSchoolDescriptorDO> getDescriptors() {
         return descriptors;
     }
 }

@@ -7,9 +7,9 @@ import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
 import com.killard.board.environment.record.AbstractPlayerRecord;
-import com.killard.board.jdo.game.BoardCardDO;
+import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.BoardManagerDO;
-import com.killard.board.jdo.game.BoardRoleDO;
+import com.killard.board.jdo.game.GameRoleDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -73,7 +73,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     @Persistent
     private Integer turnCount;
 
-    public PlayerRecordDO(BoardManagerDO boardManager, BoardRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
+    public PlayerRecordDO(BoardManagerDO boardManager, GameRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
@@ -149,7 +149,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
 
     public Card getDealtCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (BoardCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (GameCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
         }
         return null;
     }
@@ -208,7 +208,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     }
 
     protected boolean addDealtCard(Card card) {
-        BoardCardDO record = (BoardCardDO) card;
+        GameCardDO record = (GameCardDO) card;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
         }
@@ -216,7 +216,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
     }
 
     protected boolean removeDealtCard(Card card) {
-        BoardCardDO record = (BoardCardDO) card;
+        GameCardDO record = (GameCardDO) card;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.removeDealtCard(record);
         }

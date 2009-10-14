@@ -12,7 +12,7 @@ import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardSkillDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameSkillDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -33,14 +33,14 @@ import java.util.SortedSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> implements Skill {
+public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implements Skill {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private BoardCardDO card;
+    private GameCardDO card;
 
     @Persistent
     private String name;
@@ -52,12 +52,12 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
     private Function function;
 
     @Persistent
-    private SortedSet<BoardSkillDescriptorDO> descriptors;
+    private SortedSet<GameSkillDescriptorDO> descriptors;
 
     @NotPersistent
     private BoardManagerDO boardManager;
 
-    public BoardSkillDO(BoardCardDO card, SkillDO skill) {
+    public GameSkillDO(GameCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
         this.key = keyBuilder.getKey();
@@ -76,7 +76,7 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
         return key;
     }
 
-    public BoardCardDO getCard() {
+    public GameCardDO getCard() {
         return card;
     }
 
@@ -84,7 +84,7 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
         return name;
     }
 
-    protected SortedSet<BoardSkillDescriptorDO> getDescriptors() {
+    protected SortedSet<GameSkillDescriptorDO> getDescriptors() {
         return descriptors;
     }
 

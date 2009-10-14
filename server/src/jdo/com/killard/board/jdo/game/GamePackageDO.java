@@ -7,7 +7,7 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardPackageDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GamePackageDescriptorDO;
 import com.killard.board.card.BoardPackage;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -32,7 +32,7 @@ import java.util.TreeMap;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> implements BoardPackage {
+public class GamePackageDO extends DescriptableDO<GamePackageDescriptorDO> implements BoardPackage {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -45,37 +45,37 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> imp
     private String name;
 
     @Persistent
-    private BoardRuleDO rule;
+    private GameRuleDO rule;
 
     @Persistent
-    private List<BoardRoleDO> roles;
+    private List<GameRoleDO> roles;
 
     @Persistent
-    private SortedSet<BoardElementSchoolDO> elementSchools;
+    private SortedSet<GameElementSchoolDO> elementSchools;
 
     @Persistent
-    private SortedSet<BoardPackageDescriptorDO> descriptors;
+    private SortedSet<GamePackageDescriptorDO> descriptors;
 
-    public BoardPackageDO(Key boardManagerKey, PackageDO pack, int playerNumber) {
+    public GamePackageDO(Key boardManagerKey, PackageDO pack, int playerNumber) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManagerKey);
         keyBuilder.addChild(getClass().getSimpleName(), pack.getKey().getId());
         this.key = keyBuilder.getKey();
 
         this.packageKey = pack.getKey();
-        this.rule = new BoardRuleDO(this, pack.getRule());
+        this.rule = new GameRuleDO(this, pack.getRule());
 
-        this.roles = new ArrayList<BoardRoleDO>();
-        for (RoleDO role : pack.getRoleGroup(playerNumber).getRoles()) this.roles.add(new BoardRoleDO(this, role));
+        this.roles = new ArrayList<GameRoleDO>();
+        for (RoleDO role : pack.getRoleGroup(playerNumber).getRoles()) this.roles.add(new GameRoleDO(this, role));
 
-        this.elementSchools = new TreeSet<BoardElementSchoolDO>();
+        this.elementSchools = new TreeSet<GameElementSchoolDO>();
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
-            elementSchools.add(new BoardElementSchoolDO(this, elementSchool));
+            elementSchools.add(new GameElementSchoolDO(this, elementSchool));
         }
         this.name = pack.getName();
 
-        this.descriptors = new TreeSet<BoardPackageDescriptorDO>();
+        this.descriptors = new TreeSet<GamePackageDescriptorDO>();
         for (PackageDescriptorDO descriptor : pack.getAllDescriptors()) {
-            this.descriptors.add(new BoardPackageDescriptorDO(this, descriptor));
+            this.descriptors.add(new GamePackageDescriptorDO(this, descriptor));
         }
     }
 
@@ -91,27 +91,27 @@ public class BoardPackageDO extends DescriptableDO<BoardPackageDescriptorDO> imp
         return name;
     }
 
-    public BoardRuleDO getRule() {
+    public GameRuleDO getRule() {
         return rule;
     }
 
-    public SortedMap<String, BoardRoleDO> getRoles() {
-        SortedMap<String, BoardRoleDO> map = new TreeMap<String, BoardRoleDO>();
-        for (BoardRoleDO role : roles) {
+    public SortedMap<String, GameRoleDO> getRoles() {
+        SortedMap<String, GameRoleDO> map = new TreeMap<String, GameRoleDO>();
+        for (GameRoleDO role : roles) {
             map.put(role.getName(), role);
         }
         return map;
     }
 
-    public BoardRoleDO getRandomRole() {
+    public GameRoleDO getRandomRole() {
         return null;
     }
 
-    public BoardElementSchoolDO[] getElementSchools() {
-        return elementSchools.toArray(new BoardElementSchoolDO[elementSchools.size()]);
+    public GameElementSchoolDO[] getElementSchools() {
+        return elementSchools.toArray(new GameElementSchoolDO[elementSchools.size()]);
     }
 
-    protected SortedSet<BoardPackageDescriptorDO> getDescriptors() {
+    protected SortedSet<GamePackageDescriptorDO> getDescriptors() {
         return descriptors;
     }
 }

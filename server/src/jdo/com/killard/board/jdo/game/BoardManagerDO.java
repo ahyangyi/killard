@@ -34,7 +34,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     private Key key;
 
     @Persistent(defaultFetchGroup = "false")
-    private BoardPackageDO boardPackage;
+    private GamePackageDO gamePackage;
 
     @Persistent
     private Integer currentPlayerPosition;
@@ -63,9 +63,9 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         this.startDate = new Date();
     }
 
-    public void init(BoardPackageDO boardPackage) {
-        if (this.boardPackage != null) {
-            this.boardPackage = boardPackage;
+    public void init(GamePackageDO gamePackage) {
+        if (this.gamePackage != null) {
+            this.gamePackage = gamePackage;
         }
     }
 
@@ -76,8 +76,8 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         addActionListener(getBoardPackage().getRule(), this);
     }
 
-    public BoardPackageDO getBoardPackage() {
-        return boardPackage;
+    public GamePackageDO getBoardPackage() {
+        return gamePackage;
     }
 
     public Key getKey() {
@@ -118,18 +118,18 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     @Override
     public Player addPlayer(String playerName, int health) throws BoardException {
-        PlayerRecordDO player = new PlayerRecordDO(this, boardPackage.getRandomRole(), playerName, makeElementRecords());
+        PlayerRecordDO player = new PlayerRecordDO(this, gamePackage.getRandomRole(), playerName, makeElementRecords());
         roundQueue.add(player);
-        if (boardPackage.getRoles().size() == roundQueue.size()) executeAction(new BeginGameAction(this));
+        if (gamePackage.getRoles().size() == roundQueue.size()) executeAction(new BeginGameAction(this));
         return player;
     }
 
     public BoardPackage getPackage() {
-        return boardPackage;
+        return gamePackage;
     }
 
     public int getPlayerAmount() {
-        return boardPackage.getRoles().size();
+        return gamePackage.getRoles().size();
     }
 
     public Player[] getPlayers() {
@@ -158,7 +158,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     @Override
     protected CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition) {
-        return new CardRecordDO((BoardCardDO) card, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
+        return new CardRecordDO((GameCardDO) card, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
                 cardPosition);
     }
 
@@ -186,15 +186,15 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return currentPlayerPosition;
     }
 
-    protected BoardCardDO dealCard() {
-        List<BoardCardDO> cards = new ArrayList<BoardCardDO>();
+    protected GameCardDO dealCard() {
+        List<GameCardDO> cards = new ArrayList<GameCardDO>();
         int n = 0;
-        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             n += elementSchool.getCards().length;
         }
         if (n == dealtCardKeys.size()) dealtCardKeys.clear();
-        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            for (BoardCardDO card : elementSchool.getCards()) {
+        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+            for (GameCardDO card : elementSchool.getCards()) {
                 if (dealtCardKeys.contains(card.getKey())) continue;
                 dealtCardKeys.add(card.getKey());
                 cards.add(card);
@@ -206,13 +206,13 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
 
     protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
-        for (BoardElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             record.add(new ElementRecordDO(elementSchool));
         }
         return record;
     }
 
-    protected void randomSelect(List<BoardCardDO> remainingCards, int cardAmount) {
+    protected void randomSelect(List<GameCardDO> remainingCards, int cardAmount) {
         int size = remainingCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
             int index = (int) Math.floor(remainingCards.size() * Math.random());

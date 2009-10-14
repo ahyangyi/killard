@@ -2,7 +2,7 @@ package com.killard.board.web.game;
 
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.game.BoardManagerDO;
-import com.killard.board.jdo.game.BoardPackageDO;
+import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.BasicController;
@@ -91,10 +91,10 @@ public class GameController extends BasicController {
         Key boardManagerKey = pm.makePersistent(board).getKey();
         PersistenceHelper.doTransaction();
 
-        BoardPackageDO boardPackage = new BoardPackageDO(boardManagerKey, getPackage(packageId), playerNumber);
+        GamePackageDO gamePackage = new GamePackageDO(boardManagerKey, getPackage(packageId), playerNumber);
         PersistenceHelper.doTransaction();
 
-        board.init(boardPackage);
+        board.init(gamePackage);
         pm.makePersistent(board);
 
         join(board);

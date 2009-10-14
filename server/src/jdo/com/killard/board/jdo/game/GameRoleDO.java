@@ -3,7 +3,7 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.BoardRoleDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 
@@ -30,7 +30,7 @@ import java.util.Collections;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
+public class GameRoleDO extends DescriptableDO<GameRoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -56,9 +56,9 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
     private List<AttributeHandler> after;
 
     @Persistent
-    private SortedSet<BoardRoleDescriptorDO> descriptors;
+    private SortedSet<GameRoleDescriptorDO> descriptors;
 
-    public BoardRoleDO(BoardPackageDO pack, RoleDO role) {
+    public GameRoleDO(GamePackageDO pack, RoleDO role) {
         this.packageKey = pack.getKey();
         this.name = role.getName();
         this.visible = role.isVisible();
@@ -67,9 +67,9 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
         before = new ArrayList<AttributeHandler>(Arrays.asList(role.getBefore()));
         after = new ArrayList<AttributeHandler>(Arrays.asList(role.getAfter()));
 
-        this.descriptors = new TreeSet<BoardRoleDescriptorDO>();
+        this.descriptors = new TreeSet<GameRoleDescriptorDO>();
         for (RoleDescriptorDO descriptor : role.getAllDescriptors()) {
-            this.descriptors.add(new BoardRoleDescriptorDO(this, descriptor));
+            this.descriptors.add(new GameRoleDescriptorDO(this, descriptor));
         }
     }
 
@@ -101,7 +101,7 @@ public class BoardRoleDO extends DescriptableDO<BoardRoleDescriptorDO> {
         return Collections.unmodifiableList(after);
     }
 
-    protected SortedSet<BoardRoleDescriptorDO> getDescriptors() {
+    protected SortedSet<GameRoleDescriptorDO> getDescriptors() {
         return descriptors;
     }
 }

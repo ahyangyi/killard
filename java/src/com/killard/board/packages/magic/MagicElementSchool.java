@@ -1,6 +1,6 @@
 package com.killard.board.packages.magic;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 
 public enum MagicElementSchool implements ElementSchool {
@@ -16,7 +16,7 @@ public enum MagicElementSchool implements ElementSchool {
         return name();
     }
 
-    public Card[] getCards() {
-        return new Card[0];
+    public MetaCard[] getCards() {
+        return new MetaCard[0];
     }
 }

@@ -1,7 +1,7 @@
 package com.killard.board.environment;
 
 import com.killard.board.card.Action;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.Player;
 import com.killard.board.card.Board;
@@ -49,7 +49,7 @@ public abstract class BoardManager implements Board, StateListener {
 
     public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) throws BoardException {
         Player owner = getCurrentPlayer();
-        Card card = owner.getDealtCard(cardIndex);
+        MetaCard card = owner.getDealtCard(cardIndex);
         Player target = getPlayer(targetPlayerPosition);
         CardInstance instance = createCardRecord(card, owner, target, cardPosition);
         if (instance.isEquippable()) {
@@ -188,7 +188,7 @@ public abstract class BoardManager implements Board, StateListener {
 
     public abstract Player addPlayer(String playerName, int health) throws BoardException;
 
-    protected abstract CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition);
+    protected abstract CardInstance createCardRecord(MetaCard card, Player owner, Player target, int cardPosition);
 
     protected abstract void moveToNext();
 }

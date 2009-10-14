@@ -1,7 +1,7 @@
 package com.killard.board.card.action;
 
 import com.killard.board.card.Player;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 
 /**
  * <p>
@@ -12,9 +12,9 @@ import com.killard.board.card.Card;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DiscardCardAction extends BasicAction<Player, Card> {
+public class DiscardCardAction extends BasicAction<Player, MetaCard> {
 
-    public DiscardCardAction(Player source, Card target) {
+    public DiscardCardAction(Player source, MetaCard target) {
         super(source, target);
     }
 }

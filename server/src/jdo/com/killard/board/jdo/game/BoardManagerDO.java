@@ -1,7 +1,7 @@
 package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.Player;
 import com.killard.board.card.BoardPackage;
@@ -157,8 +157,8 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     @Override
-    protected CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition) {
-        return new CardRecordDO((GameCardDO) card, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
+    protected CardInstance createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
+        return new CardRecordDO((GameMetaCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
                 cardPosition);
     }
 
@@ -186,15 +186,15 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return currentPlayerPosition;
     }
 
-    protected GameCardDO dealCard() {
-        List<GameCardDO> cards = new ArrayList<GameCardDO>();
+    protected GameMetaCardDO dealCard() {
+        List<GameMetaCardDO> cards = new ArrayList<GameMetaCardDO>();
         int n = 0;
         for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             n += elementSchool.getCards().length;
         }
         if (n == dealtCardKeys.size()) dealtCardKeys.clear();
         for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            for (GameCardDO card : elementSchool.getCards()) {
+            for (GameMetaCardDO card : elementSchool.getCards()) {
                 if (dealtCardKeys.contains(card.getKey())) continue;
                 dealtCardKeys.add(card.getKey());
                 cards.add(card);
@@ -212,7 +212,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
         return record;
     }
 
-    protected void randomSelect(List<GameCardDO> remainingCards, int cardAmount) {
+    protected void randomSelect(List<GameMetaCardDO> remainingCards, int cardAmount) {
         int size = remainingCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
             int index = (int) Math.floor(remainingCards.size() * Math.random());

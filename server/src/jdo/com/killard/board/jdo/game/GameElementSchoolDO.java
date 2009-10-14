@@ -38,7 +38,7 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescrip
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<GameCardDO> cards;
+    private SortedSet<GameMetaCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
     private SortedSet<GameAttributeDO> attributes;
@@ -53,9 +53,9 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescrip
 
         this.name = elementSchool.getName();
 
-        this.cards = new TreeSet<GameCardDO>();
+        this.cards = new TreeSet<GameMetaCardDO>();
         for (CardDO card : elementSchool.getCards()) {
-            cards.add(new GameCardDO(this, card));
+            cards.add(new GameMetaCardDO(this, card));
         }
 
         this.attributes = new TreeSet<GameAttributeDO>();
@@ -73,8 +73,8 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescrip
         return key;
     }
 
-    public GameCardDO[] getCards() {
-        return cards.toArray(new GameCardDO[cards.size()]);
+    public GameMetaCardDO[] getCards() {
+        return cards.toArray(new GameMetaCardDO[cards.size()]);
     }
 
     public GameAttributeDO getAttribute(String id) {

@@ -13,7 +13,7 @@ import com.killard.board.card.action.DropCardAction;
  */
 public class ExecutableDropCardAction extends ExecutableCardAction<DropCardAction> {
 
-    public void execute(AbstractCardRecord record, DropCardAction action) {
+    public void execute(AbstractMetaCardRecord record, DropCardAction action) {
         AbstractPlayerRecord player = (AbstractPlayerRecord) action.getSource();
         player.removeEquippedCard(record, action);
     }

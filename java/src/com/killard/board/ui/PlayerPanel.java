@@ -1,6 +1,6 @@
 package com.killard.board.ui;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.packages.magic.MagicElementSchool;
 import com.killard.board.ui.event.PlayerActionListener;
@@ -31,9 +31,9 @@ public class PlayerPanel {
 
     private final int CARD_ON_BOARD = 5;
 
-    private Map<MagicElementSchool, ArrayList<Card>> allCards = new HashMap<MagicElementSchool, ArrayList<Card>>();
+    private Map<MagicElementSchool, ArrayList<MetaCard>> allCards = new HashMap<MagicElementSchool, ArrayList<MetaCard>>();
 
-    private Card selectedCard = null;
+    private MetaCard selectedCard = null;
     private boolean cardSelected = false;
 
     private boolean top;
@@ -71,7 +71,7 @@ public class PlayerPanel {
         smallCardsPanel = new SmallCardsPanel(this, board, top);
 
         for (MagicElementSchool school : MagicElementSchool.values()) {
-            ArrayList<Card> cards = new ArrayList<Card>();
+            ArrayList<MetaCard> cards = new ArrayList<MetaCard>();
             allCards.put(school, cards);
         }
 
@@ -82,7 +82,7 @@ public class PlayerPanel {
         this.setElementSchool(MagicElementSchool.EARTH);
     }
 
-    public void setCard(int index, Card card) {
+    public void setCard(int index, MetaCard card) {
         if(!cardSelected){
             cardsPanel.setCard(index, card);
             cardSelected=true;
@@ -94,7 +94,7 @@ public class PlayerPanel {
     }
 
     public void setElementSchool(MagicElementSchool element) {
-        ArrayList<Card> cards = allCards.get(element);
+        ArrayList<MetaCard> cards = allCards.get(element);
         smallCardsPanel.clearAll();
         for (int i = 0; i < cards.size(); i++) {
             this.smallCardsPanel.setCard(i, cards.get(i));
@@ -102,7 +102,7 @@ public class PlayerPanel {
         this.smallCardsPanel.unselectAll();
     }
 
-    public void selectCard(int index, Card card) {
+    public void selectCard(int index, MetaCard card) {
         this.selectedCard = card;
         this.smallCardsPanel.setSelected(index);
     }

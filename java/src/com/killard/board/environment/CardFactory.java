@@ -1,6 +1,6 @@
 package com.killard.board.environment;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 
 import java.util.Map;
@@ -15,5 +15,5 @@ public interface CardFactory {
 
     public int getElementAmount();
 
-    public Map<String, Card> getAvailableCards();
+    public Map<String, MetaCard> getAvailableCards();
 }

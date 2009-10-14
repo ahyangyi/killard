@@ -1,6 +1,6 @@
 package com.killard.board.ui;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.ui.event.CardListener;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class CardsPanel {
         }
     }
 
-    public void setCard(int index, Card card) {
+    public void setCard(int index, MetaCard card) {
         if (index < 0 || index >= CARD_ON_BOARD)
             throw new IllegalArgumentException("index out of bound");
         cards[index].setCard(card);

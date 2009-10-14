@@ -5,7 +5,7 @@ import com.killard.board.card.Attack;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.environment.Record;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
@@ -38,9 +38,9 @@ public abstract class AbstractPlayerRecord implements Player, Record {
         stateListeners.remove(listener);
     }
 
-    protected abstract boolean addDealtCard(Card card);
+    protected abstract boolean addDealtCard(MetaCard metaCard);
 
-    protected abstract boolean removeDealtCard(Card card);
+    protected abstract boolean removeDealtCard(MetaCard metaCard);
 
     protected abstract void setCardPlayed(boolean cardPlayed);
 
@@ -66,7 +66,7 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     protected void beginTurn() {
         for (CardInstance instance : getEquippedCards()) {
-            AbstractCardRecord record = (AbstractCardRecord) instance;
+            AbstractMetaCardRecord record = (AbstractMetaCardRecord) instance;
             record.setCasted(false);
         }
         setCardPlayed(false);
@@ -76,14 +76,14 @@ public abstract class AbstractPlayerRecord implements Player, Record {
         setTurnCount(getTurnCount() + 1);
     }
 
-    protected boolean addDealtCard(Card card, Action action) {
-        boolean result = addDealtCard(card);
+    protected boolean addDealtCard(MetaCard metaCard, Action action) {
+        boolean result = addDealtCard(metaCard);
         fireStateChanged(new StateEvent(this, action));
         return result;
     }
 
-    protected boolean removeDealtCard(Card card, Action action) {
-        boolean result = removeDealtCard(card);
+    protected boolean removeDealtCard(MetaCard metaCard, Action action) {
+        boolean result = removeDealtCard(metaCard);
         fireStateChanged(new StateEvent(this, action));
         return result;
     }

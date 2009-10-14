@@ -13,7 +13,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BasicCard implements Card {
+public abstract class BasicMetaCard implements MetaCard {
 
     private final ElementSchool elementSchool;
 
@@ -31,7 +31,7 @@ public abstract class BasicCard implements Card {
 
     private final List<Attribute> hiddenAttributes = new ArrayList<Attribute>();
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack) {
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack) {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
@@ -39,15 +39,15 @@ public abstract class BasicCard implements Card {
         this.equippable = true;
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, Skill skill) {
+    protected BasicMetaCard(ElementSchool elementSchool, int level, Skill skill) {
         this(elementSchool, level, 0, 0, 0, skill);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill) {
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill) {
         this(elementSchool, level, maxHealth, maxHealth, attack, skill);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill) {
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill) {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
@@ -56,7 +56,7 @@ public abstract class BasicCard implements Card {
         this.equippable = true;
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skill) {
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skill) {
         this.elementSchool = elementSchool;
         this.level = level;
         this.maxHealth = maxHealth;
@@ -65,59 +65,59 @@ public abstract class BasicCard implements Card {
         this.equippable = true;
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, new Skill[0], attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, skill, attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill[] skills,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill[] skills,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, skills, attributes);
     }
     
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, health, attack, skill);
         this.visibleAttributes.addAll(attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skills,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skills,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, health, attack, skills);
         this.visibleAttributes.addAll(attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack,
                         List<Attribute> attributes) {
         this(elementSchool, level, maxHealth, health, attack, new Skill[0], attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack,
                         Attribute[] attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, new Skill[0], attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill skill,
                         Attribute[] attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, skill, attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill[] skills,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int attack, Skill[] skills,
                         Attribute[] attributes) {
         this(elementSchool, level, maxHealth, maxHealth, attack, skills, attributes);
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill,
                         Attribute[] attributes) {
         this(elementSchool, level, maxHealth, health, attack, skill, Arrays.asList(attributes));
     }
 
-    protected BasicCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skills,
+    protected BasicMetaCard(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill[] skills,
                         Attribute[] attributes) {
         this(elementSchool, level, maxHealth, health, attack, skills, Arrays.asList(attributes));
     }

@@ -1,6 +1,6 @@
 package com.killard.board.ui.event;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.ui.PlayerPanel;
 
 import javax.swing.*;
@@ -11,9 +11,9 @@ public class CardSkillListener implements ActionListener {
 
     private PlayerPanel playerPanel;
 
-    private Card card;
+    private MetaCard card;
 
-    public CardSkillListener(PlayerPanel playerPanel, Card card) {
+    public CardSkillListener(PlayerPanel playerPanel, MetaCard card) {
         this.playerPanel = playerPanel;
         this.card = card;
     }

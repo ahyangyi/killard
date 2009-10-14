@@ -13,7 +13,7 @@ import com.killard.board.card.action.RemoveSkillAction;
  */
 public class ExecutableRemoveSkillAction extends ExecutableCardAction<RemoveSkillAction> {
 
-    public void execute(AbstractCardRecord record, RemoveSkillAction action) {
+    public void execute(AbstractMetaCardRecord record, RemoveSkillAction action) {
         record.changeSkill(null, action);
     }
 }

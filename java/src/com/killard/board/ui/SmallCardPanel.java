@@ -1,19 +1,19 @@
 package com.killard.board.ui;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class SmallCardPanel extends JPanel {
 
-    private Card card;
+    private MetaCard card;
 
     private PlayerPanel playerPanel;
 
     private boolean selected = false;
 
-    public SmallCardPanel(Card card, PlayerPanel playerPanel) {
+    public SmallCardPanel(MetaCard card, PlayerPanel playerPanel) {
         this.card = card;
         this.playerPanel = playerPanel;
         this.init();
@@ -60,7 +60,7 @@ public class SmallCardPanel extends JPanel {
         }
     }
 
-    public void setCard(Card card) {
+    public void setCard(MetaCard card) {
         this.card = card;
         this.init();
         this.invalidate();

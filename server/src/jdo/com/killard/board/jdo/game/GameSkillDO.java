@@ -60,7 +60,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
     @NotPersistent
     private BoardManagerDO boardManager;
 
-    public GameSkillDO(GameCardDO card, SkillDO skill) {
+    public GameSkillDO(GameMetaCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
         this.key = keyBuilder.getKey();

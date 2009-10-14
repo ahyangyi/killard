@@ -3,7 +3,7 @@ package com.killard.board.environment.record;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
@@ -23,7 +23,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CardRecord extends AbstractCardRecord {
+public class CardRecord extends AbstractMetaCardRecord {
 
     private String name;
 
@@ -64,25 +64,25 @@ public class CardRecord extends AbstractCardRecord {
         this.skills.add(skill);
     }
 
-    public CardRecord(Card card, Player owner, Player target, int position) {
-        this.name = card.getName();
-        this.elementSchool = card.getElementSchool();
-        this.level = card.getLevel();
-        this.health = card.getMaxHealth();
-        this.maxHealth = card.getMaxHealth();
-        this.attack = card.getAttack();
+    public CardRecord(MetaCard metaCard, Player owner, Player target, int position) {
+        this.name = metaCard.getName();
+        this.elementSchool = metaCard.getElementSchool();
+        this.level = metaCard.getLevel();
+        this.health = metaCard.getMaxHealth();
+        this.maxHealth = metaCard.getMaxHealth();
+        this.attack = metaCard.getAttack();
         this.equippable = true;
         this.owner = owner;
         this.target = target;
         this.position = position;
-        this.skills.addAll(Arrays.asList(card.getSkills()));
-        visibleAttributes.addAll(Arrays.asList(card.getVisibleAttributes()));
-        hiddenAttributes.addAll(Arrays.asList(card.getHiddenAttributes()));
+        this.skills.addAll(Arrays.asList(metaCard.getSkills()));
+        visibleAttributes.addAll(Arrays.asList(metaCard.getVisibleAttributes()));
+        hiddenAttributes.addAll(Arrays.asList(metaCard.getHiddenAttributes()));
         this.casted = false;
     }
 
-    public CardRecord(Card card, StateListener listener, Player owner, Player target, int position) {
-        this(card, owner, target, position);
+    public CardRecord(MetaCard metaCard, StateListener listener, Player owner, Player target, int position) {
+        this(metaCard, owner, target, position);
         addStateListener(listener);
     }
 

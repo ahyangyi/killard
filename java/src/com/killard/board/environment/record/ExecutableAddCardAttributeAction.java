@@ -13,7 +13,7 @@ import com.killard.board.card.action.AddCardAttributeAction;
  */
 public class ExecutableAddCardAttributeAction extends ExecutableCardAction<AddCardAttributeAction> {
 
-    public void execute(AbstractCardRecord record, AddCardAttributeAction action) {
+    public void execute(AbstractMetaCardRecord record, AddCardAttributeAction action) {
         record.addAttribute(action.getAttribute(), action);
     }
 }

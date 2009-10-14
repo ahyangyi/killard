@@ -13,7 +13,7 @@ import com.killard.board.card.action.ChangeCardMaxHealthAction;
  */
 public class ExecutableChangeCardMaxHealthAction extends ExecutableCardAction<ChangeCardMaxHealthAction> {
 
-    public void execute(AbstractCardRecord record, ChangeCardMaxHealthAction action) {
+    public void execute(AbstractMetaCardRecord record, ChangeCardMaxHealthAction action) {
         record.changeMaxHealth(action.getMaxHealthChange(), action);
     }
 }

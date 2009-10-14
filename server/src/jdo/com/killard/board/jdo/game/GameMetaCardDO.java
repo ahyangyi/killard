@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.jdo.board.AttributeDO;
@@ -33,7 +33,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameCardDO extends DescriptableDO<GameCardDescriptorDO> implements Card {
+public class GameMetaCardDO extends DescriptableDO<GameCardDescriptorDO> implements MetaCard {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -78,7 +78,7 @@ public class GameCardDO extends DescriptableDO<GameCardDescriptorDO> implements 
     @Persistent
     private SortedSet<GameCardDescriptorDO> descriptors;
 
-    public GameCardDO(GameElementSchoolDO elementSchool, CardDO card) {
+    public GameMetaCardDO(GameElementSchoolDO elementSchool, CardDO card) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), card.getKey().getId());
         this.key = keyBuilder.getKey();

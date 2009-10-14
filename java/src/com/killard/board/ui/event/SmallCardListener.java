@@ -1,6 +1,6 @@
 package com.killard.board.ui.event;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.ui.PlayerPanel;
 
 import java.awt.event.MouseEvent;
@@ -15,10 +15,10 @@ import java.awt.event.MouseListener;
  */
 public class SmallCardListener implements MouseListener {
     private PlayerPanel playerPanel;
-    private Card card;
+    private MetaCard card;
     private int index;
 
-    public SmallCardListener(PlayerPanel playerPanel, int index, Card card) {
+    public SmallCardListener(PlayerPanel playerPanel, int index, MetaCard card) {
         this.playerPanel = playerPanel;
         this.index = index;
         this.card = card;

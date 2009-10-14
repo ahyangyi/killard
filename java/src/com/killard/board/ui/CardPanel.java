@@ -1,6 +1,6 @@
 package com.killard.board.ui;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.ui.event.CardSkillListener;
 
 import javax.imageio.ImageIO;
@@ -10,13 +10,13 @@ import java.io.File;
 
 public class CardPanel extends JPanel {
 
-    private Card card;
+    private MetaCard card;
 
     private PlayerPanel playerPanel;
 
     private JButton skillBtn;
 
-    public CardPanel(Card card, PlayerPanel playerPanel) {
+    public CardPanel(MetaCard card, PlayerPanel playerPanel) {
         this.card = card;
         this.playerPanel = playerPanel;
         this.init();
@@ -40,7 +40,7 @@ public class CardPanel extends JPanel {
         }
     }
 
-    public void setCard(Card card) {
+    public void setCard(MetaCard card) {
         this.card = card;
         this.init();
         this.repaint();

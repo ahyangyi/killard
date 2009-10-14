@@ -1,6 +1,6 @@
 package com.killard.board.card;
 
-public interface Card {
+public interface MetaCard {
 
     public String getName();
 

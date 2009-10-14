@@ -2,7 +2,7 @@ package com.killard.board.environment;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
@@ -90,8 +90,8 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     }
 
     @Override
-    protected CardInstance createCardRecord(Card card, Player owner, Player target, int cardPosition) {
-        return new CardRecord(card, this, owner, target, cardPosition);
+    protected CardInstance createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
+        return new CardRecord(metaCard, this, owner, target, cardPosition);
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)

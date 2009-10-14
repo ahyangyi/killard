@@ -13,7 +13,7 @@ import com.killard.board.card.action.ChangeCardHealthAction;
  */
 public class ExecutableChangeCardHealthAction extends ExecutableCardAction<ChangeCardHealthAction> {
 
-    public void execute(AbstractCardRecord record, ChangeCardHealthAction action) {
+    public void execute(AbstractMetaCardRecord record, ChangeCardHealthAction action) {
         record.changeHealth(action.getHealthChange(), action);
     }
 }

@@ -1,6 +1,6 @@
 package com.killard.board.environment.record;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
@@ -34,7 +34,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private final Map<ElementSchool, Integer> elements = new HashMap<ElementSchool, Integer>();
 
-    private final List<Card> dealtCards = new ArrayList<Card>();
+    private final List<MetaCard> dealtCards = new ArrayList<MetaCard>();
 
     private final SortedSet<CardInstance> equippedCards = new TreeSet<CardInstance>();
 
@@ -60,22 +60,22 @@ public class PlayerRecord extends AbstractPlayerRecord {
         addStateListener(listener);
     }
 
-    public PlayerRecord(Role role, String name, int health, List<Card> cards) {
+    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards) {
         this.name = name;
         this.health = health;
         this.called = false;
-        this.dealtCards.addAll(cards);
+        this.dealtCards.addAll(metaCards);
         this.role = new RoleRecord(role);
     }
 
-    public PlayerRecord(Role role, String name, int health, List<Card> cards, Map<ElementSchool, Integer> elements) {
-        this(role, name, health, cards);
+    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards, Map<ElementSchool, Integer> elements) {
+        this(role, name, health, metaCards);
         this.elements.putAll(elements);
     }
 
-    public PlayerRecord(Role role, String name, int health, List<Card> cards,
+    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards,
                         Map<ElementSchool, Integer> elements, StateListener listener) {
-        this(role, name, health, cards, elements);
+        this(role, name, health, metaCards, elements);
         addStateListener(listener);
     }
 
@@ -95,14 +95,14 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return elements.get(elementSchool);
     }
 
-    public Card getDealtCard(Integer cardIndex) {
+    public MetaCard getDealtCard(Integer cardIndex) {
         return dealtCards.get(cardIndex);
     }
 
-    public Card[] getDealtCards(ElementSchool elementSchool) {
-        List<Card> cards = new ArrayList<Card>();
-        for (Card card : dealtCards) if (card.getElementSchool() == elementSchool) cards.add(card);
-        return cards.toArray(new Card[cards.size()]);
+    public MetaCard[] getDealtCards(ElementSchool elementSchool) {
+        List<MetaCard> metaCards = new ArrayList<MetaCard>();
+        for (MetaCard metaCard : dealtCards) if (metaCard.getElementSchool() == elementSchool) metaCards.add(metaCard);
+        return metaCards.toArray(new MetaCard[metaCards.size()]);
     }
 
     public CardInstance[] getEquippedCards() {
@@ -138,11 +138,11 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return turnCount;
     }
 
-    protected boolean addDealtCard(Card card) {
-        return dealtCards.add(card);
+    protected boolean addDealtCard(MetaCard metaCard) {
+        return dealtCards.add(metaCard);
     }
 
-    protected boolean removeDealtCard(Card card) {
+    protected boolean removeDealtCard(MetaCard card) {
         return dealtCards.remove(card);
     }
 

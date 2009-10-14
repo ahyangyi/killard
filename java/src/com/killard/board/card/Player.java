@@ -10,9 +10,9 @@ public interface Player {
 
     public int getElementAmount(ElementSchool elementSchool);
 
-    public Card[] getDealtCards(ElementSchool elementSchool);
+    public MetaCard[] getDealtCards(ElementSchool elementSchool);
 
-    public Card getDealtCard(Integer cardIndex);
+    public MetaCard getDealtCard(Integer cardIndex);
 
     public CardInstance[] getEquippedCards();
 

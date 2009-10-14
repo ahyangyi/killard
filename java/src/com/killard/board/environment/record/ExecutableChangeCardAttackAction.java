@@ -13,7 +13,7 @@ import com.killard.board.card.action.ChangeCardAttackAction;
  */
 public class ExecutableChangeCardAttackAction extends ExecutableCardAction<ChangeCardAttackAction> {
 
-    public void execute(AbstractCardRecord record, ChangeCardAttackAction action) {
+    public void execute(AbstractMetaCardRecord record, ChangeCardAttackAction action) {
         record.changeAttack(action.getAttack(), action);
     }
 }

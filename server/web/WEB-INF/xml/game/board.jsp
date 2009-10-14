@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/xml/includes.jsp" %>
-<%@ page import="com.killard.board.card.Card" %>
+<%@ page import="com.killard.board.card.MetaCard" %>
 <%@ page import="com.killard.board.card.ElementSchool" %>
 <%@ page import="com.killard.board.jdo.game.player.PlayerRecordDO" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
@@ -24,8 +24,8 @@
                         <c:if test="${player.id == playerName}">
                             <holdedcards>
                                 <%
-                                    for (Card card : player.getDealtCards(elementSchool)) {
-                                        pageContext.setAttribute("board", card);
+                                    for (MetaCard metaCard : player.getDealtCards(elementSchool)) {
+                                        pageContext.setAttribute("board", metaCard);
                                 %>
                                 <card>
                                     <name>${card.name}</name>

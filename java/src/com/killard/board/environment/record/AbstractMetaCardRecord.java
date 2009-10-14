@@ -22,11 +22,11 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class AbstractCardRecord implements CardInstance, Record, Comparable<AbstractCardRecord> {
+public abstract class AbstractMetaCardRecord implements CardInstance, Record, Comparable<AbstractMetaCardRecord> {
 
     private final Set<StateListener> stateListeners;
 
-    public AbstractCardRecord() {
+    public AbstractMetaCardRecord() {
         stateListeners = new HashSet<StateListener>();
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractCardRecord implements CardInstance, Record, Compar
         for (StateListener listener : stateListeners) listener.stateChanged(event);
     }
 
-    public int compareTo(AbstractCardRecord record) {
+    public int compareTo(AbstractMetaCardRecord record) {
         return getPosition() - record.getPosition();
     }
 }

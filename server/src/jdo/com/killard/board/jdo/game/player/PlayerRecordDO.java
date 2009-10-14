@@ -2,12 +2,12 @@ package com.killard.board.jdo.game.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
 import com.killard.board.environment.record.AbstractPlayerRecord;
-import com.killard.board.jdo.game.GameCardDO;
+import com.killard.board.jdo.game.GameMetaCardDO;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.game.GameRoleDO;
 
@@ -147,18 +147,18 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         return turnCount;
     }
 
-    public Card getDealtCard(Integer cardIndex) {
+    public MetaCard getDealtCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (GameCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (GameMetaCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
         }
         return null;
     }
 
-    public Card[] getDealtCards(ElementSchool elementSchool) {
+    public MetaCard[] getDealtCards(ElementSchool elementSchool) {
         for (ElementRecordDO element : elementRecords) {
             if (element.getElementSchool().equals(elementSchool)) return element.getDealtCards();
         }
-        return new Card[0];
+        return new MetaCard[0];
     }
 
     public CardInstance[] getEquippedCards() {
@@ -207,16 +207,16 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         }
     }
 
-    protected boolean addDealtCard(Card card) {
-        GameCardDO record = (GameCardDO) card;
+    protected boolean addDealtCard(MetaCard metaCard) {
+        GameMetaCardDO record = (GameMetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
         }
         return false;
     }
 
-    protected boolean removeDealtCard(Card card) {
-        GameCardDO record = (GameCardDO) card;
+    protected boolean removeDealtCard(MetaCard metaCard) {
+        GameMetaCardDO record = (GameMetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.removeDealtCard(record);
         }

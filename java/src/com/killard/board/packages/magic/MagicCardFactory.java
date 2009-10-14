@@ -1,6 +1,6 @@
 package com.killard.board.packages.magic;
 
-import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class MagicCardFactory {
 
-    public static final Map<ElementSchool, List<Card>> cards = new HashMap<ElementSchool, List<Card>>();
+    public static final Map<ElementSchool, List<MetaCard>> cards = new HashMap<ElementSchool, List<MetaCard>>();
 
     static {
 //        EarthCardFactory.registerCards();
@@ -31,10 +31,10 @@ public class MagicCardFactory {
 //        DeathCardFactory.registerCards();
     }
 
-    public static void registerCard(Card card) {
-        List<Card> list = cards.get(card.getElementSchool());
+    public static void registerCard(MetaCard card) {
+        List<MetaCard> list = cards.get(card.getElementSchool());
         if (list == null) {
-            list = new LinkedList<Card>();
+            list = new LinkedList<MetaCard>();
             cards.put(card.getElementSchool(), list);
         }
         list.add(card);
@@ -54,42 +54,42 @@ public class MagicCardFactory {
         return elements;
     }
 
-    public List<Card> allocateCardsForNextPlayer(List<Player> players, int cardAmount) {
-        List<Card> newCards = new LinkedList<Card>();
+    public List<MetaCard> allocateCardsForNextPlayer(List<Player> players, int cardAmount) {
+        List<MetaCard> newMetaCards = new LinkedList<MetaCard>();
         for (ElementSchool elementSchool : cards.keySet()) {
-            List<Card> remaining = getRemainingCards(elementSchool, players);
+            List<MetaCard> remaining = getRemainingCards(elementSchool, players);
             randomSelect(remaining, cardAmount);
-            newCards.addAll(remaining);
+            newMetaCards.addAll(remaining);
         }
-        return newCards;
+        return newMetaCards;
     }
 
-    protected List<Card> getRemainingCards(ElementSchool elementSchool, List<Player> players) {
-        List<Card> remaining = new LinkedList<Card>();
-        for (Card card : cards.get(elementSchool)) {
+    protected List<MetaCard> getRemainingCards(ElementSchool elementSchool, List<Player> players) {
+        List<MetaCard> remaining = new LinkedList<MetaCard>();
+        for (MetaCard card : cards.get(elementSchool)) {
             if (isCardAllocated(players, elementSchool, card)) continue;
             remaining.add(card);
         }
         return remaining;
     }
 
-    protected boolean isCardAllocated(List<Player> players, ElementSchool elementSchool, Card card) {
+    protected boolean isCardAllocated(List<Player> players, ElementSchool elementSchool, MetaCard card) {
         for (Player player : players) if (isCardAllocated(player.getDealtCards(elementSchool), card)) return true;
         return false;
     }
 
-    protected boolean isCardAllocated(Card[] allocatedCards, Card card) {
-        for (Card allocated : allocatedCards) {
+    protected boolean isCardAllocated(MetaCard[] allocatedMetaCards, MetaCard card) {
+        for (MetaCard allocated : allocatedMetaCards) {
             if (card.getClass().getSimpleName().equals(allocated.getClass().getSimpleName())) return true;
         }
         return false;
     }
 
-    protected void randomSelect(List<Card> remainingCards, int cardAmount) {
-        int size = remainingCards.size() - cardAmount;
+    protected void randomSelect(List<MetaCard> remainingMetaCards, int cardAmount) {
+        int size = remainingMetaCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
-            int index = (int)Math.floor(remainingCards.size() * Math.random());
-            remainingCards.remove(index);
+            int index = (int)Math.floor(remainingMetaCards.size() * Math.random());
+            remainingMetaCards.remove(index);
         }
     }
 }

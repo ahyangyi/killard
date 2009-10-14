@@ -13,7 +13,7 @@ import com.killard.board.card.action.RemoveCardAttributeAction;
  */
 public class ExecutableRemoveCardAttributeAction extends ExecutableCardAction<RemoveCardAttributeAction> {
 
-    public void execute(AbstractCardRecord record, RemoveCardAttributeAction action) {
+    public void execute(AbstractMetaCardRecord record, RemoveCardAttributeAction action) {
         record.removeAttribute(action.getAttribute(), action);
     }
 }

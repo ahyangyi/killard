@@ -4,7 +4,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.CardInstance;
-import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
@@ -22,6 +21,7 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.NotPersistent;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -38,9 +38,6 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
-
-    @Persistent
-    private GameCardDO card;
 
     @Persistent
     private String name;
@@ -62,10 +59,11 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
         this.key = keyBuilder.getKey();
 
-        this.card = card;
         this.name = skill.getName();
         this.cost = skill.getCost();
         this.function = skill.getFunction();
+
+        this.descriptors = new TreeSet<GameSkillDescriptorDO>();
     }
 
     public void restore(BoardManagerDO boardManager) {
@@ -76,20 +74,12 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         return key;
     }
 
-    public GameCardDO getCard() {
-        return card;
-    }
-
     public String getName() {
         return name;
     }
 
     protected SortedSet<GameSkillDescriptorDO> getDescriptors() {
         return descriptors;
-    }
-
-    public ElementSchool getElementSchool() {
-        return card.getElementSchool();
     }
 
     public int getCost() {

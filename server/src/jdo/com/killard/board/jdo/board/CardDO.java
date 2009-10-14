@@ -60,7 +60,7 @@ public class CardDO extends DescriptableDO<CardDescriptorDO> {
     @Persistent
     private Boolean visible;
 
-    @Persistent(mappedBy = "board", defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
 
     @Persistent(serialized = "true")

@@ -116,7 +116,6 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public CardRecordDO(GameCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
                         int position) {
-        this();
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), position);
         this.key = keyBuilder.getKey();

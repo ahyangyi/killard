@@ -105,7 +105,7 @@ public class AttributeDO extends DescriptableDO<AttributeDescriptorDO> {
         return descriptors;
     }
 
-    public AttributeDO clone(CardDO card) {
+    public AttributeDO clone(ElementSchoolDO elementSchool) {
         AttributeDO attribute = new AttributeDO(getName(),
                 getElementSchool(), isVisible(), isUseful(), isHarmful(), validators, before, after);
         for (AttributeDescriptorDO descriptor : descriptors) {

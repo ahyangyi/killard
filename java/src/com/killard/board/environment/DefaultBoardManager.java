@@ -47,7 +47,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     @Override
     public Player addPlayer(String playerName, int health) {
         MagicCardFactory factory = new MagicCardFactory();
-        PlayerRecord player = new PlayerRecord(playerName, health,
+        PlayerRecord player = new PlayerRecord(null, playerName, health,
                 factory.allocateCardsForNextPlayer(Arrays.asList(getPlayers()), 2),
                 factory.allocateElementsForNextPlayer(),
                 this);

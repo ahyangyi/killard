@@ -3,6 +3,7 @@ package com.killard.board.card.attribute;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.CardInstance;
+import com.killard.board.card.ElementSchool;
 
 import java.util.List;
 
@@ -16,33 +17,39 @@ import java.util.List;
  * </p>
  */
 public abstract class BasicAttribute implements Attribute {
+
+    private final ElementSchool elementSchool;
     
-    private final boolean hidden;
+    private final boolean visible;
 
     private final boolean useful;
 
     private final boolean harmful;
 
-    protected BasicAttribute() {
-        hidden = false;
+    protected BasicAttribute(ElementSchool elementSchool) {
+        this.elementSchool = elementSchool;
+        visible = false;
         useful = false;
         harmful = false;
     }
 
-    protected BasicAttribute(boolean hidden) {
-        this.hidden = hidden;
+    protected BasicAttribute(ElementSchool elementSchool, boolean visible) {
+        this.elementSchool = elementSchool;
+        this.visible = visible;
         useful = false;
         harmful = false;
     }
 
-    protected BasicAttribute(boolean hidden, boolean useful) {
-        this.hidden = hidden;
+    protected BasicAttribute(ElementSchool elementSchool, boolean visible, boolean useful) {
+        this.elementSchool = elementSchool;
+        this.visible = visible;
         this.useful = useful;
         harmful = false;
     }
 
-    protected BasicAttribute(boolean hidden, boolean useful, boolean harmful) {
-        this.hidden = hidden;
+    protected BasicAttribute(ElementSchool elementSchool, boolean visible, boolean useful, boolean harmful) {
+        this.elementSchool = elementSchool;
+        this.visible = visible;
         this.useful = useful;
         this.harmful = harmful;
     }
@@ -51,8 +58,12 @@ public abstract class BasicAttribute implements Attribute {
         return getClass().getSimpleName();
     }
 
+    public ElementSchool getElementSchool() {
+        return elementSchool;
+    }
+
     public boolean isVisible() {
-        return hidden;
+        return visible;
     }
 
     public boolean isUseful() {

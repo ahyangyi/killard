@@ -6,6 +6,8 @@ public interface Attribute extends ActionListener {
 
     public String getName();
 
+    public ElementSchool getElementSchool();
+
     public boolean isVisible();
 
     public boolean isUseful();

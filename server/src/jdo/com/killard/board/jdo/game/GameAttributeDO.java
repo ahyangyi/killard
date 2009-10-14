@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.CardInstance;
+import com.killard.board.card.ElementSchool;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
@@ -102,7 +103,7 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDescriptorDO> i
         return key;
     }
 
-    public GameElementSchoolDO getElementSchool() {
+    public ElementSchool getElementSchool() {
         return elementSchool;
     }
 

@@ -1,6 +1,7 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.parser.Function;
@@ -33,9 +34,6 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     private String name;
 
     @Persistent
-    private CardDO card;
-
-    @Persistent
     private Integer cost;
 
     @Persistent(serialized = "true")
@@ -45,8 +43,11 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     private SortedSet<SkillDescriptorDO> descriptors;
 
     public SkillDO(String name, CardDO card, int cost, Function function) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
+
         this.name = name;
-        this.card = card;
         this.cost = cost;
         this.function = function;
         this.descriptors = new TreeSet<SkillDescriptorDO>();
@@ -62,10 +63,6 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public CardDO getCard() {
-        return card;
     }
 
     public int getCost() {

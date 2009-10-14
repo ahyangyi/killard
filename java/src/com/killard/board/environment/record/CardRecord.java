@@ -13,6 +13,8 @@ import com.killard.board.environment.event.StateListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -53,6 +55,8 @@ public class CardRecord extends AbstractCardRecord {
     private final List<Attribute> hiddenAttributes = new ArrayList<Attribute>();
 
     private boolean casted;
+
+    private final Map<String, Object> properties = new HashMap<String, Object>();
 
     public CardRecord(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill) {
         this.name = getClass().getSimpleName();
@@ -183,5 +187,9 @@ public class CardRecord extends AbstractCardRecord {
 
     protected void setCasted(boolean casted) {
         this.casted = casted;
+    }
+
+    public Object getProperty(String name) {
+        return properties.get(name);
     }
 }

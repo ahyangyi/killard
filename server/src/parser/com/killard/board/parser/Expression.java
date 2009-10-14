@@ -12,4 +12,10 @@ public abstract class Expression implements Node {
     }
 
     public abstract String getText();
+
+    protected Integer toInteger(Object object) {
+        if (object == null) return 0;
+        if (object instanceof Integer) return (Integer) object;
+        return 0;
+    }
 }

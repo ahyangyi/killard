@@ -7,8 +7,10 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GameElementSchoolDescriptorDO;
+import com.killard.board.jdo.game.property.GameElementSchoolPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -28,7 +30,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, GameElementSchoolDescriptorDO> implements ElementSchool {
+public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, GameElementSchoolPropertyDO, GameElementSchoolDescriptorDO> implements ElementSchool {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -42,6 +44,9 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
     private SortedSet<GameAttributeDO> attributes;
+
+    @Persistent
+    private SortedSet<GameElementSchoolPropertyDO> properties;
 
     @Persistent
     private SortedSet<GameElementSchoolDescriptorDO> descriptors;
@@ -61,6 +66,11 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
         this.attributes = new TreeSet<GameAttributeDO>();
         for (AttributeDO attribute : elementSchool.getAttributes()) {
             attributes.add(new GameAttributeDO(this, attribute));
+        }
+
+        this.properties = new TreeSet<GameElementSchoolPropertyDO>();
+        for (ElementSchoolPropertyDO property : elementSchool.getProperties()) {
+            this.properties.add(new GameElementSchoolPropertyDO(this, property));
         }
 
         this.descriptors = new TreeSet<GameElementSchoolDescriptorDO>();
@@ -86,6 +96,18 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
 
     public String getName() {
         return name;
+    }
+
+    public GameElementSchoolPropertyDO[] getProperties() {
+        return properties.toArray(new GameElementSchoolPropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(GameElementSchoolPropertyDO property) {
+        return false;
     }
 
     protected SortedSet<GameElementSchoolDescriptorDO> getDescriptors() {

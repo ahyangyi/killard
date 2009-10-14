@@ -4,6 +4,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
+import com.killard.board.jdo.board.property.SkillPropertyDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -26,7 +28,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class SkillDO extends DescriptableDO<SkillDO, SkillDescriptorDO> {
+public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -44,6 +46,9 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillDescriptorDO> {
     @Persistent(serialized = "true")
     private Function function;
 
+    @Persistent
+    private SortedSet<SkillPropertyDO> properties;
+
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDescriptorDO> descriptors;
 
@@ -56,6 +61,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillDescriptorDO> {
         this.targets = new ArrayList<String>();
         this.cost = cost;
         this.function = function;
+        this.properties = new TreeSet<SkillPropertyDO>();
         this.descriptors = new TreeSet<SkillDescriptorDO>();
     }
 
@@ -65,6 +71,18 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillDescriptorDO> {
 
     public String getName() {
         return name;
+    }
+
+    public SkillPropertyDO[] getProperties() {
+        return properties.toArray(new SkillPropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return properties.add(new SkillPropertyDO(this, name, data));
+    }
+
+    protected boolean removeProperty(SkillPropertyDO property) {
+        return properties.remove(property);
     }
 
     public void setName(String name) {

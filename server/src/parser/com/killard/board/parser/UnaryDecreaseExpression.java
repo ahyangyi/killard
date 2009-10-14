@@ -27,7 +27,7 @@ public class UnaryDecreaseExpression extends UnaryExpression {
     }
 
     public Object execute(Context context) throws ExecutionException {
-        Integer operand = (Integer) getOperand().execute(context);
+        Integer operand = toInteger(getOperand().execute(context));
         int result = operand - 1;
         context.setVariable(getOperand().getText(), result);
         return result;

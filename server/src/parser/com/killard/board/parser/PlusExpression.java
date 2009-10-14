@@ -31,8 +31,8 @@ public class PlusExpression extends BinaryExpression {
     }
 
     public Object execute(Context context) throws ExecutionException {
-        Integer left = (Integer) getLhs().execute(context);
-        Integer right = (Integer) getRhs().execute(context);
+        Integer left = toInteger(getLhs().execute(context));
+        Integer right = toInteger(getRhs().execute(context));
         return left + right;
     }
 }

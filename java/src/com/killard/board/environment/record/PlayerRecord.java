@@ -49,6 +49,8 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     private int turnCount = 0;
 
+    private final Map<String, Object> properties = new HashMap<String, Object>();
+
     public PlayerRecord(Role role, String name, int health) {
         this.name = name;
         this.health = health;
@@ -190,5 +192,9 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     protected void setTurnCount(int turnCount) {
         this.turnCount = turnCount;
+    }
+
+    public Object getProperty(String name) {
+        return properties.get(name);
     }
 }

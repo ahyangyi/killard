@@ -18,7 +18,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CompositeSkill extends BasicSkill {
+public class CompositeSkill extends BasicSkill<CompositeSkill> {
 
     private List<Skill> skills = new ArrayList<Skill>();
 

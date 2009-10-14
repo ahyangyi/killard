@@ -3,6 +3,8 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
+import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -23,7 +25,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolDescriptorDO> {
+public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolPropertyDO, ElementSchoolDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -43,6 +45,9 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     private SortedSet<AttributeDO> attributes;
 
     @Persistent
+    private SortedSet<ElementSchoolPropertyDO> properties;
+
+    @Persistent
     private SortedSet<ElementSchoolDescriptorDO> descriptors;
 
     public ElementSchoolDO(String name, PackageDO pack) {
@@ -50,6 +55,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         this.packageKey = pack.getKey();
         this.cards = new TreeSet<MetaCardDO>();
         this.attributes = new TreeSet<AttributeDO>();
+        this.properties = new TreeSet<ElementSchoolPropertyDO>();
         this.descriptors = new TreeSet<ElementSchoolDescriptorDO>();
     }
 
@@ -64,6 +70,19 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     public String getName() {
         return name;
     }
+
+    public ElementSchoolPropertyDO[] getProperties() {
+        return properties.toArray(new ElementSchoolPropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return properties.add(new ElementSchoolPropertyDO(this, name, data));
+    }
+
+    protected boolean removeProperty(ElementSchoolPropertyDO property) {
+        return properties.remove(property);
+    }
+
     public void setName(String name) {
         this.name = name;
     }

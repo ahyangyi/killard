@@ -11,4 +11,6 @@ package com.killard.board.environment.event;
  */
 public interface ActionListener<T> extends Comparable<T> {
 
+//    public Object getProperty(String name);
+
 }

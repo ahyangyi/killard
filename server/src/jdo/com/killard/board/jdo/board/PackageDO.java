@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.users.User;
 import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -30,7 +31,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PackageDO extends DescriptableDO<PackageDO, PackageDescriptorDO> {
+public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -103,6 +104,18 @@ public class PackageDO extends DescriptableDO<PackageDO, PackageDescriptorDO> {
 
     public String getName() {
         return name;
+    }
+
+    public PropertyDO[] getProperties() {
+        return new PropertyDO[0];
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(PropertyDO property) {
+        return false;
     }
 
     public void setName(String name) {

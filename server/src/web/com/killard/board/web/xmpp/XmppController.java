@@ -126,7 +126,7 @@ public class XmppController extends BasicController {
 //        for (Card board : player.getEquippedCards()) {
 //            sendMessage(getUsername(from),
 //                    "[" + board.getPosition() + "] " + board + " level " + board.getLevel() + " health "
-//                            + board.getHealth() + " attack " + board.getAttack().getValue());
+//                            + board.getHealth() + " attack " + board.getAttack().getData());
 //        }
 //    }
 //

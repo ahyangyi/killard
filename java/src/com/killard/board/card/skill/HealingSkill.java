@@ -10,7 +10,7 @@ import com.killard.board.card.action.ChangePlayerHealthAction;
 
 import java.util.List;
 
-public class HealingSkill extends BasicSkill {
+public class HealingSkill extends BasicSkill<HealingSkill> {
 
     private final Attack healing;
 

@@ -2,7 +2,7 @@ package com.killard.board.card;
 
 import java.util.List;
 
-public interface Skill {
+public interface Skill<T extends Skill> extends Record<T> {
 
     public String getName();
 

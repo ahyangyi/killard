@@ -80,7 +80,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
         this.boardManagerKey = boardManager.getKey();
 
-        this.role = new RoleRecordDO(this, role, boardManager);
+        this.role = new RoleRecordDO(this, role);
         this.uid = uid;
         this.health = 0;
         this.cardPlayed = false;

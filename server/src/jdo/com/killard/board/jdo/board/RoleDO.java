@@ -5,6 +5,8 @@ import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
+import com.killard.board.jdo.board.property.RolePropertyDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -27,7 +29,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleDO extends DescriptableDO<RoleDO, RoleDescriptorDO> {
+public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -56,6 +58,9 @@ public class RoleDO extends DescriptableDO<RoleDO, RoleDescriptorDO> {
     private List<AttributeHandler> after;
 
     @Persistent
+    private SortedSet<RolePropertyDO> properties;
+
+    @Persistent
     private SortedSet<RoleDescriptorDO> descriptors;
 
     public RoleDO(PackageDO pack, String name, boolean visible,
@@ -77,6 +82,18 @@ public class RoleDO extends DescriptableDO<RoleDO, RoleDescriptorDO> {
 
     public String getName() {
         return name;
+    }
+
+    public RolePropertyDO[] getProperties() {
+        return properties.toArray(new RolePropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return properties.add(new RolePropertyDO(this, name, data));
+    }
+
+    protected boolean removeProperty(RolePropertyDO property) {
+        return properties.remove(property);
     }
 
     public boolean isVisible() {

@@ -32,6 +32,7 @@ public enum SkillTarget {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(SkillTarget.valueOf("all"));
+        String pattern = "\\d+";
+        System.out.println("1a".matches(pattern));
     }
 }

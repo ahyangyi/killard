@@ -11,7 +11,7 @@ import com.killard.board.card.action.ChangePlayerHealthAction;
 
 import java.util.List;
 
-public class AttackSkill extends BasicSkill {
+public class AttackSkill extends BasicSkill<AttackSkill> {
 
     private final Attack attack;
 

@@ -27,7 +27,8 @@ public final class ChangePlayerHealthAction extends PlayerAction<Card> {
     public ChangePlayerHealthAction(Card source, Player target,
                                     ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
         super(source, target);
-        this.healthChange = new Attack(elementSchool, attackType, attackValue);
+        int value = attackValue == null ? 0 : attackValue;
+        this.healthChange = new Attack(elementSchool, attackType, value);
     }
 
     public Attack getHealthChange() {

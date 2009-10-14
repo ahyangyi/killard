@@ -26,7 +26,8 @@ public class ChangeCardMaxHealthAction extends CardAction<Card> {
     public ChangeCardMaxHealthAction(Card source, Card target,
                                      ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
         super(source, target);
-        this.maxHealthChange = new Attack(elementSchool, attackType, attackValue);
+        int value = attackValue == null ? 0 : attackValue;
+        this.maxHealthChange = new Attack(elementSchool, attackType, value);
     }
 
     public Attack getMaxHealthChange() {

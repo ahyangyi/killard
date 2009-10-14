@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -25,7 +26,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class AttributeDO extends DescriptableDO<AttributeDO, AttributeDescriptorDO> {
+public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO, AttributeDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -40,12 +41,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributeDescriptor
     @Persistent
     private Boolean visible;
 
-    @Persistent
-    private Boolean useful;
-
-    @Persistent
-    private Boolean harmful;
-
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
 
@@ -55,21 +50,23 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributeDescriptor
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
+    @Persistent
+    private SortedSet<AttributePropertyDO> properties;
+
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<AttributeDescriptorDO> descriptors;
 
-    public AttributeDO(String name, ElementSchoolDO elementSchool, boolean visible, boolean useful, boolean harmful,
+    public AttributeDO(String name, ElementSchoolDO elementSchool, boolean visible,
                        List<AttributeHandler> validators,
                        List<AttributeHandler> before,
                        List<AttributeHandler> after) {
         this.name = name;
         this.elementSchool = elementSchool;
         this.visible = visible;
-        this.useful = useful;
-        this.harmful = harmful;
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
+        this.properties = new TreeSet<AttributePropertyDO>();
         this.descriptors = new TreeSet<AttributeDescriptorDO>();
     }
 
@@ -85,6 +82,18 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributeDescriptor
         return name;
     }
 
+    public AttributePropertyDO[] getProperties() {
+        return properties.toArray(new AttributePropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return properties.add(new AttributePropertyDO(this, name, data));
+    }
+
+    protected boolean removeProperty(AttributePropertyDO property) {
+        return properties.remove(property);
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -93,21 +102,13 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributeDescriptor
         return visible;
     }
 
-    public boolean isUseful() {
-        return useful;
-    }
-
-    public boolean isHarmful() {
-        return harmful;
-    }
-
     protected SortedSet<AttributeDescriptorDO> getDescriptors() {
         return descriptors;
     }
 
     public AttributeDO clone(ElementSchoolDO elementSchool) {
         AttributeDO attribute = new AttributeDO(getName(),
-                getElementSchool(), isVisible(), isUseful(), isHarmful(), validators, before, after);
+                getElementSchool(), isVisible(), validators, before, after);
         for (AttributeDescriptorDO descriptor : descriptors) {
             AttributeDescriptorDO cloneDescriptor = new AttributeDescriptorDO(attribute, descriptor.getLocale());
             attribute.addDescriptor(cloneDescriptor);

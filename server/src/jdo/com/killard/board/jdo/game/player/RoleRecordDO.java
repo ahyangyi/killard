@@ -50,7 +50,7 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    public RoleRecordDO(PlayerRecordDO player, GameRoleDO role, BoardManagerDO boardManager) {
+    public RoleRecordDO(PlayerRecordDO player, GameRoleDO role) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), role.getName());
         this.key = keyBuilder.getKey();

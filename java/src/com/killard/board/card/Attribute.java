@@ -9,8 +9,4 @@ public interface Attribute<T extends Attribute> extends ActionListener<T> {
     public ElementSchool getElementSchool();
 
     public boolean isVisible();
-
-    public boolean isUseful();
-
-    public boolean isHarmful();
 }

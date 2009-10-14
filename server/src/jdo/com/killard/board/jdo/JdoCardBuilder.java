@@ -121,9 +121,7 @@ public class JdoCardBuilder {
     public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         String id = getString(map, "id");
         boolean visible = getBoolean(map, "visible");
-        boolean useful = getBoolean(map, "useful");
-        boolean harmful = getBoolean(map, "harmful");
-        AttributeDO attribute = new AttributeDO(id, elementSchool, visible, useful, harmful,
+        AttributeDO attribute = new AttributeDO(id, elementSchool, visible,
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));

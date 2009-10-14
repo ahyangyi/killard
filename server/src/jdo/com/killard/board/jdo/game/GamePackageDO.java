@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
@@ -32,7 +33,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GamePackageDO extends DescriptableDO<GamePackageDO, GamePackageDescriptorDO> implements BoardPackage {
+public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, GamePackageDescriptorDO> implements BoardPackage {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -89,6 +90,18 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, GamePackageDesc
 
     public String getName() {
         return name;
+    }
+
+    public PropertyDO[] getProperties() {
+        return new PropertyDO[0];
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(PropertyDO property) {
+        return false;
     }
 
     public GameRuleDO getRule() {

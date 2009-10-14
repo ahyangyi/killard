@@ -30,10 +30,10 @@ public class ArrayCall extends Call {
         Object owner = context.pop();
         Object index = getIndex().execute(context);
         if (owner.getClass().isArray()) {
-            return Array.get(owner, (Integer) index);
+            return Array.get(owner, toInteger(index));
         } else if (owner instanceof List) {
             List list = (List) owner;
-            return list.get((Integer) index);
+            return list.get(toInteger(index));
         } else if (owner instanceof Map) {
             Map map = (Map) owner;
             return map.get(index);

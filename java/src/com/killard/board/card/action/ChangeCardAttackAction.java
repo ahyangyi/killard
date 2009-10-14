@@ -26,7 +26,8 @@ public final class ChangeCardAttackAction extends CardAction<Card> {
     public ChangeCardAttackAction(Card source, Card target,
                                   ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
         super(source, target);
-        this.attack = new Attack(elementSchool, attackType, attackValue);
+        int value = attackValue == null ? 0 : attackValue;
+        this.attack = new Attack(elementSchool, attackType, value);
     }
 
     public Attack getAttack() {

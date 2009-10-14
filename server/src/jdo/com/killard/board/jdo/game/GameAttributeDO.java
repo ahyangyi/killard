@@ -13,8 +13,10 @@ import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GameAttributeDescriptorDO;
+import com.killard.board.jdo.game.property.GameAttributePropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -37,7 +39,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttributeDescriptorDO> implements Attribute<GameAttributeDO> {
+public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttributePropertyDO, GameAttributeDescriptorDO> implements Attribute<GameAttributeDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -52,12 +54,6 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
     @Persistent
     private Boolean visible;
 
-    @Persistent
-    private Boolean useful;
-
-    @Persistent
-    private Boolean harmful;
-
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
 
@@ -66,6 +62,9 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
 
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
+
+    @Persistent
+    private SortedSet<GameAttributePropertyDO> properties;
 
     @Persistent
     private SortedSet<GameAttributeDescriptorDO> descriptors;
@@ -78,12 +77,15 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         this.elementSchool = elementSchool;
         this.name = attribute.getName();
         this.visible = attribute.isVisible();
-        this.useful = attribute.isUseful();
-        this.harmful = attribute.isHarmful();
 
         this.validators = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getValidators()));
         this.before = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getBefore()));
         this.after = new ArrayList<AttributeHandler>(Arrays.asList(attribute.getAfter()));
+
+        this.properties = new TreeSet<GameAttributePropertyDO>();
+        for (AttributePropertyDO property : attribute.getProperties()) {
+            this.properties.add(new GameAttributePropertyDO(this, property));
+        }
 
         this.descriptors = new TreeSet<GameAttributeDescriptorDO>();
         for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
@@ -103,20 +105,24 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         return name;
     }
 
+    public GameAttributePropertyDO[] getProperties() {
+        return properties.toArray(new GameAttributePropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(GameAttributePropertyDO property) {
+        return false;
+    }
+
     protected SortedSet<GameAttributeDescriptorDO> getDescriptors() {
         return descriptors;
     }
 
     public boolean isVisible() {
         return visible;
-    }
-
-    public boolean isUseful() {
-        return useful;
-    }
-
-    public boolean isHarmful() {
-        return harmful;
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)

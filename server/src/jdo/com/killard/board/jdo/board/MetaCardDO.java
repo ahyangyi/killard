@@ -5,6 +5,8 @@ import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -24,7 +26,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardDescriptorDO> {
+public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, MetaCardDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -69,6 +71,9 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardDescriptorDO>
     @Persistent(serialized = "true")
     private SortedSet<String> hiddenAttributes;
 
+    @Persistent
+    private SortedSet<MetaCardPropertyDO> properties;
+
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<MetaCardDescriptorDO> descriptors;
 
@@ -80,6 +85,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardDescriptorDO>
         this.skills = new TreeSet<SkillDO>();
         this.hiddenAttributes = new TreeSet<String>();
         this.visibleAttributes = new TreeSet<String>();
+        this.properties = new TreeSet<MetaCardPropertyDO>();
         this.descriptors = new TreeSet<MetaCardDescriptorDO>();
         this.definition = new Text(definition);
     }
@@ -90,6 +96,18 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardDescriptorDO>
 
     public String getName() {
         return name;
+    }
+
+    public MetaCardPropertyDO[] getProperties() {
+        return properties.toArray(new MetaCardPropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return properties.add(new MetaCardPropertyDO(this, name, data));
+    }
+
+    protected boolean removeProperty(MetaCardPropertyDO property) {
+        return properties.remove(property);
     }
 
     public void setName(String name) {

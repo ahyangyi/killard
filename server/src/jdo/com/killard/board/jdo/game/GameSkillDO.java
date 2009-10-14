@@ -8,7 +8,10 @@ import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
+import com.killard.board.jdo.board.property.SkillPropertyDO;
 import com.killard.board.jdo.game.descriptor.GameSkillDescriptorDO;
+import com.killard.board.jdo.game.property.GameSkillPropertyDO;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.Function;
@@ -36,7 +39,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptorDO> implements Skill {
+public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO, GameSkillDescriptorDO> implements Skill<GameSkillDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -55,6 +58,9 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptor
     private Function function;
 
     @Persistent
+    private SortedSet<GameSkillPropertyDO> properties;
+
+    @Persistent
     private SortedSet<GameSkillDescriptorDO> descriptors;
 
     @NotPersistent
@@ -70,7 +76,15 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptor
         this.cost = skill.getCost();
         this.function = skill.getFunction();
 
+        this.properties = new TreeSet<GameSkillPropertyDO>();
+        for (SkillPropertyDO property : skill.getProperties()) {
+            this.properties.add(new GameSkillPropertyDO(this, property));
+        }
+
         this.descriptors = new TreeSet<GameSkillDescriptorDO>();
+        for (SkillDescriptorDO descriptor : skill.getAllDescriptors()) {
+            this.descriptors.add(new GameSkillDescriptorDO(this, descriptor));
+        }
     }
 
     public void restore(BoardManagerDO boardManager) {
@@ -83,6 +97,18 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptor
 
     public String getName() {
         return name;
+    }
+
+    public GameSkillPropertyDO[] getProperties() {
+        return new GameSkillPropertyDO[0];
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(GameSkillPropertyDO property) {
+        return false;
     }
 
     public SkillTarget[] getTargets() {
@@ -113,5 +139,9 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptor
             e.printStackTrace();
         }
         return ctx.getActions();
+    }
+
+    public Object getProperty(String name) {
+        return null;
     }
 }

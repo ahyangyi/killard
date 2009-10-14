@@ -4,8 +4,10 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.property.RolePropertyDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
+import com.killard.board.jdo.game.property.GameRolePropertyDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -30,7 +32,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRoleDescriptorDO> {
+public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRolePropertyDO, GameRoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -56,6 +58,9 @@ public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRoleDescriptorDO>
     private List<AttributeHandler> after;
 
     @Persistent
+    private SortedSet<GameRolePropertyDO> properties;
+
+    @Persistent
     private SortedSet<GameRoleDescriptorDO> descriptors;
 
     public GameRoleDO(GamePackageDO pack, RoleDO role) {
@@ -66,6 +71,11 @@ public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRoleDescriptorDO>
         validators = new ArrayList<AttributeHandler>(Arrays.asList(role.getValidators()));
         before = new ArrayList<AttributeHandler>(Arrays.asList(role.getBefore()));
         after = new ArrayList<AttributeHandler>(Arrays.asList(role.getAfter()));
+
+        this.properties = new TreeSet<GameRolePropertyDO>();
+        for (RolePropertyDO property : role.getProperties()) {
+            this.properties.add(new GameRolePropertyDO(this, property));
+        }
 
         this.descriptors = new TreeSet<GameRoleDescriptorDO>();
         for (RoleDescriptorDO descriptor : role.getAllDescriptors()) {
@@ -83,6 +93,18 @@ public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRoleDescriptorDO>
 
     public String getName() {
         return name;
+    }
+
+    public GameRolePropertyDO[] getProperties() {
+        return properties.toArray(new GameRolePropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(GameRolePropertyDO property) {
+        return false;
     }
 
     public boolean isVisible() {

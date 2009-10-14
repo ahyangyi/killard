@@ -6,6 +6,8 @@ import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -22,36 +24,26 @@ public abstract class BasicAttribute<T extends BasicAttribute> implements Attrib
     
     private final boolean visible;
 
-    private final boolean useful;
-
-    private final boolean harmful;
+    private final Map<String, Object> properties = new HashMap<String, Object>();
 
     protected BasicAttribute(ElementSchool elementSchool) {
         this.elementSchool = elementSchool;
         visible = false;
-        useful = false;
-        harmful = false;
     }
 
     protected BasicAttribute(ElementSchool elementSchool, boolean visible) {
         this.elementSchool = elementSchool;
         this.visible = visible;
-        useful = false;
-        harmful = false;
     }
 
     protected BasicAttribute(ElementSchool elementSchool, boolean visible, boolean useful) {
         this.elementSchool = elementSchool;
         this.visible = visible;
-        this.useful = useful;
-        harmful = false;
     }
 
     protected BasicAttribute(ElementSchool elementSchool, boolean visible, boolean useful, boolean harmful) {
         this.elementSchool = elementSchool;
         this.visible = visible;
-        this.useful = useful;
-        this.harmful = harmful;
     }
 
     public String getName() {
@@ -66,31 +58,7 @@ public abstract class BasicAttribute<T extends BasicAttribute> implements Attrib
         return visible;
     }
 
-    public boolean isUseful() {
-        return useful;
-    }
-
-    public boolean isHarmful() {
-        return harmful;
-    }
-
-    public Class action() {
-        return Action.class;
-    }
-
-    public boolean selfTargeted() {
-        return true;
-    }
-
-    public List<Action> validate(Card owner, Action action) {
-        return null;
-    }
-
-    public List<Action> before(Card owner, Action action) {
-        return null;
-    }
-
-    public List<Action> after(Card owner, Action action) {
-        return null;
+    public Object getProperty(String name) {
+        return properties.get(name);
     }
 }

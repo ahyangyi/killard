@@ -12,8 +12,10 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GameCardDescriptorDO;
+import com.killard.board.jdo.game.property.GameCardPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -33,7 +35,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameCardDO extends DescriptableDO<GameCardDO, GameCardDescriptorDO>
+public class GameCardDO extends DescriptableDO<GameCardDO, GameCardPropertyDO, GameCardDescriptorDO>
         implements MetaCard<GameCardDO> {
 
     @PrimaryKey
@@ -77,6 +79,9 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardDescriptorDO>
     private SortedSet<String> hiddenAttributes;
 
     @Persistent
+    private SortedSet<GameCardPropertyDO> properties;
+
+    @Persistent
     private SortedSet<GameCardDescriptorDO> descriptors;
 
     public GameCardDO(GameElementSchoolDO elementSchool, MetaCardDO card) {
@@ -107,6 +112,11 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardDescriptorDO>
             visibleAttributes.add(attribute.getName());
         }
 
+        this.properties = new TreeSet<GameCardPropertyDO>();
+        for (MetaCardPropertyDO property : card.getProperties()) {
+            this.properties.add(new GameCardPropertyDO(this, property));
+        }
+
         this.descriptors = new TreeSet<GameCardDescriptorDO>();
         for (MetaCardDescriptorDO descriptor : card.getAllDescriptors()) {
             this.descriptors.add(new GameCardDescriptorDO(this, descriptor));
@@ -123,6 +133,18 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardDescriptorDO>
 
     public String getName() {
         return name;
+    }
+
+    public GameCardPropertyDO[] getProperties() {
+        return properties.toArray(new GameCardPropertyDO[properties.size()]);
+    }
+
+    protected boolean addProperty(String name, String data) {
+        return false;
+    }
+
+    protected boolean removeProperty(GameCardPropertyDO property) {
+        return false;
     }
 
     public int getLevel() {

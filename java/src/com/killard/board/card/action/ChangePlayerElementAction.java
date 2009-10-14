@@ -22,7 +22,7 @@ public final class ChangePlayerElementAction extends PlayerAction<Record> {
     public ChangePlayerElementAction(Record source, Player target, ElementSchool elementSchool, Integer value) {
         super(source, target);
         this.elementSchool = elementSchool;
-        this.value = value;
+        this.value = value == null ? 0 : value;
     }
 
     public ElementSchool getElementSchool() {

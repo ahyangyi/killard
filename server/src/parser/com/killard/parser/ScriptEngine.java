@@ -2,7 +2,7 @@ package com.killard.parser;
 
 import com.killard.card.Card;
 import com.killard.card.ElementSchool;
-import com.killard.pack.magic.MagicCardFactory;
+import com.killard.packages.magic.MagicCardFactory;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;

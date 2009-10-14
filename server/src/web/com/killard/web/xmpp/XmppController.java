@@ -83,8 +83,8 @@ public class XmppController extends BasicController {
 //        if (player != null) quitGame(from);
 //        PersistenceHelper.doTransaction();
 //        int packageId = Integer.parseInt(args[1]);
-//        PackageDO pack = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageId);
-//        BoardManagerDO boardManager = new BoardManagerDO(pack, 2);
+//        PackageDO packageDO = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageId);
+//        BoardManagerDO boardManager = new BoardManagerDO(packageDO, 2);
 //        joinGame(from, boardManager);
 //        sendMessage(getUsername(from), "You have created a new game.");
 //    }

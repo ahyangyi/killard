@@ -2,6 +2,7 @@ package com.killard.board.jdo.game.property;
 
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
+import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
 
 import javax.jdo.annotations.IdentityType;
@@ -19,7 +20,7 @@ import javax.jdo.annotations.PersistenceCapable;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class GameRolePropertyDO extends PropertyDO {
 
-    public GameRolePropertyDO(DescriptableDO owner, RolePropertyDO origin) {
+    public GameRolePropertyDO(GameRoleDO owner, RolePropertyDO origin) {
         super(owner, origin);
     }
 }

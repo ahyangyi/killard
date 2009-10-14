@@ -16,6 +16,7 @@ import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -197,7 +198,25 @@ public class ManageController extends BasicController {
                 return;
             }
         }
-        redirect("/index", request, response);
+        redirect("/manage/publish", request, response);
+    }
+
+    @RequestMapping(value = "/manage/publish.*", method = RequestMethod.GET)
+    public void publish(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (defaultPackageKey == null) redirect("/manage/reset", request, response);
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        GamePackageDO gamePackage = new GamePackageDO();
+        pm.makePersistent(gamePackage);
+        PersistenceHelper.doTransaction();
+
+        PackageDO pack = pm.getObjectById(PackageDO.class, defaultPackageKey);
+        gamePackage.init(pack);
+        PersistenceHelper.doTransaction();
+
+        pm.makePersistent(gamePackage);
+
+        redirect("/game/list", request, response);
     }
 
     protected String getString(File file) throws IOException {

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Arrays;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BoardDO extends AbstractBoard<BoardDO> {
@@ -45,6 +46,9 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Persistent
     private Integer currentPlayerPosition;
+
+    @Persistent
+    private List<String> roleNames;
 
     @Persistent
     private List<PlayerRecordDO> roundQueue;
@@ -67,9 +71,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     @NotPersistent
     private GamePackageDO gamePackage;
 
-    public BoardDO(GamePackageDO gamePackage) {
+    public BoardDO(GamePackageDO gamePackage, int playerNumber) {
         this.packageKey = gamePackage.getKey();
         this.currentPlayerPosition = 0;
+        this.roleNames = new ArrayList<String>(Arrays.asList(gamePackage.getRoleGroup(playerNumber).getRoleNames()));
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
@@ -131,9 +136,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     public Player addPlayer(String playerName, int health) throws BoardException {
-        PlayerRecordDO player = new PlayerRecordDO(this, gamePackage.getRandomRole(), playerName, makeElementRecords());
+        GameRoleDO role = gamePackage.getRoles().get(roleNames.get(roundQueue.size()));
+        PlayerRecordDO player = new PlayerRecordDO(this, role, playerName, makeElementRecords());
         roundQueue.add(player);
-        if (gamePackage.getRoles().size() == roundQueue.size()) executeAction(new BeginGameAction(this));
+        if (roleNames.size() == roundQueue.size()) executeAction(new BeginGameAction(this));
         return player;
     }
 

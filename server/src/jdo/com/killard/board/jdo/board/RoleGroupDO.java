@@ -57,6 +57,10 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
         return packageKey;
     }
 
+    public String[] getRoleNames() {
+        return roleNames.toArray(new String[roleNames.size()]);
+    }
+
     public RoleDO[] getRoles() {
         return roles.toArray(new RoleDO[roles.size()]);
     }

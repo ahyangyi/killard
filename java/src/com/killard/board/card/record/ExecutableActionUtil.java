@@ -24,6 +24,8 @@ import com.killard.board.card.action.RevealRoleAction;
 import com.killard.board.card.action.RevivePlayerAction;
 import com.killard.board.card.action.TransferCardAction;
 import com.killard.board.card.action.WinAction;
+import com.killard.board.card.action.ChangeCardPropertyAction;
+import com.killard.board.card.action.ChangePlayerPropertyAction;
 import com.killard.board.environment.ExecutableAction;
 
 import java.util.HashMap;
@@ -49,8 +51,10 @@ public final class ExecutableActionUtil {
         map.put(ChangeCardAttackAction.class, new ExecutableChangeCardAttackAction());
         map.put(ChangeCardHealthAction.class, new ExecutableChangeCardHealthAction());
         map.put(ChangeCardMaxHealthAction.class, new ExecutableChangeCardMaxHealthAction());
+        map.put(ChangeCardPropertyAction.class, new ExecutableChangeCardPropertyAction());
         map.put(ChangePlayerElementAction.class, new ExecutableChangePlayerElementAction());
         map.put(ChangePlayerHealthAction.class, new ExecutableChangePlayerHealthAction());
+        map.put(ChangePlayerPropertyAction.class, new ExecutableChangePlayerPropertyAction());
         map.put(DealCardAction.class, new ExecutableDealCardAction());
         map.put(DiscardCardAction.class, new ExecutableDiscardCardAction());
         map.put(DrawCardAction.class, new ExecutableDrawCardAction());

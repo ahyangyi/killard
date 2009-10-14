@@ -7,6 +7,7 @@ import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.RoleGroupDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GamePackageDescriptorDO;
 
@@ -51,6 +52,9 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
     private List<GameRoleDO> roles;
 
     @Persistent
+    private SortedSet<GameRoleGroupDO> roleGroups;
+
+    @Persistent
     private SortedSet<GameElementSchoolDO> elementSchools;
 
     @Persistent
@@ -59,25 +63,32 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<BoardDO> boards;
 
-    public GamePackageDO(PackageDO pack, int playerNumber) {
+    public GamePackageDO() {
+        this.roles = new ArrayList<GameRoleDO>();
+        this.roleGroups = new TreeSet<GameRoleGroupDO>();
+        this.elementSchools = new TreeSet<GameElementSchoolDO>();
+        this.descriptors = new TreeSet<GamePackageDescriptorDO>();
+        this.boards = new TreeSet<BoardDO>();
+    }
+
+    public void init(PackageDO pack) {
         this.packageKey = pack.getKey();
         this.rule = new GameRuleDO(this, pack.getRule());
 
-        this.roles = new ArrayList<GameRoleDO>();
-        for (RoleDO role : pack.getRoleGroup(playerNumber).getRoles()) this.roles.add(new GameRoleDO(this, role));
+        for (RoleDO role : pack.getRoles()) this.roles.add(new GameRoleDO(this, role));
 
-        this.elementSchools = new TreeSet<GameElementSchoolDO>();
+        for (RoleGroupDO group : pack.getRoleGroups()) {
+            this.roleGroups.add(new GameRoleGroupDO(this, group));
+        }
+
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
             elementSchools.add(new GameElementSchoolDO(this, elementSchool));
         }
         this.name = pack.getName();
 
-        this.descriptors = new TreeSet<GamePackageDescriptorDO>();
         for (PackageDescriptorDO descriptor : pack.getDescriptors()) {
             this.descriptors.add(new GamePackageDescriptorDO(this, descriptor));
         }
-
-        this.boards = new TreeSet<BoardDO>();
     }
 
     public Key getKey() {
@@ -116,8 +127,15 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         return map;
     }
 
-    public GameRoleDO getRandomRole() {
-        return null;
+    public GameRoleGroupDO[] getRoleGroups() {
+        return roleGroups.toArray(new GameRoleGroupDO[roleGroups.size()]);
+    }
+
+    public GameRoleGroupDO getRoleGroup(int playerNumber) {
+        for (GameRoleGroupDO group : roleGroups) {
+            if (group.getRoleAmount() == playerNumber) return group;
+        }
+        return roleGroups.iterator().next();
     }
 
     public GameElementSchoolDO[] getElementSchools() {

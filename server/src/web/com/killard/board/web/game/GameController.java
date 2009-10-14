@@ -81,7 +81,7 @@ public class GameController extends BasicController {
         GamePackageDO gamePackage = getGamePackage(packageId);
 
         pm.makePersistent(gamePackage);
-        BoardDO board = new BoardDO(gamePackage);
+        BoardDO board = new BoardDO(gamePackage, playerNumber);
         pm.makePersistent(board);
 
         join(board);

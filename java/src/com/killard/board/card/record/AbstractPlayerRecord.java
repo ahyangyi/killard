@@ -104,6 +104,11 @@ public abstract class AbstractPlayerRecord<T extends AbstractPlayerRecord> imple
         fireStateChanged(new StateEvent(this, action));
     }
 
+    protected void setProperty(String name, Object data, Action action) {
+        setProperty(name, data);
+        fireStateChanged(new StateEvent(this, action));
+    }
+
     protected boolean addEquippedCard(Card card, Action action) {
         boolean result = addEquippedCard(card);
         fireStateChanged(new StateEvent(this, action));

@@ -2,6 +2,7 @@ package com.killard.board.jdo.game.property;
 
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
+import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 
 import javax.jdo.annotations.IdentityType;
@@ -19,7 +20,7 @@ import javax.jdo.annotations.PersistenceCapable;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class GameCardPropertyDO extends PropertyDO {
 
-    public GameCardPropertyDO(DescriptableDO owner, MetaCardPropertyDO origin) {
+    public GameCardPropertyDO(GameCardDO owner, MetaCardPropertyDO origin) {
         super(owner, origin);
     }
 }

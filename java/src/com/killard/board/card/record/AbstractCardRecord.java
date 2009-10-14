@@ -94,6 +94,11 @@ public abstract class AbstractCardRecord<T extends AbstractCardRecord> implement
         fireStateChanged(new StateEvent(this, action));
     }
 
+    protected void setProperty(String name, Object data, Action action) {
+        setProperty(name, data);
+        fireStateChanged(new StateEvent(this, action));
+    }
+
     protected void changeHealth(Attack healthChange, Action action) {
         setHealth(getHealth() - healthChange.getValue());
         if (getHealth() < 0) setHealth(0);

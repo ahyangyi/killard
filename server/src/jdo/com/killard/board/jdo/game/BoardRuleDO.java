@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board;
+package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.Action;

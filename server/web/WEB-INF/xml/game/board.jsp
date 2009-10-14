@@ -1,9 +1,9 @@
 <%@ include file="/WEB-INF/xml/includes.jsp" %>
 <%@ page import="com.killard.board.card.Card" %>
 <%@ page import="com.killard.board.card.ElementSchool" %>
-<%@ page import="com.killard.board.jdo.board.player.PlayerRecordDO" %>
+<%@ page import="com.killard.board.jdo.game.player.PlayerRecordDO" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
-<%--@elvariable id="board" type="com.killard.board.jdo.board.BoardManagerDO"--%>
+<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardManagerDO"--%>
 <%--@elvariable id="players" type="java.util.List<com.killard.board.card.Player>"--%>
 <board>
     <c:forEach var="player" items="${board.players}">

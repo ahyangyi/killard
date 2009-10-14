@@ -104,7 +104,7 @@ public class CardController extends BasicController {
         pm.makePersistent(descriptor);
 
         pm.makePersistent(card);
-        redirect("/game/board", request, response);
+        redirect("/game/game", request, response);
     }
 
     @RequestMapping(value = "/card/add.*", method = RequestMethod.POST)

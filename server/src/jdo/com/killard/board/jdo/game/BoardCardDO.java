@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board;
+package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -13,7 +13,7 @@ import com.killard.board.jdo.card.CardDO;
 import com.killard.board.jdo.card.SkillDO;
 import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.board.descriptor.BoardCardDescriptorDO;
+import com.killard.board.jdo.game.descriptor.BoardCardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

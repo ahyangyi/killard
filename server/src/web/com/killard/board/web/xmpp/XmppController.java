@@ -7,7 +7,7 @@ import com.google.appengine.api.xmpp.SendResponse;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.BoardManagerDO;
+import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.web.BasicController;
 import com.killard.board.web.game.GameController;
 import com.killard.board.environment.BoardException;

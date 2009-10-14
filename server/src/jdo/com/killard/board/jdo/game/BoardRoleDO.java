@@ -1,9 +1,9 @@
-package com.killard.board.jdo.board;
+package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.board.descriptor.BoardRoleDescriptorDO;
+import com.killard.board.jdo.game.descriptor.BoardRoleDescriptorDO;
 import com.killard.board.jdo.card.RoleDO;
 import com.killard.board.jdo.card.descriptor.RoleDescriptorDO;
 

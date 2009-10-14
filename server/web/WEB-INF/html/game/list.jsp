@@ -1,6 +1,6 @@
 <%@ include file="../header.jsp" %>
 <%--@elvariable id="packages" type="java.util.List<com.killard.board.jdo.card.PackageDO>"--%>
-<%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.board.BoardManagerDO>"--%>
+<%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.game.BoardManagerDO>"--%>
 <form action="/game/new.html" method="POST">
     <fieldset title="Create New Game">
         <select name="packageId">
@@ -13,15 +13,15 @@
     </fieldset>
 </form>
 <%--<table style="width:100%;">--%>
-    <%--<c:forEach var="board" items="${boards}">--%>
+    <%--<c:forEach var="game" items="${boards}">--%>
         <%--<tr>--%>
             <%--<td width="100%">--%>
                 <%--<table title="Board" width="100%">--%>
                     <%--<tr>--%>
                         <%--<td>Package:</td>--%>
-                        <%--<td>${board.package.name}</td>--%>
+                        <%--<td>${game.package.name}</td>--%>
                     <%--</tr>--%>
-                    <%--<c:forEach var="player" items="${board.players}">--%>
+                    <%--<c:forEach var="player" items="${game.players}">--%>
                         <%--<tr>--%>
                             <%--<td>Player:</td>--%>
                             <%--<td>${player.name}</td>--%>
@@ -30,7 +30,7 @@
                     <%--<tr>--%>
                         <%--<td colspan="2">--%>
                             <%--<form action="/game/join.html" method="POST">--%>
-                                <%--<input name="boardId" type="hidden" value="${board.key.id}"/>--%>
+                                <%--<input name="boardId" type="hidden" value="${game.key.id}"/>--%>
                                 <%--<input type="submit" value="Join"/>--%>
                             <%--</form>--%>
                         <%--</td>--%>

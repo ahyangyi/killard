@@ -7,7 +7,7 @@ import com.google.appengine.api.labs.taskqueue.TaskOptions;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.BoardManagerDO;
+import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.card.CardDO;
 import com.killard.board.jdo.card.descriptor.CardDescriptorDO;
 import com.killard.board.jdo.card.ElementSchoolDO;

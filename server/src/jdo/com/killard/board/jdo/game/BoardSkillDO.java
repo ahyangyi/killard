@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board;
+package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -12,7 +12,7 @@ import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
 import com.killard.board.jdo.card.SkillDO;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.board.descriptor.BoardSkillDescriptorDO;
+import com.killard.board.jdo.game.descriptor.BoardSkillDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -103,7 +103,7 @@ public class BoardSkillDO extends DescriptableDO<BoardSkillDescriptorDO> impleme
     public List<Action> execute(CardInstance owner, CardInstance target) {
         Context ctx = new GlobalContext(owner);
         ctx.addVariable("target", target);
-        ctx.addVariable("board", boardManager);
+        ctx.addVariable("game", boardManager);
         try {
             function.execute(ctx);
         } catch (ExecutionException e) {

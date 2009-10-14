@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board.player;
+package com.killard.board.jdo.game.player;
 
 import com.killard.board.card.Role;
 import com.killard.board.card.Action;
@@ -7,8 +7,8 @@ import com.killard.board.environment.Record;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.environment.AfterAction;
-import com.killard.board.jdo.board.BoardRoleDO;
-import com.killard.board.jdo.board.BoardManagerDO;
+import com.killard.board.jdo.game.BoardRoleDO;
+import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.AttributeHandler;
 import com.google.appengine.api.datastore.Key;

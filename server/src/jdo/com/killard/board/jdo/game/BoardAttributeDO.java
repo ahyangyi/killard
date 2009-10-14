@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board;
+package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -11,7 +11,7 @@ import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.board.descriptor.BoardAttributeDescriptorDO;
+import com.killard.board.jdo.game.descriptor.BoardAttributeDescriptorDO;
 import com.killard.board.jdo.card.AttributeDO;
 import com.killard.board.jdo.card.descriptor.AttributeDescriptorDO;
 

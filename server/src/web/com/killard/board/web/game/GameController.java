@@ -1,9 +1,9 @@
 package com.killard.board.web.game;
 
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.BoardManagerDO;
-import com.killard.board.jdo.board.BoardPackageDO;
-import com.killard.board.jdo.board.player.PlayerRecordDO;
+import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardPackageDO;
+import com.killard.board.jdo.game.player.PlayerRecordDO;
 import com.killard.board.jdo.card.PackageDO;
 import com.killard.board.web.BasicController;
 import com.killard.board.environment.BoardException;
@@ -39,7 +39,7 @@ public class GameController extends BasicController {
     @RequestMapping(value = "/game/list.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
-        getLog().fine("Get game board list: " + playerId);
+        getLog().fine("Get game game list: " + playerId);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -52,8 +52,8 @@ public class GameController extends BasicController {
 
 //        List<BoardManagerDO> boards = new LinkedList<BoardManagerDO>();
 //        Extent<BoardManagerDO> boardExtent = pm.getExtent(BoardManagerDO.class);
-//        for (BoardManagerDO board : boardExtent) {
-//            if (board.getPlayers().size() < board.getMaxPlayerNumber()) boards.add(board);
+//        for (BoardManagerDO game : boardExtent) {
+//            if (game.getPlayers().size() < game.getMaxPlayerNumber()) boards.add(game);
 //        }
 //        boardExtent.closeAll();
 
@@ -65,17 +65,17 @@ public class GameController extends BasicController {
     @RequestMapping(value = "/game/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
-        getLog().fine("Get game board information: " + playerId);
+        getLog().fine("Get game game information: " + playerId);
         BoardManagerDO boardManager = getBoardManager();
         if (boardManager == null) {
             return list(modelMap);
         }
 
-        modelMap.put("board", boardManager);
+        modelMap.put("game", boardManager);
         modelMap.put("playerId", playerId);
         modelMap.put("players", boardManager.getPlayers(playerId));
         modelMap.put("actions", boardManager.getActions());
-        return "game/board";
+        return "game/game";
     }
 
     @RequestMapping(value = "/game/new.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -98,7 +98,7 @@ public class GameController extends BasicController {
         pm.makePersistent(board);
 
         join(board);
-        redirect("board", request, response);
+        redirect("game", request, response);
     }
 
     @RequestMapping(value = "/game/join.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -113,7 +113,7 @@ public class GameController extends BasicController {
             join(getBoardManager(boardId));
         }
 
-        redirect("board", request, response);
+        redirect("game", request, response);
     }
 
     @RequestMapping(value = "/game/quit.*", method = {RequestMethod.GET, RequestMethod.POST})

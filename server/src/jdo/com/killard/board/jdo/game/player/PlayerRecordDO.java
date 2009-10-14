@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board.player;
+package com.killard.board.jdo.game.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -7,9 +7,9 @@ import com.killard.board.card.CardInstance;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
 import com.killard.board.environment.record.AbstractPlayerRecord;
-import com.killard.board.jdo.board.BoardCardDO;
-import com.killard.board.jdo.board.BoardManagerDO;
-import com.killard.board.jdo.board.BoardRoleDO;
+import com.killard.board.jdo.game.BoardCardDO;
+import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardRoleDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

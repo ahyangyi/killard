@@ -1,7 +1,7 @@
-package com.killard.board.jdo.board.descriptor;
+package com.killard.board.jdo.game.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
-import com.killard.board.jdo.board.BoardSkillDO;
+import com.killard.board.jdo.game.BoardSkillDO;
 import com.killard.board.jdo.card.descriptor.SkillDescriptorDO;
 
 import javax.jdo.annotations.PersistenceCapable;

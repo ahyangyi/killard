@@ -4,7 +4,7 @@ import com.killard.board.card.Action;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.GlobalContext;
-import com.killard.board.jdo.board.BoardManagerDO;
+import com.killard.board.jdo.game.BoardManagerDO;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,7 +26,7 @@ public final class FunctionHelper {
         if (handlers == null || handlers.isEmpty()) return null;
         getLog().fine("handle action: " + action + " on " + owner);
         Context context = new GlobalContext(owner, action);
-        context.addVariable("board", boardManager);
+        context.addVariable("game", boardManager);
         for (AttributeHandler attribute : handlers) {
             Class actionClass = attribute.getActionClass();
             boolean selfTargeted = attribute.isSelfTargeted();

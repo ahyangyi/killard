@@ -1,7 +1,7 @@
 package com.killard.board.web.game;
 
 import com.killard.board.web.BasicController;
-import com.killard.board.jdo.board.BoardManagerDO;
+import com.killard.board.jdo.game.BoardManagerDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

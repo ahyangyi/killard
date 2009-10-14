@@ -1,6 +1,6 @@
 package com.killard.board.web.filter;
 
-import com.killard.jdo.PersistenceHelper;
+import com.killard.board.jdo.PersistenceHelper;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

@@ -63,7 +63,7 @@
             <properties>
                 <polling-enabled>true</polling-enabled>
                 <polling-interval-millis>500</polling-interval-millis>
-                <flex-client-outbound-queue-processor class="com.killard.web.qos.CustomDelayQueueProcessor">
+                <flex-client-outbound-queue-processor class="com.killard.board.web.qos.CustomDelayQueueProcessor">
                     <properties>
                         <flush-delay>5000</flush-delay>
                     </properties>

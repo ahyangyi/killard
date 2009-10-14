@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/jee
        http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
-    <context:component-scan base-package="com.killard.web">
+    <context:component-scan base-package="com.killard.board.web">
         <context:exclude-filter type="regex" expression=".*Controller"/>
     </context:component-scan>
 </beans>

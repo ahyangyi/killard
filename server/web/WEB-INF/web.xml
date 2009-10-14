@@ -22,7 +22,7 @@
 
     <filter>
         <filter-name>PersistenceManagerFilter</filter-name>
-        <filter-class>com.killard.web.filter.PersistenceManagerFilter</filter-class>
+        <filter-class>com.killard.board.web.filter.PersistenceManagerFilter</filter-class>
     </filter>
 
     <filter-mapping>

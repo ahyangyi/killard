@@ -75,7 +75,7 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         this.name = pack.getName();
 
         this.descriptors = new TreeSet<GamePackageDescriptorDO>();
-        for (PackageDescriptorDO descriptor : pack.getAllDescriptors()) {
+        for (PackageDescriptorDO descriptor : pack.getDescriptors()) {
             this.descriptors.add(new GamePackageDescriptorDO(this, descriptor));
         }
     }
@@ -124,7 +124,7 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         return elementSchools.toArray(new GameElementSchoolDO[elementSchools.size()]);
     }
 
-    protected SortedSet<GamePackageDescriptorDO> getDescriptors() {
-        return descriptors;
+    protected GamePackageDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GamePackageDescriptorDO[descriptors.size()]);
     }
 }

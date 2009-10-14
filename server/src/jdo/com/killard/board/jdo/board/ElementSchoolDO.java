@@ -4,7 +4,6 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
-import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -118,8 +117,16 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         return attributes.remove(attribute);
     }
 
-    protected SortedSet<ElementSchoolDescriptorDO> getDescriptors() {
-        return descriptors;
+    public ElementSchoolDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new ElementSchoolDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(ElementSchoolDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(ElementSchoolDescriptorDO descriptor) {
+        return descriptors.remove(descriptor);
     }
 
     public ElementSchoolDO clone(PackageDO pack) {

@@ -55,6 +55,8 @@ public abstract class AbstractPlayerRecord<T extends AbstractPlayerRecord> imple
 
     protected abstract void setElementAmount(ElementSchool elementSchool, int amount);
 
+    protected abstract void setProperty(String name, Object data);
+
     protected abstract void setAlive(boolean alive);
 
     protected abstract void setCalled(boolean called);

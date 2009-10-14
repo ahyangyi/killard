@@ -2,11 +2,8 @@ package com.killard.board.jdo;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.context.BoardContext;
-import com.killard.board.jdo.PropertyDO;
 
-import java.util.Collections;
 import java.util.Locale;
-import java.util.SortedSet;
 
 /**
  * <p>
@@ -32,7 +29,7 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     protected abstract boolean removeProperty(P property);
 
-    protected abstract SortedSet<T> getDescriptors();
+    protected abstract T[] getDescriptors();
 
     public Object getProperty(String name) {
         for (P property : getProperties()) {
@@ -62,32 +59,20 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
         return getDescriptor(BoardContext.getLocale());
     }
 
-    public boolean addDescriptor(T descriptor) {
-        return getDescriptors().add(descriptor);
-    }
-
-    public boolean removeDescriptor(T descriptor) {
-        return getDescriptors().remove(descriptor);
-    }
-
     public T getDescriptor(Locale locale) {
         return getDescriptor(locale.toString());
     }
 
     public T getDescriptor(String locale) {
-        SortedSet<T> descriptors = getDescriptors();
-        if (descriptors.isEmpty()) return null;
+        T[] descriptors = getDescriptors();
+        if (descriptors.length == 0) return null;
         for (T descriptor : descriptors) {
             if (descriptor.getLocale().equals(locale)) return descriptor;
         }
-        return descriptors.iterator().next();
+        return descriptors[0];
     }
 
     public int compareTo(S descriptableDO) {
         return getKey().compareTo(descriptableDO.getKey());
-    }
-
-    public SortedSet<T> getAllDescriptors() {
-        return Collections.unmodifiableSortedSet(getDescriptors());
     }
 }

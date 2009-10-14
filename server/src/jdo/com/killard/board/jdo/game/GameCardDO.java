@@ -12,8 +12,8 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.SkillDO;
-import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.game.descriptor.GameCardDescriptorDO;
 import com.killard.board.jdo.game.property.GameCardPropertyDO;
 
@@ -118,7 +118,7 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardPropertyDO, G
         }
 
         this.descriptors = new TreeSet<GameCardDescriptorDO>();
-        for (MetaCardDescriptorDO descriptor : card.getAllDescriptors()) {
+        for (MetaCardDescriptorDO descriptor : card.getDescriptors()) {
             this.descriptors.add(new GameCardDescriptorDO(this, descriptor));
         }
     }
@@ -227,7 +227,7 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardPropertyDO, G
         return result;
     }
 
-    protected SortedSet<GameCardDescriptorDO> getDescriptors() {
-        return descriptors;
+    public GameCardDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GameCardDescriptorDO[descriptors.size()]);
     }
 }

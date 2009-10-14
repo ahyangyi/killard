@@ -5,7 +5,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.jdo.board.property.SkillPropertyDO;
-import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -101,8 +100,16 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         return function;
     }
 
-    public SortedSet<SkillDescriptorDO> getDescriptors() {
-        return descriptors;
+    public SkillDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new SkillDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(SkillDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(SkillDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
     }
 
     public SkillDO clone(MetaCardDO card) {

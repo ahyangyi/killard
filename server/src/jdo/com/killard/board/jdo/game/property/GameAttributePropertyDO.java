@@ -1,12 +1,11 @@
 package com.killard.board.jdo.game.property;
 
 import com.killard.board.jdo.PropertyDO;
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.jdo.game.GameAttributeDO;
 
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 
 /**
  * <p>

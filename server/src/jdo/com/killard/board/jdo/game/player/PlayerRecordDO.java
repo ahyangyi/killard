@@ -10,6 +10,7 @@ import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameRoleDO;
+import com.killard.board.jdo.game.player.property.PlayerRecordPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -59,6 +60,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private SortedSet<ElementRecordDO> elementRecords;
 
     @Persistent
+    private SortedSet<PlayerRecordPropertyDO> properties;
+
+    @Persistent
     private Boolean alive;
 
     @Persistent
@@ -87,6 +91,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.equippedCards = new TreeSet<CardRecordDO>();
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
+
+        this.properties = new TreeSet<PlayerRecordPropertyDO>();
 
         this.turnCount = 0;
     }
@@ -120,6 +126,27 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     public int getHealth() {
         return health;
+    }
+
+    public PlayerRecordPropertyDO[] getProperties() {
+        return properties.toArray(new PlayerRecordPropertyDO[properties.size()]);
+    }
+
+    public Object getProperty(String name) {
+        for (PlayerRecordPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) return property.getData();
+        }
+        return null;
+    }
+
+    protected void setProperty(String name, Object data) {
+        for (PlayerRecordPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) {
+                property.setData(data.toString());
+                return;
+            }
+        }
+        properties.add(new PlayerRecordPropertyDO(this, name, data.toString()));
     }
 
     public boolean isCardPlayed() {

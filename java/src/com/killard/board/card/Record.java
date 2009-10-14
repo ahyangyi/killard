@@ -11,6 +11,6 @@ package com.killard.board.card;
  */
 public interface Record<T extends Record> extends Comparable<T> {
 
-//    public Object getProperty(String name);
+    public Object getProperty(String name);
 
 }

@@ -7,8 +7,8 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
+import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 import com.killard.board.jdo.game.descriptor.GameElementSchoolDescriptorDO;
 import com.killard.board.jdo.game.property.GameElementSchoolPropertyDO;
 
@@ -74,7 +74,7 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
         }
 
         this.descriptors = new TreeSet<GameElementSchoolDescriptorDO>();
-        for (ElementSchoolDescriptorDO descriptor : elementSchool.getAllDescriptors()) {
+        for (ElementSchoolDescriptorDO descriptor : elementSchool.getDescriptors()) {
             this.descriptors.add(new GameElementSchoolDescriptorDO(this, descriptor));
         }
     }
@@ -110,7 +110,7 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
         return false;
     }
 
-    protected SortedSet<GameElementSchoolDescriptorDO> getDescriptors() {
-        return descriptors;
+    public GameElementSchoolDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GameElementSchoolDescriptorDO[descriptors.size()]);
     }
 }

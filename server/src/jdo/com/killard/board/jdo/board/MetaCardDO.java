@@ -6,7 +6,6 @@ import com.killard.board.card.AttackType;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
-import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -240,8 +239,16 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return skills.add(skill);
     }
 
-    protected SortedSet<MetaCardDescriptorDO> getDescriptors() {
-        return descriptors;
+    public MetaCardDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new MetaCardDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(MetaCardDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(MetaCardDescriptorDO descriptor) {
+        return descriptors.remove(descriptor);
     }
 
     public MetaCardDO clone(ElementSchoolDO elementSchool) {

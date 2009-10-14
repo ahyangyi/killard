@@ -1,13 +1,10 @@
 package com.killard.board.card.attribute;
 
-import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 
-import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>

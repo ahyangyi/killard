@@ -219,8 +219,16 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.rating = new Rating(rating);
     }
 
-    public SortedSet<PackageDescriptorDO> getDescriptors() {
-        return descriptors;
+    public PackageDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new PackageDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(PackageDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(PackageDescriptorDO descriptor) {
+        return descriptors.remove(descriptor);
     }
 
     public int compareTo(PackageDO compare) {

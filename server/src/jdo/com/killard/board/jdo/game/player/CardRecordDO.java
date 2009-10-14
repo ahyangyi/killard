@@ -13,8 +13,9 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.game.GameAttributeDO;
 import com.killard.board.jdo.game.GameCardDO;
-import com.killard.board.jdo.game.GameElementSchoolDO;
 import com.killard.board.jdo.game.GameSkillDO;
+import com.killard.board.jdo.game.player.property.CardRecordPropertyDO;
+import com.killard.board.jdo.game.property.GameCardPropertyDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -25,6 +26,8 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -44,9 +47,6 @@ public class CardRecordDO extends AbstractCardRecord {
 
     @Persistent
     private Key cardKey;
-
-    @Persistent
-    private Key elementSchoolKey;
 
     @Persistent
     private Key ownerKey;
@@ -87,11 +87,11 @@ public class CardRecordDO extends AbstractCardRecord {
     @Persistent
     private Boolean casted;
 
-    @NotPersistent
-    private GameCardDO card;
+    @Persistent
+    private SortedSet<CardRecordPropertyDO> properties;
 
     @NotPersistent
-    private GameElementSchoolDO elementSchool;
+    private GameCardDO card;
 
     @NotPersistent
     private PlayerRecordDO owner;
@@ -123,9 +123,6 @@ public class CardRecordDO extends AbstractCardRecord {
         this.card = card;
         this.cardKey = card.getKey();
 
-        this.elementSchool = (GameElementSchoolDO) card.getElementSchool();
-        this.elementSchoolKey = this.elementSchool.getKey();
-
         setOwner(owner);
         setTarget(target);
 
@@ -145,6 +142,10 @@ public class CardRecordDO extends AbstractCardRecord {
         for (Attribute attribute : card.getAttributes()) addAttribute(attribute);
 
         this.casted = false;
+        this.properties = new TreeSet<CardRecordPropertyDO>();
+        for (GameCardPropertyDO property : card.getProperties()) {
+            this.properties.add(new CardRecordPropertyDO(this, property));
+        }
 
         this.addStateListener(boardManager);
     }
@@ -152,7 +153,6 @@ public class CardRecordDO extends AbstractCardRecord {
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         this.card = pm.getObjectById(GameCardDO.class, cardKey);
-        this.elementSchool = pm.getObjectById(GameElementSchoolDO.class, elementSchoolKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
@@ -180,8 +180,29 @@ public class CardRecordDO extends AbstractCardRecord {
         return getCard().getName();
     }
 
+    public CardRecordPropertyDO[] getProperties() {
+        return properties.toArray(new CardRecordPropertyDO[properties.size()]);
+    }
+
+    public Object getProperty(String name) {
+        for (CardRecordPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) return property.getData();
+        }
+        return null;
+    }
+
+    protected void setProperty(String name, Object data) {
+        for (CardRecordPropertyDO property : getProperties()) {
+            if (property.getName().equals(name)) {
+                property.setData(data.toString());
+                return;
+            }
+        }
+        properties.add(new CardRecordPropertyDO(this, name, data.toString()));
+    }
+
     public ElementSchool getElementSchool() {
-        return elementSchool;
+        return getCard().getElementSchool();
     }
 
     public int getLevel() {

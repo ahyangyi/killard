@@ -66,6 +66,8 @@ public abstract class AbstractCardRecord<T extends AbstractCardRecord> implement
 
     protected abstract boolean removeAttribute(Attribute attribute);
 
+    protected abstract void setProperty(String name, Object data);
+
     protected abstract void setHealth(int health);
 
     protected abstract void setMaxHealth(int maxHealth);

@@ -6,7 +6,6 @@ import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
-import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -73,6 +72,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
+        this.properties = new TreeSet<RolePropertyDO>();
         this.descriptors = new TreeSet<RoleDescriptorDO>();
     }
 
@@ -100,8 +100,16 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         return visible;
     }
 
-    protected SortedSet<RoleDescriptorDO> getDescriptors() {
-        return descriptors;
+    public RoleDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new RoleDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(RoleDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(RoleDescriptorDO descriptor) {
+        return descriptors.remove(descriptor);
     }
 
     public Key getPackageKey() {

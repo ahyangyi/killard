@@ -102,8 +102,16 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         return visible;
     }
 
-    protected SortedSet<AttributeDescriptorDO> getDescriptors() {
-        return descriptors;
+    public AttributeDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new AttributeDescriptorDO[descriptors.size()]);
+    }
+
+    public boolean addDescriptor(AttributeDescriptorDO descriptor) {
+        return descriptors.add(descriptor);
+    }
+
+    public boolean removeDescriptor(AttributeDescriptorDO descriptor) {
+        return descriptors.remove(descriptor);
     }
 
     public AttributeDO clone(ElementSchoolDO elementSchool) {

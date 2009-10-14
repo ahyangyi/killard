@@ -4,8 +4,8 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.RoleDO;
-import com.killard.board.jdo.board.property.RolePropertyDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
+import com.killard.board.jdo.board.property.RolePropertyDO;
 import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 import com.killard.board.jdo.game.property.GameRolePropertyDO;
 
@@ -78,7 +78,7 @@ public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRolePropertyDO, G
         }
 
         this.descriptors = new TreeSet<GameRoleDescriptorDO>();
-        for (RoleDescriptorDO descriptor : role.getAllDescriptors()) {
+        for (RoleDescriptorDO descriptor : role.getDescriptors()) {
             this.descriptors.add(new GameRoleDescriptorDO(this, descriptor));
         }
     }
@@ -123,7 +123,7 @@ public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRolePropertyDO, G
         return Collections.unmodifiableList(after);
     }
 
-    protected SortedSet<GameRoleDescriptorDO> getDescriptors() {
-        return descriptors;
+    public GameRoleDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GameRoleDescriptorDO[descriptors.size()]);
     }
 }

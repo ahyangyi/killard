@@ -13,8 +13,8 @@ import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.board.property.AttributePropertyDO;
 import com.killard.board.jdo.game.descriptor.GameAttributeDescriptorDO;
 import com.killard.board.jdo.game.property.GameAttributePropertyDO;
 
@@ -88,7 +88,7 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         }
 
         this.descriptors = new TreeSet<GameAttributeDescriptorDO>();
-        for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
+        for (AttributeDescriptorDO descriptor : attribute.getDescriptors()) {
             this.descriptors.add(new GameAttributeDescriptorDO(this, descriptor));
         }
     }
@@ -117,8 +117,8 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         return false;
     }
 
-    protected SortedSet<GameAttributeDescriptorDO> getDescriptors() {
-        return descriptors;
+    protected GameAttributeDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GameAttributeDescriptorDO[descriptors.size()]);
     }
 
     public boolean isVisible() {

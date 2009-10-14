@@ -82,7 +82,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
         }
 
         this.descriptors = new TreeSet<GameSkillDescriptorDO>();
-        for (SkillDescriptorDO descriptor : skill.getAllDescriptors()) {
+        for (SkillDescriptorDO descriptor : skill.getDescriptors()) {
             this.descriptors.add(new GameSkillDescriptorDO(this, descriptor));
         }
     }
@@ -100,7 +100,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
     }
 
     public GameSkillPropertyDO[] getProperties() {
-        return new GameSkillPropertyDO[0];
+        return properties.toArray(new GameSkillPropertyDO[properties.size()]);
     }
 
     protected boolean addProperty(String name, String data) {
@@ -117,8 +117,8 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
         return result;
     }
 
-    protected SortedSet<GameSkillDescriptorDO> getDescriptors() {
-        return descriptors;
+    public GameSkillDescriptorDO[] getDescriptors() {
+        return descriptors.toArray(new GameSkillDescriptorDO[descriptors.size()]);
     }
 
     public int getCost() {

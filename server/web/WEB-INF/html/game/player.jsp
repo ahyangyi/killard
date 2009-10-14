@@ -50,7 +50,7 @@
                 <tr>
                     <c:forEach var="elementRecord" items="${player.elementRecords}">
                         <td width="16%">
-                            <%@ include file="card.jsp" %>
+                            <%@ include file="dealtcard.jsp" %>
                         </td>
                     </c:forEach>
                 </tr>
@@ -62,7 +62,7 @@
             <c:choose>
                 <c:when test="${record != null}">
                     <td style="width:200px;height:300px;padding-left:5px;padding-right:5px;padding-top:0;padding-bottom:0;">
-                        <%@ include file="livingcard.jsp" %>
+                        <%@ include file="equippedcard.jsp" %>
                     </td>
                 </c:when>
                 <c:otherwise>

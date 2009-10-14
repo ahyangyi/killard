@@ -10,9 +10,9 @@ import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.card.RuleDO;
 import com.killard.jdo.card.SkillDO;
 import com.killard.jdo.context.BoardContext;
-import com.killard.parser.Expression;
-import com.killard.parser.Function;
-import com.killard.parser.Node;
+import com.killard.board.parser.Expression;
+import com.killard.board.parser.Function;
+import com.killard.board.parser.Node;
 
 import java.util.LinkedList;
 import java.util.List;

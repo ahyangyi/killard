@@ -1,9 +1,9 @@
 package com.killard.jdo;
 
 import com.killard.board.card.Action;
-import com.killard.parser.Context;
-import com.killard.parser.ExecutionException;
-import com.killard.parser.GlobalContext;
+import com.killard.board.parser.Context;
+import com.killard.board.parser.ExecutionException;
+import com.killard.board.parser.GlobalContext;
 import com.killard.jdo.board.BoardManagerDO;
 
 import java.util.List;

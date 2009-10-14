@@ -1,6 +1,6 @@
 package com.killard.jdo;
 
-import com.killard.parser.Function;
+import com.killard.board.parser.Function;
 
 import java.io.Serializable;
 

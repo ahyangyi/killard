@@ -3,7 +3,7 @@ package com.killard.jdo.card;
 import com.google.appengine.api.datastore.Key;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.card.descriptor.SkillDescriptorDO;
-import com.killard.parser.Function;
+import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

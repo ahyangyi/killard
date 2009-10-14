@@ -16,7 +16,7 @@ import com.killard.jdo.card.PackageDO;
 import com.killard.jdo.card.descriptor.PackageDescriptorDO;
 import com.killard.jdo.card.RuleDO;
 import com.killard.jdo.context.BoardContext;
-import com.killard.parser.ScriptEngine;
+import com.killard.board.parser.ScriptEngine;
 import com.killard.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

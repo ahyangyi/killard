@@ -1,15 +1,13 @@
 package com.killard.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
-import com.killard.card.Attack;
-import com.killard.card.AttackType;
-import com.killard.card.Attribute;
-import com.killard.card.Card;
-import com.killard.card.ElementSchool;
-import com.killard.card.Skill;
+import com.killard.board.card.Attack;
+import com.killard.board.card.AttackType;
+import com.killard.board.card.Attribute;
+import com.killard.board.card.Card;
+import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Skill;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.CardDO;
 import com.killard.jdo.card.SkillDO;

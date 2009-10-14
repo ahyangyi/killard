@@ -1,14 +1,14 @@
 package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.card.Card;
-import com.killard.card.CardInstance;
-import com.killard.card.Player;
-import com.killard.card.BoardPackage;
-import com.killard.card.action.BeginGameAction;
-import com.killard.environment.BoardManager;
-import com.killard.environment.BoardException;
-import com.killard.environment.event.ActionEvent;
+import com.killard.board.card.Card;
+import com.killard.board.card.CardInstance;
+import com.killard.board.card.Player;
+import com.killard.board.card.BoardPackage;
+import com.killard.board.card.action.BeginGameAction;
+import com.killard.board.environment.BoardManager;
+import com.killard.board.environment.BoardException;
+import com.killard.board.environment.event.ActionEvent;
 import com.killard.jdo.board.player.CardRecordDO;
 import com.killard.jdo.board.player.ElementRecordDO;
 import com.killard.jdo.board.player.PlayerRecordDO;

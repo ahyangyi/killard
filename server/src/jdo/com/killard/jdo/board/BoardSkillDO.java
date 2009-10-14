@@ -2,16 +2,15 @@ package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.card.Action;
-import com.killard.card.CardInstance;
-import com.killard.card.ElementSchool;
-import com.killard.card.Skill;
+import com.killard.board.card.Action;
+import com.killard.board.card.CardInstance;
+import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Skill;
 import com.killard.parser.Context;
 import com.killard.parser.ExecutionException;
 import com.killard.parser.Function;
 import com.killard.parser.GlobalContext;
 import com.killard.jdo.card.SkillDO;
-import com.killard.jdo.DescriptorDO;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.board.descriptor.BoardSkillDescriptorDO;
 

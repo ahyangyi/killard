@@ -3,12 +3,10 @@ package com.killard.web.game;
 import com.killard.jdo.PersistenceHelper;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.board.BoardPackageDO;
-import com.killard.jdo.board.ActionDO;
 import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.PackageDO;
 import com.killard.web.BasicController;
-import com.killard.card.Action;
-import com.killard.environment.BoardException;
+import com.killard.board.environment.BoardException;
 import com.google.appengine.api.datastore.Key;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,9 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * <p>

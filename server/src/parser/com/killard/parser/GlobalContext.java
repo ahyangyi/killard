@@ -1,8 +1,8 @@
 package com.killard.parser;
 
-import com.killard.card.Action;
-import com.killard.card.AttackType;
-import com.killard.environment.record.ExecutableActionUtil;
+import com.killard.board.card.Action;
+import com.killard.board.card.AttackType;
+import com.killard.board.environment.record.ExecutableActionUtil;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

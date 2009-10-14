@@ -1,15 +1,13 @@
 package com.killard.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
-import com.killard.card.Action;
-import com.killard.card.Attribute;
-import com.killard.card.CardInstance;
-import com.killard.environment.ActionValidator;
-import com.killard.environment.AfterAction;
-import com.killard.environment.BeforeAction;
+import com.killard.board.card.Action;
+import com.killard.board.card.Attribute;
+import com.killard.board.card.CardInstance;
+import com.killard.board.environment.ActionValidator;
+import com.killard.board.environment.AfterAction;
+import com.killard.board.environment.BeforeAction;
 import com.killard.jdo.AttributeHandler;
 import com.killard.jdo.FunctionHelper;
 import com.killard.jdo.DescriptableDO;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 /**

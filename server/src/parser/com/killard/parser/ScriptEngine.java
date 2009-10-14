@@ -1,8 +1,8 @@
 package com.killard.parser;
 
-import com.killard.card.Card;
-import com.killard.card.ElementSchool;
-import com.killard.packages.magic.MagicCardFactory;
+import com.killard.board.card.Card;
+import com.killard.board.card.ElementSchool;
+import com.killard.board.packages.magic.MagicCardFactory;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;

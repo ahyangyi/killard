@@ -1,6 +1,6 @@
 package com.killard.jdo;
 
-import com.killard.card.AttackType;
+import com.killard.board.card.AttackType;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
 import com.killard.jdo.card.CardDO;
@@ -51,7 +51,7 @@ public class JdoCardBuilder {
         try {
             Node[] args = function.getArguments().getChildren();
             if (args.length < 1) return false;
-            Class actionClass = Class.forName("com.killard.card.action." + ((Expression) args[0]).getText());
+            Class actionClass = Class.forName("com.killard.board.card.action." + ((Expression) args[0]).getText());
             Boolean selfTargeted = true;
             if (args.length > 1 && ((Expression) args[1]).getText().equalsIgnoreCase("All")) selfTargeted = false;
             AttributeHandler handler = new AttributeHandler(actionClass, selfTargeted, function);

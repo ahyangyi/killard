@@ -1,12 +1,12 @@
 package com.killard.jdo.board.player;
 
-import com.killard.card.Role;
-import com.killard.card.Action;
-import com.killard.card.Player;
-import com.killard.environment.Record;
-import com.killard.environment.ActionValidator;
-import com.killard.environment.BeforeAction;
-import com.killard.environment.AfterAction;
+import com.killard.board.card.Role;
+import com.killard.board.card.Action;
+import com.killard.board.card.Player;
+import com.killard.board.environment.Record;
+import com.killard.board.environment.ActionValidator;
+import com.killard.board.environment.BeforeAction;
+import com.killard.board.environment.AfterAction;
 import com.killard.jdo.board.BoardRoleDO;
 import com.killard.jdo.board.BoardManagerDO;
 import com.killard.jdo.FunctionHelper;

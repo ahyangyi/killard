@@ -2,7 +2,7 @@ package com.killard.jdo.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
-import com.killard.card.AttackType;
+import com.killard.board.card.AttackType;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.card.descriptor.CardDescriptorDO;
 

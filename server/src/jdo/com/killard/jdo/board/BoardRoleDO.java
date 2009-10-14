@@ -2,21 +2,10 @@ package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.jdo.AttributeHandler;
-import com.killard.jdo.FunctionHelper;
 import com.killard.jdo.DescriptableDO;
 import com.killard.jdo.board.descriptor.BoardRoleDescriptorDO;
-import com.killard.jdo.board.descriptor.BoardAttributeDescriptorDO;
-import com.killard.jdo.board.player.PlayerRecordDO;
 import com.killard.jdo.card.RoleDO;
-import com.killard.jdo.card.descriptor.AttributeDescriptorDO;
 import com.killard.jdo.card.descriptor.RoleDescriptorDO;
-import com.killard.environment.ActionValidator;
-import com.killard.environment.BeforeAction;
-import com.killard.environment.AfterAction;
-import com.killard.environment.event.ActionListener;
-import com.killard.card.Action;
-import com.killard.card.Player;
-import com.killard.card.Role;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
@@ -24,14 +13,12 @@ import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.NotPersistent;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Collections;
-import java.util.logging.Logger;
 
 /**
  * <p>

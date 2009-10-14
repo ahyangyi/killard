@@ -2,7 +2,7 @@ package com.killard.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.card.ElementSchool;
+import com.killard.board.card.ElementSchool;
 import com.killard.jdo.card.AttributeDO;
 import com.killard.jdo.card.CardDO;
 import com.killard.jdo.card.ElementSchoolDO;

@@ -1,6 +1,6 @@
 package com.killard.jdo;
 
-import com.killard.card.Action;
+import com.killard.board.card.Action;
 import com.killard.parser.Context;
 import com.killard.parser.ExecutionException;
 import com.killard.parser.GlobalContext;

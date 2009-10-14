@@ -2,13 +2,13 @@ package com.killard.board.jdo.game.player;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.card.MetaCard;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
-import com.killard.board.jdo.game.GameMetaCardDO;
 import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameRoleDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -98,7 +98,6 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         for (CardRecordDO card : equippedCards) {
             card.restore(boardManager);
         }
-        role.restore(boardManager);
         boardManager.addActionListener(role, this);
         addStateListener(boardManager);
     }
@@ -149,7 +148,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     public MetaCard getDealtCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (GameMetaCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (GameCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
         }
         return null;
     }
@@ -208,7 +207,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     protected boolean addDealtCard(MetaCard metaCard) {
-        GameMetaCardDO record = (GameMetaCardDO) metaCard;
+        GameCardDO record = (GameCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
         }
@@ -216,7 +215,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     protected boolean removeDealtCard(MetaCard metaCard) {
-        GameMetaCardDO record = (GameMetaCardDO) metaCard;
+        GameCardDO record = (GameCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.removeDealtCard(record);
         }

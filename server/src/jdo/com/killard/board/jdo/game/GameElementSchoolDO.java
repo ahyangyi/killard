@@ -3,11 +3,11 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.ElementSchool;
-import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
-import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.game.descriptor.GameElementSchoolDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -38,7 +38,7 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<GameMetaCardDO> cards;
+    private SortedSet<GameCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
     private SortedSet<GameAttributeDO> attributes;
@@ -53,9 +53,9 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
 
         this.name = elementSchool.getName();
 
-        this.cards = new TreeSet<GameMetaCardDO>();
+        this.cards = new TreeSet<GameCardDO>();
         for (MetaCardDO card : elementSchool.getCards()) {
-            cards.add(new GameMetaCardDO(this, card));
+            cards.add(new GameCardDO(this, card));
         }
 
         this.attributes = new TreeSet<GameAttributeDO>();
@@ -73,8 +73,8 @@ public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, Gam
         return key;
     }
 
-    public GameMetaCardDO[] getCards() {
-        return cards.toArray(new GameMetaCardDO[cards.size()]);
+    public GameCardDO[] getCards() {
+        return cards.toArray(new GameCardDO[cards.size()]);
     }
 
     public GameAttributeDO getAttribute(String id) {

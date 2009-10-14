@@ -3,8 +3,8 @@ package com.killard.board.jdo.board.descriptor;
 import com.killard.board.jdo.DescriptorDO;
 import com.killard.board.jdo.board.RoleDO;
 
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 import java.util.Locale;
 
 /**

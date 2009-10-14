@@ -1,20 +1,20 @@
 package com.killard.board.jdo.board;
 
-import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.AttributeHandler;
-import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.killard.board.jdo.AttributeHandler;
+import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Extension;
-import java.util.SortedSet;
-import java.util.List;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**

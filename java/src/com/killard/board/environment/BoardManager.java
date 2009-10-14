@@ -1,28 +1,28 @@
 package com.killard.board.environment;
 
 import com.killard.board.card.Action;
-import com.killard.board.card.MetaCard;
-import com.killard.board.card.Card;
-import com.killard.board.card.Player;
 import com.killard.board.card.Board;
+import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
+import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.action.CastCardAction;
+import com.killard.board.card.action.EndPlayerCallAction;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.EquipCardAction;
-import com.killard.board.card.action.EndPlayerCallAction;
+import com.killard.board.card.record.ExecutableActionUtil;
 import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.environment.event.ActionListener;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
-import com.killard.board.card.record.ExecutableActionUtil;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
-import java.util.SortedSet;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -115,7 +115,7 @@ public abstract class BoardManager<T extends BoardManager> implements Board<T>, 
         if (selfTargeted && action.getTarget() != host) return false;
 
         try {
-            Object result = method.invoke(listener, host, action);
+            Object result = method.invoke(listener, this, host, action);
             if (result == null) return false;
             if (result.equals(Boolean.TRUE)) return false;
             if (result instanceof List) {

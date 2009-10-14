@@ -1,7 +1,6 @@
 package com.killard.board.card.record;
 
 import com.killard.board.card.action.CastCardAction;
-import com.killard.board.environment.record.PlayerRecord;
 
 /**
  * <p>

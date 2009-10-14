@@ -10,10 +10,10 @@ import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.GameAttributeDO;
-import com.killard.board.jdo.game.GameMetaCardDO;
-import com.killard.board.jdo.game.GameElementSchoolDO;
 import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.GameAttributeDO;
+import com.killard.board.jdo.game.GameCardDO;
+import com.killard.board.jdo.game.GameElementSchoolDO;
 import com.killard.board.jdo.game.GameSkillDO;
 
 import javax.jdo.PersistenceManager;
@@ -23,8 +23,8 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>
@@ -88,7 +88,7 @@ public class CardRecordDO extends AbstractCardRecord {
     private Boolean casted;
 
     @NotPersistent
-    private GameMetaCardDO card;
+    private GameCardDO card;
 
     @NotPersistent
     private GameElementSchoolDO elementSchool;
@@ -114,7 +114,7 @@ public class CardRecordDO extends AbstractCardRecord {
         visibleAttributes = new LinkedList<Attribute>();
     }
 
-    public CardRecordDO(GameMetaCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
+    public CardRecordDO(GameCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
                         int position) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), position);
@@ -151,7 +151,7 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public void restore(BoardManagerDO boardManager) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        this.card = pm.getObjectById(GameMetaCardDO.class, cardKey);
+        this.card = pm.getObjectById(GameCardDO.class, cardKey);
         this.elementSchool = pm.getObjectById(GameElementSchoolDO.class, elementSchoolKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
@@ -162,7 +162,6 @@ public class CardRecordDO extends AbstractCardRecord {
         }
         for (Key key : attributeKeys) {
             GameAttributeDO attribute = pm.getObjectById(GameAttributeDO.class, key);
-            attribute.restore(boardManager);
             addAttribute(attribute);
             boardManager.addActionListener(attribute, card);
         }
@@ -173,7 +172,7 @@ public class CardRecordDO extends AbstractCardRecord {
         return key;
     }
 
-    public GameMetaCardDO getCard() {
+    public GameCardDO getCard() {
         return card;
     }
 

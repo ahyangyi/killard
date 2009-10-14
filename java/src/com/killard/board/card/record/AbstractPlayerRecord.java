@@ -4,9 +4,8 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
-import com.killard.board.card.Player;
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.Record;
+import com.killard.board.card.Player;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
 

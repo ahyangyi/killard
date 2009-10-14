@@ -1,7 +1,7 @@
 package com.killard.board.environment;
 
-import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.card.MetaCard;
 
 import java.util.Map;
 

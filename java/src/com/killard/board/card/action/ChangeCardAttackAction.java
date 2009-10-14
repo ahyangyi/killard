@@ -1,9 +1,9 @@
 package com.killard.board.card.action;
 
 import com.killard.board.card.Attack;
+import com.killard.board.card.AttackType;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
-import com.killard.board.card.AttackType;
 
 /**
  * <p>

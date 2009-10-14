@@ -3,11 +3,11 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.action.EndTurnAction;
-import com.killard.board.card.action.DropCardAction;
-import com.killard.board.card.action.EquipCardAction;
-import com.killard.board.card.action.DrawCardAction;
 import com.killard.board.card.action.DealCardAction;
+import com.killard.board.card.action.DrawCardAction;
+import com.killard.board.card.action.DropCardAction;
+import com.killard.board.card.action.EndTurnAction;
+import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
@@ -22,7 +22,6 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.NotPersistent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,9 +56,6 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @NotPersistent
-    private BoardManagerDO boardManager;
-
     public GameRuleDO(GamePackageDO pack, RuleDO rule) {
         this.packageKey = pack.getKey();
         validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
@@ -75,47 +71,43 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
         return packageKey;
     }
 
-    public void restore(BoardManagerDO boardManager) {
-        this.boardManager = boardManager;
-    }
-
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
     public List<Action> validateAction(BoardManagerDO owner, Action action) {
-        List<Action> result = FunctionHelper.handler(boardManager, owner, action, validators);
+        List<Action> result = FunctionHelper.handler(owner, owner, action, validators);
         getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
         return result;
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> beforeAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, before);
+        return FunctionHelper.handler(owner, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
     public List<Action> afterAction(BoardManagerDO owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, after);
+        return FunctionHelper.handler(owner, owner, action, after);
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public void after(BoardManagerDO boardManager, EndTurnAction action) {
-        boardManager.moveToNext();
+    public void after(BoardManagerDO owner, EndTurnAction action) {
+        owner.moveToNext();
     }
 
     @AfterAction(actionClass = DrawCardAction.class, selfTargeted = false)
-    public Action before(BoardManagerDO boardManager, DrawCardAction action) {
-        return new DealCardAction(action.getTarget(), boardManager.dealCard());
+    public Action before(BoardManagerDO owner, DrawCardAction action) {
+        return new DealCardAction(action.getTarget(), owner.dealCard());
     }
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
-    public void after(BoardManagerDO boardManager, EquipCardAction action) {
+    public void after(BoardManagerDO owner, EquipCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.addActionListener(attribute, action.getTarget());
+            owner.addActionListener(attribute, action.getTarget());
     }
 
     @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
-    public void before(BoardManagerDO boardManager, DropCardAction action) {
+    public void before(BoardManagerDO owner, DropCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
-            boardManager.removeActionListener(attribute);
+            owner.removeActionListener(attribute);
     }
 
     public Logger getLog() {

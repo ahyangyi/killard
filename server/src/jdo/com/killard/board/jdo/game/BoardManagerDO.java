@@ -1,13 +1,13 @@
 package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
-import com.killard.board.card.MetaCard;
-import com.killard.board.card.Card;
-import com.killard.board.card.Player;
 import com.killard.board.card.BoardPackage;
+import com.killard.board.card.Card;
+import com.killard.board.card.MetaCard;
+import com.killard.board.card.Player;
 import com.killard.board.card.action.BeginGameAction;
-import com.killard.board.environment.BoardManager;
 import com.killard.board.environment.BoardException;
+import com.killard.board.environment.BoardManager;
 import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.game.player.CardRecordDO;
 import com.killard.board.jdo.game.player.ElementRecordDO;
@@ -21,10 +21,10 @@ import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BoardManagerDO extends BoardManager<BoardManagerDO> {
@@ -71,8 +71,6 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
 
     public void restore() {
         for (PlayerRecordDO player : roundQueue) player.restore(this);
-
-        getBoardPackage().getRule().restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
 
@@ -158,7 +156,7 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
 
     @Override
     protected Card createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
-        return new CardRecordDO((GameMetaCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
+        return new CardRecordDO((GameCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
                 cardPosition);
     }
 
@@ -186,15 +184,15 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
         return currentPlayerPosition;
     }
 
-    protected GameMetaCardDO dealCard() {
-        List<GameMetaCardDO> cards = new ArrayList<GameMetaCardDO>();
+    protected GameCardDO dealCard() {
+        List<GameCardDO> cards = new ArrayList<GameCardDO>();
         int n = 0;
         for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             n += elementSchool.getCards().length;
         }
         if (n == dealtCardKeys.size()) dealtCardKeys.clear();
         for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            for (GameMetaCardDO card : elementSchool.getCards()) {
+            for (GameCardDO card : elementSchool.getCards()) {
                 if (dealtCardKeys.contains(card.getKey())) continue;
                 dealtCardKeys.add(card.getKey());
                 cards.add(card);
@@ -212,7 +210,7 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
         return record;
     }
 
-    protected void randomSelect(List<GameMetaCardDO> remainingCards, int cardAmount) {
+    protected void randomSelect(List<GameCardDO> remainingCards, int cardAmount) {
         int size = remainingCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
             int index = (int) Math.floor(remainingCards.size() * Math.random());

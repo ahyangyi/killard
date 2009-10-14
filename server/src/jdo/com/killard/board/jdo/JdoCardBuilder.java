@@ -2,13 +2,13 @@ package com.killard.board.jdo;
 
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
-import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.Expression;
 import com.killard.board.parser.Function;

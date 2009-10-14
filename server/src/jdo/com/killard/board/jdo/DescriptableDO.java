@@ -3,9 +3,9 @@ package com.killard.board.jdo;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.context.BoardContext;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.SortedSet;
-import java.util.Collections;
 
 /**
  * <p>

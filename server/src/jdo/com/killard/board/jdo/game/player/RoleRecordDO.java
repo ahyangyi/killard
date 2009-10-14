@@ -1,26 +1,25 @@
 package com.killard.board.jdo.game.player;
 
-import com.killard.board.card.Role;
-import com.killard.board.card.Action;
-import com.killard.board.card.Player;
-import com.killard.board.environment.ActionValidator;
-import com.killard.board.environment.BeforeAction;
-import com.killard.board.environment.AfterAction;
-import com.killard.board.jdo.game.GameRoleDO;
-import com.killard.board.jdo.game.BoardManagerDO;
-import com.killard.board.jdo.FunctionHelper;
-import com.killard.board.jdo.AttributeHandler;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.killard.board.card.Action;
+import com.killard.board.card.Player;
+import com.killard.board.card.Role;
+import com.killard.board.environment.ActionValidator;
+import com.killard.board.environment.AfterAction;
+import com.killard.board.environment.BeforeAction;
+import com.killard.board.jdo.AttributeHandler;
+import com.killard.board.jdo.FunctionHelper;
+import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.GameRoleDO;
 
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.NotPersistent;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import java.util.List;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -51,9 +50,6 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @NotPersistent
-    private BoardManagerDO boardManager;
-
     public RoleRecordDO(PlayerRecordDO player, GameRoleDO role, BoardManagerDO boardManager) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), role.getName());
@@ -64,8 +60,6 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
         validators = new ArrayList<AttributeHandler>(role.getValidators());
         before = new ArrayList<AttributeHandler>(role.getBefore());
         after = new ArrayList<AttributeHandler>(role.getAfter());
-
-        this.boardManager = boardManager;
     }
 
     public Key getKey() {
@@ -76,29 +70,25 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
         return visible;
     }
 
-    public void restore(BoardManagerDO boardManager) {
-        this.boardManager = boardManager;
-    }
-
     protected void setVisible(Boolean visible) {
         this.visible = visible;
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(Player owner, Action action) {
-        List<Action> result = FunctionHelper.handler(boardManager, owner, action, validators);
+    public List<Action> validateAction(BoardManagerDO board, Player owner, Action action) {
+        List<Action> result = FunctionHelper.handler(board, owner, action, validators);
         getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
         return result;
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(Player owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, before);
+    public List<Action> beforeAction(BoardManagerDO board, Player owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(Player owner, Action action) {
-        return FunctionHelper.handler(boardManager, owner, action, after);
+    public List<Action> afterAction(BoardManagerDO board, Player owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, after);
     }
 
     public Logger getLog() {

@@ -2,6 +2,7 @@ package com.killard.board.card.attribute;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
+import com.killard.board.card.Board;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.environment.ActionValidator;
@@ -56,7 +57,7 @@ public class CompositeAttribute extends BasicAttribute<CompositeAttribute> {
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    protected List<Action> validateAction(Card card, Action action) {
+    protected List<Action> validateAction(Board board, Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         boolean valid = true;
         for (Attribute attribute : attributes) {
@@ -77,7 +78,7 @@ public class CompositeAttribute extends BasicAttribute<CompositeAttribute> {
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(Card card, Action action) {
+    public List<Action> beforeAction(Board board, Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         for (Attribute attribute : attributes) {
             for (Method method : attribute.getClass().getMethods()) {
@@ -93,7 +94,7 @@ public class CompositeAttribute extends BasicAttribute<CompositeAttribute> {
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(Card card, Action action) {
+    public List<Action> afterAction(Board board, Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         for (Attribute attribute : attributes) {
             for (Method method : attribute.getClass().getMethods()) {

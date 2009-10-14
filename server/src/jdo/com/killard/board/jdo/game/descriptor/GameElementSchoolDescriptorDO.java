@@ -4,8 +4,8 @@ import com.killard.board.jdo.DescriptorDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.game.GameElementSchoolDO;
 
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 
 /**
  * <p>

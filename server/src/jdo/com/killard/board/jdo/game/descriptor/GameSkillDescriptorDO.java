@@ -1,11 +1,11 @@
 package com.killard.board.jdo.game.descriptor;
 
 import com.killard.board.jdo.DescriptorDO;
-import com.killard.board.jdo.game.GameSkillDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
+import com.killard.board.jdo.game.GameSkillDO;
 
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 
 /**
  * <p>

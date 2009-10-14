@@ -1,7 +1,7 @@
 package com.killard.board.packages.magic;
 
-import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.card.MetaCard;
 
 public enum MagicElementSchool implements ElementSchool {
 

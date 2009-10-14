@@ -1,14 +1,14 @@
 package com.killard.board.jdo;
 
 import com.killard.board.card.Action;
+import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.GlobalContext;
-import com.killard.board.jdo.game.BoardManagerDO;
 
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>

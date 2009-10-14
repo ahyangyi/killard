@@ -1,8 +1,8 @@
 package com.killard.board.environment.record;
 
-import com.killard.board.card.MetaCard;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.environment.event.StateListener;

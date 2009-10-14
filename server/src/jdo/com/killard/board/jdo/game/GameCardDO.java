@@ -5,14 +5,14 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.card.MetaCard;
 import com.killard.board.card.Skill;
+import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.GameCardDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -33,8 +33,8 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameMetaCardDO extends DescriptableDO<GameMetaCardDO, GameCardDescriptorDO>
-        implements MetaCard<GameMetaCardDO> {
+public class GameCardDO extends DescriptableDO<GameCardDO, GameCardDescriptorDO>
+        implements MetaCard<GameCardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -79,7 +79,7 @@ public class GameMetaCardDO extends DescriptableDO<GameMetaCardDO, GameCardDescr
     @Persistent
     private SortedSet<GameCardDescriptorDO> descriptors;
 
-    public GameMetaCardDO(GameElementSchoolDO elementSchool, MetaCardDO card) {
+    public GameCardDO(GameElementSchoolDO elementSchool, MetaCardDO card) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), card.getKey().getId());
         this.key = keyBuilder.getKey();

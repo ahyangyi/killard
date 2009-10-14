@@ -1,7 +1,5 @@
 package com.killard.board.card;
 
-import com.killard.board.card.Record;
-
 import java.io.Serializable;
 
 /**

@@ -6,25 +6,25 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Card;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
+import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.jdo.game.descriptor.GameSkillDescriptorDO;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
-import com.killard.board.jdo.board.SkillDO;
-import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.GameSkillDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.NotPersistent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * <p>
@@ -60,7 +60,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptor
     @NotPersistent
     private BoardManagerDO boardManager;
 
-    public GameSkillDO(GameMetaCardDO card, SkillDO skill) {
+    public GameSkillDO(GameCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
         this.key = keyBuilder.getKey();

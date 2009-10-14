@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/xml/includes.jsp" %>
-<%@ page import="com.killard.board.card.MetaCard" %>
 <%@ page import="com.killard.board.card.ElementSchool" %>
+<%@ page import="com.killard.board.card.MetaCard" %>
 <%@ page import="com.killard.board.jdo.game.player.PlayerRecordDO" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.game.BoardManagerDO"--%>

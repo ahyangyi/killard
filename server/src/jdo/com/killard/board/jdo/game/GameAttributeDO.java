@@ -10,18 +10,17 @@ import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
-import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.GameAttributeDescriptorDO;
+import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameAttributeDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.NotPersistent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,9 +70,6 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
     @Persistent
     private SortedSet<GameAttributeDescriptorDO> descriptors;
 
-    @NotPersistent
-    private BoardManagerDO boardManager;
-
     public GameAttributeDO(GameElementSchoolDO elementSchool, AttributeDO attribute) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), attribute.getKey().getId());
@@ -93,10 +89,6 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         for (AttributeDescriptorDO descriptor : attribute.getAllDescriptors()) {
             this.descriptors.add(new GameAttributeDescriptorDO(this, descriptor));
         }
-    }
-
-    public void restore(BoardManagerDO boardManager) {
-        this.boardManager = boardManager;
     }
 
     public Key getKey() {
@@ -128,17 +120,17 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(Card card, Action action) {
-        return FunctionHelper.handler(boardManager, card, action, validators);
+    public List<Action> validateAction(BoardManagerDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, validators);
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(Card card, Action action) {
-        return FunctionHelper.handler(boardManager, card, action, before);
+    public List<Action> beforeAction(BoardManagerDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(Card card, Action action) {
-        return FunctionHelper.handler(boardManager, card, action, after);
+    public List<Action> afterAction(BoardManagerDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, after);
     }
 }

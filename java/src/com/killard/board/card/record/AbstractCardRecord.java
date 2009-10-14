@@ -6,7 +6,6 @@ import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
-import com.killard.board.card.Record;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
 

@@ -1,7 +1,6 @@
 package com.killard.board.environment.record;
 
 import com.killard.board.card.Role;
-import com.killard.board.card.Record;
 
 /**
  * <p>

@@ -1,7 +1,7 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.Player;
 import com.killard.board.card.MetaCard;
+import com.killard.board.card.Player;
 
 /**
  * <p>

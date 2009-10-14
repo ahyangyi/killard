@@ -3,22 +3,22 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
+import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Extension;
-import java.util.List;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Collections;
 
 /**
  * <p>

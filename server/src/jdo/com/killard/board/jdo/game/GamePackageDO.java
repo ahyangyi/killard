@@ -2,25 +2,25 @@ package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.killard.board.card.BoardPackage;
+import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.game.descriptor.GamePackageDescriptorDO;
-import com.killard.board.card.BoardPackage;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * <p>

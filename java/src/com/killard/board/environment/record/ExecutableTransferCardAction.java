@@ -11,8 +11,11 @@ import com.killard.board.card.action.TransferCardAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ExecutableTransferCardAction extends ExecutableCardAction<TransferCardAction> {
+public class ExecutableTransferCardAction extends ExecutablePlayerAction<TransferCardAction> {
 
-    public void execute(AbstractCardRecord record, TransferCardAction action) {
+    public void execute(AbstractPlayerRecord record, TransferCardAction action) {
+        AbstractPlayerRecord owner = (AbstractPlayerRecord) action.getSource().getOwner();
+        owner.removeEquippedCard(action.getSource());
+        record.addEquippedCard(action.getSource());
     }
 }

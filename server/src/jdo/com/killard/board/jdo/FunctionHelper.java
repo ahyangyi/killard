@@ -26,7 +26,7 @@ public final class FunctionHelper {
         if (handlers == null || handlers.isEmpty()) return null;
         getLog().fine("handle action: " + action + " on " + owner);
         Context context = new GlobalContext(owner, action);
-        context.addVariable("game", boardManager);
+        context.addVariable("board", boardManager);
         for (AttributeHandler attribute : handlers) {
             Class actionClass = attribute.getActionClass();
             boolean selfTargeted = attribute.isSelfTargeted();

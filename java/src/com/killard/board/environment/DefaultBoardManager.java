@@ -135,7 +135,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     @AfterAction(actionClass = ChangeCardHealthAction.class, selfTargeted = false)
     public Object after(BoardManager boardManager, ChangeCardHealthAction action) {
         if (action.getHealthChange().getValue() > action.getTarget().getHealth())
-            return new DropCardAction(action.getSource(), action.getTarget());
+            return new DropCardAction(action.getTarget().getOwner(), action.getTarget());
         else return null;
     }
 

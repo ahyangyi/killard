@@ -45,7 +45,7 @@ public abstract class BasicSkill implements Skill {
         return cost;
     }
 
-    public List<Action> execute(CardInstance owner, CardInstance target) {
+    public List<Action> execute(CardInstance owner, Object... target) {
         List<Action> actions = new LinkedList<Action>();
         if (getCost() != 0) actions.add(new ChangePlayerElementAction(owner, owner.getOwner(), getElementSchool(), -getCost()));
         return actions;

@@ -9,6 +9,9 @@
         ${card.name}
     </c:otherwise>
 </c:choose>
+<c:forEach var="skill" items="${record.skills}">
+<%@ include file="skill.jsp"%>
+</c:forEach>
 <form action="/card/instantedit.html" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="packageId" value="${card.name}"/>
     <input type="hidden" name="elementSchoolId" value="${card.name}"/>

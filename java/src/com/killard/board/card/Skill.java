@@ -6,7 +6,9 @@ public interface Skill {
 
     public String getName();
 
+    public SkillTarget[] getTargets();
+
     public int getCost();
 
-    public List<Action> execute(CardInstance owner, CardInstance target);
+    public List<Action> execute(CardInstance owner, Object... target);
 }

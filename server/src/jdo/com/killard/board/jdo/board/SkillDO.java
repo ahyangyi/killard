@@ -13,6 +13,8 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -34,6 +36,9 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
     private String name;
 
     @Persistent
+    private List<String> targets;
+
+    @Persistent
     private Integer cost;
 
     @Persistent(serialized = "true")
@@ -48,6 +53,7 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
         this.key = keyBuilder.getKey();
 
         this.name = name;
+        this.targets = new ArrayList<String>();
         this.cost = cost;
         this.function = function;
         this.descriptors = new TreeSet<SkillDescriptorDO>();
@@ -63,6 +69,10 @@ public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String[] getTargets() {
+        return targets.toArray(new String[targets.size()]);
     }
 
     public int getCost() {

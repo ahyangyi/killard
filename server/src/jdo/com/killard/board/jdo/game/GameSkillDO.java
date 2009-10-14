@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.CardInstance;
 import com.killard.board.card.Skill;
+import com.killard.board.card.SkillTarget;
 import com.killard.board.parser.Context;
 import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.Function;
@@ -22,6 +23,8 @@ import javax.jdo.annotations.NotPersistent;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -43,6 +46,9 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
     private String name;
 
     @Persistent
+    private List<String> targets;
+
+    @Persistent
     private Integer cost;
 
     @Persistent(serialized = "true")
@@ -60,6 +66,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         this.key = keyBuilder.getKey();
 
         this.name = skill.getName();
+        this.targets = new ArrayList<String>(Arrays.asList(skill.getTargets()));
         this.cost = skill.getCost();
         this.function = skill.getFunction();
 
@@ -78,6 +85,12 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         return name;
     }
 
+    public SkillTarget[] getTargets() {
+        SkillTarget[] result = new SkillTarget[targets.size()];
+        for (int i = 0; i < result.length; i++) result[i] = SkillTarget.valueOf(targets.get(i));
+        return result;
+    }
+
     protected SortedSet<GameSkillDescriptorDO> getDescriptors() {
         return descriptors;
     }
@@ -90,10 +103,10 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         return function;
     }
 
-    public List<Action> execute(CardInstance owner, CardInstance target) {
+    public List<Action> execute(CardInstance owner, Object... target) {
         Context ctx = new GlobalContext(owner);
-        ctx.addVariable("target", target);
-        ctx.addVariable("game", boardManager);
+        ctx.addVariable("targets", target);
+        ctx.addVariable("board", boardManager);
         try {
             function.execute(ctx);
         } catch (ExecutionException e) {

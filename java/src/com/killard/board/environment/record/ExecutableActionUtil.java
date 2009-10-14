@@ -23,6 +23,7 @@ import com.killard.board.card.action.RevealRoleAction;
 import com.killard.board.card.action.BeginPlayerCallAction;
 import com.killard.board.card.action.EndPlayerCallAction;
 import com.killard.board.card.action.DealCardAction;
+import com.killard.board.card.action.TransferCardAction;
 import com.killard.board.environment.ExecutableAction;
 
 import java.util.HashMap;
@@ -53,15 +54,16 @@ public final class ExecutableActionUtil {
         map.put(DealCardAction.class, new ExecutableDealCardAction());
         map.put(DiscardCardAction.class, new ExecutableDiscardCardAction());
         map.put(DrawCardAction.class, new ExecutableDrawCardAction());
+        map.put(DropCardAction.class, new ExecutableDropCardAction());
         map.put(EndPlayerCallAction.class, new ExecutableEndPlayerCallAction());
         map.put(EndTurnAction.class, new ExecutableEndTurnAction());
         map.put(EquipCardAction.class, new ExecutableEquipCardAction());
-        map.put(DropCardAction.class, new ExecutableDropCardAction());
         map.put(LoseAction.class, new ExecutableLoseAction());
         map.put(RemoveCardAttributeAction.class, new ExecutableRemoveCardAttributeAction());
         map.put(RemoveSkillAction.class, new ExecutableRemoveSkillAction());
         map.put(RevealRoleAction.class, new ExecutableRevealRoleAction());
         map.put(RevivePlayerAction.class, new ExecutableRevivePlayerAction());
+        map.put(TransferCardAction.class, new ExecutableTransferCardAction());
         map.put(WinAction.class, new ExecutableWinAction());
         return map;
     }

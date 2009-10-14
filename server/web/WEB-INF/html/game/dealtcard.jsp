@@ -24,7 +24,7 @@
             </div>
             <c:if test="${not empty player.availablePositions and active}">
                 <input type="hidden" name="targetPosition" value="1"/>
-                <input type="submit" value="New"/>
+                <input type="submit" value="Play"/>
             </c:if>
         </form>
     </c:if>

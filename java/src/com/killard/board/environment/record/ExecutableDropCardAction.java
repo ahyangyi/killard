@@ -14,7 +14,7 @@ import com.killard.board.card.action.DropCardAction;
 public class ExecutableDropCardAction extends ExecutableCardAction<DropCardAction> {
 
     public void execute(AbstractCardRecord record, DropCardAction action) {
-        AbstractPlayerRecord player = (AbstractPlayerRecord) record.getOwner();
+        AbstractPlayerRecord player = (AbstractPlayerRecord) action.getSource();
         player.removeEquippedCard(record, action);
     }
 }

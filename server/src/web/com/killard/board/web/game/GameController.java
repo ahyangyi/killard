@@ -71,11 +71,11 @@ public class GameController extends BasicController {
             return list(modelMap);
         }
 
-        modelMap.put("game", boardManager);
+        modelMap.put("board", boardManager);
         modelMap.put("playerId", playerId);
         modelMap.put("players", boardManager.getPlayers(playerId));
         modelMap.put("actions", boardManager.getActions());
-        return "game/game";
+        return "game/board";
     }
 
     @RequestMapping(value = "/game/new.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -98,7 +98,7 @@ public class GameController extends BasicController {
         pm.makePersistent(board);
 
         join(board);
-        redirect("game", request, response);
+        redirect("board", request, response);
     }
 
     @RequestMapping(value = "/game/join.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -113,7 +113,7 @@ public class GameController extends BasicController {
             join(getBoardManager(boardId));
         }
 
-        redirect("game", request, response);
+        redirect("board", request, response);
     }
 
     @RequestMapping(value = "/game/quit.*", method = {RequestMethod.GET, RequestMethod.POST})

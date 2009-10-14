@@ -1,10 +1,12 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="board" type="com.killard.board.jdo.game.BoardManagerDO"--%>
 <%--@elvariable id="player" type="com.killard.board.jdo.game.player.PlayerRecordDO"--%>
+<%--@elvariable id="record" type="com.killard.board.jdo.game.player.CardRecordDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.game.GameSkillDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
-<c:set var="target_self" value=""/>
 <form action="/game/cast.html" method="POST">
+    <input type="hidden" name="cardPosition" value="${record.position}"/>
+    <input type="hidden" name="skillName" value="${skill.name}"/>
     <div class="menu">
         <ul>
             <c:forEach var="target" items="${skill.targets}">

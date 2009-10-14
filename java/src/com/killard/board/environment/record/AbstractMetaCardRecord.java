@@ -3,7 +3,7 @@ package com.killard.board.environment.record;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.environment.Record;
@@ -22,7 +22,7 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class AbstractMetaCardRecord implements CardInstance, Record, Comparable<AbstractMetaCardRecord> {
+public abstract class AbstractMetaCardRecord implements Card, Record, Comparable<AbstractMetaCardRecord> {
 
     private final Set<StateListener> stateListeners;
 

@@ -123,7 +123,7 @@ public class XmppController extends BasicController {
 //        if (args.length == 1) player = getPlayer(getUsername(from));
 //        else player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        for (CardInstance board : player.getEquippedCards()) {
+//        for (Card board : player.getEquippedCards()) {
 //            sendMessage(getUsername(from),
 //                    "[" + board.getPosition() + "] " + board + " level " + board.getLevel() + " health "
 //                            + board.getHealth() + " attack " + board.getAttack().getValue());

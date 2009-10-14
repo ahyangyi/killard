@@ -2,7 +2,7 @@ package com.killard.board.card.attribute;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
@@ -56,7 +56,7 @@ public class CompositeAttribute extends BasicAttribute {
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    protected List<Action> validateAction(CardInstance card, Action action) {
+    protected List<Action> validateAction(Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         boolean valid = true;
         for (Attribute attribute : attributes) {
@@ -77,7 +77,7 @@ public class CompositeAttribute extends BasicAttribute {
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(CardInstance card, Action action) {
+    public List<Action> beforeAction(Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         for (Attribute attribute : attributes) {
             for (Method method : attribute.getClass().getMethods()) {
@@ -93,7 +93,7 @@ public class CompositeAttribute extends BasicAttribute {
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(CardInstance card, Action action) {
+    public List<Action> afterAction(Card card, Action action) {
         List<Action> actions = new LinkedList<Action>();
         for (Attribute attribute : attributes) {
             for (Method method : attribute.getClass().getMethods()) {
@@ -110,7 +110,7 @@ public class CompositeAttribute extends BasicAttribute {
 
     protected List<Action> invokeAttribute(Action action, Attribute attribute,
                                            Method method, Class actionClass, boolean selfTargeted,
-                                           CardInstance host) {
+                                           Card host) {
         if (!actionClass.isAssignableFrom(action.getClass())) return null;
 
         if (selfTargeted && action.getTarget() != host) return null;

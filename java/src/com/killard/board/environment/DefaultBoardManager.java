@@ -3,7 +3,7 @@ package com.killard.board.environment;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.BoardPackage;
@@ -90,7 +90,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     }
 
     @Override
-    protected CardInstance createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
+    protected Card createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
         return new CardRecord(metaCard, this, owner, target, cardPosition);
     }
 
@@ -112,7 +112,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
 
     @ActionValidator(actionClass = EquipCardAction.class, selfTargeted = false)
     public Object validator(BoardManager boardManager, EquipCardAction action) {
-        CardInstance card = action.getTarget();
+        Card card = action.getTarget();
         if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
             if (card.getMaxHealth() > 0) return null;
             if (card.hasSkill()) return new CastCardAction(card.getOwner(), card, card.getSkills()[0], card);
@@ -122,7 +122,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
     public Object after(BoardManager boardManager, EquipCardAction action) {
-        CardInstance card = action.getTarget();
+        Card card = action.getTarget();
         for (Attribute attribute : card.getAttributes()) boardManager.addActionListener(attribute, card);
         return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());
     }
@@ -141,7 +141,7 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
 
     @ActionValidator(actionClass = CastCardAction.class, selfTargeted = false)
     public Object validator(BoardManager boardManager, CastCardAction action) {
-        CardInstance card = action.getTarget();
+        Card card = action.getTarget();
         if (!card.isCasted() && card.getSkills().length > 0 && card.getSkills()[0].getCost() <= card.getOwner()
                 .getElementAmount(card.getElementSchool())) return null;
         return false;

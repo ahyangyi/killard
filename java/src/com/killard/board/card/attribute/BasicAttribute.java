@@ -2,7 +2,7 @@ package com.killard.board.card.attribute;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 
 import java.util.List;
@@ -82,15 +82,15 @@ public abstract class BasicAttribute implements Attribute {
         return true;
     }
 
-    public List<Action> validate(CardInstance owner, Action action) {
+    public List<Action> validate(Card owner, Action action) {
         return null;
     }
 
-    public List<Action> before(CardInstance owner, Action action) {
+    public List<Action> before(Card owner, Action action) {
         return null;
     }
 
-    public List<Action> after(CardInstance owner, Action action) {
+    public List<Action> after(Card owner, Action action) {
         return null;
     }
 }

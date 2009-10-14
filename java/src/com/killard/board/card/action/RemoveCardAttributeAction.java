@@ -1,7 +1,7 @@
 package com.killard.board.card.action;
 
 import com.killard.board.card.Attribute;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 
 /**
  * <p>
@@ -12,11 +12,11 @@ import com.killard.board.card.CardInstance;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class RemoveCardAttributeAction extends CardAction<CardInstance> {
+public class RemoveCardAttributeAction extends CardAction<Card> {
 
     private final Attribute attribute;
 
-    public RemoveCardAttributeAction(CardInstance source, CardInstance target, Attribute attribute) {
+    public RemoveCardAttributeAction(Card source, Card target, Attribute attribute) {
         super(source, target);
         this.attribute = attribute;
     }

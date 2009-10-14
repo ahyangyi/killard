@@ -1,6 +1,6 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 
 /**
@@ -12,9 +12,9 @@ import com.killard.board.card.Player;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class KillPlayerAction extends PlayerAction<CardInstance> {
+public final class KillPlayerAction extends PlayerAction<Card> {
 
-    public KillPlayerAction(CardInstance source, Player target) {
+    public KillPlayerAction(Card source, Player target) {
         super(source, target);
     }
 }

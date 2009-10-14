@@ -14,9 +14,9 @@ public interface Player {
 
     public MetaCard getDealtCard(Integer cardIndex);
 
-    public CardInstance[] getEquippedCards();
+    public Card[] getEquippedCards();
 
-    public CardInstance getEquippedCard(Integer position);
+    public Card getEquippedCard(Integer position);
 
     public boolean isCardPlayed();
 

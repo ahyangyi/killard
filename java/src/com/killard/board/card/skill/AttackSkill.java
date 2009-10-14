@@ -3,7 +3,7 @@ package com.killard.board.card.skill;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.card.action.ChangeCardHealthAction;
@@ -28,10 +28,10 @@ public class AttackSkill extends BasicSkill {
         return new SkillTarget[]{SkillTarget.other};
     }
 
-    public List<Action> execute(CardInstance owner, Object... target) {
+    public List<Action> execute(Card owner, Object... target) {
         List<Action> actions = super.execute(owner, target);
         if (owner.getTarget() != null && owner.getTarget() != owner.getOwner()) {
-            CardInstance opponent = owner.getTarget().getEquippedCard(owner.getPosition());
+            Card opponent = owner.getTarget().getEquippedCard(owner.getPosition());
             if (opponent != null) {
                 actions.add(new ChangePlayerHealthAction(owner, owner.getTarget(), getAttack()));
             } else {

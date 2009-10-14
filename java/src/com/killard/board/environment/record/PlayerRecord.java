@@ -1,7 +1,7 @@
 package com.killard.board.environment.record;
 
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
 import com.killard.board.environment.event.StateListener;
@@ -36,7 +36,7 @@ public class PlayerRecord extends AbstractPlayerRecord {
 
     private final List<MetaCard> dealtCards = new ArrayList<MetaCard>();
 
-    private final SortedSet<CardInstance> equippedCards = new TreeSet<CardInstance>();
+    private final SortedSet<Card> equippedCards = new TreeSet<Card>();
 
     private boolean alive;
 
@@ -105,12 +105,12 @@ public class PlayerRecord extends AbstractPlayerRecord {
         return metaCards.toArray(new MetaCard[metaCards.size()]);
     }
 
-    public CardInstance[] getEquippedCards() {
-        return equippedCards.toArray(new CardInstance[equippedCards.size()]);
+    public Card[] getEquippedCards() {
+        return equippedCards.toArray(new Card[equippedCards.size()]);
     }
 
-    public CardInstance getEquippedCard(Integer pos) {
-        for (CardInstance card : equippedCards) if (card.getPosition() == pos) return card;
+    public Card getEquippedCard(Integer pos) {
+        for (Card card : equippedCards) if (card.getPosition() == pos) return card;
         return null;
     }
 
@@ -150,12 +150,12 @@ public class PlayerRecord extends AbstractPlayerRecord {
         this.cardPlayed = cardPlayed;
     }
 
-    protected boolean addEquippedCard(CardInstance card) {
+    protected boolean addEquippedCard(Card card) {
         setCardPlayed(true);
         return equippedCards.add(card);
     }
 
-    protected boolean removeEquippedCard(CardInstance card) {
+    protected boolean removeEquippedCard(Card card) {
         return equippedCards.remove(card);
     }
 

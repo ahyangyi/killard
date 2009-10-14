@@ -1,7 +1,7 @@
 package com.killard.board.card.action;
 
 import com.killard.board.card.Attack;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.AttackType;
 
@@ -14,16 +14,16 @@ import com.killard.board.card.AttackType;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class ChangeCardHealthAction extends CardAction<CardInstance> {
+public final class ChangeCardHealthAction extends CardAction<Card> {
 
     private final Attack healthChange;
 
-    public ChangeCardHealthAction(CardInstance source, CardInstance target, Attack healthChange) {
+    public ChangeCardHealthAction(Card source, Card target, Attack healthChange) {
         super(source, target);
         this.healthChange = healthChange;
     }
 
-    public ChangeCardHealthAction(CardInstance source, CardInstance target,
+    public ChangeCardHealthAction(Card source, Card target,
                                   ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
         super(source, target);
         this.healthChange = new Attack(elementSchool, attackType, attackValue);

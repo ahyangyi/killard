@@ -10,5 +10,5 @@ public interface Skill {
 
     public int getCost();
 
-    public List<Action> execute(CardInstance owner, Object... target);
+    public List<Action> execute(Card owner, Object... target);
 }

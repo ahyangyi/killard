@@ -2,7 +2,7 @@ package com.killard.board.environment;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.Board;
 import com.killard.board.card.Skill;
@@ -51,7 +51,7 @@ public abstract class BoardManager implements Board, StateListener {
         Player owner = getCurrentPlayer();
         MetaCard card = owner.getDealtCard(cardIndex);
         Player target = getPlayer(targetPlayerPosition);
-        CardInstance instance = createCardRecord(card, owner, target, cardPosition);
+        Card instance = createCardRecord(card, owner, target, cardPosition);
         if (instance.isEquippable()) {
             executeAction(new EquipCardAction(owner, instance));
         } else {
@@ -68,10 +68,10 @@ public abstract class BoardManager implements Board, StateListener {
     public void cast(int cardPosition, int skillIndex, int targetPlayerPosition, int targetCardPosition)
             throws BoardException {
         Player player = getCurrentPlayer();
-        CardInstance card = player.getEquippedCard(cardPosition);
+        Card card = player.getEquippedCard(cardPosition);
 
         Player targetPlayer = getPlayer(targetPlayerPosition);
-        CardInstance targetCard = targetPlayer.getEquippedCard(targetCardPosition);
+        Card targetCard = targetPlayer.getEquippedCard(targetCardPosition);
         if (targetCard == null) targetCard = card;
 
         executeAction(new CastCardAction(player, card, card.getSkills()[skillIndex], targetCard));
@@ -188,7 +188,7 @@ public abstract class BoardManager implements Board, StateListener {
 
     public abstract Player addPlayer(String playerName, int health) throws BoardException;
 
-    protected abstract CardInstance createCardRecord(MetaCard card, Player owner, Player target, int cardPosition);
+    protected abstract Card createCardRecord(MetaCard card, Player owner, Player target, int cardPosition);
 
     protected abstract void moveToNext();
 }

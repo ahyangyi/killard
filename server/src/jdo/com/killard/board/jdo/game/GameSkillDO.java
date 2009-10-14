@@ -3,7 +3,7 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.parser.Context;
@@ -103,7 +103,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implement
         return function;
     }
 
-    public List<Action> execute(CardInstance owner, Object... target) {
+    public List<Action> execute(Card owner, Object... target) {
         Context ctx = new GlobalContext(owner);
         ctx.addVariable("targets", target);
         ctx.addVariable("board", boardManager);

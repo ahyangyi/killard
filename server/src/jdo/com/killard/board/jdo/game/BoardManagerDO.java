@@ -2,7 +2,7 @@ package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.action.BeginGameAction;
@@ -157,7 +157,7 @@ public class BoardManagerDO extends BoardManager implements Comparable<BoardMana
     }
 
     @Override
-    protected CardInstance createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
+    protected Card createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
         return new CardRecordDO((GameMetaCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
                 cardPosition);
     }

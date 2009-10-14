@@ -1,7 +1,7 @@
 package com.killard.board.card.skill;
 
 import com.killard.board.card.Action;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.card.action.ChangePlayerElementAction;
@@ -45,7 +45,7 @@ public abstract class BasicSkill implements Skill {
         return cost;
     }
 
-    public List<Action> execute(CardInstance owner, Object... target) {
+    public List<Action> execute(Card owner, Object... target) {
         List<Action> actions = new LinkedList<Action>();
         if (getCost() != 0) actions.add(new ChangePlayerElementAction(owner, owner.getOwner(), getElementSchool(), -getCost()));
         return actions;

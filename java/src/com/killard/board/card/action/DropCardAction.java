@@ -1,6 +1,6 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 
 /**
@@ -14,7 +14,7 @@ import com.killard.board.card.Player;
  */
 public final class DropCardAction extends CardAction<Player> {
 
-    public DropCardAction(Player source, CardInstance target) {
+    public DropCardAction(Player source, Card target) {
         super(source, target);
     }
 }

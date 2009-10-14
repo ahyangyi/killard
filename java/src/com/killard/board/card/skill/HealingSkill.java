@@ -3,7 +3,7 @@ package com.killard.board.card.skill;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.card.action.ChangePlayerHealthAction;
@@ -27,7 +27,7 @@ public class HealingSkill extends BasicSkill {
         return healing;
     }
 
-    public List<Action> execute(CardInstance owner, Object... target) {
+    public List<Action> execute(Card owner, Object... target) {
         List<Action> actions = super.execute(owner, target);
         actions.add(new ChangePlayerHealthAction(owner, owner.getOwner(), getHealing()));
         return actions;

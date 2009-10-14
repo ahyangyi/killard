@@ -1,7 +1,7 @@
 package com.killard.board.card.skill;
 
 import com.killard.board.card.Action;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
@@ -35,7 +35,7 @@ public class CompositeSkill extends BasicSkill {
         return new ArrayList<Skill>(skills);
     }
 
-    public List<Action> execute(CardInstance owner, Object... target) {
+    public List<Action> execute(Card owner, Object... target) {
         List<Action> actions = super.execute(owner, target);
         for (Skill skill : skills) actions.addAll(skill.execute(owner, target));
         return actions;

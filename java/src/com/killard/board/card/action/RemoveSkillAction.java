@@ -1,6 +1,6 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.Skill;
 
 /**
@@ -12,11 +12,11 @@ import com.killard.board.card.Skill;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class RemoveSkillAction extends CardAction<CardInstance> {
+public class RemoveSkillAction extends CardAction<Card> {
 
     private final Skill skill;
 
-    public RemoveSkillAction(CardInstance source, CardInstance target, Skill skill) {
+    public RemoveSkillAction(Card source, Card target, Skill skill) {
         super(source, target);
         this.skill = skill;
     }

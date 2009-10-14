@@ -9,7 +9,7 @@ package com.killard.board.card;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface CardInstance extends MetaCard {
+public interface Card extends MetaCard {
 
     public Player getOwner();
 

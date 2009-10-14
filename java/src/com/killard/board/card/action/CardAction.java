@@ -1,6 +1,6 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 
 /**
  * <p>
@@ -11,9 +11,9 @@ import com.killard.board.card.CardInstance;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class CardAction<S> extends BasicAction<S, CardInstance> {
+public abstract class CardAction<S> extends BasicAction<S, Card> {
 
-    protected CardAction(S source, CardInstance target) {
+    protected CardAction(S source, Card target) {
         super(source, target);
     }
 }

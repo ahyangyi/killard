@@ -3,7 +3,7 @@ package com.killard.board.jdo.game.player;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.MetaCard;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
 import com.killard.board.environment.record.AbstractPlayerRecord;
@@ -161,12 +161,12 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         return new MetaCard[0];
     }
 
-    public CardInstance[] getEquippedCards() {
-        return equippedCards.toArray(new CardInstance[equippedCards.size()]);
+    public Card[] getEquippedCards() {
+        return equippedCards.toArray(new Card[equippedCards.size()]);
     }
 
-    public CardInstance getEquippedCard(Integer pos) {
-        for (CardInstance card : equippedCards) if (card.getPosition() == pos) return card;
+    public Card getEquippedCard(Integer pos) {
+        for (Card card : equippedCards) if (card.getPosition() == pos) return card;
         return null;
     }
 
@@ -189,8 +189,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         return positions.toArray(new Integer[positions.size()]);
     }
 
-    public CardInstance[] getEquippedCardsView() {
-        CardInstance[] view = new CardInstance[5];
+    public Card[] getEquippedCardsView() {
+        Card[] view = new Card[5];
         for (int i = 0; i < view.length; i++) {
             view[i] = getEquippedCard(i + 1);
         }
@@ -223,12 +223,12 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
         return false;
     }
 
-    protected boolean removeEquippedCard(CardInstance card) {
+    protected boolean removeEquippedCard(Card card) {
         CardRecordDO record = (CardRecordDO) card;
         return equippedCards.remove(record);
     }
 
-    protected boolean addEquippedCard(CardInstance card) {
+    protected boolean addEquippedCard(Card card) {
         setCardPlayed(true);
         CardRecordDO record = (CardRecordDO) card;
         return equippedCards.add(record);

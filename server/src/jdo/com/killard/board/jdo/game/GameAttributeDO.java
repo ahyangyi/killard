@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
@@ -128,17 +128,17 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDescriptorDO> i
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(CardInstance card, Action action) {
+    public List<Action> validateAction(Card card, Action action) {
         return FunctionHelper.handler(boardManager, card, action, validators);
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(CardInstance card, Action action) {
+    public List<Action> beforeAction(Card card, Action action) {
         return FunctionHelper.handler(boardManager, card, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(CardInstance card, Action action) {
+    public List<Action> afterAction(Card card, Action action) {
         return FunctionHelper.handler(boardManager, card, action, after);
     }
 }

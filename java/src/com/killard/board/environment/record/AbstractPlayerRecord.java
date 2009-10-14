@@ -2,7 +2,7 @@ package com.killard.board.environment.record;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
-import com.killard.board.card.CardInstance;
+import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.MetaCard;
@@ -44,9 +44,9 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     protected abstract void setCardPlayed(boolean cardPlayed);
 
-    protected abstract boolean addEquippedCard(CardInstance card);
+    protected abstract boolean addEquippedCard(Card card);
 
-    protected abstract boolean removeEquippedCard(CardInstance card);
+    protected abstract boolean removeEquippedCard(Card card);
 
     protected abstract void setHealth(int health);
 
@@ -65,7 +65,7 @@ public abstract class AbstractPlayerRecord implements Player, Record {
     protected abstract void setTurnCount(int turnCount);
 
     protected void beginTurn() {
-        for (CardInstance instance : getEquippedCards()) {
+        for (Card instance : getEquippedCards()) {
             AbstractMetaCardRecord record = (AbstractMetaCardRecord) instance;
             record.setCasted(false);
         }
@@ -99,13 +99,13 @@ public abstract class AbstractPlayerRecord implements Player, Record {
         fireStateChanged(new StateEvent(this, action));
     }
 
-    protected boolean addEquippedCard(CardInstance card, Action action) {
+    protected boolean addEquippedCard(Card card, Action action) {
         boolean result = addEquippedCard(card);
         fireStateChanged(new StateEvent(this, action));
         return result;
     }
 
-    protected boolean removeEquippedCard(CardInstance card, Action action) {
+    protected boolean removeEquippedCard(Card card, Action action) {
         boolean result = removeEquippedCard(card);
         fireStateChanged(new StateEvent(this, action));
         return result;

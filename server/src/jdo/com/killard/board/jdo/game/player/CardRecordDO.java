@@ -10,7 +10,7 @@ import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameAttributeDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameSkillDO;
@@ -114,7 +114,7 @@ public class CardRecordDO extends AbstractCardRecord {
         visibleAttributes = new LinkedList<Attribute>();
     }
 
-    public CardRecordDO(GameCardDO card, BoardManagerDO boardManager, PlayerRecordDO owner, PlayerRecordDO target,
+    public CardRecordDO(GameCardDO card, BoardDO board, PlayerRecordDO owner, PlayerRecordDO target,
                         int position) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), position);
@@ -147,25 +147,25 @@ public class CardRecordDO extends AbstractCardRecord {
             this.properties.add(new CardRecordPropertyDO(this, property));
         }
 
-        this.addStateListener(boardManager);
+        this.addStateListener(board);
     }
 
-    public void restore(BoardManagerDO boardManager) {
+    public void restore(BoardDO board) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         this.card = pm.getObjectById(GameCardDO.class, cardKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
             GameSkillDO skill = pm.getObjectById(GameSkillDO.class, key);
-            skill.restore(boardManager);
+            skill.restore(board);
             addSkill(skill);
         }
         for (Key key : attributeKeys) {
             GameAttributeDO attribute = pm.getObjectById(GameAttributeDO.class, key);
             addAttribute(attribute);
-            boardManager.addActionListener(attribute, card);
+            board.addActionListener(attribute, card);
         }
-        addStateListener(boardManager);
+        addStateListener(board);
     }
 
     public Key getKey() {

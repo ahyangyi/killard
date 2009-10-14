@@ -34,13 +34,13 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DefaultBoardManager extends BoardManager<DefaultBoardManager> implements ActionListener<DefaultBoardManager> {
+public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionListener<DefaultBoard> {
 
     private final BoardPackage boardPackage = null;
 
     private final List<PlayerRecord> roundQueue = new LinkedList<PlayerRecord>();
 
-    public DefaultBoardManager() {
+    public DefaultBoard() {
         addActionListener(this, this);
     }
 
@@ -53,6 +53,9 @@ public class DefaultBoardManager extends BoardManager<DefaultBoardManager> imple
                 this);
         roundQueue.add(player);
         return player;
+    }
+
+    protected void setProperty(String name, Object data) {
     }
 
     public BoardPackage getPackage() {
@@ -95,23 +98,23 @@ public class DefaultBoardManager extends BoardManager<DefaultBoardManager> imple
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public Object after(DefaultBoardManager boardManager, DefaultBoardManager owner, EndTurnAction action) {
-        boardManager.moveToNext();
+    public Object after(DefaultBoard board, DefaultBoard owner, EndTurnAction action) {
+        board.moveToNext();
         List<Action> actions = new ArrayList<Action>();
         for (ElementSchool elementSchool : getPackage().getElementSchools())
-            actions.add(new ChangePlayerElementAction(boardManager, action.getTarget(), elementSchool, 1));
+            actions.add(new ChangePlayerElementAction(board, action.getTarget(), elementSchool, 1));
         return actions;
     }
 
     @AfterAction(actionClass = ChangePlayerHealthAction.class, selfTargeted = false)
-    public Object after(DefaultBoardManager boardManager, DefaultBoardManager owner, ChangePlayerHealthAction action) {
+    public Object after(DefaultBoard board, DefaultBoard owner, ChangePlayerHealthAction action) {
         if (action.getHealthChange().getValue() > action.getTarget().getHealth())
             return new KillPlayerAction(action.getSource(), action.getTarget());
         else return null;
     }
 
     @ActionValidator(actionClass = EquipCardAction.class, selfTargeted = false)
-    public Object validator(DefaultBoardManager boardManager, DefaultBoardManager owner, EquipCardAction action) {
+    public Object validator(DefaultBoard board, DefaultBoard owner, EquipCardAction action) {
         Card card = action.getTarget();
         if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
             if (card.getMaxHealth() > 0) return null;
@@ -121,26 +124,26 @@ public class DefaultBoardManager extends BoardManager<DefaultBoardManager> imple
     }
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
-    public Object after(DefaultBoardManager boardManager, DefaultBoardManager owner, EquipCardAction action) {
+    public Object after(DefaultBoard board, DefaultBoard owner, EquipCardAction action) {
         Card card = action.getTarget();
-        for (Attribute attribute : card.getAttributes()) boardManager.addActionListener(attribute, card);
+        for (Attribute attribute : card.getAttributes()) board.addActionListener(attribute, card);
         return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());
     }
 
     @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
-    public void before(DefaultBoardManager boardManager, DefaultBoardManager owner, DropCardAction action) {
-        for (Attribute attribute : action.getTarget().getAttributes()) boardManager.removeActionListener(attribute);
+    public void before(DefaultBoard board, DefaultBoard owner, DropCardAction action) {
+        for (Attribute attribute : action.getTarget().getAttributes()) board.removeActionListener(attribute);
     }
 
     @AfterAction(actionClass = ChangeCardHealthAction.class, selfTargeted = false)
-    public Object after(DefaultBoardManager boardManager, DefaultBoardManager owner, ChangeCardHealthAction action) {
+    public Object after(DefaultBoard board, DefaultBoard owner, ChangeCardHealthAction action) {
         if (action.getHealthChange().getValue() > action.getTarget().getHealth())
             return new DropCardAction(action.getTarget().getOwner(), action.getTarget());
         else return null;
     }
 
     @ActionValidator(actionClass = CastCardAction.class, selfTargeted = false)
-    public Object validator(DefaultBoardManager boardManager, DefaultBoardManager owner, CastCardAction action) {
+    public Object validator(DefaultBoard board, DefaultBoard owner, CastCardAction action) {
         Card card = action.getTarget();
         if (!card.isCasted() && card.getSkills().length > 0 && card.getSkills()[0].getCost() <= card.getOwner()
                 .getElementAmount(card.getElementSchool())) return null;
@@ -148,11 +151,15 @@ public class DefaultBoardManager extends BoardManager<DefaultBoardManager> imple
     }
 
     @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
-    public List<Action> after(DefaultBoardManager boardManager, DefaultBoardManager owner, CastCardAction action) {
+    public List<Action> after(DefaultBoard board, DefaultBoard owner, CastCardAction action) {
         return action.getSkill().execute(action.getTarget(), action.getTargetCard());
     }
 
-    public int compareTo(DefaultBoardManager compare) {
+    public int compareTo(DefaultBoard compare) {
         return 0;
+    }
+
+    public Object getProperty(String name) {
+        return null;
     }
 }

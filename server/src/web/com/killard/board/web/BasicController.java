@@ -7,7 +7,8 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
 
 import javax.jdo.PersistenceManager;
@@ -76,39 +77,45 @@ public class BasicController {
         return (PlayerRecordDO) collection.iterator().next();
     }
 
-    protected BoardManagerDO getBoardManager() {
+    protected BoardDO getBoardManager() {
         PlayerRecordDO player = getPlayer();
         if (player == null) return null;
-        BoardManagerDO boardManager = PersistenceHelper.getPersistenceManager()
-                .getObjectById(BoardManagerDO.class, player.getBoardManagerKey());
-        boardManager.restore();
-        return boardManager;
+        BoardDO board = PersistenceHelper.getPersistenceManager()
+                .getObjectById(BoardDO.class, player.getBoardManagerKey());
+        board.restore();
+        return board;
     }
 
-    protected BoardManagerDO getBoardManager(String playerName) {
+    protected BoardDO getBoardManager(String playerName) {
         PlayerRecordDO player = getPlayer(playerName);
         if (player != null) {
-            BoardManagerDO boardManager = PersistenceHelper.getPersistenceManager()
-                    .getObjectById(BoardManagerDO.class, player.getBoardManagerKey());
-            boardManager.restore();
-            return boardManager;
+            BoardDO board = PersistenceHelper.getPersistenceManager()
+                    .getObjectById(BoardDO.class, player.getBoardManagerKey());
+            board.restore();
+            return board;
         } else {
             return null;
         }
     }
 
-    protected BoardManagerDO getBoardManager(long boardId) {
+    protected BoardDO getBoardManager(long boardId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(BoardManagerDO.class.getSimpleName(), boardId);
-        BoardManagerDO boardManager = pm.getObjectById(BoardManagerDO.class, key);
-        boardManager.restore();
-        return boardManager;
+        Key key = KeyFactory.createKey(BoardDO.class.getSimpleName(), boardId);
+        BoardDO board = pm.getObjectById(BoardDO.class, key);
+        board.restore();
+        return board;
     }
 
     protected PackageDO getPackage(long packageId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         return pm.getObjectById(PackageDO.class, key);
+    }
+
+    protected GamePackageDO getGamePackage(long packageId) {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key key = KeyFactory.createKey(GamePackageDO.class.getSimpleName(), packageId);
+        return pm.getObjectById(GamePackageDO.class, key);
     }
 
 }

@@ -29,7 +29,7 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     protected abstract boolean removeProperty(P property);
 
-    protected abstract T[] getDescriptors();
+    public abstract T[] getDescriptors();
 
     public Object getProperty(String name) {
         for (P property : getProperties()) {

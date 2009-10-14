@@ -1,5 +1,5 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardManagerDO"--%>
+<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardDO"--%>
 <%--@elvariable id="player" type="com.killard.board.jdo.game.player.PlayerRecordDO"--%>
 <%--@elvariable id="record" type="com.killard.board.jdo.game.player.CardRecordDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.game.GameSkillDO"--%>

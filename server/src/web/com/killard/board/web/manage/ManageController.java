@@ -15,7 +15,7 @@ import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -68,8 +68,8 @@ public class ManageController extends BasicController {
 
     @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
     public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Extent<BoardManagerDO> extent = PersistenceHelper.getPersistenceManager().getExtent(BoardManagerDO.class);
-        for (BoardManagerDO board : extent) {
+        Extent<BoardDO> extent = PersistenceHelper.getPersistenceManager().getExtent(BoardDO.class);
+        for (BoardDO board : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(board);
             PersistenceHelper.doTransaction();
         }

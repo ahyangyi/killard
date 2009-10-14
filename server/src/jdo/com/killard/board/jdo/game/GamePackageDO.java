@@ -1,7 +1,6 @@
 package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
@@ -57,11 +56,10 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
     @Persistent
     private SortedSet<GamePackageDescriptorDO> descriptors;
 
-    public GamePackageDO(Key boardManagerKey, PackageDO pack, int playerNumber) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManagerKey);
-        keyBuilder.addChild(getClass().getSimpleName(), pack.getKey().getId());
-        this.key = keyBuilder.getKey();
+    @Persistent(defaultFetchGroup = "false")
+    private SortedSet<BoardDO> boards;
 
+    public GamePackageDO(PackageDO pack, int playerNumber) {
         this.packageKey = pack.getKey();
         this.rule = new GameRuleDO(this, pack.getRule());
 
@@ -78,6 +76,8 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         for (PackageDescriptorDO descriptor : pack.getDescriptors()) {
             this.descriptors.add(new GamePackageDescriptorDO(this, descriptor));
         }
+
+        this.boards = new TreeSet<BoardDO>();
     }
 
     public Key getKey() {
@@ -124,7 +124,11 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         return elementSchools.toArray(new GameElementSchoolDO[elementSchools.size()]);
     }
 
-    protected GamePackageDescriptorDO[] getDescriptors() {
+    public GamePackageDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new GamePackageDescriptorDO[descriptors.size()]);
+    }
+
+    public BoardDO[] getBoards() {
+        return boards.toArray(new BoardDO[boards.size()]);
     }
 }

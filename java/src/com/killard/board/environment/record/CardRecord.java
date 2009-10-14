@@ -26,7 +26,7 @@ import java.util.Map;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CardRecord extends AbstractCardRecord {
+public class CardRecord extends AbstractCardRecord<CardRecord> {
 
     private String name;
 
@@ -175,6 +175,9 @@ public class CardRecord extends AbstractCardRecord {
     protected boolean removeAttribute(Attribute attribute) {
         if (attribute.isVisible()) return visibleAttributes.remove(attribute);
         else return hiddenAttributes.remove(attribute);
+    }
+
+    protected void setProperty(String name, Object data) {
     }
 
     protected void setPosition(int position) {

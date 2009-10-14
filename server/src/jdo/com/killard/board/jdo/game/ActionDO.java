@@ -92,9 +92,9 @@ public class ActionDO {
     @Persistent
     private Date date;
 
-    public ActionDO(BoardManagerDO boardManager, Action action) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), boardManager.getActions().length);
+    public ActionDO(BoardDO board, Action action) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length);
         this.key = keyBuilder.getKey();
         this.date = new Date();
         init(action);

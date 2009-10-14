@@ -2,8 +2,7 @@ package com.killard.board.jdo.game.property;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.jdo.game.player.PlayerRecordDO;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Persistent;
@@ -33,7 +32,7 @@ public class BoardPropertyDO {
     @Persistent
     private String data;
 
-    public BoardPropertyDO(BoardManagerDO owner, String name, String data) {
+    public BoardPropertyDO(BoardDO owner, String name, String data) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();

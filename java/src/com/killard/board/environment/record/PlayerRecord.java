@@ -170,6 +170,9 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
         elements.put(elementSchool, amount);
     }
 
+    protected void setProperty(String name, Object data) {
+    }
+
     public void setAlive(boolean alive) {
         this.alive = alive;
     }

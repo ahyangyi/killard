@@ -1,8 +1,8 @@
 package com.killard.board.ui;
 
 import com.killard.board.card.Player;
-import com.killard.board.environment.BoardManager;
-import com.killard.board.environment.DefaultBoardManager;
+import com.killard.board.environment.AbstractBoard;
+import com.killard.board.environment.DefaultBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class GameBoard extends JFrame {
 
     private Map<String, PlayerPanel> playerPanels = new HashMap<String, PlayerPanel>();
 
-    private BoardManager boardManager;
+    private AbstractBoard boardManager;
 
     public GameBoard() throws HeadlessException {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +22,7 @@ public class GameBoard extends JFrame {
 
     private void init() {
 
-        boardManager = new DefaultBoardManager();
+        boardManager = new DefaultBoard();
 
         //setLayout(new BorderLayout());
         setLayout(null);

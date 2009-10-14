@@ -11,7 +11,7 @@ import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 import com.killard.board.jdo.game.player.descriptor.RoleRecordDescriptorDO;
@@ -130,19 +130,19 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(BoardManagerDO board, Player owner, Action action) {
+    public List<Action> validateAction(BoardDO board, Player owner, Action action) {
         List<Action> result = FunctionHelper.handler(board, owner, action, validators);
         getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
         return result;
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(BoardManagerDO board, Player owner, Action action) {
+    public List<Action> beforeAction(BoardDO board, Player owner, Action action) {
         return FunctionHelper.handler(board, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(BoardManagerDO board, Player owner, Action action) {
+    public List<Action> afterAction(BoardDO board, Player owner, Action action) {
         return FunctionHelper.handler(board, owner, action, after);
     }
 

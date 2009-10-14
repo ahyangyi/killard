@@ -72,40 +72,40 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(BoardManagerDO owner, Action action) {
+    public List<Action> validateAction(BoardDO owner, Action action) {
         List<Action> result = FunctionHelper.handler(owner, owner, action, validators);
         getLog().fine("validate " + action.getClass().getSimpleName() + " : " + result);
         return result;
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(BoardManagerDO owner, Action action) {
+    public List<Action> beforeAction(BoardDO owner, Action action) {
         return FunctionHelper.handler(owner, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(BoardManagerDO owner, Action action) {
+    public List<Action> afterAction(BoardDO owner, Action action) {
         return FunctionHelper.handler(owner, owner, action, after);
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public void after(BoardManagerDO owner, EndTurnAction action) {
+    public void after(BoardDO owner, EndTurnAction action) {
         owner.moveToNext();
     }
 
     @AfterAction(actionClass = DrawCardAction.class, selfTargeted = false)
-    public Action before(BoardManagerDO owner, DrawCardAction action) {
+    public Action before(BoardDO owner, DrawCardAction action) {
         return new DealCardAction(action.getTarget(), owner.dealCard());
     }
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)
-    public void after(BoardManagerDO owner, EquipCardAction action) {
+    public void after(BoardDO owner, EquipCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
             owner.addActionListener(attribute, action.getTarget());
     }
 
     @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
-    public void before(BoardManagerDO owner, DropCardAction action) {
+    public void before(BoardDO owner, DropCardAction action) {
         for (Attribute attribute : action.getTarget().getAttributes())
             owner.removeActionListener(attribute);
     }

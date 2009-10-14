@@ -33,14 +33,14 @@ import java.util.TreeSet;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BoardManager<T extends BoardManager> implements Board<T>, StateListener {
+public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>, StateListener {
 
     private final SortedMap<ActionListener, SortedSet<Comparable>> listeners = new TreeMap<ActionListener, SortedSet<Comparable>>();
 
     private final Map<Class<? extends Action>, ExecutableAction> executables =
             ExecutableActionUtil.buildExecutableActionsMap();
 
-    public BoardManager() {
+    public AbstractBoard() {
     }
 
     public Player getActivePlayer() {

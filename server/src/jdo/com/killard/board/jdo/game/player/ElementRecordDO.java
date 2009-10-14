@@ -3,7 +3,7 @@ package com.killard.board.jdo.game.player;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameElementSchoolDO;
 
@@ -59,7 +59,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
         this.dealtCards = new TreeSet<GameCardDO>();
     }
 
-    public void restore(BoardManagerDO boardManager) {
+    public void restore(BoardDO board) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(GameElementSchoolDO.class, elementSchoolKey);
         dealtCards = new TreeSet<GameCardDO>(this);

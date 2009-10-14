@@ -7,19 +7,21 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.BeginGameAction;
 import com.killard.board.environment.BoardException;
-import com.killard.board.environment.BoardManager;
+import com.killard.board.environment.AbstractBoard;
 import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.game.player.CardRecordDO;
 import com.killard.board.jdo.game.player.ElementRecordDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
-import com.killard.board.jdo.game.player.property.PlayerRecordPropertyDO;
 import com.killard.board.jdo.game.property.BoardPropertyDO;
+import com.killard.board.jdo.PersistenceHelper;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.NotPersistent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -31,14 +33,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardManagerDO extends BoardManager<BoardManagerDO> {
+public class BoardDO extends AbstractBoard<BoardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent(defaultFetchGroup = "false")
-    private GamePackageDO gamePackage;
+    @Persistent
+    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
+    private Key packageKey;
 
     @Persistent
     private Integer currentPlayerPosition;
@@ -61,7 +64,11 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
     @Persistent
     private Date startDate;
 
-    public BoardManagerDO() {
+    @NotPersistent
+    private GamePackageDO gamePackage;
+
+    public BoardDO(GamePackageDO gamePackage) {
+        this.packageKey = gamePackage.getKey();
         this.currentPlayerPosition = 0;
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
@@ -69,15 +76,11 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
         this.actions = new ArrayList<ActionDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
-    }
-
-    public void init(GamePackageDO gamePackage) {
-        if (this.gamePackage != null) {
-            this.gamePackage = gamePackage;
-        }
+        this.gamePackage = gamePackage;
     }
 
     public void restore() {
+        this.gamePackage = PersistenceHelper.getPersistenceManager().getObjectById(GamePackageDO.class, packageKey);
         for (PlayerRecordDO player : roundQueue) player.restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
@@ -118,8 +121,8 @@ public class BoardManagerDO extends BoardManager<BoardManagerDO> {
         messages.add(new MessageDO(this, from, to, message));
     }
 
-    public int compareTo(BoardManagerDO boardManagerDO) {
-        return boardManagerDO.getStartDate().compareTo(getStartDate());
+    public int compareTo(BoardDO boardDO) {
+        return boardDO.getStartDate().compareTo(getStartDate());
     }
 
     public BoardPropertyDO[] getProperties() {

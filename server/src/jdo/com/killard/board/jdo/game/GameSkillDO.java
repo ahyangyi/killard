@@ -64,7 +64,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
     private SortedSet<GameSkillDescriptorDO> descriptors;
 
     @NotPersistent
-    private BoardManagerDO boardManager;
+    private BoardDO board;
 
     public GameSkillDO(GameCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
@@ -87,8 +87,8 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
         }
     }
 
-    public void restore(BoardManagerDO boardManager) {
-        this.boardManager = boardManager;
+    public void restore(BoardDO board) {
+        this.board = board;
     }
 
     public Key getKey() {
@@ -132,7 +132,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
     public List<Action> execute(Card owner, Object... target) {
         Context ctx = new GlobalContext(owner);
         ctx.addVariable("targets", target);
-        ctx.addVariable("board", boardManager);
+        ctx.addVariable("board", board);
         try {
             function.execute(ctx);
         } catch (ExecutionException e) {

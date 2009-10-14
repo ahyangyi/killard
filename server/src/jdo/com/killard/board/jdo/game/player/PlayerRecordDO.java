@@ -7,7 +7,7 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.game.player.property.PlayerRecordPropertyDO;
@@ -77,12 +77,12 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     @Persistent
     private Integer turnCount;
 
-    public PlayerRecordDO(BoardManagerDO boardManager, GameRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardManager.getKey());
+    public PlayerRecordDO(BoardDO board, GameRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
 
-        this.boardManagerKey = boardManager.getKey();
+        this.boardManagerKey = board.getKey();
 
         this.role = new RoleRecordDO(this, role);
         this.uid = uid;
@@ -97,15 +97,15 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.turnCount = 0;
     }
 
-    public void restore(BoardManagerDO boardManager) {
+    public void restore(BoardDO board) {
         for (ElementRecordDO element : elementRecords) {
-            element.restore(boardManager);
+            element.restore(board);
         }
         for (CardRecordDO card : equippedCards) {
-            card.restore(boardManager);
+            card.restore(board);
         }
-        boardManager.addActionListener(role, this);
-        addStateListener(boardManager);
+        board.addActionListener(role, this);
+        addStateListener(board);
     }
 
     public Key getKey() {

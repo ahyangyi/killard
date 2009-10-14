@@ -1,7 +1,7 @@
 package com.killard.board.web.action;
 
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,45 +26,45 @@ public class ActionController extends BasicController {
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        boardManager.playCard(cardIndex, cardPosition, targetPosition);
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
-        modelMap.put("actions", boardManager.getActions());
+        BoardDO board = getBoardManager();
+        board.playCard(cardIndex, cardPosition, targetPosition);
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
+        modelMap.put("actions", board.getActions());
         return "action/result";
     }
 
     @RequestMapping(value = "/game/cast.*", method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        boardManager.cast(cardPosition, skillIndex);
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
-        modelMap.put("actions", boardManager.getActions());
+        BoardDO board = getBoardManager();
+        board.cast(cardPosition, skillIndex);
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
+        modelMap.put("actions", board.getActions());
         return "action/result";
     }
 
     @RequestMapping(value = "/game/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        boardManager.endTurn();
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
-        modelMap.put("actions", boardManager.getActions());
+        BoardDO board = getBoardManager();
+        board.endTurn();
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
+        modelMap.put("actions", board.getActions());
         return "action/result";
     }
 
     @RequestMapping(value = "/game/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        boardManager.endCall();
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
-        modelMap.put("actions", boardManager.getActions());
+        BoardDO board = getBoardManager();
+        board.endCall();
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
+        modelMap.put("actions", board.getActions());
         return "action/result";
     }
 
     @RequestMapping(value = "/game/actions.*", method = RequestMethod.GET)
     public String actions(ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        modelMap.put("actions", boardManager.getActions());
+        BoardDO board = getBoardManager();
+        modelMap.put("actions", board.getActions());
         return "action/result";
     }
 

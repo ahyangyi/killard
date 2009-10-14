@@ -82,7 +82,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>game</web-resource-name>
-            <url-pattern>/game/*</url-pattern>
+            <url-pattern>/board/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
@@ -92,7 +92,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>manage</web-resource-name>
-            <url-pattern>/game/manage/*</url-pattern>
+            <url-pattern>/manage/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>

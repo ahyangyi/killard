@@ -1,6 +1,6 @@
 package com.killard.board.web.game;
 
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,8 +22,8 @@ public class MessageController extends BasicController {
 
     @RequestMapping(value = "/messages.*", method = RequestMethod.GET)
     public String messages(ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        modelMap.put("messages", boardManager.getMessages());
+        BoardDO board = getBoardManager();
+        modelMap.put("messages", board.getMessages());
         return "action/messages";
     }
 
@@ -31,9 +31,9 @@ public class MessageController extends BasicController {
     public String message(@RequestParam(value = "to", required = false) String to,
                           @RequestParam("message") String message,
                           ModelMap modelMap) throws Exception {
-        BoardManagerDO boardManager = getBoardManager();
-        boardManager.postMessage(getPlayerId(), to, message);
-        modelMap.put("messages", boardManager.getMessages());
+        BoardDO board = getBoardManager();
+        board.postMessage(getPlayerId(), to, message);
+        modelMap.put("messages", board.getMessages());
         return "action/messages";
     }
 

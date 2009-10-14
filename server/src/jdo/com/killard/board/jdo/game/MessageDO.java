@@ -38,8 +38,8 @@ public class MessageDO {
     @Persistent
     private String message;
 
-    public MessageDO(BoardManagerDO boardManager, String from, String to, String message) {
-        this.boardManagerKey = boardManager.getKey();
+    public MessageDO(BoardDO board, String from, String to, String message) {
+        this.boardManagerKey = board.getKey();
         this.from = from;
         this.to = to;
         this.message = message;

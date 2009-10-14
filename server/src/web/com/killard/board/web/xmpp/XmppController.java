@@ -8,7 +8,7 @@ import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.web.BasicController;
 import com.killard.board.web.game.GameController;
 import org.springframework.stereotype.Controller;
@@ -85,7 +85,7 @@ public class XmppController extends BasicController {
 //        PersistenceHelper.doTransaction();
 //        int packageId = Integer.parseInt(args[1]);
 //        PackageDO packageDO = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageId);
-//        BoardManagerDO boardManager = new BoardManagerDO(packageDO, 2);
+//        BoardDO boardManager = new BoardDO(packageDO, 2);
 //        joinGame(from, boardManager);
 //        sendMessage(getUsername(from), "You have created a new game.");
 //    }
@@ -94,7 +94,7 @@ public class XmppController extends BasicController {
 //        if (args.length < 2) throw new IllegalArgumentException();
 //        PlayerRecordDO player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException();
-//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoardManager(player.getId());
 //        joinGame(from, boardManager);
 //        for (Player p : boardManager.getPlayers()) {
 //            sendMessage(p.getId(), getUsername(from) + " joined game.");
@@ -138,7 +138,7 @@ public class XmppController extends BasicController {
 //    protected void playCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardIndex = Integer.parseInt(args[1]);
@@ -157,7 +157,7 @@ public class XmppController extends BasicController {
 //    protected void castCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardPosition = Integer.parseInt(args[1]);
@@ -178,7 +178,7 @@ public class XmppController extends BasicController {
 //    protected void endTurn(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
-//        BoardManagerDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        boardManager.endTurn();
@@ -193,13 +193,13 @@ public class XmppController extends BasicController {
         sendMessage(getUsername(from), "Error. (" + e.getMessage() + ")");
     }
 
-    protected void joinGame(JID from, BoardManagerDO boardManager) throws BoardException {
-        boardManager.addPlayer(getUsername(from), GameController.INIT_HEALTH);
-        PersistenceHelper.getPersistenceManager().makePersistent(boardManager);
+    protected void joinGame(JID from, BoardDO board) throws BoardException {
+        board.addPlayer(getUsername(from), GameController.INIT_HEALTH);
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
     }
 
     protected void quitGame(JID from) {
-//        BoardManagerDO boardManager = getBoardManager(getUsername(from));
+//        BoardDO boardManager = getBoardManager(getUsername(from));
 //
 //        if (boardManager != null) {
 //            for (Player p : boardManager.getPlayers()) {

@@ -1,10 +1,8 @@
 package com.killard.board.web.game;
 
-import com.google.appengine.api.datastore.Key;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.game.BoardManagerDO;
+import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
 import com.killard.board.web.BasicController;
@@ -43,43 +41,35 @@ public class GameController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        List<PackageDO> packages = new LinkedList<PackageDO>();
-        Extent<PackageDO> packageExtent = pm.getExtent(PackageDO.class);
-        for (PackageDO pack : packageExtent) {
-            if (pack.isOpen()) packages.add(pack);
+        List<GamePackageDO> packages = new LinkedList<GamePackageDO>();
+        Extent<GamePackageDO> packageExtent = pm.getExtent(GamePackageDO.class);
+        for (GamePackageDO pack : packageExtent) {
+            packages.add(pack);
         }
         packageExtent.closeAll();
 
-//        List<BoardManagerDO> boards = new LinkedList<BoardManagerDO>();
-//        Extent<BoardManagerDO> boardExtent = pm.getExtent(BoardManagerDO.class);
-//        for (BoardManagerDO game : boardExtent) {
-//            if (game.getPlayers().size() < game.getMaxPlayerNumber()) boards.add(game);
-//        }
-//        boardExtent.closeAll();
-
         modelMap.put("packages", packages);
-//        modelMap.put("boards", boards);
         return "game/list";
     }
 
-    @RequestMapping(value = "/game/board.*", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
         getLog().fine("Get game game information: " + playerId);
-        BoardManagerDO boardManager = getBoardManager();
-        if (boardManager == null) {
+        BoardDO board = getBoardManager();
+        if (board == null) {
             return list(modelMap);
         }
 
-        modelMap.put("board", boardManager);
+        modelMap.put("board", board);
         modelMap.put("playerId", playerId);
-        modelMap.put("players", boardManager.getPlayers(playerId));
-        modelMap.put("actions", boardManager.getActions());
+        modelMap.put("players", board.getPlayers(playerId));
+        modelMap.put("actions", board.getActions());
         return "game/board";
     }
 
-    @RequestMapping(value = "/game/new.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public void newGame(@RequestParam("packageId") long packageId,
+    @RequestMapping(value = "/board/add.*", method = {RequestMethod.GET, RequestMethod.POST})
+    public void addGame(@RequestParam("packageId") long packageId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
@@ -87,21 +77,18 @@ public class GameController extends BasicController {
             quit();
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        BoardManagerDO board = new BoardManagerDO();
-        Key boardManagerKey = pm.makePersistent(board).getKey();
-        PersistenceHelper.doTransaction();
 
-        GamePackageDO gamePackage = new GamePackageDO(boardManagerKey, getPackage(packageId), playerNumber);
-        PersistenceHelper.doTransaction();
+        GamePackageDO gamePackage = getGamePackage(packageId);
 
-        board.init(gamePackage);
+        pm.makePersistent(gamePackage);
+        BoardDO board = new BoardDO(gamePackage);
         pm.makePersistent(board);
 
         join(board);
-        redirect("board", request, response);
+        redirect("/board", request, response);
     }
 
-    @RequestMapping(value = "/game/join.*", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/board/join.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("packageId") long packageId,
                      @RequestParam("boardId") long boardId,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -113,26 +100,26 @@ public class GameController extends BasicController {
             join(getBoardManager(boardId));
         }
 
-        redirect("board", request, response);
+        redirect("/board", request, response);
     }
 
-    @RequestMapping(value = "/game/quit.*", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/board/quit.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Quit game for " + getPlayerId());
 
         quit();
 
-        redirect("list", request, response);
+        redirect("/game/list", request, response);
     }
 
-    protected void join(BoardManagerDO boardManager) throws BoardException {
+    protected void join(BoardDO board) throws BoardException {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PlayerRecordDO player = (PlayerRecordDO) boardManager.addPlayer(getPlayerId(), INIT_HEALTH);
-        pm.makePersistent(boardManager);
+        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(getPlayerId(), INIT_HEALTH);
+        pm.makePersistent(board);
     }
 
     protected void quit() {
-        BoardManagerDO boardManager = getBoardManager();
+        BoardDO board = getBoardManager();
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(PlayerRecordDO.class);
@@ -140,8 +127,8 @@ public class GameController extends BasicController {
         query.declareParameters("String playerId");
         query.deletePersistentAll(getPlayerId());
 
-        if (boardManager != null && boardManager.getPlayers().length < 2) {
-            pm.deletePersistent(boardManager);
+        if (board != null && board.getPlayers().length < 2) {
+            pm.deletePersistent(board);
         }
         PersistenceHelper.doTransaction();
     }

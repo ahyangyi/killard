@@ -1,6 +1,6 @@
 <%@ include file="../includes.jsp" %>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
-<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardManagerDO"--%>
+<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardDO"--%>
 <%--@elvariable id="player" type="com.killard.board.jdo.game.player.PlayerRecordDO"--%>
 <c:choose>
     <c:when test="${player.health == 0}">

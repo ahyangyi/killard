@@ -126,17 +126,17 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
-    public List<Action> validateAction(BoardManagerDO board, Card owner, Action action) {
+    public List<Action> validateAction(BoardDO board, Card owner, Action action) {
         return FunctionHelper.handler(board, owner, action, validators);
     }
 
     @BeforeAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> beforeAction(BoardManagerDO board, Card owner, Action action) {
+    public List<Action> beforeAction(BoardDO board, Card owner, Action action) {
         return FunctionHelper.handler(board, owner, action, before);
     }
 
     @AfterAction(actionClass = Action.class, selfTargeted = false)
-    public List<Action> afterAction(BoardManagerDO board, Card owner, Action action) {
+    public List<Action> afterAction(BoardDO board, Card owner, Action action) {
         return FunctionHelper.handler(board, owner, action, after);
     }
 }

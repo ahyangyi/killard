@@ -1,6 +1,6 @@
 package com.killard.board.card;
 
-public interface Player {
+public interface Player<T extends Player> extends Record<T> {
 
     public String getId();
 

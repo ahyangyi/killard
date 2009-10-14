@@ -1,7 +1,7 @@
 package com.killard.board.environment.record;
 
 import com.killard.board.card.Role;
-import com.killard.board.environment.Record;
+import com.killard.board.card.Record;
 
 /**
  * <p>
@@ -12,7 +12,7 @@ import com.killard.board.environment.Record;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class RoleRecord implements Role, Record {
+public class RoleRecord implements Role<RoleRecord> {
 
     private boolean visible;
 
@@ -26,5 +26,9 @@ public class RoleRecord implements Role, Record {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int compareTo(RoleRecord roleRecord) {
+        return 0;
     }
 }

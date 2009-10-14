@@ -36,7 +36,7 @@ import java.util.Arrays;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameSkillDO extends DescriptableDO<GameSkillDescriptorDO> implements Skill {
+public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillDescriptorDO> implements Skill {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

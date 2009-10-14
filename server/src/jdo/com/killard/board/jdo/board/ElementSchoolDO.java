@@ -23,7 +23,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementSchoolDO extends DescriptableDO<ElementSchoolDescriptorDO> {
+public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

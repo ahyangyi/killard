@@ -4,6 +4,7 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
+import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.environment.event.StateListener;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.TreeSet;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class PlayerRecord extends AbstractPlayerRecord {
+public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     private final String name;
 
@@ -190,5 +191,4 @@ public class PlayerRecord extends AbstractPlayerRecord {
     protected void setTurnCount(int turnCount) {
         this.turnCount = turnCount;
     }
-
 }

@@ -1,7 +1,7 @@
 package com.killard.board.environment.event;
 
 import com.killard.board.card.Action;
-import com.killard.board.environment.Record;
+import com.killard.board.card.Record;
 
 import java.util.EventObject;
 

@@ -8,7 +8,7 @@ import com.killard.board.card.Attribute;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
-import com.killard.board.environment.record.AbstractMetaCardRecord;
+import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.game.GameAttributeDO;
 import com.killard.board.jdo.game.GameMetaCardDO;
@@ -36,7 +36,7 @@ import java.util.LinkedList;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardRecordDO extends AbstractMetaCardRecord {
+public class CardRecordDO extends AbstractCardRecord {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

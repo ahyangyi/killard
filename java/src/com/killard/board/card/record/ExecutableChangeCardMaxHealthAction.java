@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.action.ChangeCardMaxHealthAction;
 
@@ -13,7 +13,7 @@ import com.killard.board.card.action.ChangeCardMaxHealthAction;
  */
 public class ExecutableChangeCardMaxHealthAction extends ExecutableCardAction<ChangeCardMaxHealthAction> {
 
-    public void execute(AbstractMetaCardRecord record, ChangeCardMaxHealthAction action) {
+    public void execute(AbstractCardRecord record, ChangeCardMaxHealthAction action) {
         record.changeMaxHealth(action.getMaxHealthChange(), action);
     }
 }

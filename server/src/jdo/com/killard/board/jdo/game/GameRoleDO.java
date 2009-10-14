@@ -30,7 +30,7 @@ import java.util.Collections;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameRoleDO extends DescriptableDO<GameRoleDescriptorDO> {
+public class GameRoleDO extends DescriptableDO<GameRoleDO, GameRoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

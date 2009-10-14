@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.action.ChangeCardHealthAction;
 
@@ -13,7 +13,7 @@ import com.killard.board.card.action.ChangeCardHealthAction;
  */
 public class ExecutableChangeCardHealthAction extends ExecutableCardAction<ChangeCardHealthAction> {
 
-    public void execute(AbstractMetaCardRecord record, ChangeCardHealthAction action) {
+    public void execute(AbstractCardRecord record, ChangeCardHealthAction action) {
         record.changeHealth(action.getHealthChange(), action);
     }
 }

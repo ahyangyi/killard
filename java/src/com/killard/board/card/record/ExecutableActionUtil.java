@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.action.AddCardAttributeAction;

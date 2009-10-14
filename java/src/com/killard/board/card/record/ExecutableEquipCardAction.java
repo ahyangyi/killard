@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.action.EquipCardAction;
 
@@ -13,7 +13,7 @@ import com.killard.board.card.action.EquipCardAction;
  */
 public class ExecutableEquipCardAction extends ExecutableCardAction<EquipCardAction> {
 
-    public void execute(AbstractMetaCardRecord record, EquipCardAction action) {
+    public void execute(AbstractCardRecord record, EquipCardAction action) {
         ((AbstractPlayerRecord) action.getSource()).addEquippedCard(record, action);
     }
 }

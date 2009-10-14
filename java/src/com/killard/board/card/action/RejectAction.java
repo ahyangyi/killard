@@ -1,5 +1,7 @@
 package com.killard.board.card.action;
 
+import com.killard.board.card.Record;
+
 /**
  * <p>
  * This class defines .
@@ -9,9 +11,9 @@ package com.killard.board.card.action;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class RejectAction extends BasicAction {
+public class RejectAction extends BasicAction<Record, Record> {
 
-    public RejectAction(Object source, Object target) {
+    public RejectAction(Record source, Record target) {
         super(source, target);
     }
 }

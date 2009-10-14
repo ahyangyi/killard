@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.action.AddCardAttributeAction;
 
@@ -13,7 +13,7 @@ import com.killard.board.card.action.AddCardAttributeAction;
  */
 public class ExecutableAddCardAttributeAction extends ExecutableCardAction<AddCardAttributeAction> {
 
-    public void execute(AbstractMetaCardRecord record, AddCardAttributeAction action) {
+    public void execute(AbstractCardRecord record, AddCardAttributeAction action) {
         record.addAttribute(action.getAttribute(), action);
     }
 }

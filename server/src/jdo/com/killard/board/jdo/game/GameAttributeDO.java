@@ -38,7 +38,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameAttributeDO extends DescriptableDO<GameAttributeDescriptorDO> implements Attribute {
+public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttributeDescriptorDO> implements Attribute<GameAttributeDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

@@ -9,6 +9,6 @@ package com.killard.board.environment.event;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface ActionListener {
+public interface ActionListener<T> extends Comparable<T> {
 
 }

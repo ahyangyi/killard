@@ -9,7 +9,7 @@ package com.killard.board.card;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface Board {
+public interface Board<T extends Board> extends Record<T> {
 
     public BoardPackage getPackage();
 

@@ -1,4 +1,4 @@
-package com.killard.board.environment;
+package com.killard.board.card;
 
 /**
  * <p>
@@ -9,6 +9,6 @@ package com.killard.board.environment;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface Record {
+public interface Record<T extends Record> extends Comparable<T> {
 
 }

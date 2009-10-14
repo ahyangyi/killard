@@ -16,7 +16,7 @@ import java.util.Collections;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class DescriptableDO<T extends DescriptorDO> implements Comparable<DescriptableDO> {
+public abstract class DescriptableDO<S extends DescriptableDO, T extends DescriptorDO> implements Comparable<S> {
 
     protected DescriptableDO() {
     }
@@ -50,7 +50,7 @@ public abstract class DescriptableDO<T extends DescriptorDO> implements Comparab
         return descriptors.iterator().next();
     }
 
-    public int compareTo(DescriptableDO descriptableDO) {
+    public int compareTo(S descriptableDO) {
         return getKey().compareTo(descriptableDO.getKey());
     }
 

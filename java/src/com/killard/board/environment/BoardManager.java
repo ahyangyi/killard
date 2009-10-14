@@ -14,12 +14,15 @@ import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.environment.event.ActionListener;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
-import com.killard.board.environment.record.ExecutableActionUtil;
+import com.killard.board.card.record.ExecutableActionUtil;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
+import java.util.SortedSet;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * <p>
@@ -30,9 +33,9 @@ import java.util.Map;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BoardManager implements Board, StateListener {
+public abstract class BoardManager<T extends BoardManager> implements Board<T>, StateListener {
 
-    private final Map<ActionListener, Object> listeners = new HashMap<ActionListener, Object>();
+    private final SortedMap<ActionListener, SortedSet<Comparable>> listeners = new TreeMap<ActionListener, SortedSet<Comparable>>();
 
     private final Map<Class<? extends Action>, ExecutableAction> executables =
             ExecutableActionUtil.buildExecutableActionsMap();
@@ -85,8 +88,9 @@ public abstract class BoardManager implements Board, StateListener {
         executeAction(new EndPlayerCallAction(getCurrentPlayer(), getCurrentPlayer()));
     }
 
-    public void addActionListener(ActionListener listener, Object host) {
-        listeners.put(listener, host);
+    public void addActionListener(ActionListener listener, Comparable host) {
+        if (!listeners.containsKey(listener)) listeners.put(listener, new TreeSet<Comparable>());
+        listeners.get(listener).add(host);
     }
 
     public ActionListener[] getActionListeners() {
@@ -100,16 +104,14 @@ public abstract class BoardManager implements Board, StateListener {
     public void stateChanged(StateEvent event) {
     }
 
-    protected Object getActionListenerHost(ActionListener listener) {
-        return listeners.get(listener);
+    protected Comparable[] getActionListenerHost(ActionListener listener) {
+        SortedSet<Comparable> hosts = listeners.get(listener);
+        return hosts.toArray(new Comparable[hosts.size()]);
     }
 
     protected boolean invokeActionListener(Action action, ActionListener listener,
-                                           Method method, Class actionClass, boolean selfTargeted)
+                                           Method method, Class actionClass, boolean selfTargeted, Object host)
             throws BoardException {
-        if (!actionClass.isAssignableFrom(action.getClass())) return false;
-
-        Object host = getActionListenerHost(listener);
         if (selfTargeted && action.getTarget() != host) return false;
 
         try {
@@ -127,6 +129,17 @@ public abstract class BoardManager implements Board, StateListener {
             return false;
         }
         return true;
+    }
+
+    protected boolean invokeActionListener(Action action, ActionListener listener,
+                                           Method method, Class actionClass, boolean selfTargeted)
+            throws BoardException {
+        if (!actionClass.isAssignableFrom(action.getClass())) return false;
+
+        for (Comparable host : getActionListenerHost(listener)) {
+            if (invokeActionListener(action, listener, method, actionClass, selfTargeted, host)) return true;
+        }
+        return false;
     }
 
     protected boolean validateAction(ActionEvent event) throws BoardException {
@@ -157,7 +170,6 @@ public abstract class BoardManager implements Board, StateListener {
     protected void fireActionEventAfter(ActionEvent event) throws BoardException {
         for (ActionListener listener : getActionListeners()) {
             for (Method method : listener.getClass().getMethods()) {
-                Object host = getActionListenerHost(listener);
                 AfterAction annotation = method.getAnnotation(AfterAction.class);
                 if (annotation == null) continue;
                 Class actionClass = annotation.actionClass();

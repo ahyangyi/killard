@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
+public class PackageDO extends DescriptableDO<PackageDO, PackageDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -104,6 +104,7 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -209,15 +210,11 @@ public class PackageDO extends DescriptableDO<PackageDescriptorDO> {
         return descriptors;
     }
 
-    public int compareTo(DescriptableDO descriptableDO) {
-        if (descriptableDO instanceof PackageDO) {
-            PackageDO packageDO = (PackageDO) descriptableDO;
-            if (getRating() == packageDO.getRating()) {
-                return (int) (packageDO.getKey().getId() - getKey().getId());
-            }
-            return getRating() - packageDO.getRating();
+    public int compareTo(PackageDO compare) {
+        if (getRating() == compare.getRating()) {
+            return (int) (compare.getKey().getId() - getKey().getId());
         }
-        return getKey().compareTo(descriptableDO.getKey());
+        return getRating() - compare.getRating();
     }
 
     public PackageDO clone(String id, User creator) {

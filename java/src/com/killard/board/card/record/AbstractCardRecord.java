@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
@@ -6,7 +6,7 @@ import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
-import com.killard.board.environment.Record;
+import com.killard.board.card.Record;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
 
@@ -22,11 +22,11 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class AbstractMetaCardRecord implements Card, Record, Comparable<AbstractMetaCardRecord> {
+public abstract class AbstractCardRecord<T extends AbstractCardRecord> implements Card<T> {
 
     private final Set<StateListener> stateListeners;
 
-    public AbstractMetaCardRecord() {
+    public AbstractCardRecord() {
         stateListeners = new HashSet<StateListener>();
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractMetaCardRecord implements Card, Record, Comparable
         for (StateListener listener : stateListeners) listener.stateChanged(event);
     }
 
-    public int compareTo(AbstractMetaCardRecord record) {
+    public int compareTo(T record) {
         return getPosition() - record.getPosition();
     }
 }

@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
@@ -6,7 +6,7 @@ import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.MetaCard;
-import com.killard.board.environment.Record;
+import com.killard.board.card.Record;
 import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
 
@@ -22,7 +22,7 @@ import java.util.Set;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class AbstractPlayerRecord implements Player, Record {
+public abstract class AbstractPlayerRecord<T extends AbstractPlayerRecord> implements Player<T> {
 
     private final Set<StateListener> stateListeners;
 
@@ -36,6 +36,10 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     public void removeStateListener(StateListener listener) {
         stateListeners.remove(listener);
+    }
+
+    public int compareTo(T compare) {
+        return getTurnCount() - compare.getTurnCount();
     }
 
     protected abstract boolean addDealtCard(MetaCard metaCard);
@@ -66,7 +70,7 @@ public abstract class AbstractPlayerRecord implements Player, Record {
 
     protected void beginTurn() {
         for (Card instance : getEquippedCards()) {
-            AbstractMetaCardRecord record = (AbstractMetaCardRecord) instance;
+            AbstractCardRecord record = (AbstractCardRecord) instance;
             record.setCasted(false);
         }
         setCardPlayed(false);

@@ -34,7 +34,7 @@ import java.util.Arrays;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DefaultBoardManager extends BoardManager implements ActionListener {
+public class DefaultBoardManager extends BoardManager<DefaultBoardManager> implements ActionListener<DefaultBoardManager> {
 
     private final BoardPackage boardPackage = null;
 
@@ -150,5 +150,9 @@ public class DefaultBoardManager extends BoardManager implements ActionListener 
     @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
     public List<Action> after(BoardManager boardManager, CastCardAction action) {
         return action.getSkill().execute(action.getTarget(), action.getTargetCard());
+    }
+
+    public int compareTo(DefaultBoardManager defaultBoardManager) {
+        return 0;
     }
 }

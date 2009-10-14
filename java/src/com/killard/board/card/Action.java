@@ -1,5 +1,7 @@
 package com.killard.board.card;
 
+import com.killard.board.card.Record;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,7 @@ import java.io.Serializable;
  * This class is mutable and not thread safe.
  * </p>
  */
-public interface Action<S, T> extends Serializable {
+public interface Action<S extends Record, T extends Record> extends Serializable {
     public S getSource();
     public T getTarget();
 }

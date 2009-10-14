@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class SkillDO extends DescriptableDO<SkillDescriptorDO> {
+public class SkillDO extends DescriptableDO<SkillDO, SkillDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

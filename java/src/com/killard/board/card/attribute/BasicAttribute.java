@@ -16,7 +16,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BasicAttribute implements Attribute {
+public abstract class BasicAttribute<T extends BasicAttribute> implements Attribute<T> {
 
     private final ElementSchool elementSchool;
     

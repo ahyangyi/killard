@@ -33,7 +33,8 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameMetaCardDO extends DescriptableDO<GameCardDescriptorDO> implements MetaCard {
+public class GameMetaCardDO extends DescriptableDO<GameMetaCardDO, GameCardDescriptorDO>
+        implements MetaCard<GameMetaCardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

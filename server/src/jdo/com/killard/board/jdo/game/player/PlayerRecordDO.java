@@ -6,7 +6,7 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Role;
-import com.killard.board.environment.record.AbstractPlayerRecord;
+import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.jdo.game.GameMetaCardDO;
 import com.killard.board.jdo.game.BoardManagerDO;
 import com.killard.board.jdo.game.GameRoleDO;
@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PlayerRecordDO extends AbstractPlayerRecord {
+public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -260,5 +260,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord {
 
     protected void setTurnCount(int turnCount) {
         this.turnCount = turnCount;
+    }
+
+    public int compareTo(PlayerRecordDO playerRecordDO) {
+        return getTurnCount() - playerRecordDO.getTurnCount();
     }
 }

@@ -7,6 +7,7 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
+import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.environment.event.StateListener;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CardRecord extends AbstractMetaCardRecord {
+public class CardRecord extends AbstractCardRecord {
 
     private String name;
 

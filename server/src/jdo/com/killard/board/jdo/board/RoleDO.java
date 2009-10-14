@@ -27,7 +27,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleDO extends DescriptableDO<RoleDescriptorDO> {
+public class RoleDO extends DescriptableDO<RoleDO, RoleDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

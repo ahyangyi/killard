@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardManagerDO extends BoardManager implements Comparable<BoardManagerDO> {
+public class BoardManagerDO extends BoardManager<BoardManagerDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

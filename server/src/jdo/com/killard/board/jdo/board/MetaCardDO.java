@@ -24,7 +24,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class MetaCardDO extends DescriptableDO<MetaCardDescriptorDO> {
+public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardDescriptorDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

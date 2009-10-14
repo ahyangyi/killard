@@ -2,7 +2,7 @@ package com.killard.board.parser;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.AttackType;
-import com.killard.board.environment.record.ExecutableActionUtil;
+import com.killard.board.card.record.ExecutableActionUtil;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

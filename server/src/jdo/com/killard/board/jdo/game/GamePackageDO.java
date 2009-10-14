@@ -32,7 +32,7 @@ import java.util.TreeMap;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GamePackageDO extends DescriptableDO<GamePackageDescriptorDO> implements BoardPackage {
+public class GamePackageDO extends DescriptableDO<GamePackageDO, GamePackageDescriptorDO> implements BoardPackage {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

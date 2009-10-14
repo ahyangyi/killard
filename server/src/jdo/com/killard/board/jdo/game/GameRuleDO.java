@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameRuleDO implements ActionListener {
+public class GameRuleDO implements ActionListener<GameRuleDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -120,5 +120,9 @@ public class GameRuleDO implements ActionListener {
 
     public Logger getLog() {
         return Logger.getLogger(getClass().getName());
+    }
+
+    public int compareTo(GameRuleDO compare) {
+        return (int) (getKey().getId() - compare.getKey().getId());
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BasicMetaCard implements MetaCard {
+public abstract class BasicMetaCard<T extends BasicMetaCard> implements MetaCard<T> {
 
     private final ElementSchool elementSchool;
 

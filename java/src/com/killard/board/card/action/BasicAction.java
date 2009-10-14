@@ -1,6 +1,7 @@
 package com.killard.board.card.action;
 
 import com.killard.board.card.Action;
+import com.killard.board.card.Record;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import com.killard.board.card.Action;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class BasicAction<S, T> implements Action<S, T> {
+public abstract class BasicAction<S extends Record, T extends Record> implements Action<S, T> {
 
     private final S source;
 

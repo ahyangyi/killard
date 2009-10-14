@@ -23,7 +23,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CompositeAttribute extends BasicAttribute {
+public class CompositeAttribute extends BasicAttribute<CompositeAttribute> {
 
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -130,5 +130,9 @@ public class CompositeAttribute extends BasicAttribute {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int compareTo(CompositeAttribute compare) {
+        return getName().compareTo(compare.getName());
     }
 }

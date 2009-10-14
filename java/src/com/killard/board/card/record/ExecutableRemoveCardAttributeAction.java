@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.action.RemoveCardAttributeAction;
 
@@ -13,7 +13,7 @@ import com.killard.board.card.action.RemoveCardAttributeAction;
  */
 public class ExecutableRemoveCardAttributeAction extends ExecutableCardAction<RemoveCardAttributeAction> {
 
-    public void execute(AbstractMetaCardRecord record, RemoveCardAttributeAction action) {
+    public void execute(AbstractCardRecord record, RemoveCardAttributeAction action) {
         record.removeAttribute(action.getAttribute(), action);
     }
 }

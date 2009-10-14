@@ -11,7 +11,7 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DefaultMetaCard extends BasicMetaCard {
+public class DefaultMetaCard extends BasicMetaCard<DefaultMetaCard> {
 
     public DefaultMetaCard(ElementSchool elementSchool, int level, Skill skill) {
         super(elementSchool, level, skill);
@@ -40,4 +40,7 @@ public class DefaultMetaCard extends BasicMetaCard {
         super(elementSchool, level, maxHealth, maxHealth, attack, skill, attributes);
     }
 
+    public int compareTo(DefaultMetaCard compare) {
+        return getLevel() - compare.getLevel();
+    }
 }

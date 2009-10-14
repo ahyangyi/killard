@@ -28,7 +28,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDescriptorDO> implements ElementSchool {
+public class GameElementSchoolDO extends DescriptableDO<GameElementSchoolDO, GameElementSchoolDescriptorDO> implements ElementSchool {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

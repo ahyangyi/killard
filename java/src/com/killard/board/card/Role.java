@@ -11,7 +11,7 @@ import com.killard.board.environment.event.ActionListener;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface Role extends ActionListener {
+public interface Role<T extends Role> extends ActionListener<T> {
 
     public boolean isVisible();
 

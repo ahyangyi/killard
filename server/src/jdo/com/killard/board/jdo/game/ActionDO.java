@@ -3,6 +3,7 @@ package com.killard.board.jdo.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
+import com.killard.board.card.Record;
 import com.killard.board.card.action.AddCardAttributeAction;
 import com.killard.board.card.action.CardAction;
 import com.killard.board.card.action.CastCardAction;
@@ -208,11 +209,11 @@ public class ActionDO {
         if (action instanceof RemoveCardAttributeAction) populate((RemoveCardAttributeAction) action);
     }
 
-    protected void populate(PlayerAction<Object> action) {
+    protected void populate(PlayerAction<? extends Record> action) {
         this.playerId = action.getTarget().getId();
     }
 
-    protected void populate(CardAction<Object> action) {
+    protected void populate(CardAction<? extends Record> action) {
         this.playerId = action.getTarget().getOwner().getId();
         this.cardPosition = action.getTarget().getPosition();
     }

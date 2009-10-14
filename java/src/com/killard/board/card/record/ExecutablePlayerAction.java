@@ -1,4 +1,4 @@
-package com.killard.board.environment.record;
+package com.killard.board.card.record;
 
 import com.killard.board.card.Action;
 import com.killard.board.environment.ExecutableAction;
@@ -12,6 +12,8 @@ import com.killard.board.environment.ExecutableAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class ExecutableCardAction<A extends Action> implements ExecutableAction<AbstractMetaCardRecord, A> {
+public abstract class ExecutablePlayerAction <A extends Action> implements ExecutableAction<AbstractPlayerRecord, A> {
 
+    protected ExecutablePlayerAction() {
+    }
 }

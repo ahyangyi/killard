@@ -1,7 +1,7 @@
 package com.killard.board.web.action;
 
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

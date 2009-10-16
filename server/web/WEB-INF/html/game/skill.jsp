@@ -1,7 +1,7 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="board" type="com.killard.board.jdo.game.BoardDO"--%>
-<%--@elvariable id="player" type="com.killard.board.jdo.game.player.PlayerRecordDO"--%>
-<%--@elvariable id="record" type="com.killard.board.jdo.game.player.CardRecordDO"--%>
+<%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
+<%--@elvariable id="player" type="com.killard.board.jdo.board.game.PlayerRecordDO"--%>
+<%--@elvariable id="record" type="com.killard.board.jdo.board.game.CardRecordDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.game.GameSkillDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
 <form action="/board/cast.html" method="POST">

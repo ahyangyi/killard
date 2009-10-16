@@ -1,4 +1,4 @@
-package com.killard.board.jdo.game.player;
+package com.killard.board.jdo.board.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -9,16 +9,11 @@ import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.RoleDO;
-import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
+import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.game.property.RoleRecordPropertyDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
-import com.killard.board.jdo.game.BoardDO;
-import com.killard.board.jdo.game.GameRoleDO;
-import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
-import com.killard.board.jdo.game.player.descriptor.RoleRecordDescriptorDO;
-import com.killard.board.jdo.game.player.property.RoleRecordPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -41,7 +36,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropertyDO, RoleRecordDescriptorDO> implements Role<RoleRecordDO> {
+public class RoleRecordDO implements Role<RoleRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -65,9 +60,6 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @Persistent
-    private SortedSet<RoleRecordDescriptorDO> descriptors;
-
     public RoleRecordDO(PlayerRecordDO player, RoleDO role) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), role.getName());
@@ -84,11 +76,6 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
         validators = new ArrayList<AttributeHandler>(role.getValidators());
         before = new ArrayList<AttributeHandler>(role.getBefore());
         after = new ArrayList<AttributeHandler>(role.getAfter());
-
-        this.descriptors = new TreeSet<RoleRecordDescriptorDO>();
-        for (RoleDescriptorDO descriptor : role.getDescriptors()) {
-            this.descriptors.add(new RoleRecordDescriptorDO(this, descriptor));
-        }
     }
 
     public Key getKey() {
@@ -108,18 +95,6 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
     }
 
     protected boolean removeProperty(RoleRecordPropertyDO property) {
-        return false;
-    }
-
-    public RoleRecordDescriptorDO[] getDescriptors() {
-        return descriptors.toArray(new RoleRecordDescriptorDO[descriptors.size()]);
-    }
-
-    public boolean addDescriptor(RoleRecordDescriptorDO descriptor) {
-        return false;
-    }
-
-    public boolean removeDescriptor(RoleRecordDescriptorDO descriptor) {
         return false;
     }
 

@@ -7,9 +7,9 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.game.PlayerRecordDO;
 import com.killard.board.jdo.game.GamePackageDO;
-import com.killard.board.jdo.game.player.PlayerRecordDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;

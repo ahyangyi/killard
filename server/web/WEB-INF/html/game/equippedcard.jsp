@@ -1,5 +1,5 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="record" type="com.killard.board.jdo.game.player.CardRecordDO"--%>
+<%--@elvariable id="record" type="com.killard.board.jdo.board.game.CardRecordDO"--%>
 <c:set var="card" value="${record.card}"/>
 <c:choose>
     <c:when test="${card.descriptor.imageData != null}">

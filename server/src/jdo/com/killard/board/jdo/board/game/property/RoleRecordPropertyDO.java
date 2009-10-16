@@ -1,7 +1,8 @@
-package com.killard.board.jdo.game.player.property;
+package com.killard.board.jdo.board.game.property;
 
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
+import com.killard.board.jdo.board.game.RoleRecordDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -18,11 +19,11 @@ import javax.jdo.annotations.PersistenceCapable;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RoleRecordPropertyDO extends PropertyDO {
 
-    public RoleRecordPropertyDO(DescriptableDO owner, String name, String data) {
-        super(owner, name, data);
+    public RoleRecordPropertyDO(RoleRecordDO owner, String name, String data) {
+        super(null, name, data);
     }
 
-    public RoleRecordPropertyDO(DescriptableDO owner, PropertyDO origin) {
-        super(owner, origin);
+    public RoleRecordPropertyDO(RoleRecordDO owner, PropertyDO origin) {
+        super(null, origin);
     }
 }

@@ -1,6 +1,7 @@
-package com.killard.board.jdo.game;
+package com.killard.board.jdo.board.game;
 
 import com.google.appengine.api.datastore.Key;
+import com.killard.board.jdo.board.BoardDO;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;

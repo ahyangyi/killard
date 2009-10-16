@@ -1,8 +1,8 @@
-package com.killard.board.jdo.game.property;
+package com.killard.board.jdo.board.property;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.board.BoardDO;
 
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Persistent;

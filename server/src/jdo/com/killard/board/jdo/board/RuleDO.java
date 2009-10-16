@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
-import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.environment.AfterAction;
@@ -13,7 +13,6 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.DrawCardAction;
-import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.DropCardAction;
 

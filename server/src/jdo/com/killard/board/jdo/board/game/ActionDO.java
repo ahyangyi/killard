@@ -1,4 +1,4 @@
-package com.killard.board.jdo.game;
+package com.killard.board.jdo.board.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -29,6 +29,7 @@ import com.killard.board.card.action.RemoveSkillAction;
 import com.killard.board.card.action.RevealRoleAction;
 import com.killard.board.card.action.RevivePlayerAction;
 import com.killard.board.card.action.WinAction;
+import com.killard.board.jdo.board.BoardDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

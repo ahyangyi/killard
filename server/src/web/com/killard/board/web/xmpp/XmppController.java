@@ -8,7 +8,7 @@ import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.game.BoardDO;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;
 import com.killard.board.web.game.GameController;
 import org.springframework.stereotype.Controller;

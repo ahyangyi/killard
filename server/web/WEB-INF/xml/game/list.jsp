@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/xml/includes.jsp" %>
-<%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.game.BoardDO>"--%>
+<%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.board.BoardDO>"--%>
 <list>
     <c:forEach var="board" items="${boards}">
         <board>

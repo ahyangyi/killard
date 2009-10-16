@@ -1,8 +1,9 @@
-package com.killard.board.jdo.game.player.property;
+package com.killard.board.jdo.board.game.property;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.jdo.game.player.PlayerRecordDO;
+import com.killard.board.jdo.board.game.CardRecordDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -20,7 +21,7 @@ import javax.jdo.annotations.PrimaryKey;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PlayerRecordPropertyDO implements Comparable<PlayerRecordPropertyDO> {
+public class CardRecordPropertyDO implements Comparable<CardRecordPropertyDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -32,12 +33,16 @@ public class PlayerRecordPropertyDO implements Comparable<PlayerRecordPropertyDO
     @Persistent
     private String data;
 
-    public PlayerRecordPropertyDO(PlayerRecordDO owner, String name, String data) {
+    public CardRecordPropertyDO(CardRecordDO owner, String name, String data) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
         this.name = name;
         this.data = data;
+    }
+
+    public CardRecordPropertyDO(CardRecordDO owner, MetaCardPropertyDO origin) {
+        this(owner, origin.getName(), origin.getData());
     }
 
     public Key getKey() {
@@ -64,8 +69,7 @@ public class PlayerRecordPropertyDO implements Comparable<PlayerRecordPropertyDO
         return data;
     }
 
-    public int compareTo(PlayerRecordPropertyDO compare) {
+    public int compareTo(CardRecordPropertyDO compare) {
         return getName().compareTo(compare.getName());
     }
-
 }

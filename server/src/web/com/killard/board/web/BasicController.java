@@ -8,6 +8,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.game.PlayerRecordDO;
 
 import javax.jdo.PersistenceManager;
@@ -97,9 +98,9 @@ public class BasicController {
         }
     }
 
-    protected BoardDO getBoardManager(long boardId) {
+    protected BoardDO getBoardManager(long packageBundleId, long packageId, long boardId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(BoardDO.class.getSimpleName(), boardId);
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), boardId);
         BoardDO board = pm.getObjectById(BoardDO.class, key);
         board.restore();
         return board;
@@ -107,8 +108,9 @@ public class BasicController {
 
     protected PackageDO getPackage(long packageId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
-        return pm.getObjectById(PackageDO.class, key);
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
+        return bundle.getRelease();
     }
 
 }

@@ -127,7 +127,11 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
         return Logger.getLogger(getClass().getName());
     }
 
-    public int compareTo(RoleRecordDO roleRecordDO) {
-        return (int) (getKey().getId() - roleRecordDO.getKey().getId());
+    public int compareTo(RoleRecordDO compare) {
+        return getKey().compareTo(compare.getKey());
+    }
+
+    public Object getProperty(String name) {
+        return null;
     }
 }

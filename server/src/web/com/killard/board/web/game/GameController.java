@@ -87,7 +87,8 @@ public class GameController extends BasicController {
     }
 
     @RequestMapping(value = "/board/join.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public void join(@RequestParam("packageId") long packageId,
+    public void join(@RequestParam("packageBundleId") long packageBundleId,
+                     @RequestParam("packageId") long packageId,
                      @RequestParam("boardId") long boardId,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Join game for " + getPlayerId());
@@ -95,7 +96,7 @@ public class GameController extends BasicController {
         PlayerRecordDO player = getPlayer();
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
             quit();
-            join(getBoardManager(boardId));
+            join(getBoardManager(packageBundleId, packageId, boardId));
         }
 
         redirect("/board", request, response);

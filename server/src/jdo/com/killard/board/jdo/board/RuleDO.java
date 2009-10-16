@@ -147,4 +147,8 @@ public class RuleDO implements ActionListener<RuleDO> {
     public RuleDO clone(PackageDO pack) {
         return new RuleDO(pack, validators, before, after);
     }
+
+    public Object getProperty(String name) {
+        return null;
+    }
 }

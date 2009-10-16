@@ -30,4 +30,8 @@ public class RoleRecord implements Role<RoleRecord> {
     public int compareTo(RoleRecord roleRecord) {
         return 0;
     }
+
+    public Object getProperty(String name) {
+        return null;
+    }
 }

@@ -109,9 +109,6 @@ public class CardRecordDO extends AbstractCardRecord {
     private List<Attribute> hiddenAttributes;
 
     public CardRecordDO() {
-        skills = new LinkedList<Skill>();
-        hiddenAttributes = new LinkedList<Attribute>();
-        visibleAttributes = new LinkedList<Attribute>();
     }
 
     public CardRecordDO(MetaCardDO card, BoardDO board, PlayerRecordDO owner, PlayerRecordDO target,
@@ -144,7 +141,7 @@ public class CardRecordDO extends AbstractCardRecord {
         this.casted = false;
         this.properties = new TreeSet<CardRecordPropertyDO>();
         for (MetaCardPropertyDO property : card.getProperties()) {
-            this.properties.add(new CardRecordPropertyDO(this, property));
+            this.properties.add(new CardRecordPropertyDO(key, property));
         }
 
         this.addStateListener(board);
@@ -196,7 +193,7 @@ public class CardRecordDO extends AbstractCardRecord {
                 return;
             }
         }
-        properties.add(new CardRecordPropertyDO(this, name, data.toString()));
+        properties.add(new CardRecordPropertyDO(key, name, data.toString()));
     }
 
     public ElementSchool getElementSchool() {

@@ -146,7 +146,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
                 return;
             }
         }
-        properties.add(new PlayerRecordPropertyDO(this, name, data.toString()));
+        properties.add(new PlayerRecordPropertyDO(key, name, data.toString()));
     }
 
     public boolean isCardPlayed() {

@@ -1,15 +1,17 @@
-package com.killard.board.jdo;
+package com.killard.board.jdo.board.game.property;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.PropertyDO;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.IdGeneratorStrategy;
 
 /**
  * <p>
@@ -22,7 +24,7 @@ import javax.jdo.annotations.PrimaryKey;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @Inheritance(strategy= InheritanceStrategy.NEW_TABLE)
-public abstract class PropertyDO implements Comparable<PropertyDO> {
+public class RecordPropertyDO implements Comparable<RecordPropertyDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -34,16 +36,16 @@ public abstract class PropertyDO implements Comparable<PropertyDO> {
     @Persistent
     private String data;
 
-    protected PropertyDO(DescriptableDO owner, String name, String data) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
+    protected RecordPropertyDO(Key ownerKey, String name, String data) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(ownerKey);
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
         this.name = name;
         this.data = data;
     }
 
-    protected PropertyDO(DescriptableDO owner, PropertyDO origin) {
-        this(owner, origin.getName(), origin.getData());
+    protected RecordPropertyDO(Key ownerKey, PropertyDO origin) {
+        this(ownerKey, origin.getName(), origin.getData());
     }
 
     public Key getKey() {
@@ -58,7 +60,7 @@ public abstract class PropertyDO implements Comparable<PropertyDO> {
         return data;
     }
 
-    protected void setData(String data) {
+    public void setData(String data) {
         this.data =  data;
     }
 
@@ -70,7 +72,7 @@ public abstract class PropertyDO implements Comparable<PropertyDO> {
         return data;
     }
 
-    public int compareTo(PropertyDO compare) {
+    public int compareTo(RecordPropertyDO compare) {
         return getKey().compareTo(compare.getKey());
     }
 }

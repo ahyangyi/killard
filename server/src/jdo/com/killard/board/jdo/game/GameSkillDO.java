@@ -68,7 +68,7 @@ public class GameSkillDO extends DescriptableDO<GameSkillDO, GameSkillPropertyDO
 
     public GameSkillDO(GameCardDO card, SkillDO skill) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getId());
+        keyBuilder.addChild(getClass().getSimpleName(), skill.getKey().getName());
         this.key = keyBuilder.getKey();
 
         this.name = skill.getName();

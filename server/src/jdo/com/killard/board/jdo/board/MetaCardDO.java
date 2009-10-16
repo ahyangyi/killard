@@ -81,6 +81,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
         this.attackType = AttackType.PHYSICAL.name();
+        this.equippable = true;
+        this.visible = true;
         this.skills = new TreeSet<SkillDO>();
         this.hiddenAttributes = new TreeSet<String>();
         this.visibleAttributes = new TreeSet<String>();

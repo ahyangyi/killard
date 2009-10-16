@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Collection;
 
 /**
  * <p>
@@ -56,8 +58,8 @@ public class ManageController extends BasicController {
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
     static {
-        Queue queue = QueueFactory.getQueue("rss-fetch");
-        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
+//        Queue queue = QueueFactory.getQueue("rss-fetch");
+//        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
     }
 
     @RequestMapping(value = "/manage/task.*", method = RequestMethod.GET)
@@ -69,7 +71,16 @@ public class ManageController extends BasicController {
 
     @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
     public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Extent<BoardDO> extent = PersistenceHelper.getPersistenceManager().getExtent(BoardDO.class);
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Extent<GamePackageDO> game = pm.getExtent(GamePackageDO.class);
+        for (GamePackageDO pack : game) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(pack);
+            PersistenceHelper.doTransaction();
+        }
+        game.closeAll();
+        
+        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
         for (BoardDO board : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(board);
             PersistenceHelper.doTransaction();
@@ -205,17 +216,15 @@ public class ManageController extends BasicController {
     public void publish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        GamePackageDO gamePackage = new GamePackageDO();
-        pm.makePersistent(gamePackage);
-        PersistenceHelper.doTransaction();
-
         PackageDO pack = pm.getObjectById(PackageDO.class, defaultPackageKey);
-        gamePackage.init(pack);
-        PersistenceHelper.doTransaction();
 
+        Query query = pm.newQuery(GamePackageDO.class);
+        query.setFilter("packageId == pId");
+        query.declareParameters("Long pId");
+        Collection result = (Collection) query.execute(pack.getKey().getId());
+
+        GamePackageDO gamePackage = new GamePackageDO(pack, result.size() + 1);
         pm.makePersistent(gamePackage);
-
         redirect("/game/list", request, response);
     }
 

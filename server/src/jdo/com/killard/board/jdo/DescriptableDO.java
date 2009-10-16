@@ -14,7 +14,7 @@ import java.util.Locale;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class DescriptableDO<S extends DescriptableDO, P extends PropertyDO, T extends DescriptorDO> {
+public abstract class DescriptableDO<S extends DescriptableDO, P extends PropertyDO, T extends DescriptorDO> implements Comparable<S> {
 
     protected DescriptableDO() {
     }

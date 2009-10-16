@@ -117,7 +117,7 @@ public class GameAttributeDO extends DescriptableDO<GameAttributeDO, GameAttribu
         return false;
     }
 
-    protected GameAttributeDescriptorDO[] getDescriptors() {
+    public GameAttributeDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new GameAttributeDescriptorDO[descriptors.size()]);
     }
 

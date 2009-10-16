@@ -51,7 +51,7 @@ public class JdoCardBuilder {
         try {
             Node[] args = function.getArguments().getChildren();
             if (args.length < 1) return false;
-            Class actionClass = Class.forName("com.killard.game.board.action." + ((Expression) args[0]).getText());
+            Class actionClass = Class.forName("com.killard.board.card.action." + ((Expression) args[0]).getText());
             Boolean selfTargeted = true;
             if (args.length > 1 && ((Expression) args[1]).getText().equalsIgnoreCase("All")) selfTargeted = false;
             AttributeHandler handler = new AttributeHandler(actionClass, selfTargeted, function);
@@ -139,7 +139,7 @@ public class JdoCardBuilder {
         }
         if (attribute.getDescriptor() == null) {
             AttributeDescriptorDO descriptor = new AttributeDescriptorDO(attribute, BoardContext.getLocale());
-            descriptor.setName(((Expression) map.get("id")).getText());
+            descriptor.setName(((Expression) map.get("name")).getText());
             attribute.addDescriptor(descriptor);
         }
         PersistenceHelper.getPersistenceManager().makePersistent(attribute);

@@ -1,5 +1,5 @@
+<hr/>
 <div class="menu">
-    <hr/>
     <ul>
     <li><a href="gtalk:call?jid=one-board@appspot.com"><img src="/images/icon/gtalk.gif" alt="Subscribe Us on Gtalk"></a>|</li>
     <li><a href="http://twitter.com/killardcom"><img src="http://www.twittericon.com/image/twitter46.gif"/></a>|</li>

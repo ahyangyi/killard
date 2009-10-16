@@ -37,7 +37,7 @@
                     <td>HP:${player.health}</td>
                     <td style="width:50%;"></td>
                     <td style="width:150px;">
-                        <c:if test="${active}"><a href="/game/endturn.html">End Turn</a></c:if>
+                        <c:if test="${active}"><a href="/board/endturn.html">End Turn</a></c:if>
                         <c:if test="${player.health <= 0}">Game Over</c:if>
                     </td>
                 </tr>

@@ -69,7 +69,7 @@ public class GameCardDO extends DescriptableDO<GameCardDO, GameCardPropertyDO, G
     @Persistent
     private Boolean visible;
 
-    @Persistent(mappedBy = "board", defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "false")
     private SortedSet<GameSkillDO> skills;
 
     @Persistent(serialized = "true")

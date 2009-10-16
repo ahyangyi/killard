@@ -4,7 +4,7 @@
 <%--@elvariable id="record" type="com.killard.board.jdo.game.player.CardRecordDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.game.GameSkillDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
-<form action="/game/cast.html" method="POST">
+<form action="/board/cast.html" method="POST">
     <input type="hidden" name="cardPosition" value="${record.position}"/>
     <input type="hidden" name="skillName" value="${skill.name}"/>
     <div class="menu">

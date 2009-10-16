@@ -36,9 +36,6 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/game/list.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ModelMap modelMap) throws Exception {
-        String playerId = getPlayerId();
-        getLog().fine("Get game game list: " + playerId);
-
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         List<GamePackageDO> packages = new LinkedList<GamePackageDO>();
@@ -70,6 +67,7 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/board/add.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void addGame(@RequestParam("packageId") long packageId,
+                        @RequestParam("gamePackageId") long gamePackageId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
@@ -78,7 +76,7 @@ public class GameController extends BasicController {
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        GamePackageDO gamePackage = getGamePackage(packageId);
+        GamePackageDO gamePackage = getGamePackage(packageId, gamePackageId);
 
         pm.makePersistent(gamePackage);
         BoardDO board = new BoardDO(gamePackage, playerNumber);

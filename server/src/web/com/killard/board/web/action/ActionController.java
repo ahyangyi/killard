@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ActionController extends BasicController {
 
-    @RequestMapping(value = "/game/playcard.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/board/playcard.*", method = RequestMethod.POST)
     public String playCard(@RequestParam("cardIndex") int cardIndex,
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
@@ -33,7 +33,7 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/cast.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/board/cast.*", method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
@@ -43,7 +43,7 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/board/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
         board.endTurn();
@@ -52,7 +52,7 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/board/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
         board.endCall();
@@ -61,7 +61,7 @@ public class ActionController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/game/actions.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/board/actions.*", method = RequestMethod.GET)
     public String actions(ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
         modelMap.put("actions", board.getActions());

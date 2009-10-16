@@ -112,10 +112,11 @@ public class BasicController {
         return pm.getObjectById(PackageDO.class, key);
     }
 
-    protected GamePackageDO getGamePackage(long packageId) {
+    protected GamePackageDO getGamePackage(long packageId, long gamePackageId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(GamePackageDO.class.getSimpleName(), packageId);
-        return pm.getObjectById(GamePackageDO.class, key);
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(PackageDO.class.getSimpleName(), packageId);
+        keyBuilder.addChild(GamePackageDO.class.getSimpleName(), gamePackageId);
+        return pm.getObjectById(GamePackageDO.class, keyBuilder.getKey());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.killard.board.jdo.game;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
@@ -40,7 +41,7 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
     private Key key;
 
     @Persistent
-    private Key packageKey;
+    private Long packageId;
 
     @Persistent
     private String name;
@@ -63,16 +64,18 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<BoardDO> boards;
 
-    public GamePackageDO() {
+    public GamePackageDO(PackageDO pack, int version) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), version);
+        this.key = keyBuilder.getKey();
+
         this.roles = new ArrayList<GameRoleDO>();
         this.roleGroups = new TreeSet<GameRoleGroupDO>();
         this.elementSchools = new TreeSet<GameElementSchoolDO>();
         this.descriptors = new TreeSet<GamePackageDescriptorDO>();
         this.boards = new TreeSet<BoardDO>();
-    }
 
-    public void init(PackageDO pack) {
-        this.packageKey = pack.getKey();
+        this.packageId = pack.getKey().getId();
         this.rule = new GameRuleDO(this, pack.getRule());
 
         for (RoleDO role : pack.getRoles()) this.roles.add(new GameRoleDO(this, role));
@@ -82,7 +85,7 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         }
 
         for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
-            elementSchools.add(new GameElementSchoolDO(this, elementSchool));
+            this.elementSchools.add(new GameElementSchoolDO(this, elementSchool));
         }
         this.name = pack.getName();
 
@@ -95,8 +98,8 @@ public class GamePackageDO extends DescriptableDO<GamePackageDO, PropertyDO, Gam
         return key;
     }
 
-    public Key getPackageKey() {
-        return packageKey;
+    public long getPackageId() {
+        return packageId;
     }
 
     public String getName() {

@@ -43,10 +43,6 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key packageKey;
-
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
 
@@ -57,7 +53,6 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
     private List<AttributeHandler> after;
 
     public GameRuleDO(GamePackageDO pack, RuleDO rule) {
-        this.packageKey = pack.getKey();
         validators = new ArrayList<AttributeHandler>(Arrays.asList(rule.getValidators()));
         before = new ArrayList<AttributeHandler>(Arrays.asList(rule.getBefore()));
         after = new ArrayList<AttributeHandler>(Arrays.asList(rule.getAfter()));
@@ -65,10 +60,6 @@ public class GameRuleDO implements ActionListener<GameRuleDO> {
 
     public Key getKey() {
         return key;
-    }
-
-    public Key getPackageKey() {
-        return packageKey;
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)

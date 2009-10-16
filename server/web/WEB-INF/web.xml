@@ -81,7 +81,17 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>game</web-resource-name>
+            <web-resource-name>board</web-resource-name>
+            <url-pattern>/board.html</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>board-action</web-resource-name>
             <url-pattern>/board/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>

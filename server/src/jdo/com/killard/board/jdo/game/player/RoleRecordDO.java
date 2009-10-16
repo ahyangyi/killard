@@ -109,7 +109,7 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
         return false;
     }
 
-    protected RoleRecordDescriptorDO[] getDescriptors() {
+    public RoleRecordDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new RoleRecordDescriptorDO[descriptors.size()]);
     }
 

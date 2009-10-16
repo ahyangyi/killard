@@ -5,7 +5,7 @@
 <div class="elementschool">
     ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
     <c:if test="${player.id == playerId}">
-        <form action="/game/playcard.html" method="POST">
+        <form action="<c:url value="/board/playcard.html"/>" method="POST">
             <div id="newcard">
                 <select name="cardIndex">
                     <c:forEach var="card"

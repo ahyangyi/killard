@@ -6,6 +6,7 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.jdo.board.property.SkillPropertyDO;
 import com.killard.board.parser.Function;
+import com.killard.board.card.SkillTarget;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -58,6 +59,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
         this.name = name;
         this.targets = new ArrayList<String>();
+        this.targets.add(SkillTarget.self.name());
         this.cost = cost;
         this.function = function;
         this.properties = new TreeSet<SkillPropertyDO>();

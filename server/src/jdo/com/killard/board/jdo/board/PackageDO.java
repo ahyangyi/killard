@@ -6,6 +6,8 @@ import com.google.appengine.api.users.User;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
+import com.killard.board.card.BoardPackage;
+import com.killard.board.card.ElementSchool;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -31,7 +35,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDescriptorDO> {
+public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDescriptorDO> implements BoardPackage {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -39,18 +43,6 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent
     private String name;
-
-    @Persistent
-    private Set<User> managers;
-
-    @Persistent
-    private Set<User> players;
-
-    @Persistent
-    private Date createDate;
-
-    @Persistent
-    private Date modifiedDate;
 
     @Persistent
     private RuleDO rule;
@@ -65,37 +57,14 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     private SortedSet<ElementSchoolDO> elementSchools;
 
     @Persistent
-    private Boolean clonable;
-
-    @Persistent
-    private Boolean published;
-
-    @Persistent
-    private Boolean open;
-
-    @Persistent
-    private Rating rating;
-
-    @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
 
-    public PackageDO(String name, User creator) {
+    public PackageDO(String name) {
         this.name = name;
-        this.managers = new HashSet<User>();
-        this.players = new HashSet<User>();
         this.roles = new TreeSet<RoleDO>();
         this.roleGroups = new TreeSet<RoleGroupDO>();
         this.elementSchools = new TreeSet<ElementSchoolDO>();
-        this.clonable = true;
-        this.published = false;
-        this.open = false;
-        this.createDate = new Date();
-        this.modifiedDate = createDate;
-        this.rating = new Rating(0);
         this.descriptors = new TreeSet<PackageDescriptorDO>();
-
-        addManager(creator);
-        addPlayer(creator);
     }
 
     public Key getKey() {
@@ -122,42 +91,6 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.name = name;
     }
 
-    public Set<User> getManagers() {
-        return Collections.unmodifiableSet(managers);
-    }
-
-    public boolean addManager(User manager) {
-        return managers.add(manager);
-    }
-
-    public boolean removeManager(User manager) {
-        return managers.remove(manager);
-    }
-
-    public Set<User> getPlayers() {
-        return Collections.unmodifiableSet(players);
-    }
-
-    public boolean addPlayer(User player) {
-        return players.add(player);
-    }
-
-    public boolean removePlayer(User player) {
-        return players.remove(player);
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
     public RuleDO getRule() {
         return rule;
     }
@@ -166,8 +99,10 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.rule = rule;
     }
 
-    public RoleDO[] getRoles() {
-        return roles.toArray(new RoleDO[roles.size()]);
+    public Map<String, RoleDO> getRoles() {
+        Map<String, RoleDO> map = new HashMap<String, RoleDO>();
+        for (RoleDO role : roles) map.put(role.getName(), role);
+        return map;
     }
 
     public RoleGroupDO getRoleGroup(int playerNumber) {
@@ -183,40 +118,8 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return Collections.unmodifiableSortedSet(roleGroups);
     }
 
-    public ElementSchoolDO[] getElementSchools() {
-        return elementSchools.toArray(new ElementSchoolDO[elementSchools.size()]);
-    }
-
-    public boolean isClonable() {
-        return clonable;
-    }
-
-    public void setClonable(boolean clonable) {
-        this.clonable = clonable;
-    }
-
-    public boolean isPublished() {
-        return published;
-    }
-
-    public void setPublished(boolean published) {
-        this.published = published;
-    }
-
-    public boolean isOpen() {
-        return open;
-    }
-
-    public void setOpen(boolean open) {
-        this.open = open;
-    }
-
-    public int getRating() {
-        return rating.getRating();
-    }
-
-    public void setRating(int rating) {
-        this.rating = new Rating(rating);
+    public ElementSchool[] getElementSchools() {
+        return elementSchools.toArray(new ElementSchool[elementSchools.size()]);
     }
 
     public PackageDescriptorDO[] getDescriptors() {
@@ -232,14 +135,11 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     }
 
     public int compareTo(PackageDO compare) {
-        if (getRating() == compare.getRating()) {
-            return (int) (compare.getKey().getId() - getKey().getId());
-        }
-        return getRating() - compare.getRating();
+        return getKey().compareTo(compare.getKey());
     }
 
-    public PackageDO clone(String id, User creator) {
-        PackageDO pack = new PackageDO(id, creator);
+    public PackageDO clone(String id) {
+        PackageDO pack = new PackageDO(id);
         pack.rule = rule.clone(pack);
         for (ElementSchoolDO elementSchool : elementSchools) {
             pack.elementSchools.add(elementSchool.clone(pack));

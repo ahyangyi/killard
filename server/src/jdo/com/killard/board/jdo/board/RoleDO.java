@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Collections;
 
 /**
  * <p>
@@ -116,16 +117,16 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         return packageKey;
     }
 
-    public AttributeHandler[] getValidators() {
-        return validators.toArray(new AttributeHandler[validators.size()]);
+    public List<AttributeHandler> getValidators() {
+        return Collections.unmodifiableList(validators);
     }
 
-    public AttributeHandler[] getBefore() {
-        return before.toArray(new AttributeHandler[before.size()]);
+    public List<AttributeHandler> getBefore() {
+        return Collections.unmodifiableList(before);
     }
 
-    public AttributeHandler[] getAfter() {
-        return after.toArray(new AttributeHandler[after.size()]);
+    public List<AttributeHandler> getAfter() {
+        return Collections.unmodifiableList(after);
     }
 
     public String getDefinition() {

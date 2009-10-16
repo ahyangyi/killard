@@ -11,6 +11,7 @@ import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.game.player.property.PlayerRecordPropertyDO;
+import com.killard.board.jdo.board.RoleDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -77,7 +78,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     @Persistent
     private Integer turnCount;
 
-    public PlayerRecordDO(BoardDO board, GameRoleDO role, String uid, List<ElementRecordDO> elementRecords) {
+    public PlayerRecordDO(BoardDO board, RoleDO role, String uid, List<ElementRecordDO> elementRecords) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();

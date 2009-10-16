@@ -10,12 +10,13 @@ import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameAttributeDO;
 import com.killard.board.jdo.game.GameCardDO;
 import com.killard.board.jdo.game.GameSkillDO;
 import com.killard.board.jdo.game.player.property.CardRecordPropertyDO;
-import com.killard.board.jdo.game.property.GameCardPropertyDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -91,7 +92,7 @@ public class CardRecordDO extends AbstractCardRecord {
     private SortedSet<CardRecordPropertyDO> properties;
 
     @NotPersistent
-    private GameCardDO card;
+    private MetaCardDO card;
 
     @NotPersistent
     private PlayerRecordDO owner;
@@ -114,7 +115,7 @@ public class CardRecordDO extends AbstractCardRecord {
         visibleAttributes = new LinkedList<Attribute>();
     }
 
-    public CardRecordDO(GameCardDO card, BoardDO board, PlayerRecordDO owner, PlayerRecordDO target,
+    public CardRecordDO(MetaCardDO card, BoardDO board, PlayerRecordDO owner, PlayerRecordDO target,
                         int position) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), position);
@@ -128,9 +129,9 @@ public class CardRecordDO extends AbstractCardRecord {
 
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
-        this.health = card.getHealth();
-        this.attackType = card.getAttack().getType().name();
-        this.attackValue = card.getAttack().getValue();
+        this.health = card.getMaxHealth();
+        this.attackType = card.getAttackType();
+        this.attackValue = card.getAttackValue();
         this.equippable = card.isEquippable();
         this.visible = card.isVisible();
         this.position = position;
@@ -143,7 +144,7 @@ public class CardRecordDO extends AbstractCardRecord {
 
         this.casted = false;
         this.properties = new TreeSet<CardRecordPropertyDO>();
-        for (GameCardPropertyDO property : card.getProperties()) {
+        for (MetaCardPropertyDO property : card.getProperties()) {
             this.properties.add(new CardRecordPropertyDO(this, property));
         }
 
@@ -152,7 +153,7 @@ public class CardRecordDO extends AbstractCardRecord {
 
     public void restore(BoardDO board) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        this.card = pm.getObjectById(GameCardDO.class, cardKey);
+        this.card = pm.getObjectById(MetaCardDO.class, cardKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
         for (Key key : skillKeys) {
@@ -172,7 +173,7 @@ public class CardRecordDO extends AbstractCardRecord {
         return key;
     }
 
-    public GameCardDO getCard() {
+    public MetaCardDO getCard() {
         return card;
     }
 

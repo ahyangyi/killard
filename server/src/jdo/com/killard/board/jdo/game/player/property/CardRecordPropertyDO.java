@@ -3,7 +3,7 @@ package com.killard.board.jdo.game.player.property;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.game.player.CardRecordDO;
-import com.killard.board.jdo.game.property.GameCardPropertyDO;
+import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -41,7 +41,7 @@ public class CardRecordPropertyDO implements Comparable<CardRecordPropertyDO> {
         this.data = data;
     }
 
-    public CardRecordPropertyDO(CardRecordDO owner, GameCardPropertyDO origin) {
+    public CardRecordPropertyDO(CardRecordDO owner, MetaCardPropertyDO origin) {
         this(owner, origin.getName(), origin.getData());
     }
 

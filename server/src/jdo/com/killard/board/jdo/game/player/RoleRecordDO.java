@@ -11,12 +11,14 @@ import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
+import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
+import com.killard.board.jdo.board.property.RolePropertyDO;
 import com.killard.board.jdo.game.BoardDO;
 import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.game.descriptor.GameRoleDescriptorDO;
 import com.killard.board.jdo.game.player.descriptor.RoleRecordDescriptorDO;
 import com.killard.board.jdo.game.player.property.RoleRecordPropertyDO;
-import com.killard.board.jdo.game.property.GameRolePropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -66,7 +68,7 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
     @Persistent
     private SortedSet<RoleRecordDescriptorDO> descriptors;
 
-    public RoleRecordDO(PlayerRecordDO player, GameRoleDO role) {
+    public RoleRecordDO(PlayerRecordDO player, RoleDO role) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), role.getName());
         this.key = keyBuilder.getKey();
@@ -75,7 +77,7 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
         this.visible = role.isVisible();
 
         this.properties = new TreeSet<RoleRecordPropertyDO>();
-        for (GameRolePropertyDO property : role.getProperties()) {
+        for (RolePropertyDO property : role.getProperties()) {
             this.properties.add(new RoleRecordPropertyDO(this, property));
         }
 
@@ -84,7 +86,7 @@ public class RoleRecordDO extends DescriptableDO<RoleRecordDO, RoleRecordPropert
         after = new ArrayList<AttributeHandler>(role.getAfter());
 
         this.descriptors = new TreeSet<RoleRecordDescriptorDO>();
-        for (GameRoleDescriptorDO descriptor : role.getDescriptors()) {
+        for (RoleDescriptorDO descriptor : role.getDescriptors()) {
             this.descriptors.add(new RoleRecordDescriptorDO(this, descriptor));
         }
     }

@@ -14,6 +14,9 @@ import com.killard.board.jdo.game.player.ElementRecordDO;
 import com.killard.board.jdo.game.player.PlayerRecordDO;
 import com.killard.board.jdo.game.property.BoardPropertyDO;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -69,9 +72,9 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private Date startDate;
 
     @NotPersistent
-    private GamePackageDO gamePackage;
+    private PackageDO gamePackage;
 
-    public BoardDO(GamePackageDO gamePackage, int playerNumber) {
+    public BoardDO(PackageDO gamePackage, int playerNumber) {
         this.packageKey = gamePackage.getKey();
         this.currentPlayerPosition = 0;
         this.roleNames = new ArrayList<String>(Arrays.asList(gamePackage.getRoleGroup(playerNumber).getRoleNames()));
@@ -85,12 +88,12 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public void restore() {
-        this.gamePackage = PersistenceHelper.getPersistenceManager().getObjectById(GamePackageDO.class, packageKey);
+        this.gamePackage = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageKey);
         for (PlayerRecordDO player : roundQueue) player.restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
 
-    public GamePackageDO getBoardPackage() {
+    public PackageDO getBoardPackage() {
         return gamePackage;
     }
 
@@ -136,7 +139,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     public Player addPlayer(String playerName, int health) throws BoardException {
-        GameRoleDO role = gamePackage.getRoles().get(roleNames.get(roundQueue.size()));
+        RoleDO role = gamePackage.getRoles().get(roleNames.get(roundQueue.size()));
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerName, makeElementRecords());
         roundQueue.add(player);
         if (roleNames.size() == roundQueue.size()) executeAction(new BeginGameAction(this));
@@ -148,7 +151,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public int getPlayerAmount() {
-        return gamePackage.getRoles().size();
+        return gamePackage.getRoles().length;
     }
 
     public Player[] getPlayers() {
@@ -225,7 +228,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
-        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+        for (ElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
             record.add(new ElementRecordDO(elementSchool));
         }
         return record;

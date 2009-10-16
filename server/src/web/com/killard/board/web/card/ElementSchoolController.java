@@ -54,16 +54,13 @@ public class ElementSchoolController extends BasicController {
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
 
-        User user = getUser();
-        if (pack.getManagers().contains(user)) {
-            ElementSchoolDO elementSchool = new ElementSchoolDO(elementSchoolName, pack);
-            ElementSchoolDescriptorDO descriptor =
-                    new ElementSchoolDescriptorDO(elementSchool, BoardContext.getLocale());
-            descriptor.setName(elementSchoolName);
-            elementSchool.addDescriptor(descriptor);
-            pm.makePersistent(elementSchool);
-            PersistenceHelper.doTransaction();
-        }
+        ElementSchoolDO elementSchool = new ElementSchoolDO(elementSchoolName, pack);
+        ElementSchoolDescriptorDO descriptor =
+                new ElementSchoolDescriptorDO(elementSchool, BoardContext.getLocale());
+        descriptor.setName(elementSchoolName);
+        elementSchool.addDescriptor(descriptor);
+        pm.makePersistent(elementSchool);
+        PersistenceHelper.doTransaction();
 
         modelMap.put("package", pack);
         return "board/package";
@@ -78,12 +75,9 @@ public class ElementSchoolController extends BasicController {
         Key elementSchoolkey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-
-        User user = getUser();
-        if (pack.getManagers().contains(user)) {
-            ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
-            pm.deletePersistent(elementSchool);
-        }
+        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
+        pm.deletePersistent(elementSchool);
+        
         modelMap.put("package", pack);
         return "board/package";
     }

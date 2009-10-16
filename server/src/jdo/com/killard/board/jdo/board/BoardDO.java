@@ -5,6 +5,7 @@ import com.killard.board.card.BoardPackage;
 import com.killard.board.card.Card;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
+import com.killard.board.card.ElementSchool;
 import com.killard.board.card.action.BeginGameAction;
 import com.killard.board.environment.BoardException;
 import com.killard.board.environment.AbstractBoard;
@@ -12,7 +13,7 @@ import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.board.game.CardRecordDO;
 import com.killard.board.jdo.board.game.ElementRecordDO;
 import com.killard.board.jdo.board.game.PlayerRecordDO;
-import com.killard.board.jdo.board.game.ActionDO;
+import com.killard.board.jdo.board.game.ActionLogDO;
 import com.killard.board.jdo.board.property.BoardPropertyDO;
 import com.killard.board.jdo.board.game.MessageDO;
 import com.killard.board.jdo.PersistenceHelper;
@@ -65,7 +66,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private SortedSet<BoardPropertyDO> properties;
 
     @Persistent
-    private List<ActionDO> actions;
+    private List<ActionLogDO> actionLogs;
 
     @Persistent
     private List<MessageDO> messages;
@@ -83,7 +84,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
-        this.actions = new ArrayList<ActionDO>();
+        this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
         this.gamePackage = gamePackage;
@@ -107,8 +108,8 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         return startDate;
     }
 
-    public ActionDO[] getActions() {
-        return actions.toArray(new ActionDO[actions.size()]);
+    public ActionLogDO[] getActions() {
+        return actionLogs.toArray(new ActionLogDO[actionLogs.size()]);
     }
 
     public List<Player> getPlayers(String playerName) {
@@ -153,7 +154,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public int getPlayerAmount() {
-        return gamePackage.getRoles().length;
+        return gamePackage.getRoles().size();
     }
 
     public Player[] getPlayers() {
@@ -182,13 +183,13 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     protected Card createCardRecord(MetaCard metaCard, Player owner, Player target, int cardPosition) {
-        return new CardRecordDO((GameCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
+        return new CardRecordDO((MetaCardDO) metaCard, this, (PlayerRecordDO) owner, (PlayerRecordDO) target,
                 cardPosition);
     }
 
     @Override
     protected void fireActionEventBefore(ActionEvent event) throws BoardException {
-        actions.add(0, new ActionDO(this, event.getAction()));
+        actionLogs.add(0, new ActionLogDO(this, event.getAction()));
         super.fireActionEventBefore(event);
     }
 
@@ -210,18 +211,19 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         return currentPlayerPosition;
     }
 
-    protected GameCardDO dealCard() {
-        List<GameCardDO> cards = new ArrayList<GameCardDO>();
+    protected MetaCardDO dealCard() {
+        List<MetaCardDO> cards = new ArrayList<MetaCardDO>();
         int n = 0;
-        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
+        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
             n += elementSchool.getCards().length;
         }
         if (n == dealtCardKeys.size()) dealtCardKeys.clear();
-        for (GameElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            for (GameCardDO card : elementSchool.getCards()) {
-                if (dealtCardKeys.contains(card.getKey())) continue;
-                dealtCardKeys.add(card.getKey());
-                cards.add(card);
+        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
+            for (MetaCard card : elementSchool.getCards()) {
+                MetaCardDO record = (MetaCardDO) card;
+                if (dealtCardKeys.contains(record.getKey())) continue;
+                dealtCardKeys.add(record.getKey());
+                cards.add(record);
             }
         }
         int index = (int) (cards.size() * Math.random());
@@ -230,13 +232,13 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
-        for (ElementSchoolDO elementSchool : getBoardPackage().getElementSchools()) {
-            record.add(new ElementRecordDO(elementSchool));
+        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
+            record.add(new ElementRecordDO((ElementSchoolDO) elementSchool));
         }
         return record;
     }
 
-    protected void randomSelect(List<GameCardDO> remainingCards, int cardAmount) {
+    protected void randomSelect(List<MetaCardDO> remainingCards, int cardAmount) {
         int size = remainingCards.size() - cardAmount;
         for (int i = 0; i < size; i++) {
             int index = (int) Math.floor(remainingCards.size() * Math.random());

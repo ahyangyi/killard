@@ -3,8 +3,9 @@ package com.killard.board.web.game;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.game.PlayerRecordDO;
-import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,10 +39,10 @@ public class GameController extends BasicController {
     public String list(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        List<GamePackageDO> packages = new LinkedList<GamePackageDO>();
-        Extent<GamePackageDO> packageExtent = pm.getExtent(GamePackageDO.class);
-        for (GamePackageDO pack : packageExtent) {
-            packages.add(pack);
+        List<PackageDO> packages = new LinkedList<PackageDO>();
+        Extent<PackageBundleDO> packageExtent = pm.getExtent(PackageBundleDO.class);
+        for (PackageBundleDO bundle : packageExtent) {
+            packages.add(bundle.getRelease());
         }
         packageExtent.closeAll();
 
@@ -67,7 +68,6 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/board/add.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void addGame(@RequestParam("packageId") long packageId,
-                        @RequestParam("gamePackageId") long gamePackageId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
@@ -76,7 +76,7 @@ public class GameController extends BasicController {
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        GamePackageDO gamePackage = getGamePackage(packageId, gamePackageId);
+        PackageDO gamePackage = getPackage(packageId);
 
         pm.makePersistent(gamePackage);
         BoardDO board = new BoardDO(gamePackage, playerNumber);

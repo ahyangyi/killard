@@ -12,13 +12,14 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
-import com.killard.board.jdo.game.GamePackageDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
+import com.killard.board.card.ElementSchool;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -72,13 +73,6 @@ public class ManageController extends BasicController {
     @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
     public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Extent<GamePackageDO> game = pm.getExtent(GamePackageDO.class);
-        for (GamePackageDO pack : game) {
-            PersistenceHelper.getPersistenceManager().deletePersistent(pack);
-            PersistenceHelper.doTransaction();
-        }
-        game.closeAll();
         
         Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
         for (BoardDO board : extent) {
@@ -112,9 +106,7 @@ public class ManageController extends BasicController {
         }
         extent.closeAll();
 
-        PackageDO pack = new PackageDO("Orions", UserServiceFactory.getUserService().getCurrentUser());
-        pack.setPublished(true);
-        pack.setOpen(true);
+        PackageDO pack = new PackageDO("Orions");
         pm.makePersistent(pack);
 
         PackageDescriptorDO desc = new PackageDescriptorDO(pack, Locale.ENGLISH);
@@ -138,9 +130,7 @@ public class ManageController extends BasicController {
     public void bang(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        PackageDO pack = new PackageDO("Bang!", UserServiceFactory.getUserService().getCurrentUser());
-        pack.setPublished(true);
-        pack.setOpen(true);
+        PackageDO pack = new PackageDO("Bang!");
         pm.makePersistent(pack);
 
         PackageDescriptorDO desc = new PackageDescriptorDO(pack, Locale.ENGLISH);
@@ -169,8 +159,8 @@ public class ManageController extends BasicController {
         PackageDO pack = pm.getObjectById(PackageDO.class, defaultPackageKey);
 
         Set<String> elementSchools = new HashSet<String>();
-        for (ElementSchoolDO elementSchool : pack.getElementSchools()) {
-            elementSchools.add(elementSchool.getDescriptor().getName());
+        for (ElementSchool elementSchool : pack.getElementSchools()) {
+            elementSchools.add(elementSchool.getName());
         }
 
         File dir = new File(baseDirectory);
@@ -217,14 +207,6 @@ public class ManageController extends BasicController {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO pack = pm.getObjectById(PackageDO.class, defaultPackageKey);
-
-        Query query = pm.newQuery(GamePackageDO.class);
-        query.setFilter("packageId == pId");
-        query.declareParameters("Long pId");
-        Collection result = (Collection) query.execute(pack.getKey().getId());
-
-        GamePackageDO gamePackage = new GamePackageDO(pack, result.size() + 1);
-        pm.makePersistent(gamePackage);
         redirect("/game/list", request, response);
     }
 

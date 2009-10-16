@@ -152,7 +152,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
 
     @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
     public List<Action> after(DefaultBoard board, DefaultBoard owner, CastCardAction action) {
-        return action.getSkill().execute(action.getTarget(), action.getTargetCard());
+        return action.getSkill().execute(this, action.getTarget(), action.getTargetCard());
     }
 
     public int compareTo(DefaultBoard compare) {

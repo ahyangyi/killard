@@ -48,7 +48,7 @@ import java.util.Date;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ActionDO {
+public class ActionLogDO {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -93,7 +93,7 @@ public class ActionDO {
     @Persistent
     private Date date;
 
-    public ActionDO(BoardDO board, Action action) {
+    public ActionLogDO(BoardDO board, Action action) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length);
         this.key = keyBuilder.getKey();

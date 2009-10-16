@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
+import com.killard.board.card.ElementSchool;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -24,14 +25,14 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolPropertyDO, ElementSchoolDescriptorDO> {
-
+public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolPropertyDO, ElementSchoolDescriptorDO>
+        implements ElementSchool {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
+    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
     private Key packageKey;
 
     @Persistent
@@ -135,7 +136,8 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
             elementSchool.cards.add(card);
         }
         for (ElementSchoolDescriptorDO descriptor : descriptors) {
-            ElementSchoolDescriptorDO cloneDescriptor = new ElementSchoolDescriptorDO(elementSchool, descriptor.getLocale());
+            ElementSchoolDescriptorDO cloneDescriptor =
+                    new ElementSchoolDescriptorDO(elementSchool, descriptor.getLocale());
             elementSchool.addDescriptor(cloneDescriptor);
         }
         return elementSchool;

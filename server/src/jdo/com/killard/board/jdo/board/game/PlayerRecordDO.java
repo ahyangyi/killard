@@ -8,10 +8,9 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.game.GameCardDO;
-import com.killard.board.jdo.game.GameRoleDO;
 import com.killard.board.jdo.board.game.property.PlayerRecordPropertyDO;
 import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.MetaCardDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -176,7 +175,10 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     public MetaCard getDealtCard(Integer cardIndex) {
         for (ElementRecordDO element : elementRecords) {
-            for (GameCardDO card : element.getDealtCards()) if (card.getKey().getId() == cardIndex) return card;
+            for (MetaCard card : element.getDealtCards()) {
+                MetaCardDO record = (MetaCardDO) card;
+                if (record.getKey().getId() == cardIndex) return card;
+            }
         }
         return null;
     }
@@ -235,7 +237,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     protected boolean addDealtCard(MetaCard metaCard) {
-        GameCardDO record = (GameCardDO) metaCard;
+        MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
         }
@@ -243,7 +245,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     protected boolean removeDealtCard(MetaCard metaCard) {
-        GameCardDO record = (GameCardDO) metaCard;
+        MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
             if (record.getElementSchool().equals(element)) return element.removeDealtCard(record);
         }

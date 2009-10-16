@@ -15,6 +15,7 @@ import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.DrawCardAction;
 import com.killard.board.card.action.EquipCardAction;
 import com.killard.board.card.action.DropCardAction;
+import com.killard.board.card.action.DealCardAction;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -115,13 +116,12 @@ public class RuleDO implements ActionListener<RuleDO> {
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
     public void after(BoardDO owner, EndTurnAction action) {
-//        owner.moveToNext();
+        owner.moveToNext();
     }
 
     @AfterAction(actionClass = DrawCardAction.class, selfTargeted = false)
     public Action before(BoardDO owner, DrawCardAction action) {
-//        return new DealCardAction(action.getTarget(), owner.dealCard());
-        return null;
+        return new DealCardAction(action.getTarget(), owner.dealCard());
     }
 
     @AfterAction(actionClass = EquipCardAction.class, selfTargeted = false)

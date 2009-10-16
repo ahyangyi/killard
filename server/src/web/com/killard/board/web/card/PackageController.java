@@ -42,9 +42,7 @@ public class PackageController extends BasicController {
         List<PackageDO> packages = new LinkedList<PackageDO>();
         Extent<PackageDO> extent = PersistenceHelper.getPersistenceManager().getExtent(PackageDO.class);
         for (PackageDO pack : extent) {
-            if (pack.isPublished() && pack.isOpen()) {
-                packages.add(pack);
-            }
+            packages.add(pack);
         }
         extent.closeAll();
         modelMap.put("packages", packages);
@@ -57,9 +55,7 @@ public class PackageController extends BasicController {
         List<PackageDO> packages = new LinkedList<PackageDO>();
         Extent<PackageDO> extent = PersistenceHelper.getPersistenceManager().getExtent(PackageDO.class);
         for (PackageDO pack : extent) {
-            if (pack.getManagers().contains(user)) {
-                packages.add(pack);
-            }
+            packages.add(pack);
         }
         extent.closeAll();
         modelMap.put("packages", packages);
@@ -71,9 +67,7 @@ public class PackageController extends BasicController {
         List<PackageDO> packages = new LinkedList<PackageDO>();
         Extent<PackageDO> extent = PersistenceHelper.getPersistenceManager().getExtent(PackageDO.class);
         for (PackageDO pack : extent) {
-            if (pack.isPublished() && ! pack.isOpen()) {
-                packages.add(pack);
-            }
+            packages.add(pack);
         }
         extent.closeAll();
         modelMap.put("packages", packages);
@@ -86,10 +80,6 @@ public class PackageController extends BasicController {
         List<PackageDO> packages = new LinkedList<PackageDO>();
         Extent<PackageDO> extent = PersistenceHelper.getPersistenceManager().getExtent(PackageDO.class);
         for (PackageDO pack : extent) {
-            if (pack.isOpen() || pack.isPublished()) continue;
-            if (pack.getManagers().contains(user) || pack.getPlayers().contains(user)) {
-                packages.add(pack);
-            }
         }
         extent.closeAll();
         modelMap.put("packages", packages);
@@ -108,10 +98,11 @@ public class PackageController extends BasicController {
     public String addPackage(@RequestParam("packageName") String packageName,
                              ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PackageDO pack = new PackageDO(packageName, getUser());
+        PackageDO pack = new PackageDO(packageName);
         pm.makePersistent(pack);
 
-        RuleDO rule = new RuleDO(pack, new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>());
+        RuleDO rule = new RuleDO(pack, new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>(),
+                new ArrayList<AttributeHandler>());
         pack.setRule(rule);
 
         PackageDescriptorDO descriptor = new PackageDescriptorDO(pack, BoardContext.getLocale());
@@ -138,7 +129,6 @@ public class PackageController extends BasicController {
                              ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         PackageDO pack = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, key);
-        pack.addManager(new User(manager, UserServiceFactory.getUserService().getCurrentUser().getAuthDomain()));
         PersistenceHelper.getPersistenceManager().makePersistent(pack);
         modelMap.put("package", pack);
         return "board/package";
@@ -151,11 +141,6 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         PackageDO pack = pm.getObjectById(PackageDO.class, key);
-        User delete = null;
-        for (User user : pack.getManagers()) {
-            if (user.getEmail().equals(email)) delete = user;
-        }
-        if (delete != null) pack.removeManager(delete);
         pm.makePersistent(pack);
         modelMap.put("package", pack);
         return "board/package";
@@ -163,11 +148,10 @@ public class PackageController extends BasicController {
 
     @RequestMapping(value = "/package/player/add.*", method = RequestMethod.POST)
     public String addPlayer(@RequestParam("packageId") long packageId,
-                             @RequestParam("player") String player,
-                             ModelMap modelMap) throws Exception {
+                            @RequestParam("player") String player,
+                            ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         PackageDO pack = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, key);
-        pack.addPlayer(new User(player, UserServiceFactory.getUserService().getCurrentUser().getAuthDomain()));
         PersistenceHelper.getPersistenceManager().makePersistent(pack);
         modelMap.put("package", pack);
         return "board/package";
@@ -175,16 +159,11 @@ public class PackageController extends BasicController {
 
     @RequestMapping(value = "/package/player/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String removePlayer(@RequestParam("packageId") long packageId,
-                                @RequestParam("email") String email,
-                                ModelMap modelMap) throws Exception {
+                               @RequestParam("email") String email,
+                               ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         PackageDO pack = pm.getObjectById(PackageDO.class, key);
-        User delete = null;
-        for (User user : pack.getPlayers()) {
-            if (user.getEmail().equals(email)) delete = user;
-        }
-        if (delete != null) pack.removeManager(delete);
         pm.makePersistent(pack);
         modelMap.put("package", pack);
         return "board/package";

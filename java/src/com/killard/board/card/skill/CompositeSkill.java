@@ -5,6 +5,7 @@ import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
+import com.killard.board.card.Board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,9 @@ public class CompositeSkill extends BasicSkill<CompositeSkill> {
         return new ArrayList<Skill>(skills);
     }
 
-    public List<Action> execute(Card owner, Object... target) {
-        List<Action> actions = super.execute(owner, target);
-        for (Skill skill : skills) actions.addAll(skill.execute(owner, target));
+    public List<Action> execute(Board board, Card owner, Object... target) {
+        List<Action> actions = super.execute(board, owner, target);
+        for (Skill skill : skills) actions.addAll(skill.execute(board, owner, target));
         return actions;
     }
 

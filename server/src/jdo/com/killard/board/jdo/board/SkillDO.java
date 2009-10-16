@@ -6,7 +6,14 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.jdo.board.property.SkillPropertyDO;
 import com.killard.board.parser.Function;
+import com.killard.board.parser.ExecutionException;
+import com.killard.board.parser.GlobalContext;
+import com.killard.board.parser.Context;
 import com.killard.board.card.SkillTarget;
+import com.killard.board.card.Skill;
+import com.killard.board.card.Action;
+import com.killard.board.card.Card;
+import com.killard.board.card.Board;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -28,7 +35,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescriptorDO> {
+public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescriptorDO> implements Skill<SkillDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -90,8 +97,10 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         this.name = name;
     }
 
-    public String[] getTargets() {
-        return targets.toArray(new String[targets.size()]);
+    public SkillTarget[] getTargets() {
+        SkillTarget[] result = new SkillTarget[targets.size()];
+        for (int i = 0; i < result.length; i++) result[i] = SkillTarget.valueOf(targets.get(i));
+        return result;
     }
 
     public int getCost() {
@@ -100,6 +109,18 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
     public Function getFunction() {
         return function;
+    }
+
+    public List<Action> execute(Board board, Card owner, Object... target) {
+        Context ctx = new GlobalContext(owner);
+        ctx.addVariable("targets", target);
+        ctx.addVariable("board", board);
+        try {
+            function.execute(ctx);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return ctx.getActions();
     }
 
     public SkillDescriptorDO[] getDescriptors() {

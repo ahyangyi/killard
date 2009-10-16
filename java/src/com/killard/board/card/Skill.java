@@ -10,5 +10,5 @@ public interface Skill<T extends Skill> extends Record<T> {
 
     public int getCost();
 
-    public List<Action> execute(Card owner, Object... target);
+    public List<Action> execute(Board board, Card owner, Object... target);
 }

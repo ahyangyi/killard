@@ -9,7 +9,6 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.game.PlayerRecordDO;
-import com.killard.board.jdo.game.GamePackageDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -110,13 +109,6 @@ public class BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         return pm.getObjectById(PackageDO.class, key);
-    }
-
-    protected GamePackageDO getGamePackage(long packageId, long gamePackageId) {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(PackageDO.class.getSimpleName(), packageId);
-        keyBuilder.addChild(GamePackageDO.class.getSimpleName(), gamePackageId);
-        return pm.getObjectById(GamePackageDO.class, keyBuilder.getKey());
     }
 
 }

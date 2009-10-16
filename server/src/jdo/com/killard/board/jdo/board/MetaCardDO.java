@@ -3,6 +3,11 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.AttackType;
+import com.killard.board.card.MetaCard;
+import com.killard.board.card.Attack;
+import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Skill;
+import com.killard.board.card.Attribute;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
@@ -25,7 +30,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, MetaCardDescriptorDO> {
+public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, MetaCardDescriptorDO> implements MetaCard<MetaCardDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -123,7 +128,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return packageKey;
     }
 
-    public ElementSchoolDO getElementSchool() {
+    public ElementSchool getElementSchool() {
         return elementSchool;
     }
 
@@ -133,6 +138,10 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public Attack getAttack() {
+        return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
     }
 
     public String getAttackType() {
@@ -155,16 +164,16 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return !skills.isEmpty();
     }
 
-    public SkillDO[] getSkills() {
-        return skills.toArray(new SkillDO[skills.size()]);
+    public Skill[] getSkills() {
+        return skills.toArray(new Skill[skills.size()]);
     }
 
     public boolean hasAttribute() {
         return hasVisibleAttribute() || hasHiddenAttribute();
     }
 
-    public AttributeDO[] getAttributes() {
-        AttributeDO[] result = new AttributeDO[hiddenAttributes.size() + visibleAttributes.size()];
+    public Attribute[] getAttributes() {
+        Attribute[] result = new Attribute[hiddenAttributes.size() + visibleAttributes.size()];
         int i = 0;
         for (String name : hiddenAttributes) {
             result[i] = elementSchool.getAttribute(name);
@@ -183,8 +192,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return !visibleAttributes.isEmpty();
     }
 
-    public AttributeDO[] getVisibleAttributes() {
-        AttributeDO[] result = new AttributeDO[visibleAttributes.size()];
+    public Attribute[] getVisibleAttributes() {
+        Attribute[] result = new Attribute[visibleAttributes.size()];
         int i = 0;
         for (String name : visibleAttributes) {
             result[i] = elementSchool.getAttribute(name);
@@ -197,8 +206,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return !hiddenAttributes.isEmpty();
     }
 
-    public AttributeDO[] getHiddenAttributes() {
-        AttributeDO[] result = new AttributeDO[hiddenAttributes.size()];
+    public Attribute[] getHiddenAttributes() {
+        Attribute[] result = new Attribute[hiddenAttributes.size()];
         int i = 0;
         for (String name : hiddenAttributes) {
             result[i] = elementSchool.getAttribute(name);

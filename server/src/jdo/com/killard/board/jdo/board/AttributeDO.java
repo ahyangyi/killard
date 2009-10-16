@@ -3,8 +3,15 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 import com.killard.board.jdo.board.property.AttributePropertyDO;
+import com.killard.board.card.Attribute;
+import com.killard.board.card.Action;
+import com.killard.board.card.Card;
+import com.killard.board.environment.AfterAction;
+import com.killard.board.environment.BeforeAction;
+import com.killard.board.environment.ActionValidator;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -26,7 +33,8 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO, AttributeDescriptorDO> {
+public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO, AttributeDescriptorDO>
+        implements Attribute<AttributeDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -134,5 +142,20 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     public AttributeHandler[] getAfter() {
         return after.toArray(new AttributeHandler[after.size()]);
+    }
+
+    @ActionValidator(actionClass = Action.class, selfTargeted = false)
+    public List<Action> validateAction(BoardDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, validators);
+    }
+
+    @BeforeAction(actionClass = Action.class, selfTargeted = false)
+    public List<Action> beforeAction(BoardDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, before);
+    }
+
+    @AfterAction(actionClass = Action.class, selfTargeted = false)
+    public List<Action> afterAction(BoardDO board, Card owner, Action action) {
+        return FunctionHelper.handler(board, owner, action, after);
     }
 }

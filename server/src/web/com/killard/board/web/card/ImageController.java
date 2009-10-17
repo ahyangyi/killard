@@ -53,8 +53,8 @@ public class ImageController extends BasicController {
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         response.setContentType("image/png");
-        if (card.getDescriptor() != null && card.getDescriptor().getImageData() != null) {
-            byte[] data = card.getDescriptor().getImageData();
+        if (card.isRenderable()) {
+            byte[] data = card.getImageData();
             ImagesService imagesService = ImagesServiceFactory.getImagesService();
             Image oldImage = ImagesServiceFactory.makeImage(data);
             Transform resize = ImagesServiceFactory.makeResize(171, 264);

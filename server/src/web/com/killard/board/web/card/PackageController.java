@@ -5,9 +5,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
-import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.web.BasicController;
@@ -100,18 +100,8 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageBundleDO bundle = new PackageBundleDO(packageName);
         bundle = pm.makePersistent(bundle);
-        PackageDO pack = pm.makePersistent(new PackageDO(bundle.getKey(), packageName, 1l));
-
-        RuleDO rule = new RuleDO(pack, new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>(),
-                new ArrayList<AttributeHandler>());
-        pack.setRule(rule);
-
-        PackageDescriptorDO descriptor = new PackageDescriptorDO(pack, BoardContext.getLocale());
-        descriptor.setName(packageName);
-        pack.addDescriptor(descriptor);
-        pm.makePersistent(pack);
-
-        modelMap.put("package", pack);
+        modelMap.put("package", bundle.draft());
+        pm.makePersistent(bundle);
         return "board/package";
     }
 

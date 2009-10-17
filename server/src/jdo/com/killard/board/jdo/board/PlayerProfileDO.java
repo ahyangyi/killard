@@ -1,14 +1,14 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Rating;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Rating;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 /**
  * <p>

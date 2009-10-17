@@ -1,13 +1,14 @@
 package com.killard.board.jdo.board;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.jdo.DescriptableDO;
-import com.killard.board.jdo.PropertyDO;
-import com.killard.board.jdo.AttributeHandler;
-import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.jdo.AttributeHandler;
+import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.PropertyDO;
+import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -16,12 +17,11 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * <p>
@@ -59,6 +59,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
+
+    @Persistent(defaultFetchGroup = "false")
+    private Blob image;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundle.getKey());
@@ -169,6 +172,18 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new PackageDescriptorDO(this, locale, name, description));
+    }
+
+    public boolean isRenderable() {
+        return image != null;
+    }
+
+    public byte[] getImageData() {
+        return image.getBytes();
+    }
+
+    public void setImageData(byte[] data) {
+        image = new Blob(data);
     }
 
     public int compareTo(PackageDO compare) {

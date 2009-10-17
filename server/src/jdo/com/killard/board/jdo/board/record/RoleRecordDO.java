@@ -10,10 +10,10 @@ import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
-import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.record.property.RoleRecordPropertyDO;
+import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
+import com.killard.board.jdo.board.record.property.RoleRecordPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

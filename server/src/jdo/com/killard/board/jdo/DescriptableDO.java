@@ -75,6 +75,12 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
         return descriptors[0];
     }
 
+    public abstract boolean isRenderable();
+
+    public abstract byte[] getImageData();
+
+    public abstract void setImageData(byte[] data);
+
     public int compareTo(S descriptableDO) {
         return getKey().compareTo(descriptableDO.getKey());
     }

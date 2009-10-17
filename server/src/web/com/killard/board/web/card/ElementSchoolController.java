@@ -2,7 +2,6 @@ package com.killard.board.web.card;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.users.User;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -53,17 +52,10 @@ public class ElementSchoolController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-
-        ElementSchoolDO elementSchool = new ElementSchoolDO(elementSchoolName, pack);
-        ElementSchoolDescriptorDO descriptor =
-                new ElementSchoolDescriptorDO(elementSchool, BoardContext.getLocale());
-        descriptor.setName(elementSchoolName);
-        elementSchool.addDescriptor(descriptor);
-        pm.makePersistent(elementSchool);
-        PersistenceHelper.doTransaction();
-
-        modelMap.put("package", pack);
-        return "board/package";
+        ElementSchoolDO elementSchool = pack.newElementSchool(elementSchoolName);
+        pm.makePersistent(pack);
+        modelMap.put("elementSchool", elementSchool);
+        return "card/element";
     }
 
     @RequestMapping(value = "/package/elementschool/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -79,7 +71,7 @@ public class ElementSchoolController extends BasicController {
         pm.deletePersistent(elementSchool);
         
         modelMap.put("package", pack);
-        return "board/package";
+        return "card/package";
     }
 
 }

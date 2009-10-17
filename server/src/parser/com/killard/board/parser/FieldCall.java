@@ -1,10 +1,9 @@
 package com.killard.board.parser;
 
+import com.killard.board.card.Record;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Array;
-
-import com.killard.board.card.Record;
 
 /**
  * <p>

@@ -10,12 +10,12 @@ import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.AttributeDO;
+import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.SkillDO;
-import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
+import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -76,7 +76,7 @@ public class CardRecordDO extends AbstractCardRecord {
     private Boolean visible;
 
     @Persistent
-    private Integer position;
+    private int position;
 
     @Persistent(serialized = "true")
     private List<Key> skillKeys;

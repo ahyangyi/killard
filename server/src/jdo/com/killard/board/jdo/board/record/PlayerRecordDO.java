@@ -8,9 +8,9 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.record.property.PlayerRecordPropertyDO;
-import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.MetaCardDO;
+import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.record.property.PlayerRecordPropertyDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

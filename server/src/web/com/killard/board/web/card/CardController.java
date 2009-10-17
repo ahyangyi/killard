@@ -7,8 +7,6 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
-import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -64,24 +62,11 @@ public class CardController extends BasicController {
         Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
-
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         card.setDefinition(definition);
-
-//        Map map = engine.parse(definition);
-//        builder.buildCard(elementSchool, board, map);
-//        pm.makePersistent(board);
-
-        if (file.getBytes().length > 0) {
-            MetaCardDescriptorDO descriptor = card.getDescriptor();
-            descriptor.setImageData(file.getBytes());
-            pm.makePersistent(descriptor);
-        }
-
+        card.setImageData(file.getBytes());
         pm.makePersistent(card);
-        PersistenceHelper.doTransaction();
         modelMap.put("board", card);
         return "board/board";
     }
@@ -98,11 +83,7 @@ public class CardController extends BasicController {
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-
-        MetaCardDescriptorDO descriptor = card.getDescriptor();
-        descriptor.setImageData(file.getBytes());
-        pm.makePersistent(descriptor);
-
+        card.setImageData(file.getBytes());
         pm.makePersistent(card);
         redirect("/record/record", request, response);
     }
@@ -118,15 +99,8 @@ public class CardController extends BasicController {
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
-        MetaCardDO card = new MetaCardDO(cardName, elementSchool, "");
+        MetaCardDO card = elementSchool.newCard(cardName);
         pm.makePersistent(card);
-
-        MetaCardDescriptorDO descriptor = new MetaCardDescriptorDO(card, BoardContext.getLocale());
-        descriptor.setName(cardName);
-        card.addDescriptor(descriptor);
-        pm.makePersistent(card);
-
-        PersistenceHelper.doTransaction();
         modelMap.put("board", card);
         return "board/board";
     }

@@ -1,5 +1,6 @@
 package com.killard.board.jdo.board;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
@@ -14,10 +15,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Collections;
 
 /**
  * <p>
@@ -63,6 +64,9 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     @Persistent
     private SortedSet<RoleDescriptorDO> descriptors;
 
+    @Persistent(defaultFetchGroup = "false")
+    private Blob image;
+
     protected RoleDO(PackageDO pack, String name,
                      String definition,
                      List<AttributeHandler> validators,
@@ -105,16 +109,28 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         return properties.toArray(new RolePropertyDO[properties.size()]);
     }
 
-    protected boolean addDescriptor(String locale, String name, String description) {
-        return descriptors.add(new RoleDescriptorDO(this, locale, name, description));
-    }
-
     public boolean isVisible() {
         return visible;
     }
 
     public RoleDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new RoleDescriptorDO[descriptors.size()]);
+    }
+
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new RoleDescriptorDO(this, locale, name, description));
+    }
+
+    public boolean isRenderable() {
+        return image != null;
+    }
+
+    public byte[] getImageData() {
+        return image.getBytes();
+    }
+
+    public void setImageData(byte[] data) {
+        image = new Blob(data);
     }
 
     public Key getPackageKey() {

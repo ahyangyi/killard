@@ -1,6 +1,5 @@
 package com.killard.board.card.record;
 
-import com.killard.board.card.action.ChangeCardPropertyAction;
 import com.killard.board.card.action.ChangePlayerPropertyAction;
 
 /**

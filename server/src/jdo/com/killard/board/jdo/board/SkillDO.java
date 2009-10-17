@@ -1,20 +1,21 @@
 package com.killard.board.jdo.board;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
+import com.killard.board.card.Action;
+import com.killard.board.card.Board;
+import com.killard.board.card.Card;
+import com.killard.board.card.Skill;
+import com.killard.board.card.SkillTarget;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.jdo.board.property.SkillPropertyDO;
-import com.killard.board.parser.Function;
-import com.killard.board.parser.ExecutionException;
-import com.killard.board.parser.GlobalContext;
 import com.killard.board.parser.Context;
-import com.killard.board.card.SkillTarget;
-import com.killard.board.card.Skill;
-import com.killard.board.card.Action;
-import com.killard.board.card.Card;
-import com.killard.board.card.Board;
+import com.killard.board.parser.ExecutionException;
+import com.killard.board.parser.Function;
+import com.killard.board.parser.GlobalContext;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -62,6 +63,9 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDescriptorDO> descriptors;
+
+    @Persistent(defaultFetchGroup = "false")
+    private Blob image;
 
     protected SkillDO(MetaCardDO card, String name, String definition, List<String> targets, int cost, Function function) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
@@ -143,5 +147,17 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new SkillDescriptorDO(this, locale, name, description));
+    }
+
+    public boolean isRenderable() {
+        return image != null;
+    }
+
+    public byte[] getImageData() {
+        return image.getBytes();
+    }
+
+    public void setImageData(byte[] data) {
+        image = new Blob(data);
     }
 }

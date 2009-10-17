@@ -1,21 +1,19 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Rating;
-import com.google.appengine.api.users.User;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import java.util.Date;
-import java.util.SortedSet;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 import java.util.Calendar;
-import java.util.TreeSet;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * <p>

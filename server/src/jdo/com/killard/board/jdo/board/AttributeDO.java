@@ -1,18 +1,19 @@
 package com.killard.board.jdo.board;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.killard.board.card.Action;
+import com.killard.board.card.Attribute;
+import com.killard.board.card.Card;
+import com.killard.board.environment.ActionValidator;
+import com.killard.board.environment.AfterAction;
+import com.killard.board.environment.BeforeAction;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 import com.killard.board.jdo.board.property.AttributePropertyDO;
-import com.killard.board.card.Attribute;
-import com.killard.board.card.Action;
-import com.killard.board.card.Card;
-import com.killard.board.environment.AfterAction;
-import com.killard.board.environment.BeforeAction;
-import com.killard.board.environment.ActionValidator;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -53,13 +54,13 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent
     private Boolean visible;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<AttributeHandler> validators;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<AttributeHandler> before;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<AttributeHandler> after;
 
     @Persistent
@@ -67,6 +68,9 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<AttributeDescriptorDO> descriptors;
+
+    @Persistent(defaultFetchGroup = "false")
+    private Blob image;
 
     protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
                           String definition,
@@ -108,10 +112,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         return properties.toArray(new AttributePropertyDO[properties.size()]);
     }
 
-    protected boolean addDescriptor(String locale, String name, String description) {
-        return descriptors.add(new AttributeDescriptorDO(this, locale, name, description));
-    }
-
     protected boolean addProperty(String name, String data) {
         return properties.add(new AttributePropertyDO(this, name, data));
     }
@@ -130,6 +130,22 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     public AttributeDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new AttributeDescriptorDO[descriptors.size()]);
+    }
+
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new AttributeDescriptorDO(this, locale, name, description));
+    }
+
+    public boolean isRenderable() {
+        return image != null;
+    }
+
+    public byte[] getImageData() {
+        return image.getBytes();
+    }
+
+    public void setImageData(byte[] data) {
+        image = new Blob(data);
     }
 
     public AttributeHandler[] getValidators() {

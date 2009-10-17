@@ -1,6 +1,5 @@
 package com.killard.board.jdo.board.property;
 
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.RoleDO;
 

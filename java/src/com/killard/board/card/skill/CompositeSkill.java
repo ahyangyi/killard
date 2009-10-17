@@ -1,11 +1,11 @@
 package com.killard.board.card.skill;
 
 import com.killard.board.card.Action;
+import com.killard.board.card.Board;
 import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
-import com.killard.board.card.Board;
 
 import java.util.ArrayList;
 import java.util.List;

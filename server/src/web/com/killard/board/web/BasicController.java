@@ -9,7 +9,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.game.PlayerRecordDO;
+import com.killard.board.jdo.board.record.PlayerRecordDO;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;

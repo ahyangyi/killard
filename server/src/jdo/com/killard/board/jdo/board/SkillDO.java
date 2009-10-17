@@ -2,6 +2,7 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.SkillDescriptorDO;
 import com.killard.board.jdo.board.property.SkillPropertyDO;
@@ -45,10 +46,13 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     private String name;
 
     @Persistent
+    private Text definition;
+
+    @Persistent
     private List<String> targets;
 
     @Persistent
-    private Integer cost;
+    private int cost;
 
     @Persistent(serialized = "true")
     private Function function;
@@ -59,18 +63,28 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDescriptorDO> descriptors;
 
-    public SkillDO(String name, MetaCardDO card, int cost, Function function) {
+    protected SkillDO(MetaCardDO card, String name, String definition, List<String> targets, int cost, Function function) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
 
         this.name = name;
-        this.targets = new ArrayList<String>();
+
+        this.definition = new Text(definition);
+
+        this.targets = new ArrayList<String>(targets);
         this.targets.add(SkillTarget.self.name());
+
         this.cost = cost;
         this.function = function;
+
         this.properties = new TreeSet<SkillPropertyDO>();
         this.descriptors = new TreeSet<SkillDescriptorDO>();
+    }
+
+    protected SkillDO(MetaCardDO card, SkillDO source) {
+        this(card, source.name, source.getDefinition(), source.targets, source.cost, source.function);
+        this.cost = source.cost;
     }
 
     public Key getKey() {
@@ -81,16 +95,16 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         return name;
     }
 
-    public SkillPropertyDO[] getProperties() {
-        return properties.toArray(new SkillPropertyDO[properties.size()]);
-    }
-
     protected boolean addProperty(String name, String data) {
         return properties.add(new SkillPropertyDO(this, name, data));
     }
 
-    protected boolean removeProperty(SkillPropertyDO property) {
-        return properties.remove(property);
+    public String getDefinition() {
+        return definition.getValue();
+    }
+
+    public SkillPropertyDO[] getProperties() {
+        return properties.toArray(new SkillPropertyDO[properties.size()]);
     }
 
     public void setName(String name) {
@@ -127,20 +141,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         return descriptors.toArray(new SkillDescriptorDO[descriptors.size()]);
     }
 
-    public boolean addDescriptor(SkillDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(SkillDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public SkillDO clone(MetaCardDO card) {
-        SkillDO skill = new SkillDO(getName(), card, cost, function);
-        for (SkillDescriptorDO descriptor : descriptors) {
-            SkillDescriptorDO cloneDescriptor = new SkillDescriptorDO(skill, descriptor.getLocale());
-            skill.addDescriptor(cloneDescriptor);
-        }
-        return skill;
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new SkillDescriptorDO(this, locale, name, description));
     }
 }

@@ -33,33 +33,26 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     private Key key;
 
     @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key ownerKey;
-
-    @Persistent
     private String locale;
 
     @Persistent
     private String name;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     private Text description;
 
-    @Persistent(defaultFetchGroup = "false")
-    private Blob image;
-
-    protected DescriptorDO(DescriptableDO owner, String locale) {
-        this.locale = locale;
+    protected DescriptorDO(DescriptableDO owner, String locale, String name, String description) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), this.locale);
+        keyBuilder.addChild(getClass().getSimpleName(), locale);
         this.key = keyBuilder.getKey();
+
+        this.locale = locale;
+        this.name = name;
+        this.description = new Text(description);
     }
 
-    protected DescriptorDO(DescriptableDO owner, Locale locale) {
-        this.locale = locale.toString();
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(owner.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), this.locale);
-        this.key = keyBuilder.getKey();
+    protected DescriptorDO(DescriptableDO owner, Locale locale, String name, String description) {
+        this(owner, locale.toString(), name, description);
     }
 
     protected DescriptorDO(DescriptableDO owner, DescriptorDO origin) {
@@ -70,15 +63,10 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
         this.locale = origin.getLocale();
         this.name = origin.getName();
         this.description = new Text(origin.getDescription());
-        this.image = origin.getImageData() == null ? null : new Blob(origin.getImageData());
     }
 
     public Key getKey() {
         return key;
-    }
-
-    public Key getOwnerKey() {
-        return ownerKey;
     }
 
     public String getLocale() {
@@ -94,20 +82,11 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
     }
 
     public String getDescription() {
-        if (description == null) return "";
         return description.getValue();
     }
 
     public void setDescription(String description) {
         this.description = new Text(description);
-    }
-
-    public byte[] getImageData() {
-        return image == null ? null : image.getBytes();
-    }
-
-    public void setImageData(byte[] image) {
-        this.image = new Blob(image);
     }
 
     public int compareTo(DescriptorDO descriptorDO) {

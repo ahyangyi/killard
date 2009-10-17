@@ -19,12 +19,12 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class MetaCardDescriptorDO extends DescriptorDO {
 
-    public MetaCardDescriptorDO(MetaCardDO card, String locale) {
-        super(card, locale);
+    public MetaCardDescriptorDO(MetaCardDO card, String locale, String name, String description) {
+        super(card, locale, name, description);
     }
 
-    public MetaCardDescriptorDO(MetaCardDO card, Locale locale) {
-        super(card, locale);
+    public MetaCardDescriptorDO(MetaCardDO card, Locale locale, String name, String description) {
+        super(card, locale, name, description);
     }
 
 }

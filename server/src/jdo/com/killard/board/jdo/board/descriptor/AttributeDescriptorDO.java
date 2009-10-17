@@ -19,12 +19,12 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class AttributeDescriptorDO extends DescriptorDO {
 
-    public AttributeDescriptorDO(AttributeDO attribute, String locale) {
-        super(attribute, locale);
+    public AttributeDescriptorDO(AttributeDO attribute, String locale, String name, String description) {
+        super(attribute, locale, name, description);
     }
 
-    public AttributeDescriptorDO(AttributeDO attribute, Locale locale) {
-        super(attribute, locale);
+    public AttributeDescriptorDO(AttributeDO attribute, Locale locale, String name, String description) {
+        super(attribute, locale, name, description);
     }
 
 }

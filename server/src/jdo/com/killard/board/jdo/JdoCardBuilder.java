@@ -1,6 +1,7 @@
 package com.killard.board.jdo;
 
 import com.killard.board.card.AttackType;
+import com.killard.board.card.SkillTarget;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
@@ -17,6 +18,8 @@ import com.killard.board.parser.Node;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -29,10 +32,8 @@ import java.util.Map;
  */
 public class JdoCardBuilder {
 
-    public RuleDO buildRule(PackageDO pack, Map map) throws InvalidCardException {
-        return new RuleDO(pack,
-                buildAttributeHandlers(map, "validate"),
-                buildAttributeHandlers(map, "before"),
+    public void buildRule(PackageDO pack, String definition, Map map) throws InvalidCardException {
+        pack.rule(definition, buildAttributeHandlers(map, "validate"), buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));
     }
 
@@ -74,10 +75,9 @@ public class JdoCardBuilder {
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");
             for (Object key : descriptors.keySet()) {
-                MetaCardDescriptorDO descriptor = new MetaCardDescriptorDO(card, key.toString());
-                Map descMap = (Map) descriptors.get(key);
-                descriptor.setName(((Expression) descMap.get("name")).getText());
-                card.addDescriptor(descriptor);
+                String locale = key.toString();
+                String name = ((Expression) map.get(locale)).getText();
+                card.newDescriptor(locale, name, name);
             }
         }
     }
@@ -97,50 +97,45 @@ public class JdoCardBuilder {
     }
 
     public void buildSkill(MetaCardDO card, Map map) throws InvalidCardException {
-        String id = getString(map, "id");
+        String name = getString(map, "name");
         int cost = getInt(map, "cost");
         Function function = (Function) map.get("execute");
-        SkillDO skill = new SkillDO(id, card, cost, function);
-        card.addSkill(skill);
+        card.newSkill(name, "", Arrays.asList(SkillTarget.self.name()), cost, function);
     }
 
     public void buildAttributes(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         Object value = map.get("attribute");
         if (value instanceof Map) {
-            buildAttribute(elementSchool, (Map) value);
+            buildAttribute(elementSchool, "", (Map) value);
         }
         if (value instanceof List) {
             for (Object def : (List) value) {
                 if (def instanceof Map) {
-                    buildAttribute(elementSchool, (Map) def);
+                    buildAttribute(elementSchool, "", (Map) def);
                 }
             }
         }
     }
 
-    public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
-        String id = getString(map, "id");
-        boolean visible = getBoolean(map, "visible");
-        AttributeDO attribute = new AttributeDO(id, elementSchool, visible,
+    public void buildAttribute(ElementSchoolDO elementSchool, String definition, Map map) throws InvalidCardException {
+        AttributeDO attribute = elementSchool.newAttribute(getString(map, "name"),
+                getBoolean(map, "visible"),
+                definition,
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));
-        PersistenceHelper.getPersistenceManager().makePersistent(attribute);
-        elementSchool.addAttribute(attribute);
 
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");
             for (Object key : descriptors.keySet()) {
-                AttributeDescriptorDO descriptor = new AttributeDescriptorDO(attribute, key.toString());
-                Map descMap = (Map) descriptors.get(key);
-                descriptor.setName(((Expression) descMap.get("name")).getText());
-                attribute.addDescriptor(descriptor);
+                String locale = key.toString();
+                String name = ((Expression) map.get(locale)).getText();
+                attribute.newDescriptor(locale, name, name);
             }
         }
         if (attribute.getDescriptor() == null) {
-            AttributeDescriptorDO descriptor = new AttributeDescriptorDO(attribute, BoardContext.getLocale());
-            descriptor.setName(((Expression) map.get("name")).getText());
-            attribute.addDescriptor(descriptor);
+            String name = ((Expression) map.get("name")).getText();
+            attribute.newDescriptor(BoardContext.getLocale(), name, name);
         }
         PersistenceHelper.getPersistenceManager().makePersistent(attribute);
         PersistenceHelper.doTransaction();

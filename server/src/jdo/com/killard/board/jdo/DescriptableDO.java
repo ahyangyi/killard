@@ -23,13 +23,9 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     public abstract String getName();
 
-    public abstract P[] getProperties();
-
     protected abstract boolean addProperty(String name, String data);
 
-    protected abstract boolean removeProperty(P property);
-
-    public abstract T[] getDescriptors();
+    public abstract P[] getProperties();
 
     public Object getProperty(String name) {
         for (P property : getProperties()) {
@@ -48,11 +44,18 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
         addProperty(name, data);
     }
 
-    public boolean removeProperty(String name) {
-        for (P property : getProperties()) {
-            if (property.getName().equals(name)) return removeProperty(property);
-        }
-        return false;
+    protected abstract boolean addDescriptor(String locale, String name, String description);
+
+    public abstract T[] getDescriptors();
+
+    public T newDescriptor(String locale, String name, String description) {
+        for (T descriptor : getDescriptors()) if (descriptor.getLocale().equals(locale)) return descriptor;
+        addDescriptor(locale, name, description);
+        return getDescriptor(locale);
+    }
+    
+    public T newDescriptor(Locale locale, String name, String description) {
+        return newDescriptor(locale.toString(), name, description);
     }
 
     public T getDescriptor() {

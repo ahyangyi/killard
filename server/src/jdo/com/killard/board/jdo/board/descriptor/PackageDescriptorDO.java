@@ -19,11 +19,11 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class PackageDescriptorDO extends DescriptorDO {
 
-    public PackageDescriptorDO(PackageDO pack, String locale) {
-        super(pack, locale);
+    public PackageDescriptorDO(PackageDO pack, String locale, String name, String description) {
+        super(pack, locale, name, description);
     }
 
-    public PackageDescriptorDO(PackageDO pack, Locale locale) {
-        super(pack, locale);
+    public PackageDescriptorDO(PackageDO pack, Locale locale, String name, String description) {
+        super(pack, locale, name, description);
     }
 }

@@ -73,15 +73,10 @@ public class PackageBundleDO {
     }
 
     public PackageBundleDO(PackageBundleDO source) {
-        this.name = source.getName();
-        this.createDate = Calendar.getInstance().getTime();
-        this.modifiedDate = Calendar.getInstance().getTime();
-        this.players = new HashSet<PlayerProfileDO>();
-        this.clonable = source.isClonable();
-        this.clonedCount = 0;
-        this.status = source.getStatus();
-        this.playedCount = 0;
-        this.packages = new TreeSet<PackageDO>();
+        this(source.name + " clone");
+        for (PackageDO pack : source.packages) {
+            packages.add(new PackageDO(this, pack));
+        }
     }
 
     public Key getKey() {
@@ -132,9 +127,13 @@ public class PackageBundleDO {
         return packages.last();
     }
 
+    public PackageDO draft() {
+        if (packages.isEmpty()) packages.add(new PackageDO(this, 1));
+        return getDraft();
+    }
+
     public PackageDO release() {
-        PackageDO release = getDraft().clone(packages.size() + 1);
-        packages.add(release);
-        return release;
+        packages.add(new PackageDO(this, getDraft()));
+        return getRelease();
     }
 }

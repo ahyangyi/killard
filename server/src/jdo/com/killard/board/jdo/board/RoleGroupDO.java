@@ -41,12 +41,14 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     @NotPersistent
     private List<RoleDO> roles;
 
-    public RoleGroupDO(PackageDO pack, RoleDO role) {
+    protected RoleGroupDO(PackageDO pack) {
         this.packageKey = pack.getKey();
         this.roleNames = new ArrayList<String>();
-        this.roleNames.add(role.getName());
         this.roles = new ArrayList<RoleDO>();
-        this.roles.add(role);
+    }
+
+    protected RoleGroupDO(PackageDO pack, RoleGroupDO source) {
+        this(pack);
     }
 
     public Key getKey() {

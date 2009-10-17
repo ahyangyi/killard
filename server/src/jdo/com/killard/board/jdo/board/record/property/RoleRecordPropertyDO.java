@@ -1,8 +1,7 @@
-package com.killard.board.jdo.board.game.property;
+package com.killard.board.jdo.board.record.property;
 
-import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
-import com.killard.board.jdo.board.game.RoleRecordDO;
+import com.killard.board.jdo.board.record.RoleRecordDO;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;

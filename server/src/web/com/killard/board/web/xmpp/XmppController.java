@@ -87,7 +87,7 @@ public class XmppController extends BasicController {
 //        PackageDO packageDO = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageId);
 //        BoardDO boardManager = new BoardDO(packageDO, 2);
 //        joinGame(from, boardManager);
-//        sendMessage(getUsername(from), "You have created a new game.");
+//        sendMessage(getUsername(from), "You have created a new record.");
 //    }
 //
 //    protected void join(JID from, String[] args) {
@@ -97,7 +97,7 @@ public class XmppController extends BasicController {
 //        BoardDO boardManager = getBoardManager(player.getId());
 //        joinGame(from, boardManager);
 //        for (Player p : boardManager.getPlayers()) {
-//            sendMessage(p.getId(), getUsername(from) + " joined game.");
+//            sendMessage(p.getId(), getUsername(from) + " joined record.");
 //        }
 //    }
 //
@@ -107,7 +107,7 @@ public class XmppController extends BasicController {
 //
 //    protected void queryHoldedCards(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //        for (ElementSchool elementSchool : player.getAllElementSchool()) {
 //            StringBuilder msg = new StringBuilder("You has these cards in element " + elementSchool.toString() + " : ");
 //            for (MetaCard board : player.getDealtCards(elementSchool)) {
@@ -122,7 +122,7 @@ public class XmppController extends BasicController {
 //        PlayerRecordDO player;
 //        if (args.length == 1) player = getPlayer(getUsername(from));
 //        else player = getPlayer(args[1]);
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //        for (Card board : player.getEquippedCards()) {
 //            sendMessage(getUsername(from),
 //                    "[" + board.getPosition() + "] " + board + " level " + board.getLevel() + " health "
@@ -132,12 +132,12 @@ public class XmppController extends BasicController {
 //
 //    protected void queryLivingCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //    }
 //
 //    protected void playCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
@@ -156,7 +156,7 @@ public class XmppController extends BasicController {
 //
 //    protected void castCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
@@ -177,7 +177,7 @@ public class XmppController extends BasicController {
 //
 //    protected void endTurn(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
-//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any game.");
+//        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
 //        BoardDO boardManager = getBoardManager(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
@@ -203,7 +203,7 @@ public class XmppController extends BasicController {
 //
 //        if (boardManager != null) {
 //            for (Player p : boardManager.getPlayers()) {
-//                sendMessage(p.getId(), getUsername(from) + " quit game.");
+//                sendMessage(p.getId(), getUsername(from) + " quit record.");
 //            }
 //        }
 //

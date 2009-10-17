@@ -1,5 +1,5 @@
 <%@ include file="../includes.jsp" %>
-<%--@elvariable id="players" type="java.util.List<com.killard.board.jdo.board.game.PlayerRecordDO>"--%>
+<%--@elvariable id="players" type="java.util.List<com.killard.board.jdo.board.record.PlayerRecordDO>"--%>
 <table width="100%" style="vertical-align:top;background:lightcyan">
     <thead>
     <form action="/message.html" method="POST">

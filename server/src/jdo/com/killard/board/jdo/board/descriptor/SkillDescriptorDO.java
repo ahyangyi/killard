@@ -19,12 +19,12 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class SkillDescriptorDO extends DescriptorDO {
 
-    public SkillDescriptorDO(SkillDO skill, String locale) {
-        super(skill, locale);
+    public SkillDescriptorDO(SkillDO skill, String locale, String name, String description) {
+        super(skill, locale, name, description);
     }
 
-    public SkillDescriptorDO(SkillDO skill, Locale locale) {
-        super(skill, locale);
+    public SkillDescriptorDO(SkillDO skill, Locale locale, String name, String description) {
+        super(skill, locale, name, description);
     }
 
 }

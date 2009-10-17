@@ -59,14 +59,20 @@ public class RuleDO implements ActionListener<RuleDO> {
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    public RuleDO(PackageDO pack,
-                  List<AttributeHandler> validators,
-                  List<AttributeHandler> before,
-                  List<AttributeHandler> after) {
+    protected RuleDO(PackageDO pack,
+                     String definition,
+                     List<AttributeHandler> validators,
+                     List<AttributeHandler> before,
+                     List<AttributeHandler> after) {
         this.packageKey = pack.getKey();
+        this.definition = new Text(definition);
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
+    }
+
+    protected RuleDO(PackageDO pack, RuleDO source) {
+        this(pack, source.definition.getValue(), source.validators, source.before, source.after);
     }
 
     public Key getKey() {
@@ -142,10 +148,6 @@ public class RuleDO implements ActionListener<RuleDO> {
 
     public int compareTo(RuleDO compare) {
         return (int) (getKey().getId() - compare.getKey().getId());
-    }
-
-    public RuleDO clone(PackageDO pack) {
-        return new RuleDO(pack, validators, before, after);
     }
 
     public Object getProperty(String name) {

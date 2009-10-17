@@ -19,11 +19,11 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RoleDescriptorDO extends DescriptorDO {
 
-    public RoleDescriptorDO(RoleDO owner, String locale) {
-        super(owner, locale);
+    public RoleDescriptorDO(RoleDO owner, String locale, String name, String description) {
+        super(owner, locale, name, description);
     }
 
-    public RoleDescriptorDO(RoleDO owner, Locale locale) {
-        super(owner, locale);
+    public RoleDescriptorDO(RoleDO owner, Locale locale, String name, String description) {
+        super(owner, locale, name, description);
     }
 }

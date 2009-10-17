@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.ElementSchool;
@@ -20,6 +21,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * <p>
@@ -58,17 +60,24 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
 
-    public PackageDO(Key bundleKey, String name, long version) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundleKey);
+    protected PackageDO(PackageBundleDO bundle, long version) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundle.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), version);
         this.key = keyBuilder.getKey();
-        this.bundleKey = bundleKey;
+        this.bundleKey = bundle.getKey();
 
-        this.name = name;
+        this.name = bundle.getName();
         this.roles = new TreeSet<RoleDO>();
         this.roleGroups = new TreeSet<RoleGroupDO>();
         this.elementSchools = new TreeSet<ElementSchoolDO>();
         this.descriptors = new TreeSet<PackageDescriptorDO>();
+    }
+
+    protected PackageDO(PackageBundleDO bundle, PackageDO source) {
+        this(bundle, bundle.getPlayedCount() + 1);
+        for (RoleDO role : source.getRoles().values()) {
+            roles.add(new RoleDO(this, role));
+        }
     }
 
     public Key getKey() {
@@ -83,16 +92,12 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return name;
     }
 
-    public PropertyDO[] getProperties() {
-        return new PropertyDO[0];
-    }
-
     protected boolean addProperty(String name, String data) {
         return false;
     }
 
-    protected boolean removeProperty(PropertyDO property) {
-        return false;
+    public PropertyDO[] getProperties() {
+        return new PropertyDO[0];
     }
 
     public void setName(String name) {
@@ -103,14 +108,33 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return rule;
     }
 
-    public void setRule(RuleDO rule) {
-        this.rule = rule;
+    public RuleDO rule(String definition,
+                       List<AttributeHandler> validators,
+                       List<AttributeHandler> before,
+                       List<AttributeHandler> after) {
+        if (rule == null) rule = new RuleDO(this, definition, validators, before, after);
+        return rule;
+    }
+
+    public RoleDO newRole(String name, String definition,
+                          List<AttributeHandler> validators,
+                          List<AttributeHandler> before,
+                          List<AttributeHandler> after) {
+        RoleDO role = new RoleDO(this, name, definition, validators, before, after);
+        roles.add(role);
+        return role;
     }
 
     public Map<String, RoleDO> getRoles() {
         Map<String, RoleDO> map = new HashMap<String, RoleDO>();
         for (RoleDO role : roles) map.put(role.getName(), role);
         return map;
+    }
+
+    public RoleGroupDO newRoleGroup() {
+        RoleGroupDO group = new RoleGroupDO(this);
+        roleGroups.add(group);
+        return group;
     }
 
     public RoleGroupDO getRoleGroup(int playerNumber) {
@@ -126,6 +150,15 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return Collections.unmodifiableSortedSet(roleGroups);
     }
 
+    public ElementSchoolDO newElementSchool(String name) {
+        for (ElementSchoolDO elementSchool : elementSchools) {
+            if (elementSchool.getName().equals(name)) return elementSchool;
+        }
+        ElementSchoolDO elementSchool = new ElementSchoolDO(this, name);
+        elementSchools.add(elementSchool);
+        return elementSchool;
+    }
+
     public ElementSchool[] getElementSchools() {
         return elementSchools.toArray(new ElementSchool[elementSchools.size()]);
     }
@@ -134,28 +167,11 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return descriptors.toArray(new PackageDescriptorDO[descriptors.size()]);
     }
 
-    public boolean addDescriptor(PackageDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(PackageDescriptorDO descriptor) {
-        return descriptors.remove(descriptor);
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new PackageDescriptorDO(this, locale, name, description));
     }
 
     public int compareTo(PackageDO compare) {
         return getKey().compareTo(compare.getKey());
-    }
-
-    public PackageDO clone(long version) {
-        PackageDO pack = new PackageDO(bundleKey, name, version);
-        pack.rule = rule.clone(pack);
-        for (ElementSchoolDO elementSchool : elementSchools) {
-            pack.elementSchools.add(elementSchool.clone(pack));
-        }
-        for (PackageDescriptorDO descriptor : descriptors) {
-            PackageDescriptorDO cloneDescriptor = new PackageDescriptorDO(pack, descriptor.getLocale());
-            pack.addDescriptor(cloneDescriptor);
-        }
-        return pack;
     }
 }

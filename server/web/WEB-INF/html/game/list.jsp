@@ -13,15 +13,15 @@
     </fieldset>
 </form>
 <%--<table style="width:100%;">--%>
-    <%--<c:forEach var="game" items="${boards}">--%>
+    <%--<c:forEach var="record" items="${boards}">--%>
         <%--<tr>--%>
             <%--<td width="100%">--%>
                 <%--<table title="Board" width="100%">--%>
                     <%--<tr>--%>
                         <%--<td>Package:</td>--%>
-                        <%--<td>${game.package.name}</td>--%>
+                        <%--<td>${record.package.name}</td>--%>
                     <%--</tr>--%>
-                    <%--<c:forEach var="player" items="${game.players}">--%>
+                    <%--<c:forEach var="player" items="${record.players}">--%>
                         <%--<tr>--%>
                             <%--<td>Player:</td>--%>
                             <%--<td>${player.name}</td>--%>
@@ -29,8 +29,8 @@
                     <%--</c:forEach>--%>
                     <%--<tr>--%>
                         <%--<td colspan="2">--%>
-                            <%--<form action="/game/join.html" method="POST">--%>
-                                <%--<input name="boardId" type="hidden" value="${game.key.id}"/>--%>
+                            <%--<form action="/record/join.html" method="POST">--%>
+                                <%--<input name="boardId" type="hidden" value="${record.key.id}"/>--%>
                                 <%--<input type="submit" value="Join"/>--%>
                             <%--</form>--%>
                         <%--</td>--%>

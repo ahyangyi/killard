@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board.game;
+package com.killard.board.jdo.board.record;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -14,7 +14,7 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.SkillDO;
-import com.killard.board.jdo.board.game.property.CardRecordPropertyDO;
+import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 
 import javax.jdo.PersistenceManager;

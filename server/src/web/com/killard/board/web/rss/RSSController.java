@@ -44,7 +44,7 @@ public class RSSController extends BasicController {
 
         feed.setTitle("Killard Game Packages");
         feed.setLink("http://www.killard.com");
-        feed.setDescription("This feed contains new publish of killard game.");
+        feed.setDescription("This feed contains new publish of killard record.");
 
         List<SyndEntry> entries = new LinkedList<SyndEntry>();
         SyndEntry entry;

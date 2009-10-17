@@ -1,6 +1,7 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.FunctionHelper;
@@ -47,6 +48,9 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     private String name;
 
     @Persistent
+    private Text definition;
+
+    @Persistent
     private Boolean visible;
 
     @Persistent(serialized = "true")
@@ -64,18 +68,28 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<AttributeDescriptorDO> descriptors;
 
-    public AttributeDO(String name, ElementSchoolDO elementSchool, boolean visible,
-                       List<AttributeHandler> validators,
-                       List<AttributeHandler> before,
-                       List<AttributeHandler> after) {
-        this.name = name;
+    protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
+                          String definition,
+                          List<AttributeHandler> validators,
+                          List<AttributeHandler> before,
+                          List<AttributeHandler> after) {
         this.elementSchool = elementSchool;
+        this.name = name;
         this.visible = visible;
+
+        this.definition = new Text(definition);
+
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
+
         this.properties = new TreeSet<AttributePropertyDO>();
         this.descriptors = new TreeSet<AttributeDescriptorDO>();
+    }
+
+    protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {
+        this(elementSchool, source.name, source.visible, source.getDefinition(), source.validators, source.before,
+                source.after);
     }
 
     public Key getKey() {
@@ -94,16 +108,20 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         return properties.toArray(new AttributePropertyDO[properties.size()]);
     }
 
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new AttributeDescriptorDO(this, locale, name, description));
+    }
+
     protected boolean addProperty(String name, String data) {
         return properties.add(new AttributePropertyDO(this, name, data));
     }
 
-    protected boolean removeProperty(AttributePropertyDO property) {
-        return properties.remove(property);
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDefinition() {
+        return definition.getValue();
     }
 
     public boolean isVisible() {
@@ -112,24 +130,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     public AttributeDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new AttributeDescriptorDO[descriptors.size()]);
-    }
-
-    public boolean addDescriptor(AttributeDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(AttributeDescriptorDO descriptor) {
-        return descriptors.remove(descriptor);
-    }
-
-    public AttributeDO clone(ElementSchoolDO elementSchool) {
-        AttributeDO attribute = new AttributeDO(getName(),
-                getElementSchool(), isVisible(), validators, before, after);
-        for (AttributeDescriptorDO descriptor : descriptors) {
-            AttributeDescriptorDO cloneDescriptor = new AttributeDescriptorDO(attribute, descriptor.getLocale());
-            attribute.addDescriptor(cloneDescriptor);
-        }
-        return attribute;
     }
 
     public AttributeHandler[] getValidators() {

@@ -11,6 +11,7 @@ import com.killard.board.card.Attribute;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
+import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -19,6 +20,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
 
 /**
  * <p>
@@ -81,7 +83,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<MetaCardDescriptorDO> descriptors;
 
-    public MetaCardDO(String name, ElementSchoolDO elementSchool, String definition) {
+    protected MetaCardDO(ElementSchoolDO elementSchool, String name) {
         this.name = name;
         this.elementSchool = elementSchool;
         this.packageKey = elementSchool.getPackageKey();
@@ -93,7 +95,11 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visibleAttributes = new TreeSet<String>();
         this.properties = new TreeSet<MetaCardPropertyDO>();
         this.descriptors = new TreeSet<MetaCardDescriptorDO>();
-        this.definition = new Text(definition);
+        this.definition = new Text("");
+    }
+
+    protected MetaCardDO(ElementSchoolDO elementSchool, MetaCardDO source) {
+        this(elementSchool, source.name);
     }
 
     public Key getKey() {
@@ -110,10 +116,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     protected boolean addProperty(String name, String data) {
         return properties.add(new MetaCardPropertyDO(this, name, data));
-    }
-
-    protected boolean removeProperty(MetaCardPropertyDO property) {
-        return properties.remove(property);
     }
 
     public void setName(String name) {
@@ -246,39 +248,17 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visible = visible;
     }
 
-    public boolean addSkill(SkillDO skill) {
-        return skills.add(skill);
+    public SkillDO newSkill(String name, String definition, List<String> targets, int cost, Function function) {
+        SkillDO skill = new SkillDO(this, name, definition, targets, cost, function);
+        skills.add(skill);
+        return skill;
     }
 
     public MetaCardDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new MetaCardDescriptorDO[descriptors.size()]);
     }
 
-    public boolean addDescriptor(MetaCardDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(MetaCardDescriptorDO descriptor) {
-        return descriptors.remove(descriptor);
-    }
-
-    public MetaCardDO clone(ElementSchoolDO elementSchool) {
-        MetaCardDO card = new MetaCardDO(getName(), elementSchool, definition.getValue());
-        card.setAttackType(AttackType.valueOf(attackType));
-        card.setAttackValue(attackValue);
-        card.setMaxHealth(maxHealth);
-        card.setLevel(level);
-        for (SkillDO skill : skills) {
-            card.addSkill(skill.clone(card));
-        }
-        for (String attribute : visibleAttributes) {
-        }
-        for (String attribute : hiddenAttributes) {
-        }
-        for (MetaCardDescriptorDO descriptor : descriptors) {
-            MetaCardDescriptorDO cloneDescriptor = new MetaCardDescriptorDO(card, descriptor.getLocale());
-            card.addDescriptor(cloneDescriptor);
-        }
-        return card;
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new MetaCardDescriptorDO(this, locale, name, description));
     }
 }

@@ -1,6 +1,6 @@
 <%@ include file="../header.jsp" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
-<%--@elvariable id="players" type="java.util.List<com.killard.board.jdo.board.game.PlayerRecordDO>"--%>
+<%--@elvariable id="players" type="java.util.List<com.killard.board.jdo.board.record.PlayerRecordDO>"--%>
 <table style="width:100%;">
     <c:forEach var="player" items="${players}">
         <tr>

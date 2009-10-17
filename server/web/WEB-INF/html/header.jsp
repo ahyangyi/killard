@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/html/includes.jsp" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <%--<c:if test="${game != null}">--%>
+    <%--<c:if test="${record != null}">--%>
     <%--<meta http-equiv="refresh" content="10">--%>
     <%--</c:if>--%>
     <link href="/css/default.css" rel="stylesheet" type="text/css"/>

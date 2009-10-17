@@ -36,14 +36,14 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private Key key;
 
     @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
+    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
     private Key packageKey;
 
     @Persistent
     private String name;
 
     @Persistent
-    private Boolean visible;
+    private boolean visible;
 
     @Persistent
     private Text definition;
@@ -63,18 +63,30 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     @Persistent
     private SortedSet<RoleDescriptorDO> descriptors;
 
-    public RoleDO(PackageDO pack, String name, boolean visible,
-                  List<AttributeHandler> validators,
-                  List<AttributeHandler> before,
-                  List<AttributeHandler> after) {
+    protected RoleDO(PackageDO pack, String name,
+                     String definition,
+                     List<AttributeHandler> validators,
+                     List<AttributeHandler> before,
+                     List<AttributeHandler> after) {
         this.packageKey = pack.getKey();
         this.name = name;
-        this.visible = visible;
+        this.visible = true;
+
+        this.definition = new Text(definition);
+
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
+
         this.properties = new TreeSet<RolePropertyDO>();
         this.descriptors = new TreeSet<RoleDescriptorDO>();
+    }
+
+    protected RoleDO(PackageDO pack, RoleDO source) {
+        this(pack, source.name, source.definition.getValue(), source.validators, source.before, source.after);
+        for (RolePropertyDO property : source.properties) properties.add(new RolePropertyDO(this, property));
+//        for (RoleDescriptorDO descriptor : source.descriptors)
+//            descriptors.add(new RoleDescriptorDO(this, descriptor));
     }
 
     public Key getKey() {
@@ -85,16 +97,16 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         return name;
     }
 
-    public RolePropertyDO[] getProperties() {
-        return properties.toArray(new RolePropertyDO[properties.size()]);
-    }
-
     protected boolean addProperty(String name, String data) {
         return properties.add(new RolePropertyDO(this, name, data));
     }
 
-    protected boolean removeProperty(RolePropertyDO property) {
-        return properties.remove(property);
+    public RolePropertyDO[] getProperties() {
+        return properties.toArray(new RolePropertyDO[properties.size()]);
+    }
+
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new RoleDescriptorDO(this, locale, name, description));
     }
 
     public boolean isVisible() {
@@ -103,14 +115,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     public RoleDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new RoleDescriptorDO[descriptors.size()]);
-    }
-
-    public boolean addDescriptor(RoleDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(RoleDescriptorDO descriptor) {
-        return descriptors.remove(descriptor);
     }
 
     public Key getPackageKey() {
@@ -135,9 +139,5 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     public void setDefinition(String definition) {
         this.definition = new Text(definition);
-    }
-
-    public RoleDO clone(PackageDO pack) {
-        return new RoleDO(pack, getName(), isVisible(), validators, before, after);
     }
 }

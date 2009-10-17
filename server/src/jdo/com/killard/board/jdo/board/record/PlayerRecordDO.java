@@ -1,4 +1,4 @@
-package com.killard.board.jdo.board.game;
+package com.killard.board.jdo.board.record;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -8,7 +8,7 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.game.property.PlayerRecordPropertyDO;
+import com.killard.board.jdo.board.record.property.PlayerRecordPropertyDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.MetaCardDO;
 

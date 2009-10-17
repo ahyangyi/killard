@@ -5,7 +5,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.game.PlayerRecordDO;
+import com.killard.board.jdo.board.record.PlayerRecordDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,13 +47,13 @@ public class GameController extends BasicController {
         packageExtent.closeAll();
 
         modelMap.put("packages", packages);
-        return "game/list";
+        return "record/list";
     }
 
     @RequestMapping(value = "/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
-        getLog().fine("Get game game information: " + playerId);
+        getLog().fine("Get record record information: " + playerId);
         BoardDO board = getBoardManager();
         if (board == null) {
             return list(modelMap);
@@ -63,7 +63,7 @@ public class GameController extends BasicController {
         modelMap.put("playerId", playerId);
         modelMap.put("players", board.getPlayers(playerId));
         modelMap.put("actions", board.getActions());
-        return "game/board";
+        return "record/board";
     }
 
     @RequestMapping(value = "/board/add.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -91,7 +91,7 @@ public class GameController extends BasicController {
                      @RequestParam("packageId") long packageId,
                      @RequestParam("boardId") long boardId,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("Join game for " + getPlayerId());
+        getLog().fine("Join record for " + getPlayerId());
 
         PlayerRecordDO player = getPlayer();
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
@@ -104,11 +104,11 @@ public class GameController extends BasicController {
 
     @RequestMapping(value = "/board/quit.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("Quit game for " + getPlayerId());
+        getLog().fine("Quit record for " + getPlayerId());
 
         quit();
 
-        redirect("/game/list", request, response);
+        redirect("/record/list", request, response);
     }
 
     @RequestMapping(value = "/board/playcard.*", method = RequestMethod.POST)

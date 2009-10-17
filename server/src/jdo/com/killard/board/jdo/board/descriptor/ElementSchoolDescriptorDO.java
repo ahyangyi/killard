@@ -19,12 +19,12 @@ import java.util.Locale;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ElementSchoolDescriptorDO extends DescriptorDO {
 
-    public ElementSchoolDescriptorDO(ElementSchoolDO elementSchool, String locale) {
-        super(elementSchool, locale);
+    public ElementSchoolDescriptorDO(ElementSchoolDO elementSchool, String locale, String name, String description) {
+        super(elementSchool, locale, name, description);
     }
 
-    public ElementSchoolDescriptorDO(ElementSchoolDO elementSchool, Locale locale) {
-        super(elementSchool, locale);
+    public ElementSchoolDescriptorDO(ElementSchoolDO elementSchool, Locale locale, String name, String description) {
+        super(elementSchool, locale, name, description);
     }
 
 }

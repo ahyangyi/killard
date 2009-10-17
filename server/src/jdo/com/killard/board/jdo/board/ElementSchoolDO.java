@@ -2,6 +2,7 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.DescriptableDO;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 import com.killard.board.card.ElementSchool;
@@ -14,6 +15,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +29,7 @@ import java.util.TreeSet;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolPropertyDO, ElementSchoolDescriptorDO>
         implements ElementSchool {
+
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -50,13 +53,16 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     @Persistent
     private SortedSet<ElementSchoolDescriptorDO> descriptors;
 
-    public ElementSchoolDO(String name, PackageDO pack) {
-        this.name = name;
+    protected ElementSchoolDO(PackageDO pack, String name) {
         this.packageKey = pack.getKey();
+        this.name = name;
         this.cards = new TreeSet<MetaCardDO>();
         this.attributes = new TreeSet<AttributeDO>();
         this.properties = new TreeSet<ElementSchoolPropertyDO>();
         this.descriptors = new TreeSet<ElementSchoolDescriptorDO>();
+    }
+
+    protected ElementSchoolDO(PackageDO pack, ElementSchoolDO source) {
     }
 
     public Key getKey() {
@@ -79,28 +85,32 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         return properties.add(new ElementSchoolPropertyDO(this, name, data));
     }
 
-    protected boolean removeProperty(ElementSchoolPropertyDO property) {
-        return properties.remove(property);
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MetaCardDO newCard(String name) {
+        MetaCardDO card = new MetaCardDO(this, name);
+        cards.add(card);
+        return card;
     }
 
     public MetaCardDO[] getCards() {
         return cards.toArray(new MetaCardDO[cards.size()]);
     }
 
+    public AttributeDO newAttribute(String name, boolean visible,
+                                    String definition,
+                                    List<AttributeHandler> validators,
+                                    List<AttributeHandler> before,
+                                    List<AttributeHandler> after) {
+        AttributeDO attribute = new AttributeDO(this, name, visible, definition, validators, before, after);
+        attributes.add(attribute);
+        return attribute;
+    }
+
     public AttributeDO[] getAttributes() {
         return attributes.toArray(new AttributeDO[attributes.size()]);
-    }
-
-    public boolean addCard(MetaCardDO card) {
-        return cards.add(card);
-    }
-
-    public boolean removeCard(MetaCardDO card) {
-        return cards.remove(card);
     }
 
     public AttributeDO getAttribute(String name) {
@@ -110,36 +120,11 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         return null;
     }
 
-    public boolean addAttribute(AttributeDO attribute) {
-        return attributes.add(attribute);
-    }
-
-    public boolean removeAttribute(AttributeDO attribute) {
-        return attributes.remove(attribute);
-    }
-
     public ElementSchoolDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new ElementSchoolDescriptorDO[descriptors.size()]);
     }
 
-    public boolean addDescriptor(ElementSchoolDescriptorDO descriptor) {
-        return descriptors.add(descriptor);
-    }
-
-    public boolean removeDescriptor(ElementSchoolDescriptorDO descriptor) {
-        return descriptors.remove(descriptor);
-    }
-
-    public ElementSchoolDO clone(PackageDO pack) {
-        ElementSchoolDO elementSchool = new ElementSchoolDO(getName(), pack);
-        for (MetaCardDO card : cards) {
-            elementSchool.cards.add(card);
-        }
-        for (ElementSchoolDescriptorDO descriptor : descriptors) {
-            ElementSchoolDescriptorDO cloneDescriptor =
-                    new ElementSchoolDescriptorDO(elementSchool, descriptor.getLocale());
-            elementSchool.addDescriptor(cloneDescriptor);
-        }
-        return elementSchool;
+    protected boolean addDescriptor(String locale, String name, String description) {
+        return descriptors.add(new ElementSchoolDescriptorDO(this, locale, name, description));
     }
 }

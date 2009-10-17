@@ -3,7 +3,6 @@ package com.killard.board.web.card;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
@@ -122,7 +121,7 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
         pm.deletePersistent(pm.getObjectById(PackageDO.class, key));
-        redirect("/game/package/list", request, response);
+        redirect("/record/package/list", request, response);
     }
 
     @RequestMapping(value = "/package/manager/add.*", method = RequestMethod.POST)

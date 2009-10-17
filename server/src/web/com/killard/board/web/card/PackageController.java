@@ -8,6 +8,7 @@ import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.web.BasicController;
@@ -98,8 +99,9 @@ public class PackageController extends BasicController {
     public String addPackage(@RequestParam("packageName") String packageName,
                              ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PackageDO pack = new PackageDO(packageName);
-        pm.makePersistent(pack);
+        PackageBundleDO bundle = new PackageBundleDO(packageName);
+        bundle = pm.makePersistent(bundle);
+        PackageDO pack = pm.makePersistent(new PackageDO(bundle.getKey(), packageName, 1l));
 
         RuleDO rule = new RuleDO(pack, new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>(),
                 new ArrayList<AttributeHandler>());

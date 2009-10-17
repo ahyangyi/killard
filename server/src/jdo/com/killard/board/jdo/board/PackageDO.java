@@ -1,8 +1,7 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Rating;
-import com.google.appengine.api.users.User;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
@@ -16,10 +15,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Map;
@@ -42,6 +38,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     private Key key;
 
     @Persistent
+    private Key bundleKey;
+
+    @Persistent
     private String name;
 
     @Persistent
@@ -59,7 +58,12 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private SortedSet<PackageDescriptorDO> descriptors;
 
-    public PackageDO(String name) {
+    public PackageDO(Key bundleKey, String name, long version) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundleKey);
+        keyBuilder.addChild(getClass().getSimpleName(), version);
+        this.key = keyBuilder.getKey();
+        this.bundleKey = bundleKey;
+
         this.name = name;
         this.roles = new TreeSet<RoleDO>();
         this.roleGroups = new TreeSet<RoleGroupDO>();
@@ -69,6 +73,10 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     public Key getKey() {
         return key;
+    }
+
+    public Key getBundleKey() {
+        return bundleKey;
     }
 
     public String getName() {
@@ -138,8 +146,8 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return getKey().compareTo(compare.getKey());
     }
 
-    public PackageDO clone(String id) {
-        PackageDO pack = new PackageDO(id);
+    public PackageDO clone(long version) {
+        PackageDO pack = new PackageDO(bundleKey, name, version);
         pack.rule = rule.clone(pack);
         for (ElementSchoolDO elementSchool : elementSchools) {
             pack.elementSchools.add(elementSchool.clone(pack));

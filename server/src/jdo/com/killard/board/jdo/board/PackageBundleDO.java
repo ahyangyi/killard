@@ -72,6 +72,18 @@ public class PackageBundleDO {
         this.packages = new TreeSet<PackageDO>();
     }
 
+    public PackageBundleDO(PackageBundleDO source) {
+        this.name = source.getName();
+        this.createDate = Calendar.getInstance().getTime();
+        this.modifiedDate = Calendar.getInstance().getTime();
+        this.players = new HashSet<PlayerProfileDO>();
+        this.clonable = source.isClonable();
+        this.clonedCount = 0;
+        this.status = source.getStatus();
+        this.playedCount = 0;
+        this.packages = new TreeSet<PackageDO>();
+    }
+
     public Key getKey() {
         return key;
     }
@@ -120,13 +132,9 @@ public class PackageBundleDO {
         return packages.last();
     }
 
-    public boolean addPackage(PackageDO pack) {
-        this.modifiedDate = Calendar.getInstance().getTime();
-        return packages.add(pack);
-    }
-
-    public boolean removePackage(PackageDO pack) {
-        this.modifiedDate = Calendar.getInstance().getTime();
-        return packages.remove(pack);
+    public PackageDO release() {
+        PackageDO release = getDraft().clone(packages.size() + 1);
+        packages.add(release);
+        return release;
     }
 }

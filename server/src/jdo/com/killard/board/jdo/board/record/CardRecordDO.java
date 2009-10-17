@@ -55,19 +55,19 @@ public class CardRecordDO extends AbstractCardRecord {
     private Key targetKey;
 
     @Persistent
-    private Integer level;
+    private int level;
 
     @Persistent
-    private Integer health;
+    private int health;
 
     @Persistent
-    private Integer maxHealth;
+    private int maxHealth;
 
     @Persistent
     private String attackType;
 
     @Persistent
-    private Integer attackValue;
+    private int attackValue;
 
     @Persistent
     private Boolean equippable;

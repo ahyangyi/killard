@@ -51,16 +51,16 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private Text definition;
 
     @Persistent
-    private Integer level;
+    private int level;
 
     @Persistent
-    private Integer maxHealth;
+    private int maxHealth;
 
     @Persistent
     private String attackType;
 
     @Persistent
-    private Integer attackValue;
+    private int attackValue;
 
     @Persistent
     private Boolean equippable;

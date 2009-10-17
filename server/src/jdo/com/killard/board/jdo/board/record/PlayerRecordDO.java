@@ -48,7 +48,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private String uid;
 
     @Persistent
-    private Integer health;
+    private int health;
 
     @Persistent
     private Boolean cardPlayed;
@@ -75,7 +75,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private Boolean loser;
 
     @Persistent
-    private Integer turnCount;
+    private int turnCount;
 
     public PlayerRecordDO(BoardDO board, RoleDO role, String uid, List<ElementRecordDO> elementRecords) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());

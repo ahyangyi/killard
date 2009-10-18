@@ -26,6 +26,7 @@
         </li>
         <li><a href="<c:url value="/packages.html"/>">Join A Game</a>|</li>
         <li><a href="<c:url value="/board.html"/>">My Game</a>|</li>
+        <li><a href="<c:url value="/board/quit.html"/>">Quit</a>|</li>
         <li><a href="/help.html">Help</a>|</li>
         <li><a href="/help.html">Open API</a>|</li>
         <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/index.jsp")%>">Logout</a></li>

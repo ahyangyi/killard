@@ -42,13 +42,13 @@ public class ImageController extends BasicController {
     @RequestMapping(value = "/package/*/*/*/image.png", method = RequestMethod.GET)
     public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
+        String cardName = ids[4];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -76,9 +76,9 @@ public class ImageController extends BasicController {
 
             List<Composite> composites = new ArrayList<Composite>(4);
             composites.add(cardComp);
-            composites.add(levelComp);
-            composites.add(healthComp);
-            composites.add(attackComp);
+//            composites.add(levelComp);
+//            composites.add(healthComp);
+//            composites.add(attackComp);
 
             Image finalImage = imagesService.composite(composites, 171, 264, 0, ImagesService.OutputEncoding.PNG);
 
@@ -90,7 +90,7 @@ public class ImageController extends BasicController {
 
     public Image makeNumberImage(int number, HttpServletRequest request) throws IOException {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        InputStream in = new FileInputStream(request.getRealPath("/WEB-INF/board/" + String.valueOf(number) + ".png"));
+        InputStream in = new FileInputStream(request.getRealPath("/WEB-INF/card/" + String.valueOf(number) + ".png"));
         byte[] data = new byte[256];
         int length;
         try {

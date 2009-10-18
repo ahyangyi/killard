@@ -127,8 +127,8 @@ public class CardController extends BasicController {
         return "package/elementschool";
     }
 
-    @RequestMapping(value = "/package/*/*/*/quickedit.*", method = RequestMethod.POST)
-    public void quickedit(@RequestParam("image") MultipartFile file,
+    @RequestMapping(value = "/package/*/*/*/updateimage.*", method = RequestMethod.POST)
+    public void updateImage(@RequestParam("image") MultipartFile file,
                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         Long packageBundleId = Long.parseLong(ids[2]);

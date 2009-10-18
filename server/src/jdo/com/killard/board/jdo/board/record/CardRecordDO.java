@@ -225,14 +225,17 @@ public class CardRecordDO extends AbstractCardRecord {
     }
 
     public Skill[] getSkills() {
+        if (skills == null) return new Skill[0];
         return skills.toArray(new Skill[skills.size()]);
     }
 
     public Attribute[] getHiddenAttributes() {
+        if (hiddenAttributes == null) return new Attribute[0];
         return hiddenAttributes.toArray(new Attribute[hiddenAttributes.size()]);
     }
 
     public Attribute[] getVisibleAttributes() {
+        if (visibleAttributes == null) return new Attribute[0];
         return visibleAttributes.toArray(new Attribute[visibleAttributes.size()]);
     }
 

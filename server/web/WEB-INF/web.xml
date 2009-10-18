@@ -52,6 +52,11 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
 
@@ -82,7 +87,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>board</web-resource-name>
-            <url-pattern>/board.html</url-pattern>
+            <url-pattern>/board.*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>

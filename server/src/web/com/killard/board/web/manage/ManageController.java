@@ -136,8 +136,7 @@ public class ManageController extends BasicController {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey);
-        bundle.release();
-        pm.makePersistent(bundle);
+        pm.makePersistent(bundle.release());
         redirect("/record/list", request, response);
     }
 

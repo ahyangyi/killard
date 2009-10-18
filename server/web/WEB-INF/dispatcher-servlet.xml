@@ -22,20 +22,32 @@
     <bean id="viewResolver" class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="mediaTypes">
             <map>
-                <entry key="xml" value="text/xml"/>
-                <entry key="html" value="text/html"/>
+                <entry key="html" value="html"/>
+                <entry key="htm" value="htm"/>
+                <entry key="mxml" value="mxml"/>
+                <entry key="xml" value="xml"/>
             </map>
         </property>
         <property name="viewResolvers">
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="contentType" value="text/xml"/>
-                    <property name="prefix" value="/WEB-INF/xml/"/>
+                    <property name="contentType" value="html"/>
+                    <property name="prefix" value="/WEB-INF/html/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="contentType" value="text/html"/>
-                    <property name="prefix" value="/WEB-INF/html/"/>
+                    <property name="contentType" value="htm"/>
+                    <property name="prefix" value="/WEB-INF/plain/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="contentType" value="mxml"/>
+                    <property name="prefix" value="/WEB-INF/mxml/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="contentType" value="xml"/>
+                    <property name="prefix" value="/WEB-INF/xml/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>

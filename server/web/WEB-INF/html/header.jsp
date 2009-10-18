@@ -3,11 +3,11 @@
 <%@ include file="/WEB-INF/html/includes.jsp" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <%--<c:if test="${record != null}">--%>
-    <%--<meta http-equiv="refresh" content="10">--%>
-    <%--</c:if>--%>
-    <link href="/css/default.css" rel="stylesheet" type="text/css"/>
     <link rel="alternate" type="application/rss+xml" title="Killard RSS Feed" href="<c:url value="/rss.xml"/>"/>
+    <link href="/css/default.css" rel="stylesheet" type="text/css"/>
+    <link type="text/css" href="/css/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
     <title>Killard</title>
 </head>
 <body>

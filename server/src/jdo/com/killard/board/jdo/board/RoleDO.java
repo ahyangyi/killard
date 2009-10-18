@@ -87,8 +87,8 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     }
 
     protected RoleDO(PackageDO pack, RoleDO source) {
-        this(pack, source.name, source.definition.getValue(), source.validators, source.before, source.after);
-        for (RolePropertyDO property : source.properties) properties.add(new RolePropertyDO(this, property));
+        this(pack, source.getName(), source.getDefinition(), source.getValidators(), source.getBefore(), source.getAfter());
+        for (RolePropertyDO property : source.getProperties()) properties.add(new RolePropertyDO(this, property));
 //        for (RoleDescriptorDO descriptor : source.descriptors)
 //            descriptors.add(new RoleDescriptorDO(this, descriptor));
     }

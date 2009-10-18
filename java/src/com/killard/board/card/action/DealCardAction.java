@@ -12,9 +12,9 @@ import com.killard.board.card.Player;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class DealCardAction extends BasicAction<Player, MetaCard> {
+public class DealCardAction extends BasicAction<MetaCard, Player> {
 
-    public DealCardAction(Player source, MetaCard target) {
+    public DealCardAction(MetaCard source, Player target) {
         super(source, target);
     }
 }

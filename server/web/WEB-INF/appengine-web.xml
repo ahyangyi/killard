@@ -4,6 +4,7 @@
     <version>1</version>
 
     <static-files>
+        <include path="/**.js" expiration="1h"/>
         <include path="/favicon.ico" expiration="1h"/>
         <!--<include path="/**.png" expiration="1d 1h"/>-->
         <!--<include path="/**.jpg" expiration="1d 1h"/>-->
@@ -28,7 +29,6 @@
     </inbound-services>
 
     <system-properties>
-        <property name="com.google.gdata.DisableCookieHandler" value="true"/>
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>
 

@@ -42,7 +42,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     @Persistent
     private int amount;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<Key> dealtCardKeys;
 
     @NotPersistent
@@ -53,7 +53,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
 
     public ElementRecordDO(ElementSchoolDO elementSchool) {
         this.elementSchoolKey = elementSchool.getKey();
-        this.amount = 0;
+        this.amount = 10;
         this.dealtCardKeys = new ArrayList<Key>();
         this.elementSchool = elementSchool;
         this.dealtCards = new TreeSet<MetaCardDO>();
@@ -63,6 +63,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolKey);
         dealtCards = new TreeSet<MetaCardDO>(this);
+        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
         for (Key key : dealtCardKeys) {
             dealtCards.add(pm.getObjectById(MetaCardDO.class, key));
         }
@@ -89,15 +90,17 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     }
 
     public MetaCardDO[] getDealtCards() {
+        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
         return dealtCards.toArray(new MetaCardDO[dealtCardKeys.size()]);
     }
 
     public boolean addDealtCard(MetaCardDO card) {
-        return dealtCardKeys.contains(card.getKey()) && dealtCards.add(card) && dealtCardKeys.add(card.getKey());
+        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
+        return dealtCards.add(card) && dealtCardKeys.add(card.getKey());
     }
 
     public boolean removeDealtCard(MetaCardDO card) {
-        return dealtCardKeys.contains(card.getKey()) && dealtCards.remove(card) && dealtCardKeys.remove(card.getKey());
+        return dealtCards.remove(card) && dealtCardKeys.remove(card.getKey());
     }
 
     protected void setPlayer(PlayerRecordDO player) {
@@ -112,6 +115,6 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     }
 
     public int compareTo(ElementRecordDO elementRecord) {
-        return getElementSchool().compareTo(elementRecord.getElementSchool());
+        return getElementSchoolKey().compareTo(elementRecord.getElementSchoolKey());
     }
 }

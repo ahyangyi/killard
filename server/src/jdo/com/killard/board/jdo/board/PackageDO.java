@@ -78,6 +78,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     protected PackageDO(PackageBundleDO bundle, PackageDO source) {
         this(bundle, bundle.getPlayedCount() + 1);
+        for (ElementSchool elementSchool : source.getElementSchools()) {
+            elementSchools.add(new ElementSchoolDO(this, (ElementSchoolDO) elementSchool));
+        }
         for (RoleDO role : source.getRoles().values()) {
             roles.add(new RoleDO(this, role));
         }
@@ -143,6 +146,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     public RoleGroupDO getRoleGroup(int playerNumber) {
         List<RoleGroupDO> candidates = new ArrayList<RoleGroupDO>();
         for (RoleGroupDO group : getRoleGroups()) {
+            group.restore(roles);
             if (group.getRoles().length == playerNumber) candidates.add(group);
         }
         return candidates.get((int) (candidates.size() * Math.random()));

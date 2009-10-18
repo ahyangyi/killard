@@ -86,7 +86,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
         this.role = new RoleRecordDO(this, role);
         this.uid = uid;
-        this.health = 0;
+        this.health = 50;
         this.cardPlayed = false;
         this.equippedCards = new TreeSet<CardRecordDO>();
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
@@ -94,6 +94,10 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
         this.properties = new TreeSet<PlayerRecordPropertyDO>();
 
+        this.alive = true;
+        this.called = false;
+        this.winner = false;
+        this.loser = false;
         this.turnCount = 0;
     }
 
@@ -185,7 +189,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     public MetaCard[] getDealtCards(ElementSchool elementSchool) {
         for (ElementRecordDO element : elementRecords) {
-            if (element.getElementSchool().equals(elementSchool)) return element.getDealtCards();
+            if (element.getElementSchool().getName().equals(elementSchool.getName())) return element.getDealtCards();
         }
         return new MetaCard[0];
     }
@@ -239,7 +243,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     protected boolean addDealtCard(MetaCard metaCard) {
         MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
-            if (record.getElementSchool().equals(element)) return element.addDealtCard(record);
+            if (record.getElementSchool().getName().equals(element.getElementSchool().getName())) {
+                return element.addDealtCard(record);
+            }
         }
         return false;
     }

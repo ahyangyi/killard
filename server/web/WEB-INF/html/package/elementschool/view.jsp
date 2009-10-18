@@ -1,11 +1,10 @@
-<%@ include file="../header.jsp" %>
+<%@ include file="../../header.jsp" %>
 <%--@elvariable id="elementSchool" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <table style="width:100%;border-style:ridge;">
     <tr>
         <td>${elementSchool.descriptor.name}</td>
         <td>
             <form action="/package.html" method="GET">
-                <input type="hidden" name="packageId" value="${elementSchool.packageKey.id}"/>
                 <input type="submit" value="Package"/>
             </form>
         </td>
@@ -26,7 +25,6 @@
     <tfoot>
     <tr>
         <form action="/card/add.html" method="POST">
-            <input type="hidden" name="packageId" value="${elementSchool.packageKey.id}"/>
             <input type="hidden" name="elementSchoolId" value="${elementSchool.key.id}"/>
             <td>New Card:</td>
             <td colspan="5"><input type="text" name="cardName"/></td>
@@ -39,26 +37,22 @@
         <tr>
             <td>${card.name}</td>
             <td>${card.level}</td>
-            <td>${card.health}</td>
+            <td>${card.maxHealth}</td>
             <td>${card.attackValue}</td>
             <td>
-                <c:if test="${card.descriptor.imageData != null}">
-                    <img src="/image/card/${card.packageKey.id}_${card.elementSchool.key.id}_${card.key.id}.png"
-                         alt="Current Image"/>
+                <c:if test="${card.renderable}">
                 </c:if>
             </td>
             <td>
                 <form action="/card.html" method="GET">
-                    <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${card.elementSchool.key.id}"/>
+                    <input type="hidden" name="elementSchoolId" value="${elementSchool.name}"/>
                     <input type="hidden" name="cardId" value="${card.key.id}"/>
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
                 <form action="/card/delete.html" method="POST">
-                    <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${card.elementSchool.key.id}"/>
+                    <input type="hidden" name="elementSchoolId" value="${elementSchool.name}"/>
                     <input type="hidden" name="cardId" value="${card.key.id}"/>
                     <input type="submit" value="Delete"/>
                 </form>
@@ -88,14 +82,12 @@
     <tbody>
     <c:forEach var="attribute" items="${elementSchool.attributes}">
         <tr>
-            <td>${attribute.name}:${attribute.descriptor.imageData == null}</td>
+            <td>${attribute.name}</td>
             <td>${attribute.visible}</td>
-            <td>${attribute.useful}</td>
-            <td>${attribute.harmful}</td>
             <td><input type="submit" value="Details"/></td>
             <td><input type="submit" value="Delete"/></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<%@ include file="../footer.jsp" %>
+<%@ include file="../../footer.jsp" %>

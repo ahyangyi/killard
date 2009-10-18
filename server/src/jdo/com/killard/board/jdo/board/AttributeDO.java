@@ -55,13 +55,13 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent
     private Boolean visible;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private List<AttributeHandler> before;
 
-    @Persistent
+    @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
     @Persistent

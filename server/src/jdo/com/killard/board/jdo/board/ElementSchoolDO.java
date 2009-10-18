@@ -67,6 +67,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     }
 
     protected ElementSchoolDO(PackageDO pack, ElementSchoolDO source) {
+        this(pack, source.getName());
     }
 
     public Key getKey() {

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedList;
 
 /**
  * <p>
@@ -36,15 +37,15 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     private Key packageKey;
 
     @Persistent
-    private List<String> roleNames;
+    private List<Key> roleKeys;
 
     @NotPersistent
     private List<RoleDO> roles;
 
     protected RoleGroupDO(PackageDO pack) {
         this.packageKey = pack.getKey();
-        this.roleNames = new ArrayList<String>();
-        this.roles = new ArrayList<RoleDO>();
+        this.roleKeys = new LinkedList<Key>();
+        this.roles = new LinkedList<RoleDO>();
     }
 
     protected RoleGroupDO(PackageDO pack, RoleGroupDO source) {
@@ -59,8 +60,8 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
         return packageKey;
     }
 
-    public String[] getRoleNames() {
-        return roleNames.toArray(new String[roleNames.size()]);
+    public Key[] getRoleKeys() {
+        return roleKeys.toArray(new Key[roleKeys.size()]);
     }
 
     public RoleDO[] getRoles() {
@@ -68,17 +69,18 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     }
 
     public int getRoleAmount() {
-        return roleNames.size();
+        return roleKeys.size();
     }
 
     public boolean addRole(RoleDO role) {
         roles.add(role);
-        return roleNames.add(role.getName());
+        if (roleKeys == null) roleKeys = new LinkedList<Key>();
+        return roleKeys.add(role.getKey());
     }
 
     public boolean removeRole(RoleDO role) {
         roles.remove(role);
-        return roleNames.remove(role.getName());
+        return roleKeys.remove(role.getKey());
     }
 
     public int compareTo(RoleGroupDO group) {
@@ -86,17 +88,18 @@ public class RoleGroupDO implements Comparable<RoleGroupDO> {
     }
 
     protected void restore(Set<RoleDO> roles) {
-        List<String> invalid = new ArrayList<String>();
-        Map<String, RoleDO> rolesMap = new HashMap<String, RoleDO>(roles.size());
+        List<Key> invalid = new ArrayList<Key>();
+        Map<Key, RoleDO> rolesMap = new HashMap<Key, RoleDO>(roles.size());
         for (RoleDO role : roles) {
-            rolesMap.put(role.getName(), role);
+            rolesMap.put(role.getKey(), role);
         }
-        for (String name : roleNames) {
-            if (!rolesMap.containsKey(name)) invalid.add(name);
+        for (Key key : roleKeys) {
+            if (!rolesMap.containsKey(key)) invalid.add(key);
         }
-        roleNames.removeAll(invalid);
-        for (String name : roleNames) {
-            this.roles.add(rolesMap.get(name));
+        roleKeys.removeAll(invalid);
+        this.roles = new LinkedList<RoleDO>();
+        for (Key key : roleKeys) {
+            this.roles.add(rolesMap.get(key));
         }
     }
 }

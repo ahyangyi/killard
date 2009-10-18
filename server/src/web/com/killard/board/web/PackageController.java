@@ -8,6 +8,7 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.board.PackageStatus;
 import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -44,7 +47,7 @@ public class PackageController extends BasicController {
         }
         extent.closeAll();
         modelMap.put("packages", packages);
-        return "package/list";
+        return "packages";
     }
 
     @RequestMapping(value = "/newpackage.*", method = RequestMethod.POST)
@@ -60,15 +63,26 @@ public class PackageController extends BasicController {
 
     @RequestMapping(value = "/package/*/view.*", method = RequestMethod.GET)
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
-        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key key = KeyFactory
+                .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
+
+        List<BoardDO> boards = new ArrayList<BoardDO>();
+        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
+        for (BoardDO board : extent) {
+            if (board.getPackageKey().equals(bundle.getRelease().getKey())) boards.add(board);
+        }
+        modelMap.put("boards", boards);
+
         return "package/view";
     }
 
     @RequestMapping(value = "/package/*/edit.*", method = RequestMethod.GET)
     public String edit(ModelMap modelMap, HttpServletRequest request) throws Exception {
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
+        Key key = KeyFactory
+                .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getDraft());
         return "package/view";
@@ -115,13 +129,13 @@ public class PackageController extends BasicController {
     }
 
     @RequestMapping(value = "/package/*/newelementschool.*", method = RequestMethod.POST)
-    public String newElementSchool(ModelMap modelMap, HttpServletRequest request) throws Exception {
+    public String newElementSchool(@RequestParam("elementSchoolName") String elementSchoolName,
+                                   ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory
+                .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);

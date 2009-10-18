@@ -134,4 +134,28 @@ public class PackageBundleDO {
         packages.add(new PackageDO(this, getDraft()));
         return getRelease();
     }
+
+    public void setStatus(PackageStatus status) {
+        this.status = status.name();
+    }
+
+    public void setClonable(boolean clonable) {
+        this.clonable = clonable;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPlayedCount(int playedCount) {
+        this.playedCount = playedCount;
+    }
+
+    public void setClonedCount(int clonedCount) {
+        this.clonedCount = clonedCount;
+    }
 }

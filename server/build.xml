@@ -1,11 +1,5 @@
-<!-- This is a template Ant file for a very basic Google AppEngine project -->
-
 <project name="oneboard" default="war">
 
-    <!-- When you copy this template to your working directories, change the
-value of appengine.sdk accordingly.  You may also want to use Ant's
-property file feature, allowing each developer to have their own
-local property file with the path to the SDK from that workspace. -->
     <property file="build.properties"/>
     <property environment="env"/>
     <property name="build.dir" location="../out/exploded"/>
@@ -25,8 +19,6 @@ local property file with the path to the SDK from that workspace. -->
         </fileset>
     </path>
 
-    <!-- Check that the SDK value is set and seems sane, so we can give a nicer
-error if not.  -->
     <fail message="Please define the appengine.sdk property to point to your SDK directory">
         <condition>
             <not>
@@ -85,7 +77,7 @@ error if not.  -->
         <enhance_war war="${war.dir}"/>
     </target>
 
-    <target name="enhance" depends="compile"
+    <target name="enhance" depends="war"
             description="Enhance the classes after compilation">
         <enhance_war war="${war.dir}"/>
     </target>

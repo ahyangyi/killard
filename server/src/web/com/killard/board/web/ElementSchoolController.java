@@ -34,8 +34,8 @@ public class ElementSchoolController extends BasicController {
     @RequestMapping(value = "/package/*/*/view.*", method = RequestMethod.GET)
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
@@ -46,14 +46,14 @@ public class ElementSchoolController extends BasicController {
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
         modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool";
+        return "package/elementschool/view";
     }
 
     @RequestMapping(value = "/package/*/*/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String delete(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
@@ -73,8 +73,8 @@ public class ElementSchoolController extends BasicController {
     public String newCard(@RequestParam("cardName") String cardName,
                           ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

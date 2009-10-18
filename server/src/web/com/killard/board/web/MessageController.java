@@ -22,7 +22,7 @@ public class MessageController extends BasicController {
 
     @RequestMapping(value = "/messages.*", method = RequestMethod.GET)
     public String messages(ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         modelMap.put("messages", board.getMessages());
         return "action/messages";
     }
@@ -31,7 +31,7 @@ public class MessageController extends BasicController {
     public String message(@RequestParam(value = "to", required = false) String to,
                           @RequestParam("message") String message,
                           ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         board.postMessage(getPlayerId(), to, message);
         modelMap.put("messages", board.getMessages());
         return "action/messages";

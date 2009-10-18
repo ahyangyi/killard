@@ -4,10 +4,15 @@ import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.PackageStatus;
+import com.killard.board.jdo.board.RoleDO;
+import com.killard.board.jdo.board.RoleGroupDO;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
@@ -25,6 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -60,7 +67,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
-        redirect("/record/list", request, response);
+        redirect("/packages", request, response);
     }
 
     @RequestMapping(value = "/manage/reset.*", method = RequestMethod.GET)
@@ -70,6 +77,13 @@ public class ManageController extends BasicController {
         Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
         for (PackageBundleDO bundle : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
+            PersistenceHelper.doTransaction();
+        }
+        extent.closeAll();
+
+        Extent<BoardDO> boardExtent = pm.getExtent(BoardDO.class);
+        for (BoardDO board : boardExtent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(board);
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
@@ -86,6 +100,18 @@ public class ManageController extends BasicController {
         File ruleFile = new File(baseDirectory + "Rule.js");
         builder.buildRule(draft, getString(ruleFile), engine.parse(ruleFile));
 
+        List<AttributeHandler> handlers = new ArrayList<AttributeHandler>();
+        RoleDO role = draft.newRole("test", "", handlers, handlers, handlers);
+        RoleGroupDO group = draft.newRoleGroup();
+        pm.makePersistent(group);
+        PersistenceHelper.doTransaction();
+        group.addRole(role);
+        group.addRole(role);
+        System.out.println("create group " + group.getKey() + " " + group.getRoleKeys().length);
+        pm.makePersistent(group);
+        PersistenceHelper.doTransaction();
+        System.out.println("init group " + group.getKey() + " " + group.getRoleKeys().length);
+
         pm.makePersistent(bundle);
 
         redirect("/manage/load", request, response);
@@ -93,21 +119,22 @@ public class ManageController extends BasicController {
 
     @RequestMapping(value = "/manage/load.*", method = RequestMethod.GET)
     public void loadCards(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (defaultPackageKey == null) redirect("/record/manage/reset", request, response);
+        if (defaultPackageKey == null) redirect("/manage/reset", request, response);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        PackageDO pack = pm.getObjectById(PackageDO.class, defaultPackageKey);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey);
+        PackageDO draft = bundle.getDraft();
 
         Set<String> elementSchools = new HashSet<String>();
-        for (ElementSchool elementSchool : pack.getElementSchools()) {
+        for (ElementSchool elementSchool : draft.getElementSchools()) {
             elementSchools.add(elementSchool.getName());
         }
 
         File dir = new File(baseDirectory);
         for (File sub : dir.listFiles()) {
             if (sub.isDirectory() && !elementSchools.contains(sub.getName())) {
-                ElementSchoolDO elementSchool = pack.newElementSchool(sub.getName());
+                ElementSchoolDO elementSchool = draft.newElementSchool(sub.getName());
                 elementSchool.newDescriptor(BoardContext.getLocale(), sub.getName(), sub.getName());
 
                 for (File file : sub.listFiles()) {
@@ -136,8 +163,12 @@ public class ManageController extends BasicController {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey);
-        pm.makePersistent(bundle.release());
-        redirect("/record/list", request, response);
+
+        bundle.setStatus(PackageStatus.PUBLIC);
+        bundle.release();
+        pm.makePersistent(bundle);
+        
+        redirect("/packages", request, response);
     }
 
     protected String getString(File file) throws IOException {

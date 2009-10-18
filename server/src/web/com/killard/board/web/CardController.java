@@ -40,9 +40,9 @@ public class CardController extends BasicController {
     @RequestMapping(value = "/package/*/*/*/view.*", method = RequestMethod.GET)
     public String viewCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
+        String cardName = ids[4];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -70,9 +70,9 @@ public class CardController extends BasicController {
                              @RequestParam("image") MultipartFile file,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
+        String cardName = ids[4];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -102,9 +102,9 @@ public class CardController extends BasicController {
     @RequestMapping(value = "/package/*/*/*/delete.*", method = RequestMethod.POST)
     public String deleteCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
+        String cardName = ids[4];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -131,9 +131,9 @@ public class CardController extends BasicController {
     public void quickedit(@RequestParam("image") MultipartFile file,
                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[1]);
-        String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        Long packageBundleId = Long.parseLong(ids[2]);
+        String elementSchoolName = ids[3];
+        String cardName = ids[4];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

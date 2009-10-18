@@ -58,9 +58,9 @@
         </td>
     </tr>
     <tr>
-        <c:forEach var="record" items="${player.equippedCardsView}">
+        <c:forEach var="board" items="${player.equippedCardsView}">
             <c:choose>
-                <c:when test="${record != null}">
+                <c:when test="${board != null}">
                     <td style="width:200px;height:300px;padding-left:5px;padding-right:5px;padding-top:0;padding-bottom:0;">
                         <%@ include file="equippedcard.jsp" %>
                     </td>

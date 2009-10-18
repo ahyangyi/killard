@@ -10,7 +10,6 @@ import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;
-import com.killard.board.web.BoardController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -94,7 +93,7 @@ public class XmppController extends BasicController {
 //        if (args.length < 2) throw new IllegalArgumentException();
 //        PlayerRecordDO player = getPlayer(args[1]);
 //        if (player == null) throw new IllegalArgumentException();
-//        BoardDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoard(player.getId());
 //        joinGame(from, boardManager);
 //        for (Player p : boardManager.getPlayers()) {
 //            sendMessage(p.getId(), getUsername(from) + " joined record.");
@@ -138,7 +137,7 @@ public class XmppController extends BasicController {
 //    protected void playCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
-//        BoardDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoard(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardIndex = Integer.parseInt(args[1]);
@@ -157,7 +156,7 @@ public class XmppController extends BasicController {
 //    protected void castCard(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
-//        BoardDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoard(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        int cardPosition = Integer.parseInt(args[1]);
@@ -178,7 +177,7 @@ public class XmppController extends BasicController {
 //    protected void endTurn(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
-//        BoardDO boardManager = getBoardManager(player.getId());
+//        BoardDO boardManager = getBoard(player.getId());
 //        if (!boardManager.getCurrentPlayer().getId().equals(player.getId()))
 //            throw new IllegalArgumentException("This is not your turn.");
 //        boardManager.endTurn();
@@ -199,7 +198,7 @@ public class XmppController extends BasicController {
     }
 
     protected void quitGame(JID from) {
-//        BoardDO boardManager = getBoardManager(getUsername(from));
+//        BoardDO boardManager = getBoard(getUsername(from));
 //
 //        if (boardManager != null) {
 //            for (Player p : boardManager.getPlayers()) {

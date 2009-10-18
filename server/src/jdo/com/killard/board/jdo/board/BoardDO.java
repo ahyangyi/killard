@@ -7,6 +7,7 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.BeginGameAction;
+import com.killard.board.card.action.DealCardAction;
 import com.killard.board.environment.AbstractBoard;
 import com.killard.board.environment.BoardException;
 import com.killard.board.environment.event.ActionEvent;
@@ -51,7 +52,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private Integer currentPlayerPosition;
 
     @Persistent
-    private List<String> roleNames;
+    private List<Key> roleNames;
 
     @Persistent
     private List<PlayerRecordDO> roundQueue;
@@ -72,33 +73,37 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private Date startDate;
 
     @NotPersistent
-    private PackageDO gamePackage;
+    private PackageDO boardPackage;
 
-    public BoardDO(PackageDO gamePackage, int playerNumber) {
-        this.packageKey = gamePackage.getKey();
+    public BoardDO(PackageDO boardPackage, int playerNumber) {
+        this.packageKey = boardPackage.getKey();
         this.currentPlayerPosition = 0;
-        this.roleNames = new ArrayList<String>(Arrays.asList(gamePackage.getRoleGroup(playerNumber).getRoleNames()));
+        this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
         this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
-        this.gamePackage = gamePackage;
+        this.boardPackage = boardPackage;
     }
 
     public void restore() {
-        this.gamePackage = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageKey);
+        this.boardPackage = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageKey);
         for (PlayerRecordDO player : roundQueue) player.restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
 
     public PackageDO getBoardPackage() {
-        return gamePackage;
+        return boardPackage;
     }
 
     public Key getKey() {
         return key;
+    }
+
+    public Key getPackageKey() {
+        return packageKey;
     }
 
     public Date getStartDate() {
@@ -139,19 +144,20 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     public Player addPlayer(String playerName) throws BoardException {
-        RoleDO role = gamePackage.getRoles().get(roleNames.get(roundQueue.size()));
+        RoleDO role = boardPackage.getRoles().get(roleNames.get(roundQueue.size()).getName());
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerName, makeElementRecords());
+
         roundQueue.add(player);
         if (roleNames.size() == roundQueue.size()) executeAction(new BeginGameAction(this));
         return player;
     }
 
     public BoardPackage getPackage() {
-        return gamePackage;
+        return boardPackage;
     }
 
     public int getPlayerAmount() {
-        return gamePackage.getRoles().size();
+        return boardPackage.getRoles().size();
     }
 
     public Player[] getPlayers() {
@@ -258,5 +264,17 @@ public class BoardDO extends AbstractBoard<BoardDO> {
             }
         }
         properties.add(new BoardPropertyDO(this, name, data.toString()));
+    }
+
+    public void test() throws BoardException {
+        //TODO
+        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
+            for (MetaCard card : elementSchool.getCards()) {
+                if (Math.random() > .6) {
+                    if (roundQueue.size() == 1) executeAction(new DealCardAction(card, getCurrentPlayer()));
+                    else executeAction(new DealCardAction(card, getNextPlayer()));
+                }
+            }
+        }
     }
 }

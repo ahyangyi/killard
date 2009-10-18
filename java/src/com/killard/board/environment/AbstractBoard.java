@@ -23,6 +23,8 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * <p>
@@ -35,7 +37,7 @@ import java.util.TreeSet;
  */
 public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>, StateListener {
 
-    private final SortedMap<ActionListener, SortedSet<Comparable>> listeners = new TreeMap<ActionListener, SortedSet<Comparable>>();
+    private final Map<ActionListener, SortedSet<Comparable>> listeners = new LinkedHashMap<ActionListener, SortedSet<Comparable>>();
 
     private final Map<Class<? extends Action>, ExecutableAction> executables =
             ExecutableActionUtil.buildExecutableActionsMap();

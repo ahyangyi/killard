@@ -79,7 +79,7 @@ public class BasicController {
         return (PlayerRecordDO) collection.iterator().next();
     }
 
-    protected BoardDO getBoardManager() {
+    protected BoardDO getBoard() {
         PlayerRecordDO player = getPlayer();
         if (player == null) return null;
         BoardDO board = PersistenceHelper.getPersistenceManager()
@@ -100,11 +100,11 @@ public class BasicController {
         }
     }
 
-    protected BoardDO getBoardManager(long packageBundleId, long packageId, long boardId) {
+    protected BoardDO getBoardManager(long packageBundleId, long boardId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
-        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key boardKey = KeyFactory.createKey(packageKey, BoardDO.class.getSimpleName(), boardId);
 
         BoardDO board = pm.getObjectById(BoardDO.class, boardKey);
@@ -119,8 +119,8 @@ public class BasicController {
         return bundle.getRelease();
     }
     
-    protected String getPackageBundleId(String uri) {
-        return uri.split("/")[1];
+    protected Long getPackageBundleId(String uri) {
+        return Long.parseLong(uri.split("/")[2]);
     }
 
 }

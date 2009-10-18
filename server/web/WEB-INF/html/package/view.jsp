@@ -2,58 +2,48 @@
 <%@ page import="com.killard.board.jdo.board.MetaCardDO" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <h1>${package.descriptor.name}</h1>
-<table style="border-style:solid">
-    <c:forEach var="user" items="${package.managers}">
+<form action="/board/new.html" method="POST">
+    <input type="hidden" name="packageBundleId" value="${package.bundleKey.id}"/>
+    <input type="submit" value="New Game"/>
+</form>
+<hr/>
+<table style="width:100%;border:blueviolet;">
+    <%--@elvariable id="boards" type="com.killard.board.jdo.board.BoardDO"--%>
+    <c:forEach var="board" items="${boards}">
         <tr>
-            <td>${user.email}</td>
-            <td>
-                <form action="/package/manager/delete.html" method="POST">
-                    <input type="hidden" name="packageId" value="${package.key.id}"/>
-                    <input type="hidden" name="email" value="${user.email}"/>
-                    <input type="submit" value="Delete"/>
-                </form>
+            <td width="100%">
+                <table title="Board" width="100%">
+                    <tr>
+                        <td>Package:</td>
+                        <td>${board.package.name}</td>
+                    </tr>
+                    <c:forEach var="player" items="${board.players}">
+                        <tr>
+                            <td>Player:</td>
+                            <td>${player.id}</td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                        <td colspan="2">
+                            <form action="/board/join.html" method="GET">
+                                <input name="packageBundleId" type="hidden" value="${package.bundleKey.id}"/>
+                                <input name="boardId" type="hidden" value="${board.key.id}"/>
+                                <input type="submit" value="Join"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </c:forEach>
-    <form action="/package/manager/add.html" method="POST">
-        <input type="hidden" name="packageId" value="${package.key.id}"/>
-        <tr>
-            <td><input type="text" name="manager"/></td>
-            <td><input type="submit" value="Add Manager"/></td>
-        </tr>
-    </form>
 </table>
-<p></p>
-<form action="/package/rule.html" method="POST">
+<hr/>
+<form action="/package/${package.bundleKey.id}/rule.html" method="POST">
     <input type="hidden" name="packageId" value="${package.key.id}"/>
     <table style="border-style:solid">
         <tr>
             <td>Rule:</td>
             <td><textarea rows="20" cols="80" name="definition">${package.rule.definition}</textarea></td>
-        </tr>
-        <tr>
-            <td>Clonable:</td>
-            <td>
-                Yes<input type="radio" name="clonable" value="true" <c:if test="${package.clonable}">checked="checked"</c:if>/>
-                No<input type="radio" name="clonable" value="false" <c:if test="${not package.clonable}">checked="checked"</c:if>/>
-            </td>
-        </tr>
-        <tr>
-            <td>Published</td>
-            <td>
-                Yes<input type="radio" name="published" value="true" <c:if test="${package.published}">checked="checked"</c:if>/>
-                No<input type="radio" name="published" value="false" <c:if test="${not package.published}">checked="checked"</c:if>/>
-            </td>
-        </tr>
-        <tr>
-            <td>Open:</td>
-            <td>
-                Yes<input type="radio" name="open" value="true"  <c:if test="${package.open}">checked="checked"</c:if>/>
-                No<input type="radio" name="open" value="false"  <c:if test="${not package.open}">checked="checked"</c:if>/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="Update"/></td>
         </tr>
     </table>
 </form>
@@ -73,31 +63,16 @@
                 <%=((MetaCardDO[]) pageContext.getAttribute("cards")).length%>
             </td>
             <td>
-                <form action="/package/elementschool.html" method="GET">
-                    <input type="hidden" name="packageId" value="${package.key.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.key.id}"/>
+                <form action="<c:url value="/package/${package.bundleKey.id}/${elementSchool.name}/view.html"/>" method="GET">
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
-                <form action="/package/elementschool/delete.html" method="POST">
-                    <input type="hidden" name="packageId" value="${package.key.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.key.id}"/>
+                <form action="<c:url value="/package/${package.bundleKey.id}/${elementSchool.name}/delete.html"/>" method="POST">
                     <input type="submit" value="Delete"/>
                 </form>
             </td>
         </tr>
     </c:forEach>
 </table>
-<p></p>
-<form action="/package/elementschool/add.html" method="POST">
-    <input type="hidden" name="packageId" value="${package.key.id}"/>
-    <table style="border-style:ridge">
-        <tr>
-            <td>New element school:</td>
-            <td><input type="text" name="elementSchoolName"/></td>
-            <td><input type="submit" value="New"/></td>
-        </tr>
-    </table>
-</form>
 <%@ include file="../footer.jsp" %>

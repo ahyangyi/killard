@@ -5,6 +5,8 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
+import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Player;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +30,23 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class BoardController extends BasicController {
 
+    @RequestMapping(value = "/board/deal.*", method = {RequestMethod.GET, RequestMethod.POST})
+    public void deal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        BoardDO board = getBoard();
+        PlayerRecordDO player = (PlayerRecordDO) board.getCurrentPlayer();
+    }
+
     @RequestMapping(value = "/board.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public String board(ModelMap modelMap) throws Exception {
+    public String board(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String playerId = getPlayerId();
         getLog().fine("Get record record information: " + playerId);
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
+
+        if (board == null) {
+            redirect("/packages", request, response);
+            return null;
+        }
+
         modelMap.put("board", board);
         modelMap.put("playerId", playerId);
         modelMap.put("players", board.getPlayers(playerId));
@@ -59,7 +73,6 @@ public class BoardController extends BasicController {
 
     @RequestMapping(value = "/board/join.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("packageBundleId") long packageBundleId,
-                     @RequestParam("packageId") long packageId,
                      @RequestParam("boardId") long boardId,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Join record for " + getPlayerId());
@@ -67,7 +80,7 @@ public class BoardController extends BasicController {
         PlayerRecordDO player = getPlayer();
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
             quit();
-            join(getBoardManager(packageBundleId, packageId, boardId));
+            join(getBoardManager(packageBundleId, boardId));
         }
 
         redirect("/board", request, response);
@@ -87,7 +100,7 @@ public class BoardController extends BasicController {
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         board.playCard(cardIndex, cardPosition, targetPosition);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
@@ -97,7 +110,7 @@ public class BoardController extends BasicController {
     @RequestMapping(value = "/board/cast.*", method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         board.cast(cardPosition, skillIndex);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
@@ -106,7 +119,7 @@ public class BoardController extends BasicController {
 
     @RequestMapping(value = "/board/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         board.endTurn();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
@@ -115,7 +128,7 @@ public class BoardController extends BasicController {
 
     @RequestMapping(value = "/board/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         board.endCall();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
@@ -124,18 +137,23 @@ public class BoardController extends BasicController {
 
     @RequestMapping(value = "/board/actions.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String actions(ModelMap modelMap) throws Exception {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
         modelMap.put("actions", board.getActions());
         return "board/actions";
     }
 
     protected void join(BoardDO board) throws BoardException {
-        board.addPlayer(getPlayerId());
+        Player player = board.addPlayer(getPlayerId());
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
+        PersistenceHelper.doTransaction();
+
+        //TODO
+        board.test();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
     }
 
     protected void quit() {
-        BoardDO board = getBoardManager();
+        BoardDO board = getBoard();
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(PlayerRecordDO.class);

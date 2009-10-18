@@ -95,7 +95,7 @@ public class ActionLogDO {
 
     public ActionLogDO(BoardDO board, Action action) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length);
+        keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length + 1);
         this.key = keyBuilder.getKey();
         this.date = new Date();
         init(action);

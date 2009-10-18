@@ -54,7 +54,14 @@ public class CardController extends BasicController {
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
 
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
+        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
+
         modelMap.put("card", card);
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("elementSchool", elementSchool);
         return "package/card";
     }
 
@@ -81,7 +88,14 @@ public class CardController extends BasicController {
         card.setImageData(file.getBytes());
         pm.makePersistent(card);
 
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
+        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
+
         modelMap.put("card", card);
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("elementSchool", elementSchool);
         return "package/card";
     }
 
@@ -103,7 +117,13 @@ public class CardController extends BasicController {
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         pm.deletePersistent(card);
 
-        modelMap.put("elementschool", pm.getObjectById(ElementSchoolDO.class, elementSchoolkey));
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
+        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("elementSchool", elementSchool);
         return "package/elementschool";
     }
 

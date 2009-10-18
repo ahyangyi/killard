@@ -37,11 +37,11 @@ public class BoardController extends BasicController {
         modelMap.put("playerId", playerId);
         modelMap.put("players", board.getPlayers(playerId));
         modelMap.put("actions", board.getActions());
-        return "record/board";
+        return "board";
     }
 
     @RequestMapping(value = "/board/new.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public void newGame(@RequestParam("packageId") long packageId,
+    public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
@@ -49,7 +49,7 @@ public class BoardController extends BasicController {
             quit();
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PackageDO gamePackage = getPackage(packageId);
+        PackageDO gamePackage = getPackage(packageBundleId);
         BoardDO board = new BoardDO(gamePackage, playerNumber);
         pm.makePersistent(board);
 
@@ -79,7 +79,7 @@ public class BoardController extends BasicController {
 
         quit();
 
-        redirect("/record/list", request, response);
+        redirect("/packages", request, response);
     }
 
     @RequestMapping(value = "/board/playcard.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -91,7 +91,7 @@ public class BoardController extends BasicController {
         board.playCard(cardIndex, cardPosition, targetPosition);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
-        return "action/result";
+        return "board/actions";
     }
 
     @RequestMapping(value = "/board/cast.*", method = RequestMethod.POST)
@@ -101,7 +101,7 @@ public class BoardController extends BasicController {
         board.cast(cardPosition, skillIndex);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
-        return "action/result";
+        return "board/actions";
     }
 
     @RequestMapping(value = "/board/endturn.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -110,7 +110,7 @@ public class BoardController extends BasicController {
         board.endTurn();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
-        return "action/result";
+        return "board/actions";
     }
 
     @RequestMapping(value = "/board/endcall.*", method = {RequestMethod.GET, RequestMethod.POST})
@@ -119,14 +119,14 @@ public class BoardController extends BasicController {
         board.endCall();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
-        return "action/result";
+        return "board/actions";
     }
 
     @RequestMapping(value = "/board/actions.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String actions(ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
         modelMap.put("actions", board.getActions());
-        return "action/result";
+        return "board/actions";
     }
 
     protected void join(BoardDO board) throws BoardException {

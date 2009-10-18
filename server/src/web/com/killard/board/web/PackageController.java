@@ -34,12 +34,36 @@ import java.util.List;
 @Controller
 public class PackageController extends BasicController {
 
+    @RequestMapping(value = "/packages.*", method = RequestMethod.GET)
+    public String getPackages(ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        List<PackageDO> packages = new LinkedList<PackageDO>();
+        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
+        for (PackageBundleDO bundle : extent) {
+            if (bundle.getStatus().equals(PackageStatus.PUBLIC.name())) packages.add(bundle.getRelease());
+        }
+        extent.closeAll();
+        modelMap.put("packages", packages);
+        return "package/list";
+    }
+
+    @RequestMapping(value = "/newpackage.*", method = RequestMethod.POST)
+    public String newPackage(@RequestParam("packageName") String packageName,
+                             ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        PackageBundleDO bundle = new PackageBundleDO(packageName);
+        bundle = pm.makePersistent(bundle);
+        modelMap.put("package", bundle.draft());
+        pm.makePersistent(bundle);
+        return "package/edit";
+    }
+
     @RequestMapping(value = "/package/*/view.*", method = RequestMethod.GET)
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
-        return "package/package";
+        return "package/view";
     }
 
     @RequestMapping(value = "/package/*/edit.*", method = RequestMethod.GET)
@@ -47,7 +71,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getDraft());
-        return "package/package";
+        return "package/view";
     }
 
     @RequestMapping(value = "/package/*/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -87,7 +111,7 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "package/package";
+        return "package/edit";
     }
 
     @RequestMapping(value = "/package/*/newelementschool.*", method = RequestMethod.POST)
@@ -104,7 +128,7 @@ public class PackageController extends BasicController {
         ElementSchoolDO elementSchool = pack.newElementSchool(elementSchoolName);
         pm.makePersistent(pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool";
+        return "package/elementschool/edit";
     }
 
     @RequestMapping(value = "/package/*/rule.*", method = RequestMethod.POST)
@@ -117,7 +141,7 @@ public class PackageController extends BasicController {
         oldRule.setDefinition(definition);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getDraft());
-        return "package/package";
+        return "package/edit";
     }
 
 }

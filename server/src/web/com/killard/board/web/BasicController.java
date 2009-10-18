@@ -9,6 +9,8 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 
 import javax.jdo.PersistenceManager;
@@ -100,15 +102,19 @@ public class BasicController {
 
     protected BoardDO getBoardManager(long packageBundleId, long packageId, long boardId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), boardId);
-        BoardDO board = pm.getObjectById(BoardDO.class, key);
+
+        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key boardKey = KeyFactory.createKey(packageKey, BoardDO.class.getSimpleName(), boardId);
+
+        BoardDO board = pm.getObjectById(BoardDO.class, boardKey);
         board.restore();
         return board;
     }
 
-    protected PackageDO getPackage(long packageId) {
+    protected PackageDO getPackage(long packageBundleId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageId);
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         return bundle.getRelease();
     }

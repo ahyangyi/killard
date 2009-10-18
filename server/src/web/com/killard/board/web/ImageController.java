@@ -11,6 +11,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,19 +39,21 @@ import java.util.List;
 @Controller
 public class ImageController extends BasicController {
 
-    @RequestMapping(value = "/image/card/*.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/package/*/*/*/image.png", method = RequestMethod.GET)
     public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String[] args = request.getRequestURI().split("/");
-        String imageName = args[args.length - 1];
-        String[] fileName = imageName.split("_");
-        long packageId = Long.parseLong(fileName[0]);
-        long elementSchoolId = Long.parseLong(fileName[1]);
-        long cardId = Long.parseLong(fileName[2].split("\\.")[0]);
+        String[] ids = request.getRequestURI().split("/");
+        Long packageBundleId = Long.parseLong(ids[1]);
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
+
+        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         response.setContentType("image/png");
         if (card.isRenderable()) {

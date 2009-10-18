@@ -1,4 +1,4 @@
-package com.killard.board.web.xmpp;
+package com.killard.board.xmpp;
 
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;

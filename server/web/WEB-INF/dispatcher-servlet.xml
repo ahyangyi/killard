@@ -85,4 +85,6 @@
         <context:exclude-filter type="regex" expression=".*Service"/>
     </context:component-scan>
 
+    <context:component-scan base-package="com.killard.board.xmpp"/>
+
 </beans>

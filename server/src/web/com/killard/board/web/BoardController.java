@@ -1,4 +1,4 @@
-package com.killard.board.web.board;
+package com.killard.board.web;
 
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;

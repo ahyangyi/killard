@@ -1,4 +1,4 @@
-package com.killard.board.web.board;
+package com.killard.board.web;
 
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;

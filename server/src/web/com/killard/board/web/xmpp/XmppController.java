@@ -10,7 +10,7 @@ import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.BasicController;
-import com.killard.board.web.game.GameController;
+import com.killard.board.web.board.BoardController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -194,7 +194,7 @@ public class XmppController extends BasicController {
     }
 
     protected void joinGame(JID from, BoardDO board) throws BoardException {
-        board.addPlayer(getUsername(from), GameController.INIT_HEALTH);
+        board.addPlayer(getUsername(from), BoardController.INIT_HEALTH);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
     }
 

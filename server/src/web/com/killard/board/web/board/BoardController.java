@@ -1,4 +1,4 @@
-package com.killard.board.web.game;
+package com.killard.board.web.board;
 
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
@@ -31,7 +31,7 @@ import java.util.List;
  * </p>
  */
 @Controller
-public class GameController extends BasicController {
+public class BoardController extends BasicController {
 
     public static final int INIT_HEALTH = 50;
 
@@ -111,7 +111,7 @@ public class GameController extends BasicController {
         redirect("/record/list", request, response);
     }
 
-    @RequestMapping(value = "/board/playcard.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/board/playcard.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String playCard(@RequestParam("cardIndex") int cardIndex,
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
@@ -151,7 +151,7 @@ public class GameController extends BasicController {
         return "action/result";
     }
 
-    @RequestMapping(value = "/board/actions.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/board/actions.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String actions(ModelMap modelMap) throws Exception {
         BoardDO board = getBoardManager();
         modelMap.put("actions", board.getActions());

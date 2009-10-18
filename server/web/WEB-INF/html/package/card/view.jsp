@@ -1,4 +1,4 @@
-<%@ include file="../header.jsp" %>
+<%@ include file="../../header.jsp" %>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <table>
     <tr>
@@ -45,4 +45,4 @@
         </tr>
     </table>
 </form>
-<%@ include file="../footer.jsp" %>
+<%@ include file="../../footer.jsp" %>

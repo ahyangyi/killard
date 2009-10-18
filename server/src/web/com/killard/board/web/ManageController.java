@@ -67,6 +67,13 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
+
+        Extent<BoardDO> boardExtent = pm.getExtent(BoardDO.class);
+        for (BoardDO board : boardExtent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(board);
+            PersistenceHelper.doTransaction();
+        }
+        boardExtent.closeAll();
         redirect("/packages", request, response);
     }
 
@@ -86,7 +93,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.getPersistenceManager().deletePersistent(board);
             PersistenceHelper.doTransaction();
         }
-        extent.closeAll();
+        boardExtent.closeAll();
 
         PackageBundleDO bundle = new PackageBundleDO("Orions");
         pm.makePersistent(bundle);

@@ -177,11 +177,13 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         return turnCount;
     }
 
-    public MetaCard getDealtCard(Integer cardIndex) {
+    public MetaCard getDealtCard(String elementSchoolName, String cardName) {
         for (ElementRecordDO element : elementRecords) {
-            for (MetaCard card : element.getDealtCards()) {
-                MetaCardDO record = (MetaCardDO) card;
-                if (record.getKey().getId() == cardIndex) return card;
+            if (element.getElementSchool().getName().equals(elementSchoolName)) {
+                for (MetaCard card : element.getDealtCards()) {
+                    MetaCardDO record = (MetaCardDO) card;
+                    if (record.getName().equals(cardName)) return card;
+                }
             }
         }
         return null;

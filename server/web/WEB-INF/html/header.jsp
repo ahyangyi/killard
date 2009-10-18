@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/html/includes.jsp" %>
 <head>
+    <meta http-equiv="Expires" content="0"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <%--<meta name="description" content="Killard Board Game"/>--%>
+    <%--<meta name="keywords" content="Game, Board, Card, Board Game, Board Game Engine"/>--%>
+    <%--<meta name="robots" content="all"/>--%>
     <link rel="alternate" type="application/rss+xml" title="Killard RSS Feed" href="<c:url value="/rss.xml"/>"/>
     <link href="/css/default.css" rel="stylesheet" type="text/css"/>
     <link type="text/css" href="/css/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet"/>

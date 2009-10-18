@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * <p>
@@ -21,6 +23,8 @@ import java.io.IOException;
  */
 public class PersistenceManagerFilter implements Filter {
 
+    private final Logger log = Logger.getLogger("Killard");
+
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
@@ -31,13 +35,16 @@ public class PersistenceManagerFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (IOException e) {
             PersistenceHelper.rollback();
+            log.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (ServletException e) {
             PersistenceHelper.rollback();
+            log.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Throwable e) {
             PersistenceHelper.rollback();
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServletException(e.getMessage(), e);
         } finally {
             PersistenceHelper.closeSession();
         }

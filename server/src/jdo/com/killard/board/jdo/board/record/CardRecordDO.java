@@ -133,7 +133,7 @@ public class CardRecordDO extends AbstractCardRecord {
         this.position = position;
 
         this.skillKeys = new LinkedList<Key>();
-        for (Skill skill : card.getSkills()) addSkill(skill);
+//        for (Skill skill : card.getSkills()) addSkill(skill);
 
         this.attributeKeys = new LinkedList<Key>();
         for (Attribute attribute : card.getAttributes()) addAttribute(attribute);

@@ -7,10 +7,10 @@
     <c:if test="${player.id == playerId}">
         <form action="<c:url value="/board/playcard.html"/>" method="POST">
             <div id="newcard">
-                <select name="cardIndex">
+                <select name="cardName">
                     <c:forEach var="card"
                                items="${elementRecord.dealtCards}">
-                        <option value="${card.key.id}">
+                        <option value="${card.name}">
                             <span style="font-size:10px;">${card.name},${card.level}</span>
                         </option>
                     </c:forEach>
@@ -23,6 +23,7 @@
                 </select>
             </div>
             <c:if test="${not empty player.availablePositions and active}">
+                <input type="hidden" name="elementSchoolName" value="${elementRecord.elementSchool.name}"/>
                 <input type="hidden" name="targetPosition" value="1"/>
                 <input type="submit" value="Play"/>
             </c:if>

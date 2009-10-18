@@ -1,4 +1,4 @@
-<%@ include file="../header.jsp" %>
+<%@ include file="../../header.jsp" %>
 <%--@elvariable id="elementSchool" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <table style="width:100%;border-style:ridge;">
     <tr>
@@ -88,14 +88,12 @@
     <tbody>
     <c:forEach var="attribute" items="${elementSchool.attributes}">
         <tr>
-            <td>${attribute.name}:${attribute.descriptor.imageData == null}</td>
+            <td>${attribute.name}:${attribute.renderable}</td>
             <td>${attribute.visible}</td>
-            <td>${attribute.useful}</td>
-            <td>${attribute.harmful}</td>
             <td><input type="submit" value="Details"/></td>
             <td><input type="submit" value="Delete"/></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<%@ include file="../footer.jsp" %>
+<%@ include file="../../footer.jsp" %>

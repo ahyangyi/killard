@@ -96,12 +96,13 @@ public class BoardController extends BasicController {
     }
 
     @RequestMapping(value = "/board/playcard.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public String playCard(@RequestParam("cardIndex") int cardIndex,
+    public String playCard(@RequestParam("elementSchoolName") String elementSchoolName,
+                           @RequestParam("cardName") String cardName,
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
         BoardDO board = getBoard();
-        board.playCard(cardIndex, cardPosition, targetPosition);
+        board.playCard(elementSchoolName, cardName, cardPosition, targetPosition);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         modelMap.put("actions", board.getActions());
         return "board/actions";

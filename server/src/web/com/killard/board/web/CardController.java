@@ -7,6 +7,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
@@ -36,89 +37,97 @@ public class CardController extends BasicController {
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
-    @RequestMapping(value = "/card.*", method = RequestMethod.GET)
-    public String edit(@RequestParam("packageId") Long packageId,
-                       @RequestParam("elementSchoolId") Long elementSchoolId,
-                       @RequestParam("cardId") Long cardId,
-                       ModelMap modelMap) throws Exception {
+    @RequestMapping(value = "/package/*/*/*/view.*", method = RequestMethod.GET)
+    public String viewCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        Long packageBundleId = Long.parseLong(ids[1]);
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
+
+        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        modelMap.put("board", card);
-        return "board/board";
+
+        modelMap.put("card", card);
+        return "package/card";
     }
 
-    @RequestMapping(value = "/card.*", method = RequestMethod.POST)
-    public String edit(@RequestParam("packageId") Long packageId,
-                       @RequestParam("elementSchoolId") Long elementSchoolId,
-                       @RequestParam("cardId") Long cardId,
-                       @RequestParam("definition") String definition,
-                       @RequestParam("image") MultipartFile file,
-                       ModelMap modelMap) throws Exception {
+    @RequestMapping(value = "/package/*/*/*/edit.*", method = RequestMethod.POST)
+    public String updateCard(@RequestParam("definition") String definition,
+                             @RequestParam("image") MultipartFile file,
+                             ModelMap modelMap, HttpServletRequest request) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        Long packageBundleId = Long.parseLong(ids[1]);
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
+
+        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+
         Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         card.setDefinition(definition);
         card.setImageData(file.getBytes());
         pm.makePersistent(card);
-        modelMap.put("board", card);
-        return "board/board";
+
+        modelMap.put("card", card);
+        return "package/card";
     }
 
-    @RequestMapping(value = "/card/instantedit.*", method = RequestMethod.POST)
-    public void edit(@RequestParam("packageId") Long packageId,
-                     @RequestParam("elementSchoolId") Long elementSchoolId,
-                     @RequestParam("cardId") Long cardId,
-                     @RequestParam("image") MultipartFile file,
-                     HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/package/*/*/*/delete.*", method = RequestMethod.POST)
+    public String deleteCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        Long packageBundleId = Long.parseLong(ids[1]);
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
+
+        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        pm.deletePersistent(card);
+
+        modelMap.put("elementschool", pm.getObjectById(ElementSchoolDO.class, elementSchoolkey));
+        return "package/elementschool";
+    }
+
+    @RequestMapping(value = "/package/*/*/*/quickedit.*", method = RequestMethod.POST)
+    public void quickedit(@RequestParam("image") MultipartFile file,
+                          HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        Long packageBundleId = Long.parseLong(ids[1]);
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+
+        Key elementSchoolkey =
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         card.setImageData(file.getBytes());
         pm.makePersistent(card);
-        redirect("/record/record", request, response);
-    }
 
-    @RequestMapping(value = "/card/add.*", method = RequestMethod.POST)
-    public String add(@RequestParam("packageId") Long packageId,
-                      @RequestParam("elementSchoolId") Long elementSchoolId,
-                      @RequestParam("cardName") String cardName,
-                      ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
-        Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
-
-        MetaCardDO card = elementSchool.newCard(cardName);
-        pm.makePersistent(card);
-        modelMap.put("board", card);
-        return "board/board";
-    }
-
-    @RequestMapping(value = "/card/delete.*", method = RequestMethod.POST)
-    public String delete(@RequestParam("packageId") Long packageId,
-                         @RequestParam("elementSchoolId") Long elementSchoolId,
-                         @RequestParam("cardId") Long cardId,
-                         ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key packageKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageId);
-        Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolId);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardId);
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        pm.deletePersistent(card);
-        PersistenceHelper.doTransaction();
-        modelMap.put("package", pm.getObjectById(PackageDO.class, packageKey));
-        return "board/package";
+        redirect("/board", request, response);
     }
 }

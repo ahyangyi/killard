@@ -198,7 +198,7 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
         fireActionEventAfter(new ActionEvent(this, action));
     }
 
-    public abstract Player addPlayer(String playerName, int health) throws BoardException;
+    public abstract Player addPlayer(String playerName) throws BoardException;
 
     protected abstract void setProperty(String name, Object data);
 

@@ -3,6 +3,7 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
@@ -77,6 +78,10 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
                           List<AttributeHandler> validators,
                           List<AttributeHandler> before,
                           List<AttributeHandler> after) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
+
         this.elementSchool = elementSchool;
         this.name = name;
         this.visible = visible;

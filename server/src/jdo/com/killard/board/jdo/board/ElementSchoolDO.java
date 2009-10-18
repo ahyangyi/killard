@@ -2,6 +2,7 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
@@ -36,10 +37,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     private Key key;
 
     @Persistent
-    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
-    private Key packageKey;
-
-    @Persistent
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
@@ -58,7 +55,10 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     private Blob image;
 
     protected ElementSchoolDO(PackageDO pack, String name) {
-        this.packageKey = pack.getKey();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
+
         this.name = name;
         this.cards = new TreeSet<MetaCardDO>();
         this.attributes = new TreeSet<AttributeDO>();
@@ -71,10 +71,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
 
     public Key getKey() {
         return key;
-    }
-
-    public Key getPackageKey() {
-        return packageKey;
     }
 
     public String getName() {

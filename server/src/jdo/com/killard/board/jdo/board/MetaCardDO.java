@@ -3,6 +3,7 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
@@ -46,9 +47,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private String name;
 
     @Persistent
-    private Key packageKey;
-
-    @Persistent
     private Text definition;
 
     @Persistent
@@ -88,9 +86,12 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private Blob image;
 
     protected MetaCardDO(ElementSchoolDO elementSchool, String name) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
+
         this.name = name;
         this.elementSchool = elementSchool;
-        this.packageKey = elementSchool.getPackageKey();
         this.attackType = AttackType.PHYSICAL.name();
         this.equippable = true;
         this.visible = true;
@@ -128,10 +129,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     public Text getDefinition() {
         return definition;
-    }
-
-    public Key getPackageKey() {
-        return packageKey;
     }
 
     public ElementSchool getElementSchool() {

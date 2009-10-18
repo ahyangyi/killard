@@ -138,7 +138,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     @Override
-    public Player addPlayer(String playerName, int health) throws BoardException {
+    public Player addPlayer(String playerName) throws BoardException {
         RoleDO role = gamePackage.getRoles().get(roleNames.get(roundQueue.size()));
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerName, makeElementRecords());
         roundQueue.add(player);

@@ -2,6 +2,7 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.action.DealCardAction;
@@ -43,10 +44,6 @@ public class RuleDO implements ActionListener<RuleDO> {
     private Key key;
 
     @Persistent
-    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key packageKey;
-
-    @Persistent
     private Text definition;
 
     @Persistent(serialized = "true")
@@ -63,7 +60,9 @@ public class RuleDO implements ActionListener<RuleDO> {
                      List<AttributeHandler> validators,
                      List<AttributeHandler> before,
                      List<AttributeHandler> after) {
-        this.packageKey = pack.getKey();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), 1);
+        this.key = keyBuilder.getKey();
         this.definition = new Text(definition);
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
@@ -76,10 +75,6 @@ public class RuleDO implements ActionListener<RuleDO> {
 
     public Key getKey() {
         return key;
-    }
-
-    public Key getPackageKey() {
-        return packageKey;
     }
 
     public AttributeHandler[] getValidators() {

@@ -35,10 +35,15 @@ public class Main {
         }
     }
 
+    public void split(String s) {
+        String[] items = s.split("/");
+        for (String item : items) System.out.println(item);
+    }
+
     public static void main(String[] args) throws Exception {
 //        new GameBoard();
         Main main = new Main();
-        main.random();
+        main.split("/package/a/b/c/t.html");
 //        for (int i = 0; i < 100; i++) main.makeNumberImage(i);
     }
 }

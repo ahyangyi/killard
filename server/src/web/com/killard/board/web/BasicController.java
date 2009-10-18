@@ -112,5 +112,9 @@ public class BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         return bundle.getRelease();
     }
+    
+    protected String getPackageBundleId(String uri) {
+        return uri.split("/")[1];
+    }
 
 }

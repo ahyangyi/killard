@@ -3,23 +3,18 @@ package com.killard.board.web;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
-import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * <p>
@@ -33,32 +28,11 @@ import java.util.List;
 @Controller
 public class BoardController extends BasicController {
 
-    public static final int INIT_HEALTH = 50;
-
-    @RequestMapping(value = "/packages.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        List<PackageDO> packages = new LinkedList<PackageDO>();
-        Extent<PackageBundleDO> packageExtent = pm.getExtent(PackageBundleDO.class);
-        for (PackageBundleDO bundle : packageExtent) {
-            packages.add(bundle.getRelease());
-        }
-        packageExtent.closeAll();
-
-        modelMap.put("packages", packages);
-        return "record/list";
-    }
-
     @RequestMapping(value = "/board.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
         getLog().fine("Get record record information: " + playerId);
         BoardDO board = getBoardManager();
-        if (board == null) {
-            return list(modelMap);
-        }
-
         modelMap.put("board", board);
         modelMap.put("playerId", playerId);
         modelMap.put("players", board.getPlayers(playerId));
@@ -66,8 +40,8 @@ public class BoardController extends BasicController {
         return "record/board";
     }
 
-    @RequestMapping(value = "/board/add.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public void addGame(@RequestParam("packageId") long packageId,
+    @RequestMapping(value = "/board/new.*", method = {RequestMethod.GET, RequestMethod.POST})
+    public void newGame(@RequestParam("packageId") long packageId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         PlayerRecordDO player = getPlayer();
@@ -75,10 +49,7 @@ public class BoardController extends BasicController {
             quit();
         }
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
         PackageDO gamePackage = getPackage(packageId);
-
-        pm.makePersistent(gamePackage);
         BoardDO board = new BoardDO(gamePackage, playerNumber);
         pm.makePersistent(board);
 
@@ -159,9 +130,8 @@ public class BoardController extends BasicController {
     }
 
     protected void join(BoardDO board) throws BoardException {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(getPlayerId(), INIT_HEALTH);
-        pm.makePersistent(board);
+        board.addPlayer(getPlayerId());
+        PersistenceHelper.getPersistenceManager().makePersistent(board);
     }
 
     protected void quit() {
@@ -176,7 +146,6 @@ public class BoardController extends BasicController {
         if (board != null && board.getPlayers().length < 2) {
             pm.deletePersistent(board);
         }
-        PersistenceHelper.doTransaction();
     }
 
 }

@@ -3,6 +3,7 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
@@ -37,10 +38,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private Key key;
 
     @Persistent
-    @Extension(vendorName = "datanucleus", key = "gae.parent-pk", value = "true")
-    private Key packageKey;
-
-    @Persistent
     private String name;
 
     @Persistent
@@ -72,7 +69,10 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
                      List<AttributeHandler> validators,
                      List<AttributeHandler> before,
                      List<AttributeHandler> after) {
-        this.packageKey = pack.getKey();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
+        keyBuilder.addChild(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
+
         this.name = name;
         this.visible = true;
 
@@ -131,10 +131,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     public void setImageData(byte[] data) {
         image = new Blob(data);
-    }
-
-    public Key getPackageKey() {
-        return packageKey;
     }
 
     public List<AttributeHandler> getValidators() {

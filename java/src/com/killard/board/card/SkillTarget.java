@@ -30,9 +30,4 @@ public enum SkillTarget {
     public String getName() {
         return name;
     }
-
-    public static void main(String[] args) throws Exception {
-        String pattern = "\\d+";
-        System.out.println("1a".matches(pattern));
-    }
 }

@@ -2,7 +2,7 @@
 <%@ page import="com.killard.board.jdo.board.MetaCardDO" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <h1>${package.descriptor.name}</h1>
-<form action="/board/new.html" method="POST">
+<form action="/arena/new.html" method="POST">
     <input type="hidden" name="packageBundleId" value="${package.bundleKey.id}"/>
     <input type="submit" value="New Game"/>
 </form>
@@ -25,7 +25,7 @@
                     </c:forEach>
                     <tr>
                         <td colspan="2">
-                            <form action="/board/join.html" method="GET">
+                            <form action="/arena/join.html" method="GET">
                                 <input name="packageBundleId" type="hidden" value="${package.bundleKey.id}"/>
                                 <input name="boardId" type="hidden" value="${board.key.id}"/>
                                 <input type="submit" value="Join"/>

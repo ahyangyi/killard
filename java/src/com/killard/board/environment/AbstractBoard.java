@@ -17,14 +17,11 @@ import com.killard.board.environment.event.StateEvent;
 import com.killard.board.environment.event.StateListener;
 
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * <p>
@@ -52,9 +49,9 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
         return getCurrentPlayer();
     }
 
-    public void playCard(int cardIndex, int cardPosition, int targetPlayerPosition) throws BoardException {
+    public void playCard(String elementSchoolName, String cardName, int cardPosition, int targetPlayerPosition) throws BoardException {
         Player owner = getCurrentPlayer();
-        MetaCard card = owner.getDealtCard(cardIndex);
+        MetaCard card = owner.getDealtCard(elementSchoolName, cardName);
         Player target = getPlayer(targetPlayerPosition);
         Card instance = createCardRecord(card, owner, target, cardPosition);
         if (instance.isEquippable()) {

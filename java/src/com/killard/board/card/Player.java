@@ -12,7 +12,7 @@ public interface Player<T extends Player> extends Record<T> {
 
     public MetaCard[] getDealtCards(ElementSchool elementSchool);
 
-    public MetaCard getDealtCard(Integer cardIndex);
+    public MetaCard getDealtCard(String elementSchoolName, String cardName);
 
     public Card[] getEquippedCards();
 

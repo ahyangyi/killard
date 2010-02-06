@@ -98,8 +98,8 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
         return elements.get(elementSchool);
     }
 
-    public MetaCard getDealtCard(Integer cardIndex) {
-        return dealtCards.get(cardIndex);
+    public MetaCard getDealtCard(String elementSchoolName, String cardName) {
+        return null;
     }
 
     public MetaCard[] getDealtCards(ElementSchool elementSchool) {

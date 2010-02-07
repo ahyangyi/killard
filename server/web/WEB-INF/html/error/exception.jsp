@@ -7,14 +7,12 @@
         <tr>
             <th>Error Code</th>
             <th>Exception</th>
-            <th>Message</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>${requestScope["javax.servlet.error.status_code"]}</td>
             <td><code>${requestScope["javax.servlet.error.exception"]}</code></td>
-            <td>${requestScope["javax.servlet.error.message"]}</td>
         </tr>
         </tbody>
     </table>

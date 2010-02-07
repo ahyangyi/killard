@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/html/includes.jsp" %>
 <%--<%@ include file="header.jsp" %>--%>
 <%--<div id="profile_pics"></div>--%>
 <%--<script type="text/javascript">--%>
@@ -23,16 +25,16 @@
 <%--<%@ include file="footer.jsp" %>--%>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
 <head>
-    <link type="text/css" href="css/menu.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/richlist.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/rating.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
-    <script type="text/javascript" src="js/ui/carousel.js"></script>
-    <script type="text/javascript" src="js/ui/richlist.js"></script>
-    <script type="text/javascript" src="js/ui/searchbar.js"></script>
+    <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/richlist.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/rating.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/searchbar.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="/js/ui/carousel.js"></script>
+    <script type="text/javascript" src="/js/ui/richlist.js"></script>
+    <script type="text/javascript" src="/js/ui/searchbar.js"></script>
     <title>Killard Games</title>
     <style type="text/css">
         body {
@@ -79,34 +81,11 @@
     </script>
 </head>
 <body>
-<div class="topbar">
-    <div id="logo">
-        <img src="image/logo.png"/>
-        <img src="image/title.png"/>
-    </div>
-    <div class="menu">
-        <ul>
-            <li><a href="index.html">Home</a>|</li>
-            <li><a href="packages.html">All Games</a>|</li>
-            <li><a href="arena.html">Arena</a>|</li>
-            <li><a href="#">DIY</a>|</li>
-            <li><a href="#">Help</a>|</li>
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </div>
-</div>
+<%@ include file="topbar.jsp" %>
 <div class="dashboard">
     <h1 style="display:inline;width:40%;">Gaming! Gaming!</h1>
-    <img src="image/index.png" style="vertical-align:middle;width:60%;"/>
+    <img src="/image/index.png" style="vertical-align:middle;width:60%;"/>
 </div>
-<div class="bottombar">
-<div class="menu">
-    <ul>
-        <li>Killard &copy; 2010|</li>
-        <li><a href="#">Terms</a>|</li>
-        <li><a href="#">Privacy</a></li>
-    </ul>
-</div>
-</div>
+<%@ include file="bottombar.jsp" %>
 </body>
 </html>

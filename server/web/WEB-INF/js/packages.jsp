@@ -4,7 +4,8 @@
 <c:forEach var="package" items="${packages}">
     {
         "id" : "${package.bundleKey.id}",
-        "title" : "${package.name}",
+        "title" : "${package.descriptor.name}",
+        "description" : "${package.descriptor.description}",
         "picture" : "image/2.png"
     }
 </c:forEach>

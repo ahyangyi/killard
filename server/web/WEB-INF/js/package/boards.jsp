@@ -5,7 +5,8 @@
     {
         "packageBundleId" : "${board.package.bundleKey.id}",
         "id" : "${board.key.id}",
-        "username" : "${board.currentPlayer.id}"
+        "username" : "${board.currentPlayer.id}",
+        "players" : "${board.playerAmount}"
     }<c:if test="${not status.last}">,</c:if>
 </c:forEach>
 ]

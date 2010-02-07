@@ -1,5 +1,5 @@
-<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/html/includes.jsp" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
 <head>
     <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
@@ -66,6 +66,7 @@
             padding: 0;
             display: inline;
             text-align: center;
+            display:none;
         }
 
         .carousel .content {
@@ -81,22 +82,26 @@
                     richlist.items.push('<li>\
                         <a href="arena.html" title="View round">\
                         <img width="' + richlist.height + '" height="' + richlist.height + '" src="image/head/head.png" title=""/></a>\
-                        <h5><a href="arena/join.html?packageBundleId=' + item.packageBundleId + '&boardId=' + item.id + '" title="Join Game">Join</a></h5>\
-                        <p class="info">Nov 29th 2008 by <a href="arena.html">hello</a></p>\
+                        <h5><a href="arena/join.html?packageBundleId=' + item.packageBundleId + '&boardId=' + item.id + '">' + item.players + ' players now, Join</a></h5>\
+                        <p class="info">Created by ' + item.username + '</p>\
                         </li>');
                 });
             });
+//            setTimeout(updateGameList(), 5000);
         }
-        function showPackage(image, id) {
+        function showPackage(image, id, title, description) {
             $('#package > .title > a').attr('href', '/package/' + id + '/view.html');
+            $('#package > .title > a').html(title);
+            $('#package > #description > .menu > ul > li > p').html(description);
             $('#packageBundleId').attr('value', id);
             $('#package #description img').attr('src', image);
             $('.richlist > ul > li').each(function() {
                 $(this).remove();
             });
+            $('#newGameForm').show();
             $('.richlist').data('richlist')._clear();
             window.packageBundleId = id;
-            setTimeout(updateGameList, 0);
+            updateGameList();
         }
         $(function () {
             function resizeWindow() {
@@ -184,45 +189,31 @@
 
             $.getJSON('packages.json', function(data, textStatus) {
                 $.each(data, function(i, item) {
-                    $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\',' + item.id + ')" class="item" src="' + item.picture + '"/></li>');
+                    $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\',' + item.id + '\',' + item.title + '\',' + item.description + ')" class="item" src="' + item.picture + '"/></li>');
                 });
                 resizeWindow();
+                showPackage(data[0].picture, data[0].id, data[0].title, data[0].description);
             });
         });
     </script>
 </head>
 <body>
-<div class="topbar">
-    <div id="logo">
-        <img src="image/logo.png"/>
-        <img src="image/title.png"/>
-    </div>
-    <div class="menu">
-        <ul>
-            <li><a href="index.html">Home</a>|</li>
-            <li><a href="packages.html">All Games</a>|</li>
-            <li><a href="arena.html">Arena</a>|</li>
-            <li><a href="#">DIY</a>|</li>
-            <li><a href="#">Help</a>|</li>
-            <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/")%>">Logout</a></li>
-        </ul>
-    </div>
-</div>
+<%@ include file="topbar.jsp" %>
 <div class="dashboard">
     <ul>
         <li style="width:70%;">
             <div id="package">
-                <div class="corner"><img src="image/ring.png"/></div>
-                <div class="corner"><img src="image/ring.png"/></div>
-                <div class="corner"><img src="image/ring.png"/></div>
-                <div class="corner"><img src="image/ring.png"/></div>
-                <div class="title"><a href="#">Animals In Danger</a></div>
+                <div class="corner"><img src="/image/ring.png"/></div>
+                <div class="corner"><img src="/image/ring.png"/></div>
+                <div class="corner"><img src="/image/ring.png"/></div>
+                <div class="corner"><img src="/image/ring.png"/></div>
+                <div class="title"><a href="#"></a></div>
                 <div id="description">
                     <div class="menu">
                         <ul>
-                            <li><img src="image/1.png"/></li>
+                            <li><img src="/image/progress.gif"/></li>
                             <li>
-                                <p>This game is talking about animals.</p>
+                                <p>Loading...</p>
                             </li>
                         </ul>
                     </div>
@@ -254,7 +245,7 @@
                 <ul>
                     <!--<li>-->
                         <!--<a href="arena.html" title="View round"><img width="70" height="70"-->
-                                                                     <!--src="image/head/head.png"-->
+                                                                     <!--src="/image/head/head.png"-->
                                                                      <!--title=""/></a>-->
                         <!--<h5><a href="arena.html" title="View round">round</a></h5>-->
 
@@ -271,13 +262,13 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+            <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list">
                     <ul id="packageList"></ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -295,14 +286,6 @@
         </div>
     </div>
 </div>
-<div class="bottombar">
-<div class="menu">
-    <ul>
-        <li>Killard &copy; 2010|</li>
-        <li><a href="#">Terms</a>|</li>
-        <li><a href="#">Privacy</a></li>
-    </ul>
-</div>
-</div>
+<%@ include file="bottombar.jsp" %>
 </body>
 </html>

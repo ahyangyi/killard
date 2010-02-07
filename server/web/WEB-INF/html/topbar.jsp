@@ -27,12 +27,11 @@
     </div>
     <div class="menu">
         <ul>
-            <li><a href="/index.html">Home</a>|</li>
-            <li><a href="/packages.html">All Games</a>|</li>
-            <li><a href="/arena.html">Arena</a>|</li>
-            <li><a href="#">DIY</a>|</li>
-            <li><a href="#">Help</a>|</li>
-            <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/")%>">Logout</a></li>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/packages.html">|Games</a></li>
+            <c:if test="${pageContext.request.userPrincipal != null}">
+            <li>|<a href="<%=UserServiceFactory.getUserService().createLogoutURL("/")%>">Logout</a></li>
+            </c:if>
         </ul>
     </div>
 </div>

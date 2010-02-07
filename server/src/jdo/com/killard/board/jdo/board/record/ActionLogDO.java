@@ -91,13 +91,13 @@ public class ActionLogDO {
     private String attributeName;
 
     @Persistent
-    private Date date;
+    private Date time;
 
     public ActionLogDO(BoardDO board, Action action) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length + 1);
         this.key = keyBuilder.getKey();
-        this.date = new Date();
+        this.time = new Date();
         init(action);
     }
 
@@ -121,6 +121,22 @@ public class ActionLogDO {
         return element;
     }
 
+    public String getCardElementSchoolName() {
+        return cardElementSchoolName;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public String getElementSchoolName() {
+        return elementSchoolName;
+    }
+
+    public String getAttackType() {
+        return attackType;
+    }
+
     public int getCardPosition() {
         return cardPosition;
     }
@@ -137,8 +153,8 @@ public class ActionLogDO {
         return targetCardPosition;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTime() {
+        return time;
     }
 
     @Override

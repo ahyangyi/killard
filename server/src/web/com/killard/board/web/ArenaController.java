@@ -4,6 +4,7 @@ import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,7 +36,7 @@ public class ArenaController extends BasicController {
     }
 
     @RequestMapping(value = "/arena.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public String board(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String arena(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        String playerId = getPlayerId();
 //        getLog().fine("Get record record information: " + playerId);
 //        BoardDO board = getBoard();
@@ -93,14 +94,20 @@ public class ArenaController extends BasicController {
         redirect("/packages", request, response);
     }
 
-    @RequestMapping(value = "/arena/players.json", method = {RequestMethod.GET, RequestMethod.POST})
-    public String players(ModelMap modelMap) throws Exception {
+    @RequestMapping(value = "/arena/board.json", method = {RequestMethod.GET, RequestMethod.POST})
+    public String board(ModelMap modelMap) throws Exception {
         String playerId = getPlayerId();
         BoardDO board = getBoard();
+        ActionLogDO[] actions = board.getActions();
         modelMap.put("board", board);
         modelMap.put("players", board.getPlayers());
         modelMap.put("playerId", playerId);
-        return "arena/players";
+        if (actions.length > 0) {
+            modelMap.put("time", actions[actions.length - 1].getTime().getTime());
+        } else {
+            modelMap.put("time", 0);
+        }
+        return "arena/board";
     }
 
     @RequestMapping(value = "/arena/cards.json", method = {RequestMethod.GET, RequestMethod.POST})
@@ -153,10 +160,15 @@ public class ArenaController extends BasicController {
     }
 
     @RequestMapping(value = "/arena/actions.*", method = {RequestMethod.GET, RequestMethod.POST})
-    public String actions(ModelMap modelMap) throws Exception {
+    public String actions(@RequestParam(value = "lastUpdatedTime", required = false, defaultValue = "0") long lastUpdatedTime,
+                          ModelMap modelMap) throws Exception {
         BoardDO board = getBoard();
+        ActionLogDO[] actions = board.getActions();
+        long time = actions[actions.length - 1].getTime().getTime();
         modelMap.put("board", board);
-        modelMap.put("actions", board.getActions());
+        modelMap.put("actions", actions);
+        modelMap.put("lastUpdatedTime", lastUpdatedTime);
+        modelMap.put("time", time);
         return "arena/actions";
     }
 

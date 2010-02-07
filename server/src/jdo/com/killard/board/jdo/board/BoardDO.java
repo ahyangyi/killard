@@ -241,14 +241,6 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         return record;
     }
 
-    protected void randomSelect(List<MetaCardDO> remainingCards, int cardAmount) {
-        int size = remainingCards.size() - cardAmount;
-        for (int i = 0; i < size; i++) {
-            int index = (int) Math.floor(remainingCards.size() * Math.random());
-            remainingCards.remove(index);
-        }
-    }
-
     public Object getProperty(String name) {
         for (BoardPropertyDO property : getProperties()) {
             if (property.getName().equals(name)) return property.getData();
@@ -275,6 +267,14 @@ public class BoardDO extends AbstractBoard<BoardDO> {
                     else executeAction(new DealCardAction(card, getNextPlayer()));
                 }
             }
+        }
+    }
+
+    protected void randomSelect(List<MetaCardDO> remainingCards, int cardAmount) {
+        int size = remainingCards.size() - cardAmount;
+        for (int i = 0; i < size; i++) {
+            int index = (int) Math.floor(remainingCards.size() * Math.random());
+            remainingCards.remove(index);
         }
     }
 }

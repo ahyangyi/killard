@@ -12,4 +12,4 @@
     <li><a href="#">Privacy</a></li>
     </ul>
 </div>
-<div class="copyright">Killard &copy; 2009</div>
+<div class="copyright">Killard &copy; 2010</div>

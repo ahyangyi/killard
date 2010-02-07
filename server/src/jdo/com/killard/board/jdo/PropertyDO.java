@@ -21,7 +21,7 @@ import javax.jdo.annotations.PrimaryKey;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@Inheritance(strategy= InheritanceStrategy.NEW_TABLE)
+@Inheritance(strategy= InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class PropertyDO implements Comparable<PropertyDO> {
 
     @PrimaryKey

@@ -3,13 +3,12 @@ package com.killard.board.web;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.board.PackageStatus;
-import com.killard.board.jdo.board.ElementSchoolDO;
-import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.web.BasicController;
+import com.killard.board.jdo.board.RuleDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * <p>
@@ -37,7 +35,12 @@ import java.util.ArrayList;
 @Controller
 public class PackageController extends BasicController {
 
-    @RequestMapping(value = "/packages.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/packages.html", method = RequestMethod.GET)
+    public String showPackages(ModelMap modelMap) throws Exception {
+        return "packages";
+    }
+
+    @RequestMapping(value = "/packages.json", method = RequestMethod.GET)
     public String getPackages(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         List<PackageDO> packages = new LinkedList<PackageDO>();
@@ -59,6 +62,25 @@ public class PackageController extends BasicController {
         modelMap.put("package", bundle.draft());
         pm.makePersistent(bundle);
         return "package/edit";
+    }
+
+    @RequestMapping(value = "/package/*/boards.json", method = RequestMethod.GET)
+    public String getBoards(ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key key = KeyFactory
+                .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
+        modelMap.put("package", bundle.getRelease());
+
+        List<BoardDO> boards = new ArrayList<BoardDO>();
+        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
+        for (BoardDO board : extent) {
+            board.restore();
+            if (board.getPackageKey().equals(bundle.getRelease().getKey())) boards.add(board);
+        }
+        modelMap.put("boards", boards);
+
+        return "package/boards";
     }
 
     @RequestMapping(value = "/package/*/view.*", method = RequestMethod.GET)

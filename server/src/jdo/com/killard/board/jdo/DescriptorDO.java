@@ -23,7 +23,7 @@ import java.util.Locale;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@Inheritance(strategy= InheritanceStrategy.NEW_TABLE)
+@Inheritance(strategy= InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class DescriptorDO implements Comparable<DescriptorDO> {
 
     @PrimaryKey

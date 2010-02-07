@@ -2,9 +2,10 @@ package com.killard.board.web;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.ElementSchool;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.AttributeHandler;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
@@ -12,10 +13,8 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageStatus;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.RoleGroupDO;
-import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
-import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,10 +27,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -104,7 +103,7 @@ public class ManageController extends BasicController {
         PackageDO draft = bundle.draft();
         draft.newDescriptor(BoardContext.getLocale(), "Orions", "Orions");
 
-        File ruleFile = new File(baseDirectory + "Rule.js");
+        File ruleFile = new File(baseDirectory + "Rule.json");
         builder.buildRule(draft, getString(ruleFile), engine.parse(ruleFile));
 
         List<AttributeHandler> handlers = new ArrayList<AttributeHandler>();

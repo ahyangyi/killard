@@ -7,12 +7,18 @@
         <include path="/**.js" expiration="1h"/>
         <include path="/favicon.ico" expiration="1h"/>
         <!--<include path="/**.png" expiration="1d 1h"/>-->
-        <!--<include path="/**.jpg" expiration="1d 1h"/>-->
         <include path="/**.gif" expiration="1h"/>
+        <include path="/**.png"/>
+        <include path="/**.jpg"/>
         <include path="/**.css"/>
         <include path="/**.swf"/>
         <include path="/**.htm"/>
-        <exclude path="/**.png"/>
+        <include path="/**.txt"/>
+        <include path="/**.json"/>
+        <!--<include path="/index.html"/>-->
+        <!--<include path="/arena.html"/>-->
+        <!--<include path="/packages.html"/>-->
+        <!--<exclude path="/**.png"/>-->
         <exclude path="/**.html"/>
         <exclude path="/**.xml"/>
     </static-files>

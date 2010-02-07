@@ -49,7 +49,8 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
         return getCurrentPlayer();
     }
 
-    public void playCard(String elementSchoolName, String cardName, int cardPosition, int targetPlayerPosition) throws BoardException {
+    public void playCard(String elementSchoolName, String cardName, int cardPosition, int targetPlayerPosition)
+            throws BoardException {
         Player owner = getCurrentPlayer();
         MetaCard card = owner.getDealtCard(elementSchoolName, cardName);
         Player target = getPlayer(targetPlayerPosition);

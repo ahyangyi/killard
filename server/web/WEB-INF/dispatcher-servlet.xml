@@ -26,6 +26,7 @@
                 <entry key="htm" value="text/htm"/>
                 <entry key="mxml" value="text/mxml"/>
                 <entry key="xml" value="text/xml"/>
+                <entry key="json" value="text/javascript"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -48,6 +49,11 @@
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="text/xml"/>
                     <property name="prefix" value="/WEB-INF/xml/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="contentType" value="text/javascript"/>
+                    <property name="prefix" value="/WEB-INF/js/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>

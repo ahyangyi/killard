@@ -113,14 +113,17 @@
             $('.other img').hide();
 
             function update() {
-                $.getJSON('arena/actions.json', function(actions, textStatus) {
-                    $.each(actions, actionsUpdate);
-                    setTimeout(update, 1000);
-                });
+                $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
+                        function(data, textStatus) {
+                            $(window).attr('lastUpdatedTime', data.time);
+                            $.each(data.actions, actionsUpdate);
+                            setTimeout(update, 1000);
+                        });
             }
 
-            $.getJSON('arena/players.json', function(players, textStatus) {
-                $.each(players, playersUpdate);
+            $.getJSON('arena/board.json', function(data, textStatus) {
+                $(window).attr('lastUpdatedTime', data.time);
+                $.each(data.players, playersUpdate);
                 update();
             });
         });

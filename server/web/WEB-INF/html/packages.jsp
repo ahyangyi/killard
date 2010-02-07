@@ -7,7 +7,7 @@
     <link type="text/css" href="/css/ui/rating.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="/js/ui/carousel.js"></script>
@@ -182,7 +182,7 @@
             $('.carousel').carousel();
             $('.richlist').richlist();
 
-            $.getJSON('packages.json', '', function(data, textStatus) {
+            $.getJSON('packages.json', function(data, textStatus) {
                 $.each(data, function(i, item) {
                     $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\',' + item.id + ')" class="item" src="' + item.picture + '"/></li>');
                 });

@@ -95,7 +95,7 @@ public class CardController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/card/edit";
+        return "package/card/view";
     }
 
     @RequestMapping(value = "/package/*/*/*/delete.*", method = RequestMethod.POST)

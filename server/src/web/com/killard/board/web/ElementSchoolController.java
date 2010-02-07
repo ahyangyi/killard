@@ -40,9 +40,10 @@ public class ElementSchoolController extends BasicController {
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
 
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
-        modelMap.put("packageBundleId", bundleKey.getId());
+        modelMap.put("bundle", bundle);
         modelMap.put("elementSchool", elementSchool);
         return "package/elementschool/view";
     }

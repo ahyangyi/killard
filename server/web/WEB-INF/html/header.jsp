@@ -2,15 +2,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/html/includes.jsp" %>
 <head>
-    <meta http-equiv="Expires" content="0"/>
-    <meta http-equiv="Cache-Control" content="no-cache"/>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name='author' content='DONG Keren' />
-    <%--<meta name="robots" content="all"/>--%>
     <%--<link rel="alternate" type="application/rss+xml" title="Killard Game Feed" href="<c:url value="/rss.xml"/>"/>--%>
     <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
     <title>Killard</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background:#f9f9f9;
+        }
+
+        div.dashboard {
+            margin: 40px;
+            padding: 0;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
 <%@ include file="topbar.jsp" %>

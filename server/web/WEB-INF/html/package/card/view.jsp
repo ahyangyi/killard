@@ -7,19 +7,19 @@
     <tr>
         <td>${card.descriptor.name}</td>
         <td>
-            <form action="/package/elementschool.html" method="GET">
+            <form action="/package/${bundle.key.id}/${elementSchool.name}/view.html" method="GET">
                 <input type="submit" value="ElementSchool"/>
             </form>
         </td>
         <td>
-            <form action="/package.html" method="GET">
+            <form action="/package/${bundle.key.id}/view.html" method="GET">
                 <input type="submit" value="Package"/>
             </form>
         </td>
     </tr>
 </table>
 <p></p>
-<form action="/${bundle.key.id}/${elementSchool.name}/${card.name}/edit.html" method="POST" enctype="multipart/form-data">
+<form action="/package/${bundle.key.id}/${elementSchool.name}/${card.name}/edit.html" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="cardId" value="${card.key.id}"/>
     <table style="border-style:ridge">
         <c:if test="${card.renderable}">

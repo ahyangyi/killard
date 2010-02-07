@@ -3,9 +3,9 @@
 [
 <c:forEach var="board" items="${boards}" varStatus="status">
     {
-        packageBundleId : ${board.package.bundleKey.id},
-        id : ${board.key.id},
-        username : "${board.currentPlayer.id}"
+        "packageBundleId" : "${board.package.bundleKey.id}",
+        "id" : "${board.key.id}",
+        "username" : "${board.currentPlayer.id}"
     }<c:if test="${not status.last}">,</c:if>
 </c:forEach>
 ]

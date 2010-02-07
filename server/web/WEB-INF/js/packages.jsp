@@ -3,9 +3,9 @@
 [
 <c:forEach var="package" items="${packages}">
     {
-        id : ${package.bundleKey.id},
-        title : "${package.name}",
-        picture : "image/2.png"
+        "id" : "${package.bundleKey.id}",
+        "title" : "${package.name}",
+        "picture" : "image/2.png"
     }
 </c:forEach>
 ]

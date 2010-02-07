@@ -2,41 +2,6 @@
 <%@ page import="com.killard.board.jdo.board.MetaCardDO" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <h1>${package.descriptor.name}</h1>
-<form action="/arena/new.html" method="POST">
-    <input type="hidden" name="packageBundleId" value="${package.bundleKey.id}"/>
-    <input type="submit" value="New Game"/>
-</form>
-<hr/>
-<table style="width:100%;border:blueviolet;">
-    <%--@elvariable id="boards" type="com.killard.board.jdo.board.BoardDO"--%>
-    <c:forEach var="board" items="${boards}">
-        <tr>
-            <td width="100%">
-                <table title="Board" width="100%">
-                    <tr>
-                        <td>Package:</td>
-                        <td>${board.package.name}</td>
-                    </tr>
-                    <c:forEach var="player" items="${board.players}">
-                        <tr>
-                            <td>Player:</td>
-                            <td>${player.id}</td>
-                        </tr>
-                    </c:forEach>
-                    <tr>
-                        <td colspan="2">
-                            <form action="/arena/join.html" method="GET">
-                                <input name="packageBundleId" type="hidden" value="${package.bundleKey.id}"/>
-                                <input name="boardId" type="hidden" value="${board.key.id}"/>
-                                <input type="submit" value="Join"/>
-                            </form>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
 <hr/>
 <form action="/package/${package.bundleKey.id}/rule.html" method="POST">
     <input type="hidden" name="packageId" value="${package.key.id}"/>

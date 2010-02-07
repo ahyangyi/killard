@@ -3,33 +3,36 @@
 <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/en_US"
         type="text/javascript"></script>
 <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost
-            + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    try {
-        var pageTracker = _gat._getTracker("UA-6297932-3");
-        pageTracker._trackPageview();
-    } catch(err) {
-    }
-    function updateProfile() {
-        var user_box = document.getElementById("profile-pic");
-        user_box.innerHTML = "<fb:profile-pic uid='loggedinuser' facebook-logo='false'></fb:profile-pic>";
-        FB.XFBML.Host.parseDomTree();
-    }
-    FB_RequireFeatures(["Connect"], function() {
-        FB.init("3ebf10862f08033d0c8fce32551d6e90", "xd_receiver.htm", { "ifUserConnected": updateProfile });
-    });
+//    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+//    document.write(unescape("%3Cscript src='" + gaJsHost
+//            + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+//    try {
+//        var pageTracker = _gat._getTracker("UA-6297932-3");
+//        pageTracker._trackPageview();
+//    } catch(err) {
+//    }
+//    function updateProfile() {
+//        var user_box = document.getElementById("profile-pic");
+//        user_box.innerHTML = "<fb:profile-pic uid='loggedinuser' facebook-logo='false'></fb:profile-pic>";
+//        FB.XFBML.Host.parseDomTree();
+//    }
+//    FB_RequireFeatures(["Connect"], function() {
+//        FB.init("3ebf10862f08033d0c8fce32551d6e90", "xd_receiver.htm", { "ifUserConnected": updateProfile });
+//    });
 </script>
-<div class="menu">
-    <ul>
-        <li id="profile-pic"><fb:login-button length="short" size="medium" onlogin="updateProfile();"></fb:login-button>|
-        </li>
-        <li><a href="<c:url value="/packages.html"/>">Join A Game</a>|</li>
-        <li><a href="<c:url value="/arena.html"/>">My Game</a>|</li>
-        <li><a href="<c:url value="/arena/quit.html"/>">Quit</a>|</li>
-        <li><a href="/help.html">Help</a>|</li>
-        <li><a href="/help.html">Open API</a>|</li>
-        <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/index.jsp")%>">Logout</a></li>
-    </ul>
+<div class="topbar">
+    <div id="logo">
+        <img src="/image/logo.png"/>
+        <img src="/image/title.png"/>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="/index.html">Home</a>|</li>
+            <li><a href="/packages.html">All Games</a>|</li>
+            <li><a href="/arena.html">Arena</a>|</li>
+            <li><a href="#">DIY</a>|</li>
+            <li><a href="#">Help</a>|</li>
+            <li><a href="<%=UserServiceFactory.getUserService().createLogoutURL("/")%>">Logout</a></li>
+        </ul>
+    </div>
 </div>
-<hr/>

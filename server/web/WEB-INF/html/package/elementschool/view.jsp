@@ -1,11 +1,11 @@
 <%@ include file="../../header.jsp" %>
-<%--@elvariable id="packageBundleId" type="long"--%>
+<%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
 <%--@elvariable id="elementSchool" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <table style="width:100%;border-style:ridge;">
     <tr>
         <td>${elementSchool.descriptor.name}</td>
         <td>
-            <form action="/package.html" method="GET">
+            <form action="/package/${bundle.key.id}/view.html" method="GET">
                 <input type="submit" value="Package"/>
             </form>
         </td>
@@ -42,15 +42,16 @@
             <td>${card.attackValue}</td>
             <td>
                 <c:if test="${card.renderable}">
+                    <img src="/package/${bundle.key.id}/${card.elementSchool.name}/${card.name}/image.png"/>
                 </c:if>
             </td>
             <td>
-                <form action="/package/${packageBundleId}/${elementSchool.name}/${card.name}/view.html" method="GET">
+                <form action="/package/${bundle.key.id}/${elementSchool.name}/${card.name}/view.html" method="GET">
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
-                <form action="/package/${packageBundleId}/${elementSchool.name}/${card.name}/delete.html" method="POST">
+                <form action="/package/${bundle.key.id}/${elementSchool.name}/${card.name}/delete.html" method="POST">
                     <input type="submit" value="Delete"/>
                 </form>
             </td>

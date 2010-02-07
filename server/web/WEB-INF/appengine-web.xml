@@ -8,7 +8,8 @@
         <include path="/favicon.ico" expiration="1h"/>
         <!--<include path="/**.png" expiration="1d 1h"/>-->
         <include path="/**.gif" expiration="1h"/>
-        <include path="/**.png"/>
+        <include path="/css/**.png"/>
+        <include path="/image/**.png"/>
         <include path="/**.jpg"/>
         <include path="/**.css"/>
         <include path="/**.swf"/>
@@ -18,7 +19,7 @@
         <!--<include path="/index.html"/>-->
         <!--<include path="/arena.html"/>-->
         <!--<include path="/packages.html"/>-->
-        <!--<exclude path="/**.png"/>-->
+        <exclude path="/package/**.png"/>
         <exclude path="/**.html"/>
         <exclude path="/**.xml"/>
     </static-files>

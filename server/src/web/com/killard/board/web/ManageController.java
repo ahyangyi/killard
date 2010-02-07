@@ -13,6 +13,7 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageStatus;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.RoleGroupDO;
+import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,12 +62,6 @@ public class ManageController extends BasicController {
     @RequestMapping(value = "/manage/clear.*", method = RequestMethod.GET)
     public void clearAllPackages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
-        for (PackageBundleDO bundle : extent) {
-            PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
-            PersistenceHelper.doTransaction();
-        }
-        extent.closeAll();
 
         Extent<BoardDO> boardExtent = pm.getExtent(BoardDO.class);
         for (BoardDO board : boardExtent) {
@@ -73,6 +69,20 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         boardExtent.closeAll();
+
+        Extent<RuleDO> ruleExtent = pm.getExtent(RuleDO.class);
+        for (RuleDO rule : ruleExtent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(rule);
+            PersistenceHelper.doTransaction();
+        }
+        ruleExtent.closeAll();
+
+        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
+        for (PackageBundleDO bundle : extent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
+            PersistenceHelper.doTransaction();
+        }
+        extent.closeAll();
         redirect("/packages", request, response);
     }
 
@@ -144,15 +154,23 @@ public class ManageController extends BasicController {
                 elementSchool.newDescriptor(BoardContext.getLocale(), sub.getName(), sub.getName());
 
                 for (File file : sub.listFiles()) {
-                    if (file.getName().endsWith(".js")) {
-                        String name = file.getName().substring(0, file.getName().length() - 3);
+                    if (file.getName().endsWith(".json")) {
+                        String name = file.getName().substring(0, file.getName().length() - 5);
                         MetaCardDO card = elementSchool.newCard(name);
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
                             card.newDescriptor(BoardContext.getLocale(), name, "");
                         }
-                        File imageFile = new File(name + ".jpg");
+                        File imageFile = new File(baseDirectory + sub.getName() + "/" + name + ".png");
                         if (imageFile.exists()) {
+                            FileInputStream in = new FileInputStream(imageFile);
+                            byte[] buf = new byte[1024];
+                            int len;
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            while ((len = in.read(buf)) > 0) {
+                                out.write(buf, 0, len);
+                            }
+                            card.setImageData(out.toByteArray());
                         }
                     }
                 }

@@ -1,34 +1,32 @@
 <%@ include file="../../header.jsp" %>
+<%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
+<%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
+<%--@elvariable id="elementSchool" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <table>
     <tr>
         <td>${card.descriptor.name}</td>
         <td>
             <form action="/package/elementschool.html" method="GET">
-                <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
-                <input type="hidden" name="elementSchoolId" value="${card.elementSchool.key.id}"/>
                 <input type="submit" value="ElementSchool"/>
             </form>
         </td>
         <td>
             <form action="/package.html" method="GET">
-                <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
                 <input type="submit" value="Package"/>
             </form>
         </td>
     </tr>
 </table>
 <p></p>
-<form action="/card.html" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
-    <input type="hidden" name="elementSchoolId" value="${card.elementSchool.key.id}"/>
+<form action="/${bundle.key.id}/${elementSchool.name}/${card.name}/edit.html" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="cardId" value="${card.key.id}"/>
     <table style="border-style:ridge">
-        <c:if test="${card.descriptor.imageData != null}">
+        <c:if test="${card.renderable}">
             <tr>
                 <td>Current Image:</td>
                 <td><img
-                        src="/image/card/${card.packageKey.id}_${card.elementSchool.key.id}_${card.key.id}.png"
+                        src="/package/${bundle.key.id}/${card.elementSchool.name}/${card.name}/image.png"
                         alt="Current Image"/></td>
             </tr>
         </c:if>

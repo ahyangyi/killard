@@ -10,9 +10,7 @@ import com.google.appengine.api.images.Transform;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,15 +62,15 @@ public class ImageController extends BasicController {
             Image cardImage = imagesService.applyTransform(resize, oldImage);
 
             Composite cardComp = ImagesServiceFactory.makeComposite(cardImage, 0, 0, 1f, Composite.Anchor.TOP_LEFT);
-            Composite levelComp =
-                    ImagesServiceFactory
-                            .makeComposite(makeNumberImage(card.getLevel(), request), 0, 0, 1f, Composite.Anchor.TOP_RIGHT);
-            Composite healthComp =
-                    ImagesServiceFactory
-                            .makeComposite(makeNumberImage(card.getMaxHealth(), request), 0, 0, 1f, Composite.Anchor.BOTTOM_LEFT);
-            Composite attackComp =
-                    ImagesServiceFactory.makeComposite(makeNumberImage(card.getAttackValue(), request), 0, 0, 1f,
-                            Composite.Anchor.BOTTOM_RIGHT);
+//            Composite levelComp =
+//                    ImagesServiceFactory
+//                            .makeComposite(makeNumberImage(card.getLevel(), request), 0, 0, 1f, Composite.Anchor.TOP_RIGHT);
+//            Composite healthComp =
+//                    ImagesServiceFactory
+//                            .makeComposite(makeNumberImage(card.getMaxHealth(), request), 0, 0, 1f, Composite.Anchor.BOTTOM_LEFT);
+//            Composite attackComp =
+//                    ImagesServiceFactory.makeComposite(makeNumberImage(card.getAttackValue(), request), 0, 0, 1f,
+//                            Composite.Anchor.BOTTOM_RIGHT);
 
             List<Composite> composites = new ArrayList<Composite>(4);
             composites.add(cardComp);

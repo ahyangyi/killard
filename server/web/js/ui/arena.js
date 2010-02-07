@@ -101,7 +101,7 @@
                     $.post('arena/playcard.json',{
                         'elementSchoolName':'AIR',
                         'cardName':'Fairy',
-                        'cardPosition':1,
+                        'cardPosition':$(this).attr('position'),
                         'targetPosition':0});
                 }
             });
@@ -462,7 +462,7 @@ function playersUpdate(i, player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-    $('<li><img class="item" src="image/2.png"/></li>')
+    $('<li><img class="item" src="/package/' + card.packageBundleId + '/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
             .appendTo($('.dealtCards > .cards'))
             .width(arena.cardWidth)
             .height(arena.cardHeight)

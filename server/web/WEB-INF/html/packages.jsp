@@ -88,6 +88,7 @@
             });
         }
         function showPackage(image, id) {
+            $('#package > .title > a').attr('href', '/package/' + id + '/view.html');
             $('#packageBundleId').attr('value', id);
             $('#package #description img').attr('src', image);
             $('.richlist > ul > li').each(function() {
@@ -215,7 +216,7 @@
                 <div class="corner"><img src="image/ring.png"/></div>
                 <div class="corner"><img src="image/ring.png"/></div>
                 <div class="corner"><img src="image/ring.png"/></div>
-                <div class="title">Animals In Danger</div>
+                <div class="title"><a href="#">Animals In Danger</a></div>
                 <div id="description">
                     <div class="menu">
                         <ul>

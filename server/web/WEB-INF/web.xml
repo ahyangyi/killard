@@ -57,6 +57,11 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.json</url-pattern>
     </servlet-mapping>
 

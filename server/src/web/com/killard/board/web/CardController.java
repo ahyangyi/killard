@@ -6,10 +6,9 @@ import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageBundleDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.parser.ScriptEngine;
-import com.killard.board.web.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,7 @@ public class CardController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -62,7 +61,7 @@ public class CardController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/card";
+        return "package/card/view";
     }
 
     @RequestMapping(value = "/package/*/*/*/edit.*", method = RequestMethod.POST)
@@ -76,7 +75,7 @@ public class CardController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
 
         Key elementSchoolkey =
@@ -96,7 +95,7 @@ public class CardController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/card";
+        return "package/card/edit";
     }
 
     @RequestMapping(value = "/package/*/*/*/delete.*", method = RequestMethod.POST)
@@ -108,7 +107,7 @@ public class CardController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -124,7 +123,7 @@ public class CardController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool";
+        return "package/elementschool/view";
     }
 
     @RequestMapping(value = "/package/*/*/*/updateimage.*", method = RequestMethod.POST)
@@ -148,6 +147,6 @@ public class CardController extends BasicController {
         card.setImageData(file.getBytes());
         pm.makePersistent(card);
 
-        redirect("/board", request, response);
+        redirect("/arena", request, response);
     }
 }

@@ -1,4 +1,5 @@
 <%@ include file="../../header.jsp" %>
+<%--@elvariable id="packageBundleId" type="long"--%>
 <%--@elvariable id="elementSchool" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <table style="width:100%;border-style:ridge;">
     <tr>
@@ -44,16 +45,12 @@
                 </c:if>
             </td>
             <td>
-                <form action="/card.html" method="GET">
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.name}"/>
-                    <input type="hidden" name="cardId" value="${card.key.id}"/>
+                <form action="/package/${packageBundleId}/${elementSchool.name}/${card.name}/view.html" method="GET">
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
-                <form action="/card/delete.html" method="POST">
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.name}"/>
-                    <input type="hidden" name="cardId" value="${card.key.id}"/>
+                <form action="/package/${packageBundleId}/${elementSchool.name}/${card.name}/delete.html" method="POST">
                     <input type="submit" value="Delete"/>
                 </form>
             </td>

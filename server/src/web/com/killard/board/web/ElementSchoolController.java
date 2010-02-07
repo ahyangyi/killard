@@ -4,12 +4,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
-import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
-import com.killard.board.jdo.context.BoardContext;
-import com.killard.board.web.BasicController;
+import com.killard.board.jdo.board.PackageBundleDO;
+import com.killard.board.jdo.board.PackageDO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +42,7 @@ public class ElementSchoolController extends BasicController {
 
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
+        modelMap.put("packageBundleId", bundleKey.getId());
         modelMap.put("elementSchool", elementSchool);
         return "package/elementschool/view";
     }

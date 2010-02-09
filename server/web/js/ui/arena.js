@@ -42,8 +42,8 @@
             this.player.find('li :first').click(function() {
                 var playerDiv = $(this).parent().parent().parent();
                 if (!playerDiv.attr('self')) {
-                    var order = playerDiv.attr('order');
-                    var cardList = $('#player' + order + ' img');
+                    var number = playerDiv.attr('number');
+                    var cardList = $('#player' + number + ' img');
                     if (cardList.is(':hidden')) {
                         $('.other img:visible').hide('drop', {direction:'down'});
                         cardList.show('drop', {direction:'up'});
@@ -97,10 +97,9 @@
             $('.self .card').droppable({
                 accept: '.item',
                 drop: function(event, ui) {
-                    alert('test:' + ui.draggable + '  ' + $(this).attr('position'));
                     $.post('arena/playcard.json',{
-                        'elementSchoolName':'AIR',
-                        'cardName':'Fairy',
+                        'elementSchoolName':ui.draggable.attr('elementSchool'),
+                        'cardName':ui.draggable.attr('cardName'),
                         'cardPosition':$(this).attr('position'),
                         'targetPosition':0});
                 }
@@ -152,7 +151,6 @@
             }
             if (this.targets.length == this.targetList.length) {
                 $('#messagebox').hide();
-                alert('fill all targets: ' + this.targets);
                 this.targetList = [];
                 this.targets = [];
             }
@@ -441,7 +439,7 @@
 })(jQuery);
 
 function playersUpdate(i, player) {
-    var playerDiv = $('.player[order="' + player.order + '"]');
+    var playerDiv = $('.player[number="' + player.number + '"]');
     var image = playerDiv.find('> ul > li > img');
     if (image.is(':hidden')) {
         image.show();
@@ -456,7 +454,7 @@ function playersUpdate(i, player) {
         $.each(player.dealtCards, dealCard);
     }
     if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {placeCard(player.order, card, player.isSelf);});
+        $.each(player.equippedCards, function(i, card) {placeCard(player.number, card, player.isSelf);});
     }
 }
 
@@ -467,25 +465,30 @@ function dealCard(i, card) {
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .css('padding-right', arena.cardSeparator)
-            .find('img').width(arena.cardWidth).height(arena.cardHeight);
+            .find('img')
+            .width(arena.cardWidth)
+            .height(arena.cardHeight)
+            .attr('packageBundleId', card.packageBundleId)
+            .attr('elementSchool', card.elementSchool)
+            .attr('cardName', card.name);
 }
 
-function placeCard(playerOrder, card, isSelf) {
+function placeCard(playerNumber, card, isSelf) {
     var arena = $(".arena").data('arena');
-    var cardList = isSelf ? $('.self') : $('#player' + playerOrder);
+    var cardList = isSelf ? $('.self') : $('#player' + playerNumber);
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
         cardList.show('drop', {direction:'up'});
     }
-    var cardDiv = cardList.find('li').eq(card.position);
-    $('<img src="image/' + card.id + '.png" class="cardimage"/>')
+    var cardDiv = cardList.find('li[position="' + card.position + '"]');
+    $('<img src="/package/' + card.packageBundleId + '/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .appendTo(cardDiv);
 }
 
 function actionsUpdate(i, action) {
-    if (action.name == 'EquipCardAction') {
-        placeCard(action.playerOrder, action.card);
+    if (action.actionClass == 'EquipCardAction') {
+        placeCard(action.playerNumber, action.card, action.isSelf);
     }
 }

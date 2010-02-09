@@ -265,6 +265,10 @@ public class ActionLogDO {
     }
 
     protected void populate(EquipCardAction action) {
+        this.playerId = action.getSource().getId();
+        this.cardName = action.getTarget().getName();
+        this.cardElementSchoolName = action.getTarget().getElementSchool().getName();
+        this.cardPosition = action.getTarget().getPosition();
     }
 
     protected void populate(CastCardAction action) {

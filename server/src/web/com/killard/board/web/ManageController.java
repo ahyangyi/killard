@@ -5,7 +5,6 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
@@ -13,7 +12,6 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageStatus;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.RoleGroupDO;
-import com.killard.board.jdo.board.RuleDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import org.springframework.stereotype.Controller;
@@ -63,26 +61,13 @@ public class ManageController extends BasicController {
     public void clearAllPackages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Extent<BoardDO> boardExtent = pm.getExtent(BoardDO.class);
-        for (BoardDO board : boardExtent) {
-            PersistenceHelper.getPersistenceManager().deletePersistent(board);
-            PersistenceHelper.doTransaction();
-        }
-        boardExtent.closeAll();
-
-        Extent<RuleDO> ruleExtent = pm.getExtent(RuleDO.class);
-        for (RuleDO rule : ruleExtent) {
-            PersistenceHelper.getPersistenceManager().deletePersistent(rule);
-            PersistenceHelper.doTransaction();
-        }
-        ruleExtent.closeAll();
-
         Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
         for (PackageBundleDO bundle : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
+
         redirect("/packages", request, response);
     }
 
@@ -96,13 +81,6 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
-
-        Extent<BoardDO> boardExtent = pm.getExtent(BoardDO.class);
-        for (BoardDO board : boardExtent) {
-            PersistenceHelper.getPersistenceManager().deletePersistent(board);
-            PersistenceHelper.doTransaction();
-        }
-        boardExtent.closeAll();
 
         PackageBundleDO bundle = new PackageBundleDO("Orions");
         pm.makePersistent(bundle);

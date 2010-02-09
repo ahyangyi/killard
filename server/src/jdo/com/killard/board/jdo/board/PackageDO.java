@@ -45,7 +45,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private String name;
 
-    @Persistent
+    @Persistent(dependent = "true")
     private RuleDO rule;
 
     @Persistent
@@ -62,6 +62,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
+
+    @Persistent(defaultFetchGroup = "false")
+    private SortedSet<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundle.getKey());

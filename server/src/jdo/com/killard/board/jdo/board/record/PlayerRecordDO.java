@@ -41,7 +41,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     @Persistent
     private Key boardManagerKey;
 
-    @Persistent
+    @Persistent(dependent = "true")
     private RoleRecordDO role;
 
     @Persistent
@@ -89,8 +89,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.health = 50;
         this.cardPlayed = false;
         this.equippedCards = new TreeSet<CardRecordDO>();
-        this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
+        this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
 
         this.properties = new TreeSet<PlayerRecordPropertyDO>();
 

@@ -123,7 +123,6 @@ public class ArenaController extends BasicController {
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
-        System.out.println("play card " + cardName);
         BoardDO board = getBoard();
         board.playCard(elementSchoolName, cardName, cardPosition, targetPosition);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
@@ -162,9 +161,11 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = "/arena/actions.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String actions(@RequestParam(value = "lastUpdatedTime", required = false, defaultValue = "0") long lastUpdatedTime,
                           ModelMap modelMap) throws Exception {
+        String playerId = getPlayerId();
         BoardDO board = getBoard();
         ActionLogDO[] actions = board.getActions();
         long time = actions[actions.length - 1].getTime().getTime();
+        modelMap.put("playerId", playerId);
         modelMap.put("board", board);
         modelMap.put("actions", actions);
         modelMap.put("lastUpdatedTime", lastUpdatedTime);
@@ -181,7 +182,6 @@ public class ArenaController extends BasicController {
         board.test();
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         PersistenceHelper.doTransaction();
-        System.out.println("join player " + player.getElementRecords()[0].getDealtCards().length);
     }
 
     protected void quit() {

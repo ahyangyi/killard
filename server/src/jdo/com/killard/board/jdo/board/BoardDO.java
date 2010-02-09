@@ -192,8 +192,8 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     protected void fireActionEventBefore(ActionEvent event) throws BoardException {
-        actionLogs.add(0, new ActionLogDO(this, event.getAction()));
         super.fireActionEventBefore(event);
+        actionLogs.add(new ActionLogDO(this, event.getAction()));
     }
 
     @Override

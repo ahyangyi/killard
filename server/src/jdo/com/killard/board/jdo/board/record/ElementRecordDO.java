@@ -105,7 +105,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
 
     protected void setPlayer(PlayerRecordDO player) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), elementSchool.toString());
+        keyBuilder.addChild(getClass().getSimpleName(), elementSchool.getKey().getName());
         this.key = keyBuilder.getKey();
     }
 
@@ -115,6 +115,6 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     }
 
     public int compareTo(ElementRecordDO elementRecord) {
-        return getElementSchoolKey().compareTo(elementRecord.getElementSchoolKey());
+        return getKey().compareTo(elementRecord.getKey());
     }
 }

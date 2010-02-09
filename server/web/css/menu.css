@@ -12,8 +12,12 @@ div.bottombar {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100px;
+    height: 50px;
     border-top: solid gray 1px; /*background:#e6e6e6;*/
+}
+
+div.bottombar .menu{
+    padding-top: 10px;
 }
 
 #logo {

@@ -10,7 +10,7 @@
     {
         "username" : "${player.id}",
         "isSelf" : ${player.id == playerId},
-        "order" : ${status.count},
+        "number" : ${status.count},
         "dealtCards" : [
     <c:forEach var="element" items="${player.elementRecords}" varStatus="elementStatus">
         <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
@@ -26,8 +26,8 @@
     <c:forEach var="card" items="${player.equippedCards}" varStatus="cardStatus">
         <c:if test="${not cardStatus.first}">,</c:if>{
         "name" : "${card.name}",
-        "elementId" : "${card.elementSchool.key.name}",
-        "id" : "${card.key.id}",
+        "elementSchool" : "${card.elementSchool.key.name}",
+        "packageBundleId" : "${board.package.bundleKey.id}",
         "position" : ${card.position}
         }
     </c:forEach>

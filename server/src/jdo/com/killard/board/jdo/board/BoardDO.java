@@ -14,6 +14,7 @@ import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.property.BoardPropertyDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
+import com.killard.board.jdo.board.record.AudienceRecordDO;
 import com.killard.board.jdo.board.record.CardRecordDO;
 import com.killard.board.jdo.board.record.ElementRecordDO;
 import com.killard.board.jdo.board.record.MessageDO;
@@ -55,6 +56,9 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private List<Key> roleNames;
 
     @Persistent
+    private List<AudienceRecordDO> audiences;
+
+    @Persistent
     private List<PlayerRecordDO> roundQueue;
 
     @Persistent(serialized = "true")
@@ -79,6 +83,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         this.packageKey = boardPackage.getKey();
         this.currentPlayerPosition = 0;
         this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
+        this.audiences = new ArrayList<AudienceRecordDO>();
         this.roundQueue = new ArrayList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
@@ -108,6 +113,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     public Date getStartDate() {
         return startDate;
+    }
+
+    public AudienceRecordDO[] getAudiences() {
+        return audiences.toArray(new AudienceRecordDO[audiences.size()]);
     }
 
     public ActionLogDO[] getActions() {
@@ -143,9 +152,9 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     @Override
-    public Player addPlayer(String playerName) throws BoardException {
+    public Player addPlayer(String playerId, String playerName, int number) throws BoardException {
         RoleDO role = boardPackage.getRoles().get(roleNames.get(roundQueue.size()).getName());
-        PlayerRecordDO player = new PlayerRecordDO(this, role, playerName, makeElementRecords());
+        PlayerRecordDO player = new PlayerRecordDO(this, role, playerId, playerName, number, makeElementRecords());
 
         roundQueue.add(player);
         if (roleNames.size() == roundQueue.size()) executeAction(new BeginGameAction(this));

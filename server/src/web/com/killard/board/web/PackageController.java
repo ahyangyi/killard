@@ -158,7 +158,7 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
         ElementSchoolDO elementSchool = pack.newElementSchool(elementSchoolName);

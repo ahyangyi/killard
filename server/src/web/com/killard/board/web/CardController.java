@@ -76,7 +76,7 @@ public class CardController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
 
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -108,7 +108,7 @@ public class CardController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);

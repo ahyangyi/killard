@@ -48,6 +48,12 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private String uid;
 
     @Persistent
+    private String nickname;
+
+    @Persistent
+    private int number;
+
+    @Persistent
     private int health;
 
     @Persistent
@@ -77,7 +83,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     @Persistent
     private int turnCount;
 
-    public PlayerRecordDO(BoardDO board, RoleDO role, String uid, List<ElementRecordDO> elementRecords) {
+    public PlayerRecordDO(BoardDO board, RoleDO role, String uid, String nickname, int number,
+                          List<ElementRecordDO> elementRecords) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
@@ -86,6 +93,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
         this.role = new RoleRecordDO(this, role);
         this.uid = uid;
+        this.nickname = nickname;
+        this.number = number;
         this.health = 50;
         this.cardPlayed = false;
         this.equippedCards = new TreeSet<CardRecordDO>();
@@ -122,6 +131,14 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     public String getId() {
         return uid;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public Role getRole() {

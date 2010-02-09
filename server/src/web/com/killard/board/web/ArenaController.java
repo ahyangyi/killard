@@ -1,8 +1,16 @@
 package com.killard.board.web;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.Transform;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
@@ -16,6 +24,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -28,6 +37,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class ArenaController extends BasicController {
+
+    @RequestMapping(value = "/arena/*/*/image.png", method = RequestMethod.GET)
+    public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        String elementSchoolName = ids[2];
+        String cardName = ids[3];
+
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key packageKey = getBoard().getPackageKey();
+        Key elementSchoolkey =
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        response.setContentType("image/png");
+        if (card.isRenderable()) {
+            byte[] data = card.getImageData();
+            ImagesService imagesService = ImagesServiceFactory.getImagesService();
+            Image oldImage = ImagesServiceFactory.makeImage(data);
+            Transform resize = ImagesServiceFactory.makeResize(171, 264);
+            Image cardImage = imagesService.applyTransform(resize, oldImage);
+            response.getOutputStream().write(cardImage.getImageData());
+        } else {
+            throw new IOException("This board has no image.");
+        }
+    }
 
     @RequestMapping(value = "/arena/deal.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void deal(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -66,20 +102,28 @@ public class ArenaController extends BasicController {
         BoardDO board = new BoardDO(gamePackage, playerNumber);
         pm.makePersistent(board);
 
-        join(board);
+        join(board, 1);
         redirect("/arena", request, response);
+    }
+
+    @RequestMapping(value = "/arena/enter.*", method = {RequestMethod.GET, RequestMethod.POST})
+    public void enter(@RequestParam("packageBundleId") long packageBundleId,
+                      @RequestParam("boardId") long boardId,
+                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ;
     }
 
     @RequestMapping(value = "/arena/join.*", method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("packageBundleId") long packageBundleId,
                      @RequestParam("boardId") long boardId,
+                     @RequestParam("number") int number,
                      HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Join record for " + getPlayerId());
 
         PlayerRecordDO player = getPlayer();
         if (player == null || player.getBoardManagerKey().getId() != boardId) {
             quit();
-            join(getBoardManager(packageBundleId, boardId));
+            join(getBoardManager(packageBundleId, boardId), number);
         }
 
         redirect("/arena", request, response);
@@ -173,8 +217,8 @@ public class ArenaController extends BasicController {
         return "arena/actions";
     }
 
-    protected void join(BoardDO board) throws BoardException {
-        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(getPlayerId());
+    protected void join(BoardDO board, int number) throws BoardException {
+        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(getPlayerId(), getUser().getNickname(), number);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         PersistenceHelper.doTransaction();
 

@@ -460,7 +460,7 @@ function playersUpdate(i, player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-    $('<li><img class="item" src="/package/' + card.packageBundleId + '/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
+    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
             .appendTo($('.dealtCards > .cards'))
             .width(arena.cardWidth)
             .height(arena.cardHeight)
@@ -468,7 +468,6 @@ function dealCard(i, card) {
             .find('img')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
-            .attr('packageBundleId', card.packageBundleId)
             .attr('elementSchool', card.elementSchool)
             .attr('cardName', card.name);
 }
@@ -481,7 +480,7 @@ function placeCard(playerNumber, card, isSelf) {
         cardList.show('drop', {direction:'up'});
     }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    $('<img src="/package/' + card.packageBundleId + '/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
+    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .appendTo(cardDiv);

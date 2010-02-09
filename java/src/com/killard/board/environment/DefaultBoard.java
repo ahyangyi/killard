@@ -45,7 +45,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     }
 
     @Override
-    public Player addPlayer(String playerName) {
+    public Player addPlayer(String playerId, String playerName, int number) {
         MagicCardFactory factory = new MagicCardFactory();
         PlayerRecord player = new PlayerRecord(null, playerName, 50,
                 factory.allocateCardsForNextPlayer(Arrays.asList(getPlayers()), 2),

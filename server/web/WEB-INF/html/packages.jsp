@@ -122,7 +122,7 @@
                 var h = $(window).height() - $('.topbar').height() - $('.bottombar').outerHeight();
                 var dashboardVerticalMargin = parseInt(dashboardDiv.css('margin-top'));
                 var dashboardHorizontalMargin = parseInt(dashboardDiv.css('margin-left'));
-                var packageHeight = parseInt(h * 0.8);
+                var packageHeight = parseInt(h * 0.7);
                 var packageInnerHeight = packageHeight - 2 * dashboardVerticalMargin;
                 var cornerLength = parseInt(packageInnerHeight / 7);
 

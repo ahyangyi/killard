@@ -90,7 +90,7 @@
     $.extend($.ui.richlist, {
         version: "0.1",
         defaults: {
-            limit : 8,
+            limit : 4,
             interval : 5000
         }
     });

@@ -193,7 +193,7 @@ public class XmppController extends BasicController {
     }
 
     protected void joinGame(JID from, BoardDO board) throws BoardException {
-        board.addPlayer(getUsername(from));
+//        board.addPlayer(getUsername(from), 1);
         PersistenceHelper.getPersistenceManager().makePersistent(board);
     }
 

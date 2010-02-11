@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link type="text/css" href="/css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>

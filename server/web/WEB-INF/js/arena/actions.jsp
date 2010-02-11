@@ -1,10 +1,10 @@
+{
 <%@ include file="/WEB-INF/js/includes.jsp" %>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="time" type="long"--%>
 <%--@elvariable id="lastUpdatedTime" type="long"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
 <%--@elvariable id="actions" type="java.util.List<com.killard.board.jdo.board.record.ActionLogDO>"--%>
-{
 "last":${lastUpdatedTime},
 "time":${time},
 "actions":[

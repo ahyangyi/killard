@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/html/includes.jsp" %>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/richlist.css" rel="stylesheet"/>
@@ -242,18 +242,7 @@
         </li>
         <li style="width:30%;">
             <div class="richlist">
-                <ul>
-                    <!--<li>-->
-                        <!--<a href="arena.html" title="View round"><img width="70" height="70"-->
-                                                                     <!--src="/image/head/head.png"-->
-                                                                     <!--title=""/></a>-->
-                        <!--<h5><a href="arena.html" title="View round">round</a></h5>-->
-
-                        <!--<p class="info">Nov 29th 2008 by <a href="arena.html" title="Visit neue's userpage.">neue</a></p>-->
-
-                        <!--<p class='rating none'>Not Rated</p>-->
-                    <!--</li>-->
-                </ul>
+                <ul></ul>
             </div>
         </li>
     </ul>

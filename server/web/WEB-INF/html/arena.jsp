@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <link type="text/css" href="/css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
@@ -11,7 +11,7 @@
     <script type="text/javascript" src="/js/ui/arena.js"></script>
     <script type="text/javascript" src="/js/ui/richlist.js"></script>
     <script type="text/javascript" src="/js/ui/carousel.js"></script>
-    <title>Killard</title>
+    <title>Killard Arena</title>
     <style type="text/css">
         body {
             margin: 0;

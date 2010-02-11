@@ -1,29 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/html/includes.jsp" %>
-<%--<%@ include file="header.jsp" %>--%>
-<%--<div id="profile_pics"></div>--%>
-<%--<script type="text/javascript">--%>
-    <%--var widget_div = document.getElementById("profile_pics");--%>
-    <%--FB.ensureInit(function () {--%>
-        <%--FB.Facebook.get_sessionState().waitUntilReady(function() {--%>
-            <%--FB.Facebook.apiClient.friends_get(null, function(result) {--%>
-                <%--var markup = "";--%>
-                <%--var num_friends = result ? Math.min(5, result.length) : 0;--%>
-                <%--if (num_friends > 0) {--%>
-                    <%--for (var i = 0; i < num_friends; i++) {--%>
-                        <%--markup +=--%>
-                        <%--'<fb:profile-pic size="square" uid="' + result[i]--%>
-                                <%--+ '" facebook-logo="true"></fb:profile-pic>';--%>
-                    <%--}--%>
-                <%--}--%>
-                <%--widget_div.innerHTML = markup;--%>
-                <%--FB.XFBML.Host.parseDomElement(widget_div);--%>
-            <%--});--%>
-        <%--});--%>
-    <%--});--%>
-<%--</script>--%>
-<%--<%@ include file="footer.jsp" %>--%>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
     <link type="text/css" href="/css/ui/richlist.css" rel="stylesheet"/>
@@ -35,7 +12,7 @@
     <script type="text/javascript" src="/js/ui/carousel.js"></script>
     <script type="text/javascript" src="/js/ui/richlist.js"></script>
     <script type="text/javascript" src="/js/ui/searchbar.js"></script>
-    <title>Killard Games</title>
+    <title>Killard</title>
     <style type="text/css">
         body {
             margin: 0;

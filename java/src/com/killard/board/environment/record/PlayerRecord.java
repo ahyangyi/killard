@@ -27,6 +27,8 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     private final String name;
 
+    private final int number;
+
     private final RoleRecord role;
 
     private int health;
@@ -51,39 +53,50 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     private final Map<String, Object> properties = new HashMap<String, Object>();
 
-    public PlayerRecord(Role role, String name, int health) {
+    public PlayerRecord(Role role, String name, int health, int number) {
         this.name = name;
         this.health = health;
+        this.number = number;
         this.role = new RoleRecord(role);
         this.called = false;
     }
 
-    public PlayerRecord(Role role, String name, int health, StateListener listener) {
-        this(role, name, health);
+    public PlayerRecord(Role role, String name, int health, StateListener listener, int number) {
+        this(role, name, health, number);
         addStateListener(listener);
     }
 
-    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards) {
+    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards, int number) {
         this.name = name;
         this.health = health;
+        this.number = number;
         this.called = false;
         this.dealtCards.addAll(metaCards);
         this.role = new RoleRecord(role);
     }
 
-    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards, Map<ElementSchool, Integer> elements) {
-        this(role, name, health, metaCards);
+    public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards,
+                        Map<ElementSchool, Integer> elements, int number) {
+        this(role, name, health, metaCards, number);
         this.elements.putAll(elements);
     }
 
     public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards,
-                        Map<ElementSchool, Integer> elements, StateListener listener) {
-        this(role, name, health, metaCards, elements);
+                        Map<ElementSchool, Integer> elements, StateListener listener, int number) {
+        this(role, name, health, metaCards, elements, number);
         addStateListener(listener);
     }
 
     public String getId() {
         return name;
+    }
+
+    public String getNickname() {
+        return name;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public Role getRole() {

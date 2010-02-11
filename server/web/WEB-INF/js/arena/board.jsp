@@ -11,6 +11,7 @@
         "username" : "${player.id}",
         "isSelf" : ${player.id == playerId},
         "number" : ${status.count},
+    <c:if test="${player.id == playerId}">
         "dealtCards" : [
     <c:forEach var="element" items="${player.elementRecords}" varStatus="elementStatus">
         <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
@@ -22,6 +23,7 @@
         </c:forEach>
     </c:forEach>
         ],
+    </c:if>
         "equippedCards" : [
     <c:forEach var="card" items="${player.equippedCards}" varStatus="cardStatus">
         <c:if test="${not cardStatus.first}">,</c:if>{

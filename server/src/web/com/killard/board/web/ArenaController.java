@@ -110,7 +110,13 @@ public class ArenaController extends BasicController {
     public void enter(@RequestParam("packageBundleId") long packageBundleId,
                       @RequestParam("boardId") long boardId,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ;
+        PlayerRecordDO player = getPlayer();
+        if (player == null || player.getBoardManagerKey().getId() != boardId) {
+            quit();
+            join(getBoardManager(packageBundleId, boardId), 1);
+        }
+
+        redirect("/arena", request, response);
     }
 
     @RequestMapping(value = "/arena/join.*", method = {RequestMethod.GET, RequestMethod.POST})

@@ -50,7 +50,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
         PlayerRecord player = new PlayerRecord(null, playerName, 50,
                 factory.allocateCardsForNextPlayer(Arrays.asList(getPlayers()), 2),
                 factory.allocateElementsForNextPlayer(),
-                this);
+                this, number);
         roundQueue.add(player);
         return player;
     }

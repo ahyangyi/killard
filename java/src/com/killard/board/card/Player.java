@@ -4,6 +4,10 @@ public interface Player<T extends Player> extends Record<T> {
 
     public String getId();
 
+    public String getNickname();
+
+    public int getNumber();
+
     public Role getRole();
 
     public int getHealth();

@@ -82,12 +82,11 @@
                     richlist.items.push('<li>\
                         <a href="arena.html" title="View round">\
                         <img width="' + richlist.height + '" height="' + richlist.height + '" src="image/head/head.png" title=""/></a>\
-                        <h5><a href="arena/join.html?packageBundleId=' + item.packageBundleId + '&boardId=' + item.id + '">' + item.players + ' players now, Join</a></h5>\
+                        <h5><a href="arena/enter.html?packageBundleId=' + item.packageBundleId + '&boardId=' + item.id + '">' + item.players + ' players now, enter</a></h5>\
                         <p class="info">Created by ' + item.username + '</p>\
                         </li>');
                 });
             });
-//            setTimeout(updateGameList(), 5000);
         }
         function showPackage(image, id, title, description) {
             $('#package > .title > a').attr('href', '/package/' + id + '/view.html');
@@ -188,7 +187,6 @@
             $('.richlist').richlist();
 
             $.getJSON('packages.json', function(data, textStatus) {
-                alert('json:' + data + ' s:' + textStatus);
                 $.each(data, function(i, item) {
                     $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\',' + item.id + '\',' + item.title + '\',' + item.description + ')" class="item" src="' + item.picture + '"/></li>');
                 });

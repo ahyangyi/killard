@@ -188,6 +188,7 @@
             $('.richlist').richlist();
 
             $.getJSON('packages.json', function(data, textStatus) {
+                alert('json:' + data + ' s:' + textStatus);
                 $.each(data, function(i, item) {
                     $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\',' + item.id + '\',' + item.title + '\',' + item.description + ')" class="item" src="' + item.picture + '"/></li>');
                 });

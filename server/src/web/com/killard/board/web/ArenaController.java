@@ -73,19 +73,6 @@ public class ArenaController extends BasicController {
 
     @RequestMapping(value = "/arena.*", method = {RequestMethod.GET, RequestMethod.POST})
     public String arena(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        String playerId = getPlayerId();
-//        getLog().fine("Get record record information: " + playerId);
-//        BoardDO board = getBoard();
-//
-//        if (board == null) {
-//            redirect("/packages", request, response);
-//            return null;
-//        }
-//
-//        modelMap.put("board", board);
-//        modelMap.put("playerId", playerId);
-//        modelMap.put("players", board.getPlayers(playerId));
-//        modelMap.put("actions", board.getActions());
         return "arena";
     }
 

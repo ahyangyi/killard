@@ -461,6 +461,17 @@ function playerUpdate(i, player) {
     }
 }
 
+function playerQuit(player) {
+    var playerDiv = $('.player[number="' + player.number + '"]');
+    playerDiv.click(function() {
+        $.get('/arena/join.html', {'number':playerDiv.attr('number')});
+    });
+    var image = playerDiv.find('> ul > li > img');
+    if (image.is(':visible')) {
+        image.hide();
+    }
+}
+
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
     $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
@@ -491,7 +502,13 @@ function placeCard(playerNumber, card, isSelf) {
 
 function actionsUpdate(i, action) {
     $(window).attr('lastUpdatedTime', action.time);
-    if (action.actionClass == 'EquipCardAction') {
+    if (action.actionClass == 'PlayerJoinAction') {
+        playerUpdate(i, action.player);
+    }
+    else if (action.actionClass == 'PlayerQuitAction') {
+        playerQuit(action.player);
+    }
+    else if (action.actionClass == 'EquipCardAction') {
         placeCard(action.playerNumber, action.card, action.isSelf);
     }
 }

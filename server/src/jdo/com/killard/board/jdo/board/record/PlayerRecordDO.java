@@ -317,6 +317,6 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     public int compareTo(PlayerRecordDO playerRecordDO) {
-        return getNumber() - playerRecordDO.getNumber();
+        return key.compareTo(playerRecordDO.key);
     }
 }

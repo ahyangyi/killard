@@ -35,12 +35,7 @@ import java.util.List;
 @Controller
 public class PackageController extends BasicController {
 
-    @RequestMapping(value = "/packages.html", method = RequestMethod.GET)
-    public String showPackages(ModelMap modelMap) throws Exception {
-        return "packages";
-    }
-
-    @RequestMapping(value = "/packages.json", method = RequestMethod.GET)
+    @RequestMapping(value = {"/packages.html", "/packages.json"}, method = RequestMethod.GET)
     public String getPackages(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         List<PackageDO> packages = new LinkedList<PackageDO>();

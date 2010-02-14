@@ -115,7 +115,6 @@
             function update() {
                 $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
-                            $(window).attr('lastUpdatedTime', data.time);
                             $.each(data.actions, actionsUpdate);
                             setTimeout(update, 1000);
                         });
@@ -123,7 +122,7 @@
 
             $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).attr('lastUpdatedTime', data.time);
-                $.each(data.players, playersUpdate);
+                $.each(data.players, playerUpdate);
                 update();
             });
         });

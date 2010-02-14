@@ -46,7 +46,7 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
     private String name;
 
     @Persistent
-    private Boolean visible;
+    private boolean visible;
 
     @Persistent
     private SortedSet<RoleRecordPropertyDO> properties;

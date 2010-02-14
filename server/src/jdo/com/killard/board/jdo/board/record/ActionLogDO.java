@@ -55,6 +55,9 @@ public class ActionLogDO {
     private Key key;
 
     @Persistent
+    private Key boardKey;
+
+    @Persistent
     private String actionClass;
 
     @Persistent
@@ -67,13 +70,13 @@ public class ActionLogDO {
     private String cardName;
 
     @Persistent
-    private Integer cardPosition;
+    private int cardPosition;
 
     @Persistent
     private String targetPlayerId;
 
     @Persistent
-    private Integer targetCardPosition;
+    private int targetCardPosition;
 
     @Persistent
     private String elementSchoolName;
@@ -82,10 +85,10 @@ public class ActionLogDO {
     private String attackType;
 
     @Persistent
-    private Integer attackValue;
+    private int attackValue;
 
     @Persistent
-    private Integer element;
+    private int element;
 
     @Persistent
     private String attributeName;
@@ -97,12 +100,17 @@ public class ActionLogDO {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length + 1);
         this.key = keyBuilder.getKey();
+        this.boardKey = board.getKey();
         this.time = new Date();
         init(action);
     }
 
     public Key getKey() {
         return key;
+    }
+
+    public Key getBoardKey() {
+        return boardKey;
     }
 
     public String getActionClass() {

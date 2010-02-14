@@ -1,16 +1,11 @@
 {
 <%@ include file="/WEB-INF/js/includes.jsp" %>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
-<%--@elvariable id="time" type="long"--%>
-<%--@elvariable id="lastUpdatedTime" type="long"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
-<%--@elvariable id="actions" type="java.util.List<com.killard.board.jdo.board.record.ActionLogDO>"--%>
-"last":${lastUpdatedTime},
-"time":${time},
+<%--@elvariable id="actions" type="java.util.Collection<com.killard.board.jdo.board.record.ActionLogDO>"--%>
 "actions":[
 <c:set var="start" value="false"/>
 <c:forEach var="action" items="${actions}" varStatus="status">
-    <c:if test="${action.time.time > lastUpdatedTime}">
         <c:if test="${start == 'true'}">,</c:if>
         <c:set var="start" value="true"/>
         {
@@ -29,7 +24,6 @@
         "time" : "${action.time.time}",
         "actionClass" : "${action.actionClass}"
     }
-    </c:if>
 </c:forEach>
 ]
 }

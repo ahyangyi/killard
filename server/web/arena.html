@@ -113,13 +113,13 @@
 
             setTimeout(function() {
                 $.getJSON('test/arena/players0.json', function(players, textStatus) {
-                    $.each(players, playersUpdate);
+                    $.each(players, playerUpdate);
                 });
             }, 1000);
 
             setTimeout(function() {
                 $.getJSON('test/arena/players1.json', function(players, textStatus) {
-                    $.each(players, playersUpdate);
+                    $.each(players, playerUpdate);
                 });
             }, 4000);
 

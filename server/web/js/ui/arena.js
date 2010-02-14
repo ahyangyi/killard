@@ -37,6 +37,7 @@
             });
 
             this.player.click(function() {
+                $.get('/arena/join.html', {'number':$(this).attr('number')});
             });
 
             this.player.find('li :first').click(function() {
@@ -438,14 +439,16 @@
     });
 })(jQuery);
 
-function playersUpdate(i, player) {
+function playerUpdate(i, player) {
     var playerDiv = $('.player[number="' + player.number + '"]');
+    playerDiv.unbind('click');
     var image = playerDiv.find('> ul > li > img');
     if (image.is(':hidden')) {
         image.show();
         if (player.isSelf) {
             playerDiv.attr('self', true);
             playerDiv.toggleClass('selfPlayer');
+            $('.player').unbind('click');
         } else {
             playerDiv.toggleClass('emptyPlayer');
         }
@@ -487,6 +490,7 @@ function placeCard(playerNumber, card, isSelf) {
 }
 
 function actionsUpdate(i, action) {
+    $(window).attr('lastUpdatedTime', action.time);
     if (action.actionClass == 'EquipCardAction') {
         placeCard(action.playerNumber, action.card, action.isSelf);
     }

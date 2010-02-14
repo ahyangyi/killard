@@ -39,7 +39,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private Key key;
 
     @Persistent
-    private Key boardManagerKey;
+    private Key boardKey;
 
     @Persistent(dependent = "true")
     private RoleRecordDO role;
@@ -57,7 +57,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private int health;
 
     @Persistent
-    private Boolean cardPlayed;
+    private boolean cardPlayed;
 
     @Persistent
     private SortedSet<CardRecordDO> equippedCards;
@@ -69,16 +69,16 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private SortedSet<PlayerRecordPropertyDO> properties;
 
     @Persistent
-    private Boolean alive;
+    private boolean alive;
 
     @Persistent
-    private Boolean called;
+    private boolean called;
 
     @Persistent
-    private Boolean winner;
+    private boolean winner;
 
     @Persistent
-    private Boolean loser;
+    private boolean loser;
 
     @Persistent
     private int turnCount;
@@ -89,7 +89,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         keyBuilder.addChild(getClass().getSimpleName(), uid);
         this.key = keyBuilder.getKey();
 
-        this.boardManagerKey = board.getKey();
+        this.boardKey = board.getKey();
 
         this.role = new RoleRecordDO(this, role);
         this.uid = uid;
@@ -125,8 +125,8 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         return key;
     }
 
-    public Key getBoardManagerKey() {
-        return boardManagerKey;
+    public Key getBoardKey() {
+        return boardKey;
     }
 
     public String getId() {
@@ -317,6 +317,6 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     }
 
     public int compareTo(PlayerRecordDO playerRecordDO) {
-        return getTurnCount() - playerRecordDO.getTurnCount();
+        return getNumber() - playerRecordDO.getNumber();
     }
 }

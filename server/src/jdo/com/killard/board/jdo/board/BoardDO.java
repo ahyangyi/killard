@@ -14,7 +14,6 @@ import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.property.BoardPropertyDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
-import com.killard.board.jdo.board.record.AudienceRecordDO;
 import com.killard.board.jdo.board.record.CardRecordDO;
 import com.killard.board.jdo.board.record.ElementRecordDO;
 import com.killard.board.jdo.board.record.MessageDO;
@@ -50,27 +49,27 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private Key packageKey;
 
     @Persistent
-    private Integer currentPlayerPosition;
+    private String creator;
+
+    @Persistent
+    private int currentPlayerNumber;
 
     @Persistent
     private List<Key> roleNames;
 
-    @Persistent
-    private List<AudienceRecordDO> audiences;
+    @Persistent(defaultFetchGroup = "false")
+    private SortedSet<PlayerRecordDO> players;
 
     @Persistent
-    private List<PlayerRecordDO> roundQueue;
-
-    @Persistent(serialized = "true")
     private Set<Key> dealtCardKeys;
 
     @Persistent
     private SortedSet<BoardPropertyDO> properties;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private List<ActionLogDO> actionLogs;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private List<MessageDO> messages;
 
     @Persistent
@@ -79,12 +78,12 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     @NotPersistent
     private PackageDO boardPackage;
 
-    public BoardDO(PackageDO boardPackage, int playerNumber) {
+    public BoardDO(PackageDO boardPackage, String creator, int playerNumber) {
         this.packageKey = boardPackage.getKey();
-        this.currentPlayerPosition = 0;
+        this.creator = creator;
+        this.currentPlayerNumber = 1;
         this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
-        this.audiences = new ArrayList<AudienceRecordDO>();
-        this.roundQueue = new ArrayList<PlayerRecordDO>();
+        this.players = new TreeSet<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
         this.actionLogs = new ArrayList<ActionLogDO>();
@@ -95,7 +94,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     public void restore() {
         this.boardPackage = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageKey);
-        for (PlayerRecordDO player : roundQueue) player.restore(this);
+        for (PlayerRecordDO player : players) player.restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
 
@@ -111,28 +110,20 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         return packageKey;
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public int getCurrentPlayerNumber() {
+        return currentPlayerNumber;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
 
-    public AudienceRecordDO[] getAudiences() {
-        return audiences.toArray(new AudienceRecordDO[audiences.size()]);
-    }
-
     public ActionLogDO[] getActions() {
         return actionLogs.toArray(new ActionLogDO[actionLogs.size()]);
-    }
-
-    public List<Player> getPlayers(String playerName) {
-        List<Player> players = new ArrayList<Player>();
-        int position;
-        for (position = 0; position < roundQueue.size(); position++)
-            if (roundQueue.get(position).getId().equals(playerName)) break;
-        position = position - currentPlayerPosition;
-        if (position < 0) position = roundQueue.size() + position;
-        for (int i = 0; i < roundQueue.size(); i++)
-            players.add(roundQueue.get(getPlayerPosition(position + i)));
-        return players;
     }
 
     public List<MessageDO> getMessages() {
@@ -153,11 +144,11 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     public Player addPlayer(String playerId, String playerName, int number) throws BoardException {
-        RoleDO role = boardPackage.getRoles().get(roleNames.get(roundQueue.size()).getName());
+        RoleDO role = boardPackage.getRoles().get(roleNames.get(players.size()).getName());
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerId, playerName, number, makeElementRecords());
 
-        roundQueue.add(player);
-        if (roleNames.size() == roundQueue.size()) executeAction(new BeginGameAction(this));
+        players.add(player);
+        if (roleNames.size() == players.size()) executeAction(new BeginGameAction(this));
         return player;
     }
 
@@ -170,27 +161,35 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public Player[] getPlayers() {
-        int n = roundQueue.size();
-        Player[] players = new Player[n];
-        for (int i = currentPlayerPosition; i < n; i++) players[i] = roundQueue.get(i);
-        for (int i = 0; i < currentPlayerPosition; i++) players[n - currentPlayerPosition + i] = roundQueue.get(i);
-        return players;
+        List<Player> result = new LinkedList<Player>();
+        for (Player player : players) {
+//            if (player.getNumber() > 0) result.add(player);
+            result.add(player);
+        }
+        return result.toArray(new Player[result.size()]);
     }
 
     public Player getCurrentPlayer() {
-        return roundQueue.get(getCurrentPlayerPosition());
+        for (Player player : players) if (player.getNumber() == currentPlayerNumber) return player;
+        throw new IllegalStateException("Can not access current player " + currentPlayerNumber);
     }
 
     public Player getNextPlayer() {
-        return roundQueue.get(getPlayerPosition(1));
+        for (Player player : players) if (player.getNumber() > currentPlayerNumber) return player;
+        return players.first();
     }
 
     public Player getPreviousPlayer() {
-        return roundQueue.get(getPlayerPosition(-1));
+        Player result = players.last();
+        for (Player player : players) {
+            if (player.getNumber() < currentPlayerNumber) result = player;
+        }
+        return result;
     }
 
-    public Player getPlayer(int position) {
-        return roundQueue.get(getPlayerPosition(position));
+    public Player getPlayer(int number) {
+        for (Player player : players) if (player.getNumber() == number) return player;
+        throw new IllegalArgumentException("Invalid player number " + number);
     }
 
     @Override
@@ -207,20 +206,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     @Override
     protected void moveToNext() {
-        do {
-            currentPlayerPosition = getCurrentPlayerPosition() + 1;
-            if (currentPlayerPosition == roundQueue.size()) currentPlayerPosition = 0;
-        } while (getCurrentPlayer().getHealth() == 0);
-    }
-
-    protected int getPlayerPosition(int position) {
-        int r = getCurrentPlayerPosition() + position;
-        return r >= roundQueue.size() ? r - roundQueue.size() : r;
-    }
-
-    protected int getCurrentPlayerPosition() {
-        if (currentPlayerPosition == roundQueue.size()) currentPlayerPosition--;
-        return currentPlayerPosition;
+        currentPlayerNumber = getNextPlayer().getNumber();
     }
 
     protected MetaCardDO dealCard() {
@@ -272,18 +258,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
             for (MetaCard card : elementSchool.getCards()) {
                 if (Math.random() > .6) {
-                    if (roundQueue.size() == 1) executeAction(new DealCardAction(card, getCurrentPlayer()));
+                    if (players.size() == 1) executeAction(new DealCardAction(card, getCurrentPlayer()));
                     else executeAction(new DealCardAction(card, getNextPlayer()));
                 }
             }
-        }
-    }
-
-    protected void randomSelect(List<MetaCardDO> remainingCards, int cardAmount) {
-        int size = remainingCards.size() - cardAmount;
-        for (int i = 0; i < size; i++) {
-            int index = (int) Math.floor(remainingCards.size() * Math.random());
-            remainingCards.remove(index);
         }
     }
 }

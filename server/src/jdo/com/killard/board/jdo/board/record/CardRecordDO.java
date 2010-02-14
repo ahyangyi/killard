@@ -70,10 +70,10 @@ public class CardRecordDO extends AbstractCardRecord {
     private int attackValue;
 
     @Persistent
-    private Boolean equippable;
+    private boolean equippable;
 
     @Persistent
-    private Boolean visible;
+    private boolean visible;
 
     @Persistent
     private int position;
@@ -85,7 +85,7 @@ public class CardRecordDO extends AbstractCardRecord {
     private List<Key> attributeKeys;
 
     @Persistent
-    private Boolean casted;
+    private boolean casted;
 
     @Persistent
     private SortedSet<CardRecordPropertyDO> properties;

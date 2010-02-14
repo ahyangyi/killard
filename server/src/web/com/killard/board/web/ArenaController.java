@@ -154,7 +154,7 @@ public class ArenaController extends BasicController {
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.playCard(elementSchoolName, cardName, cardPosition, getPlayer().getNumber());
             PersistenceHelper.getPersistenceManager().makePersistent(board);
-            modelMap.put("actions", board.getActions());
+//            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
     }
@@ -166,7 +166,7 @@ public class ArenaController extends BasicController {
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.cast(cardPosition, skillIndex);
             PersistenceHelper.getPersistenceManager().makePersistent(board);
-            modelMap.put("actions", board.getActions());
+//            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
     }
@@ -178,7 +178,7 @@ public class ArenaController extends BasicController {
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endTurn();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
-            modelMap.put("actions", board.getActions());
+//            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
     }
@@ -190,7 +190,7 @@ public class ArenaController extends BasicController {
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endCall();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
-            modelMap.put("actions", board.getActions());
+//            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
     }

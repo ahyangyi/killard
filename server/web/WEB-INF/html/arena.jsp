@@ -388,7 +388,7 @@
         </li>
         <li>
             <div class="corner">
-                <img src="/image/corner/corner2a.png"/>
+                <img src="/image/corner/corner2.png"/>
             </div>
         </li>
     </ul>

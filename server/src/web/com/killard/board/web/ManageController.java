@@ -100,8 +100,11 @@ public class ManageController extends BasicController {
         pm.makePersistent(group);
         PersistenceHelper.doTransaction();
         group.addRole(role);
+        group.addRole(role);
+//        System.out.println("create group " + group.getKey() + " " + group.getRoleKeys().length);
         pm.makePersistent(group);
         PersistenceHelper.doTransaction();
+//        System.out.println("init group " + group.getKey() + " " + group.getRoleKeys().length);
 
         pm.makePersistent(bundle);
 

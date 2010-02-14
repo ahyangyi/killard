@@ -7,6 +7,7 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.BeginGameAction;
+import com.killard.board.card.action.BeginTurnAction;
 import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.PlayerJoinAction;
 import com.killard.board.card.action.PlayerQuitAction;
@@ -155,7 +156,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
         players.add(player);
         executeAction(new PlayerJoinAction(player));
-        if (roleNames.size() == count + 1) executeAction(new BeginGameAction(this));
+        if (roleNames.size() == count + 1) {
+            executeAction(new BeginGameAction(this));
+            executeAction(new BeginTurnAction(this, player));
+        }
         return player;
     }
 
@@ -169,7 +173,9 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public int getPlayerAmount() {
-        return boardPackage.getRoles().size();
+        int count = 0;
+        for (Player player : players) if (player.getNumber() > 0) count++;
+        return count;
     }
 
     public Player[] getPlayers() {

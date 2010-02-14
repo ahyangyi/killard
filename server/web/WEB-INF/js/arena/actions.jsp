@@ -31,6 +31,20 @@
                 "isSelf" : ${action.playerId == playerId}
                 },
             </c:when>
+            <c:when test="${action.actionClass == 'BeginTurnAction'}">
+                "player" : {
+                "nickname" : "${action.nickname}",
+                "number" : "${action.number}",
+                "isSelf" : ${action.playerId == playerId}
+                },
+            </c:when>
+            <c:when test="${action.actionClass == 'EndTurnAction'}">
+                "player" : {
+                "nickname" : "${action.nickname}",
+                "number" : "${action.number}",
+                "isSelf" : ${action.playerId == playerId}
+                },
+            </c:when>
             <c:when test="${action.actionClass == 'EquipCardAction'}">
                 "card" : {
                 "packageBundleId" : "${board.package.bundleKey.id}",

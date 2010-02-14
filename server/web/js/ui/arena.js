@@ -508,6 +508,22 @@ function actionsUpdate(i, action) {
     else if (action.actionClass == 'PlayerQuitAction') {
         playerQuit(action.player);
     }
+    else if (action.actionClass == 'BeginTurnAction') {
+        if (action.player.isSelf) {
+            var btn = $('.corner').eq(3);
+            btn.click(function() {
+                $.get('/arena/endturn.html');
+            });
+            btn.find('img').attr('src', '/image/corner/corner2.png');
+        }
+    }
+    else if (action.actionClass == 'EndTurnAction') {
+        if (action.player.isSelf) {
+            var btn = $('.corner').eq(3);
+            btn.unbind('click');
+            btn.find('img').attr('src', '/image/corner/corner2.png');
+        }
+    }
     else if (action.actionClass == 'EquipCardAction') {
         placeCard(action.playerNumber, action.card, action.isSelf);
     }

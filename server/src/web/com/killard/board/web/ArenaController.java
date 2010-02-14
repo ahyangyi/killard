@@ -54,7 +54,10 @@ public class ArenaController extends BasicController {
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
         response.setContentType("image/png");
         if (card.isRenderable()) {
-            response.getOutputStream().write(card.getImageData());
+            try {
+                response.getOutputStream().write(card.getImageData());
+            } catch (IOException ignored) {
+            }
         } else {
             throw new IOException("This board has no image.");
         }

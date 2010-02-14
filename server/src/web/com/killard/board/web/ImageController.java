@@ -2,11 +2,8 @@ package com.killard.board.web;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.images.Composite;
 import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.Transform;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
@@ -22,8 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>
@@ -56,31 +51,15 @@ public class ImageController extends BasicController {
         response.setContentType("image/png");
         if (card.isRenderable()) {
             byte[] data = card.getImageData();
-            ImagesService imagesService = ImagesServiceFactory.getImagesService();
-            Image oldImage = ImagesServiceFactory.makeImage(data);
-            Transform resize = ImagesServiceFactory.makeResize(171, 264);
-            Image cardImage = imagesService.applyTransform(resize, oldImage);
+//            ImagesService imagesService = ImagesServiceFactory.getImagesService();
+//            Image oldImage = ImagesServiceFactory.makeImage(data);
+//            Transform resize = ImagesServiceFactory.makeResize(171, 264);
+//            Image cardImage = imagesService.applyTransform(resize, oldImage);
 
-            Composite cardComp = ImagesServiceFactory.makeComposite(cardImage, 0, 0, 1f, Composite.Anchor.TOP_LEFT);
-//            Composite levelComp =
-//                    ImagesServiceFactory
-//                            .makeComposite(makeNumberImage(card.getLevel(), request), 0, 0, 1f, Composite.Anchor.TOP_RIGHT);
-//            Composite healthComp =
-//                    ImagesServiceFactory
-//                            .makeComposite(makeNumberImage(card.getMaxHealth(), request), 0, 0, 1f, Composite.Anchor.BOTTOM_LEFT);
-//            Composite attackComp =
-//                    ImagesServiceFactory.makeComposite(makeNumberImage(card.getAttackValue(), request), 0, 0, 1f,
-//                            Composite.Anchor.BOTTOM_RIGHT);
-
-            List<Composite> composites = new ArrayList<Composite>(4);
-            composites.add(cardComp);
-//            composites.add(levelComp);
-//            composites.add(healthComp);
-//            composites.add(attackComp);
-
-            Image finalImage = imagesService.composite(composites, 171, 264, 0, ImagesService.OutputEncoding.PNG);
-
-            response.getOutputStream().write(finalImage.getImageData());
+            try {
+                response.getOutputStream().write(data);
+            } catch (IOException ignored) {
+            }
         } else {
             throw new IOException("This board has no image.");
         }

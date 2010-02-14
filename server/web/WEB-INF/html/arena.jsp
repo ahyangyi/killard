@@ -29,7 +29,7 @@
             z-index: 0;
             top: 0;
             left: 0;
-            background-image: url(image/grid/grid.png);
+            background-image: url(/image/grid/grid.png);
         }
 
         .panellayer {
@@ -65,7 +65,7 @@
             top: 0;
             height: 2em;
             z-index: 30;
-            background-image: url('image/texture/white.png');
+            background-image: url('/image/texture/white.png');
             text-align: center;
             display: none;
         }
@@ -144,15 +144,15 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+            <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list">
                     <ul class="cards">
-                        <li><img class="item" src="image/0.png"/></li>
+                        <li><img class="item" src="/image/0.png"/></li>
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -168,14 +168,14 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+            <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list dealtCards">
                     <ul class="cards">
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -193,35 +193,35 @@
     <ul class="top">
         <li>
             <div class="corner" style="text-align:center;color:mediumvioletred;">
-                <img src="image/corner/corner4.png"/>
+                <img src="/image/corner/corner4.png"/>
             </div>
         </li>
         <li>
             <div class="player" number="7">
                 <ul>
-                    <li><img src="image/role/role1.png"/></li>
-                    <li><img src="image/head/female.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role1.png"/></li>
+                    <li><img src="/image/head/female.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="6">
                 <ul>
-                    <li><img src="image/role/role4.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role4.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="5">
                 <ul>
-                    <li><img src="image/role/role3.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role3.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
         <li>
             <div class="corner" style="color:gold;text-align:center;">
-                <img src="image/corner/corner3.png"/>
+                <img src="/image/corner/corner3.png"/>
             </div>
         </li>
     </ul>
@@ -230,16 +230,16 @@
         <li>
             <div class="player" number="4">
                 <ul>
-                    <li><img src="image/role/role2.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role2.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="3">
                 <ul>
-                    <li><img src="image/role/role1.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role1.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
@@ -342,16 +342,16 @@
         <li>
             <div class="player" number="8">
                 <ul>
-                    <li><img src="image/role/role1.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role1.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="9">
                 <ul>
-                    <li><img src="image/role/role3.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role3.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
@@ -360,35 +360,35 @@
     <ul class="bottom">
         <li>
             <div class="corner">
-                <img src="image/corner/corner1.png"/>
+                <img src="/image/corner/corner1.png"/>
             </div>
         </li>
         <li>
             <div class="player" number="10">
                 <ul>
-                    <li><img src="image/role/role2.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role2.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="1">
                 <ul>
-                    <li><img src="image/role/role3.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role3.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="2">
                 <ul>
-                    <li><img src="image/role/role1.png"/></li>
-                    <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li><img src="/image/role/role1.png"/></li>
+                    <li><img src="/image/head/head.png"/></li>
+                    <li><img src="/image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
         <li>
             <div class="corner">
-                <img src="image/corner/corner2a.png"/>
+                <img src="/image/corner/corner2a.png"/>
             </div>
         </li>
     </ul>

@@ -10,6 +10,7 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
+import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -228,7 +229,7 @@ public class ArenaController extends BasicController {
     protected void quit() {
         BoardDO board = getBoard();
         if (board != null) {
-            PlayerCache playerCache = (PlayerCache) getCache().remove(getPlayerId());
+            PlayerCache playerCache = (PlayerCache) CacheInstance.getInstance().getCache().remove(getPlayerId());
             PersistenceManager pm = PersistenceHelper.getPersistenceManager();
             pm.deletePersistent(pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey()));
             PersistenceHelper.doTransaction();

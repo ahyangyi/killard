@@ -13,7 +13,7 @@ import com.killard.board.card.Player;
  */
 public class PlayerJoinAction extends PlayerAction<Player> {
 
-    protected PlayerJoinAction(Player source, Player target) {
-        super(source, target);
+    public PlayerJoinAction(Player player) {
+        super(player, player);
     }
 }

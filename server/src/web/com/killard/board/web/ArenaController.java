@@ -234,7 +234,12 @@ public class ArenaController extends BasicController {
         if (board != null) {
             PlayerCache playerCache = (PlayerCache) CacheInstance.getInstance().getCache().remove(getPlayerId());
             PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-            pm.deletePersistent(pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey()));
+            PlayerRecordDO player = pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey());
+            try {
+                board.removePlayer(player);
+            } catch (BoardException ignored) {
+            }
+            pm.deletePersistent(player);
             PersistenceHelper.doTransaction();
 
             if (board.getPlayers().length < board.getPlayerAmount()) {

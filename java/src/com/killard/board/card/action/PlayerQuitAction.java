@@ -13,7 +13,7 @@ import com.killard.board.card.Player;
  */
 public class PlayerQuitAction extends PlayerAction<Player> {
 
-    protected PlayerQuitAction(Player source, Player target) {
-        super(source, target);
+    public PlayerQuitAction(Player player) {
+        super(player, player);
     }
 }

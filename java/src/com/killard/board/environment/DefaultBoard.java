@@ -55,6 +55,9 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
         return player;
     }
 
+    public void removePlayer(Player player) throws BoardException {
+    }
+
     protected void setProperty(String name, Object data) {
     }
 

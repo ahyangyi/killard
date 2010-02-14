@@ -200,6 +200,8 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
 
     public abstract Player addPlayer(String playerId, String playerName, int number) throws BoardException;
 
+    public abstract void removePlayer(Player player) throws BoardException;
+
     protected abstract void setProperty(String name, Object data);
 
     protected abstract Card createCardRecord(MetaCard card, Player owner, Player target, int cardPosition);

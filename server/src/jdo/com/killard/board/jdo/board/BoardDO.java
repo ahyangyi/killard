@@ -8,6 +8,8 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.BeginGameAction;
 import com.killard.board.card.action.DealCardAction;
+import com.killard.board.card.action.PlayerJoinAction;
+import com.killard.board.card.action.PlayerQuitAction;
 import com.killard.board.environment.AbstractBoard;
 import com.killard.board.environment.BoardException;
 import com.killard.board.environment.event.ActionEvent;
@@ -152,8 +154,14 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerId, playerName, number, makeElementRecords());
 
         players.add(player);
+        executeAction(new PlayerJoinAction(player));
         if (roleNames.size() == count + 1) executeAction(new BeginGameAction(this));
         return player;
+    }
+
+    @Override
+    public void removePlayer(Player player) throws BoardException {
+        executeAction(new PlayerQuitAction(player));
     }
 
     public BoardPackage getPackage() {

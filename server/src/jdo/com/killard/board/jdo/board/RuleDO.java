@@ -1,10 +1,11 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
+import com.killard.board.card.action.BeginTurnAction;
 import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.DrawCardAction;
 import com.killard.board.card.action.DropCardAction;
@@ -17,7 +18,6 @@ import com.killard.board.environment.event.ActionListener;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.FunctionHelper;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -115,8 +115,9 @@ public class RuleDO implements ActionListener<RuleDO> {
     }
 
     @AfterAction(actionClass = EndTurnAction.class, selfTargeted = false)
-    public void after(BoardDO board, BoardDO owner, EndTurnAction action) {
+    public Action after(BoardDO board, BoardDO owner, EndTurnAction action) {
         owner.moveToNext();
+        return new BeginTurnAction(owner, owner.getCurrentPlayer());
     }
 
     @AfterAction(actionClass = DrawCardAction.class, selfTargeted = false)

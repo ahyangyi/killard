@@ -445,7 +445,7 @@ function playerUpdate(i, player) {
     var image = playerDiv.find('> ul > li > img');
     if (image.is(':hidden')) {
         image.show();
-        if (player.isSelf) {
+        if (player.self) {
             playerDiv.attr('self', true);
             playerDiv.toggleClass('selfPlayer');
             $('.player').unbind('click');
@@ -453,11 +453,18 @@ function playerUpdate(i, player) {
             playerDiv.toggleClass('emptyPlayer');
         }
     }
-    if (player.isSelf && player.dealtCards) {
+    if (player.self && player.dealtCards) {
         $.each(player.dealtCards, dealCard);
     }
     if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {placeCard(player.number, card, player.isSelf);});
+        $.each(player.equippedCards, function(i, card) {placeCard(player.number, card, player.self);});
+    }
+    if (player.self && player.current) {
+        var btn = $('.corner').eq(3);
+        btn.click(function() {
+            $.get('/arena/endturn.html');
+        });
+        btn.find('img').attr('src', '/image/corner/corner2a.png');
     }
 }
 
@@ -486,9 +493,9 @@ function dealCard(i, card) {
             .attr('cardName', card.name);
 }
 
-function placeCard(playerNumber, card, isSelf) {
+function placeCard(playerNumber, card, self) {
     var arena = $(".arena").data('arena');
-    var cardList = isSelf ? $('.self') : $('#player' + playerNumber);
+    var cardList = self ? $('.self') : $('#player' + playerNumber);
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
         cardList.show('drop', {direction:'up'});
@@ -509,22 +516,22 @@ function actionsUpdate(i, action) {
         playerQuit(action.player);
     }
     else if (action.actionClass == 'BeginTurnAction') {
-        if (action.player.isSelf) {
+        if (action.player.self) {
             var btn = $('.corner').eq(3);
             btn.click(function() {
                 $.get('/arena/endturn.html');
             });
-            btn.find('img').attr('src', '/image/corner/corner2.png');
+            btn.find('img').attr('src', '/image/corner/corner2a.png');
         }
     }
     else if (action.actionClass == 'EndTurnAction') {
-        if (action.player.isSelf) {
+        if (action.player.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.find('img').attr('src', '/image/corner/corner2.png');
         }
     }
     else if (action.actionClass == 'EquipCardAction') {
-        placeCard(action.playerNumber, action.card, action.isSelf);
+        placeCard(action.playerNumber, action.card, action.self);
     }
 }

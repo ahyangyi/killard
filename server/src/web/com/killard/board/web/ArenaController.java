@@ -127,6 +127,7 @@ public class ArenaController extends BasicController {
         String playerId = getPlayerId();
         BoardDO board = getBoard();
         ActionLogDO[] actions = board.getActions();
+        modelMap.put("board", board);
         modelMap.put("players", board.getPlayers());
         modelMap.put("playerId", playerId);
         if (actions.length > 0) {
@@ -150,6 +151,7 @@ public class ArenaController extends BasicController {
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
+        getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
         BoardDO board = getBoard();
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.playCard(elementSchoolName, cardName, cardPosition, getPlayer().getNumber());
@@ -162,6 +164,7 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml"}, method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
+        getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
         BoardDO board = getBoard();
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.cast(cardPosition, skillIndex);
@@ -174,6 +177,7 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
+        getLog().fine("End turn for " + getUser().getNickname());
         BoardDO board = getBoard();
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endTurn();
@@ -186,6 +190,7 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
+        getLog().fine("End call for " + getUser().getNickname());
         BoardDO board = getBoard();
         if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endCall();
@@ -242,7 +247,7 @@ public class ArenaController extends BasicController {
             pm.deletePersistent(player);
             PersistenceHelper.doTransaction();
 
-            if (board.getPlayers().length < board.getPlayerAmount()) {
+            if (board.getPlayers().length == 0) {
                 pm.deletePersistent(board);
                 PersistenceHelper.doTransaction();
             }

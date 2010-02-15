@@ -14,35 +14,35 @@
                 "player" : {
                 "nickname" : "${action.nickname}",
                 "number" : "${action.number}",
-                "isSelf" : ${action.playerId == playerId}
+                "self" : ${action.playerId == playerId}
                 },
             </c:when>
             <c:when test="${action.actionClass == 'PlayerQuitAction'}">
                 "player" : {
                 "nickname" : "${action.nickname}",
                 "number" : "${action.number}",
-                "isSelf" : ${action.playerId == playerId}
+                "self" : ${action.playerId == playerId}
                 },
             </c:when>
             <c:when test="${action.actionClass == 'KillPlayerAction'}">
                 "player" : {
                 "nickname" : "${action.nickname}",
                 "number" : "${action.number}",
-                "isSelf" : ${action.playerId == playerId}
+                "self" : ${action.playerId == playerId}
                 },
             </c:when>
             <c:when test="${action.actionClass == 'BeginTurnAction'}">
                 "player" : {
                 "nickname" : "${action.nickname}",
                 "number" : "${action.number}",
-                "isSelf" : ${action.playerId == playerId}
+                "self" : ${action.playerId == playerId}
                 },
             </c:when>
             <c:when test="${action.actionClass == 'EndTurnAction'}">
                 "player" : {
                 "nickname" : "${action.nickname}",
                 "number" : "${action.number}",
-                "isSelf" : ${action.playerId == playerId}
+                "self" : ${action.playerId == playerId}
                 },
             </c:when>
             <c:when test="${action.actionClass == 'EquipCardAction'}">
@@ -52,7 +52,7 @@
                 "name" : "${action.cardName}",
                 "position" : "${action.cardPosition}"
                 },
-                "isSelf" : ${action.playerId == playerId},
+                "self" : ${action.playerId == playerId},
                 "playerNumber" : "1",
             </c:when>
         </c:choose>

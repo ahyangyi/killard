@@ -1,6 +1,7 @@
 {
 <%@ include file="/WEB-INF/js/includes.jsp" %>
 <%--@elvariable id="time" type="long"--%>
+<%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="players" type="com.killard.board.jdo.board.record.PlayerRecordDO[]"--%>
 "time":${time},
@@ -8,7 +9,8 @@
 <c:forEach var="player" items="${players}" varStatus="status">
     {
         "username" : "${player.id}",
-        "isSelf" : ${player.id == playerId},
+        "self" : ${player.id == playerId},
+        "current" : ${player.number == board.currentPlayerNumber},
         "number" : ${player.number},
         "dealtCards" : [
     <c:if test="${player.id == playerId and player.number > 0}">

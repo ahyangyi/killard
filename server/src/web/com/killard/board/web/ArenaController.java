@@ -46,7 +46,7 @@ public class ArenaController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key packageKey = getBoard().getPackageKey();
+        Key packageKey = CacheInstance.getInstance().getBoard().getPackageKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
@@ -65,7 +65,7 @@ public class ArenaController extends BasicController {
 
     @RequestMapping(value = {"/arena/deal.html", "/arena/deal.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void deal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        BoardDO board = getBoard();
+        BoardDO board = CacheInstance.getInstance().getBoard();
         PlayerRecordDO player = (PlayerRecordDO) board.getCurrentPlayer();
     }
 
@@ -78,7 +78,8 @@ public class ArenaController extends BasicController {
     public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PlayerRecordDO player = getPlayer();
+        getLog().fine("New game record for " + getUser().getNickname() + " package " + packageBundleId);
+        PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player != null) {
             quit();
         }
@@ -95,7 +96,8 @@ public class ArenaController extends BasicController {
     public void enter(@RequestParam("packageBundleId") long packageBundleId,
                       @RequestParam("boardId") long boardId,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PlayerRecordDO player = getPlayer();
+        getLog().fine("Enter record for " + getUser().getNickname());
+        PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player == null || player.getBoardKey().getId() != boardId) {
             quit();
             join(getBoardManager(packageBundleId, boardId), -1);
@@ -106,16 +108,16 @@ public class ArenaController extends BasicController {
 
     @RequestMapping(value = {"/arena/join.html", "/arena/join.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("number") int number) throws Exception {
-        getLog().fine("Join record for " + getPlayerId() + " at " + number);
+        getLog().fine("Join record for " + getUser().getNickname() + " at " + number);
 
-        BoardDO board = getBoard();
+        BoardDO board = CacheInstance.getInstance().getBoard();
         quit();
         join(board, number);
     }
 
     @RequestMapping(value = {"/arena/quit.html"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("Quit record for " + getPlayerId());
+        getLog().fine("Quit record for " + getUser().getNickname());
 
         quit();
 
@@ -124,24 +126,24 @@ public class ArenaController extends BasicController {
 
     @RequestMapping(value = {"/arena/board.json"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
-        String playerId = getPlayerId();
-        BoardDO board = getBoard();
-        ActionLogDO[] actions = board.getActions();
+        CacheInstance instance = CacheInstance.getInstance();
+        String playerId = instance.getPlayerId();
+        BoardDO board = instance.getBoard();
         modelMap.put("board", board);
         modelMap.put("players", board.getPlayers());
         modelMap.put("playerId", playerId);
-        if (actions.length > 0) {
-            modelMap.put("time", actions[actions.length - 1].getTime().getTime());
-        } else {
-            modelMap.put("time", 0);
-        }
+
+        ActionLogDO[] actions = board.getActions();
+        if (actions.length > 0) modelMap.put("time", actions[actions.length - 1].getTime().getTime());
+        else modelMap.put("time", 0);
+
         return "arena/board";
     }
 
     @RequestMapping(value = {"/arena/cards.json"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String cards(ModelMap modelMap) throws Exception {
-        modelMap.put("board", getBoard());
-        modelMap.put("player", getPlayer());
+        modelMap.put("board", CacheInstance.getInstance().getBoard());
+        modelMap.put("player", CacheInstance.getInstance().getPlayer());
         return "arena/dealtCards";
     }
 
@@ -152,10 +154,11 @@ public class ArenaController extends BasicController {
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
         getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
-        BoardDO board = getBoard();
-        if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
-            board.playCard(elementSchoolName, cardName, cardPosition, getPlayer().getNumber());
+        BoardDO board = CacheInstance.getInstance().getBoard();
+        if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
+            board.playCard(elementSchoolName, cardName, cardPosition, CacheInstance.getInstance().getPlayer().getNumber());
             PersistenceHelper.getPersistenceManager().makePersistent(board);
+            logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
@@ -165,10 +168,11 @@ public class ArenaController extends BasicController {
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
         getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
-        BoardDO board = getBoard();
-        if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
+        BoardDO board = CacheInstance.getInstance().getBoard();
+        if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.cast(cardPosition, skillIndex);
             PersistenceHelper.getPersistenceManager().makePersistent(board);
+            logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
@@ -178,10 +182,11 @@ public class ArenaController extends BasicController {
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());
-        BoardDO board = getBoard();
-        if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
+        BoardDO board = CacheInstance.getInstance().getBoard();
+        if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endTurn();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
+            logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
@@ -191,10 +196,11 @@ public class ArenaController extends BasicController {
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());
-        BoardDO board = getBoard();
-        if (getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
+        BoardDO board = CacheInstance.getInstance().getBoard();
+        if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endCall();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
+            logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
         return "arena/actions";
@@ -205,9 +211,13 @@ public class ArenaController extends BasicController {
     public String actions(
             @RequestParam(value = "lastUpdatedTime", required = false, defaultValue = "0") long lastUpdatedTime,
             ModelMap modelMap) throws Exception {
-        String playerId = getPlayerId();
-        PlayerCache playerCache = getPlayerCache();
+        PlayerCache playerCache = CacheInstance.getInstance().getPlayerCache();
+        if (playerCache == null) {
+            getLog().warning("Player " + getUser().getNickname() + " attempts to get actions before entering game.");
+            return "arena/actions";
+        }
 
+        String playerId = CacheInstance.getInstance().getPlayerId();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(ActionLogDO.class);
         query.setFilter("boardKey == bKey && time > lastUpdatedTime");
@@ -222,22 +232,28 @@ public class ArenaController extends BasicController {
     }
 
     protected void join(BoardDO board, int number) throws BoardException {
-        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(getPlayerId(), getUser().getNickname(), number);
+        CacheInstance instance = CacheInstance.getInstance();
+        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(instance.getPlayerId(), getUser().getNickname(), number);
+        // It's important to do transaction immediately to make the Collection field persisted.
         PersistenceHelper.getPersistenceManager().makePersistent(board);
         PersistenceHelper.doTransaction();
 
-        //TODO
+        //TODO deal cards
         if (number > 0) {
             board.test();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
             PersistenceHelper.doTransaction();
         }
+
+        // log board to cache
+        logBoard(board);
     }
 
     protected void quit() {
-        BoardDO board = getBoard();
+        CacheInstance instance = CacheInstance.getInstance();
+        BoardDO board = instance.getBoard();
         if (board != null) {
-            PlayerCache playerCache = (PlayerCache) CacheInstance.getInstance().getCache().remove(getPlayerId());
+            PlayerCache playerCache = (PlayerCache) instance.getCache().remove(instance.getPlayerId());
             PersistenceManager pm = PersistenceHelper.getPersistenceManager();
             PlayerRecordDO player = pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey());
             try {
@@ -248,10 +264,18 @@ public class ArenaController extends BasicController {
             PersistenceHelper.doTransaction();
 
             if (board.getPlayers().length == 0) {
+                CacheInstance.getInstance().getCache().remove(board.getKey());
                 pm.deletePersistent(board);
                 PersistenceHelper.doTransaction();
+            } else {
+                logBoard(board);
             }
         }
+    }
+
+    protected void logBoard(BoardDO board) {
+        ActionLogDO[] actions = board.getActions();
+        CacheInstance.getInstance().getCache().put(board.getKey(), actions[actions.length - 1].getTime().getTime());
     }
 
 }

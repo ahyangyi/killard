@@ -1,7 +1,7 @@
 package com.killard.board.web;
 
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.web.BasicController;
+import com.killard.board.web.cache.CacheInstance;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class MessageController extends BasicController {
 
     @RequestMapping(value = "/messages.*", method = RequestMethod.GET)
     public String messages(ModelMap modelMap) throws Exception {
-        BoardDO board = getBoard();
+        BoardDO board = CacheInstance.getInstance().getBoard();
         modelMap.put("messages", board.getMessages());
         return "action/messages";
     }
@@ -31,8 +31,8 @@ public class MessageController extends BasicController {
     public String message(@RequestParam(value = "to", required = false) String to,
                           @RequestParam("message") String message,
                           ModelMap modelMap) throws Exception {
-        BoardDO board = getBoard();
-        board.postMessage(getPlayerId(), to, message);
+        BoardDO board = CacheInstance.getInstance().getBoard();
+        board.postMessage(CacheInstance.getInstance().getPlayerId(), to, message);
         modelMap.put("messages", board.getMessages());
         return "action/messages";
     }

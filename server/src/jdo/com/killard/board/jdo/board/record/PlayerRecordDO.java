@@ -262,8 +262,16 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     protected boolean addDealtCard(MetaCard metaCard) {
         MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
-            if (record.getElementSchool().getName().equals(element.getElementSchool().getName())) {
-                return element.addDealtCard(record);
+            try {
+                if (record.getElementSchool().getName().equals(element.getElementSchool().getName())) {
+                    return element.addDealtCard(record);
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Null? record: " + record);
+                System.out.println("Null? record element school: " + record.getElementSchool());
+                System.out.println("Null? element: " + element);
+                System.out.println("Null? element school: " + element.getElementSchool());
+                throw e;
             }
         }
         return false;

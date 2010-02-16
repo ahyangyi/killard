@@ -78,10 +78,10 @@ public class CardRecordDO extends AbstractCardRecord {
     @Persistent
     private int position;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<Key> skillKeys;
 
-    @Persistent(serialized = "true")
+    @Persistent
     private List<Key> attributeKeys;
 
     @Persistent

@@ -9,17 +9,11 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.record.PlayerRecordDO;
-import com.killard.board.web.cache.CacheInstance;
-import com.killard.board.web.cache.PlayerCache;
 
-import javax.cache.Cache;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 
@@ -39,26 +33,6 @@ public class BasicController {
     public BasicController() {
     }
 
-    protected PlayerCache getPlayerCache() {
-        String id = getPlayerId();
-        Cache cache = CacheInstance.getInstance().getCache();
-        if (cache.containsKey(id)) return (PlayerCache) cache.get(id);
-
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Query query = pm.newQuery(PlayerRecordDO.class);
-        query.setFilter("uid == playerId");
-        query.declareParameters("String playerId");
-        Collection collection = (Collection) query.execute(id);
-        if (collection.isEmpty()) return null;
-
-        PlayerRecordDO player = (PlayerRecordDO) collection.iterator().next();
-        BoardDO board = pm.getObjectById(BoardDO.class, player.getBoardKey());
-        board.restore();
-        PlayerCache playerCache = new PlayerCache(player.getKey(), board.getKey(), board.getPackageKey(), board.getBoardPackage().getBundleKey());
-        cache.put(id, playerCache);
-        return playerCache;
-    }
-
     protected Logger getLog() {
         return log;
     }
@@ -72,27 +46,6 @@ public class BasicController {
     protected User getUser() {
         UserService userService = UserServiceFactory.getUserService();
         return userService.getCurrentUser();
-    }
-
-    protected String getPlayerId() {
-        UserService userService = UserServiceFactory.getUserService();
-        return userService.getCurrentUser().getUserId();
-    }
-
-    protected PlayerRecordDO getPlayer() {
-        PlayerCache playerCache = getPlayerCache();
-        if (playerCache == null) return null;
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        return pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey());
-    }
-
-    protected BoardDO getBoard() {
-        PlayerCache cache = getPlayerCache();
-        if (cache == null) return null;
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        BoardDO board = pm.getObjectById(BoardDO.class, cache.getBoardKey());
-        board.restore();
-        return board;
     }
 
     protected BoardDO getBoardManager(long packageBundleId, long boardId) {

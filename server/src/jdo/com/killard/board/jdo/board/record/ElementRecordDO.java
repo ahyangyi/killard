@@ -14,8 +14,8 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -42,7 +42,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     @Persistent
     private int amount;
 
-    @Persistent
+    @Persistent(cacheable = "false")
     private List<Key> dealtCardKeys;
 
     @NotPersistent
@@ -54,7 +54,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     public ElementRecordDO(ElementSchoolDO elementSchool) {
         this.elementSchoolKey = elementSchool.getKey();
         this.amount = 10;
-        this.dealtCardKeys = new ArrayList<Key>();
+        this.dealtCardKeys = new LinkedList<Key>();
         this.elementSchool = elementSchool;
         this.dealtCards = new TreeSet<MetaCardDO>();
     }
@@ -63,7 +63,6 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolKey);
         dealtCards = new TreeSet<MetaCardDO>(this);
-        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
         for (Key key : dealtCardKeys) {
             dealtCards.add(pm.getObjectById(MetaCardDO.class, key));
         }
@@ -90,12 +89,10 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     }
 
     public MetaCardDO[] getDealtCards() {
-        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
         return dealtCards.toArray(new MetaCardDO[dealtCardKeys.size()]);
     }
 
     public boolean addDealtCard(MetaCardDO card) {
-        if (dealtCardKeys == null) dealtCardKeys = new ArrayList<Key>();
         return dealtCards.add(card) && dealtCardKeys.add(card.getKey());
     }
 

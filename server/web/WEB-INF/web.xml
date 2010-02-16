@@ -36,6 +36,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>status</servlet-name>
+        <servlet-class>com.killard.board.web.StatusServlet</servlet-class>
+    </servlet>
+
     <!--<servlet>-->
     <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
     <!--<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>-->
@@ -75,14 +80,14 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>dispatcher</servlet-name>-->
-        <!--<url-pattern>*.png</url-pattern>-->
-    <!--</servlet-mapping>-->
-
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/_ah/xmpp/message/chat/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>status</servlet-name>
+        <url-pattern>/arena/status.json</url-pattern>
     </servlet-mapping>
 
     <!--<servlet-mapping>-->

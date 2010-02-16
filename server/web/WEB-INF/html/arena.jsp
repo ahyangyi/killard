@@ -116,14 +116,24 @@
                 $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
                             $.each(data.actions, actionsUpdate);
-                            setTimeout(update, 1000);
+                            setTimeout(checkStatus, 1000);
                         });
+            }
+
+            function checkStatus() {
+                $.getJSON('arena/status.json', function(data, textStatus) {
+                    if (data.time > $(window).attr('lastUpdatedTime')) update();
+                    else {
+//                        alert('new time: ' + data.time + ' lastUpdatedTime' + $(window).attr('lastUpdatedTime'));
+                        setTimeout(checkStatus, 1000);
+                    }
+                });
             }
 
             $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).attr('lastUpdatedTime', data.time);
                 $.each(data.players, playerUpdate);
-                update();
+                checkStatus();
             });
         });
     </script>

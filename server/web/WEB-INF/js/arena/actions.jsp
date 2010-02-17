@@ -9,58 +9,28 @@
         <c:if test="${start == 'true'}">,</c:if>
         <c:set var="start" value="true"/>
         {
-        <c:choose>
-            <c:when test="${action.actionClass == 'PlayerJoinAction'}">
-                "player" : {
-                "nickname" : "${action.nickname}",
-                "number" : "${action.number}",
-                "self" : ${action.playerId == playerId}
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'PlayerQuitAction'}">
-                "player" : {
-                "nickname" : "${action.nickname}",
-                "number" : "${action.number}",
-                "self" : ${action.playerId == playerId}
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'KillPlayerAction'}">
-                "player" : {
-                "nickname" : "${action.nickname}",
-                "number" : "${action.number}",
-                "self" : ${action.playerId == playerId}
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'BeginTurnAction'}">
-                "player" : {
-                "nickname" : "${action.nickname}",
-                "number" : "${action.number}",
-                "self" : ${action.playerId == playerId}
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'EndTurnAction'}">
-                "player" : {
-                "nickname" : "${action.nickname}",
-                "number" : "${action.number}",
-                "self" : ${action.playerId == playerId}
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'DealCardAction'}">
-                "card" : {
-                "elementSchool" : "${action.cardElementSchoolName}",
-                "name" : "${action.cardName}"
-                },
-            </c:when>
-            <c:when test="${action.actionClass == 'EquipCardAction'}">
-                "card" : {
-                "elementSchool" : "${action.cardElementSchoolName}",
-                "name" : "${action.cardName}",
-                "position" : "${action.cardPosition}"
-                },
-                "self" : ${action.playerId == playerId},
-                "playerNumber" : "1",
-            </c:when>
-        </c:choose>
+        <c:if test="${action.playerId != null}">
+            "player" : {
+            "nickname" : "${action.nickname}",
+            "number" : "${action.number}",
+            "self" : ${action.playerId == playerId}
+            },
+        </c:if>
+        <c:if test="${action.cardPosition > 0}">
+            "card" : {
+            "elementSchool" : "${action.cardElementSchoolName}",
+            "name" : "${action.cardName}",
+            "position" : "${action.cardPosition}"
+            },
+            "self" : ${action.playerId == playerId},
+            "playerNumber" : "1",
+        </c:if>
+        <c:if test="${action.actionClass == 'DealCardAction'}">
+            "card" : {
+            "elementSchool" : "${action.cardElementSchoolName}",
+            "name" : "${action.cardName}"
+            },
+        </c:if>
         "time" : "${action.time.time}",
         "actionClass" : "${action.actionClass}"
     }

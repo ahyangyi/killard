@@ -4,7 +4,6 @@
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="players" type="com.killard.board.jdo.board.record.PlayerRecordDO[]"--%>
-"time":${time},
 "players":[
 <c:forEach var="player" items="${players}" varStatus="status">
     {
@@ -12,6 +11,7 @@
         "self" : ${player.id == playerId},
         "current" : ${player.number == board.currentPlayerNumber},
         "number" : ${player.number},
+        "health" : ${player.health},
         "dealtCards" : [
     <c:if test="${player.id == playerId and player.number > 0}">
     <c:forEach var="element" items="${player.elementRecords}" varStatus="elementStatus">
@@ -30,12 +30,16 @@
         <c:if test="${not cardStatus.first}">,</c:if>{
         "name" : "${card.name}",
         "elementSchool" : "${card.elementSchool.key.name}",
-        "position" : ${card.position}
+        "position" : ${card.position},
+        "health" : ${card.health},
+        "level" : ${card.level},
+        "attack" : ${card.attack.value}
         }
     </c:forEach>
     </c:if>
         ]
     }<c:if test="${not status.last}">,</c:if>
 </c:forEach>
-]
+],
+"time":${time}
 }

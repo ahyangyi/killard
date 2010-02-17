@@ -149,14 +149,14 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     public Player addPlayer(String playerId, String playerName, int number) throws BoardException {
         int count = 0;
         for (Player player : players) if (player.getNumber() > 0) count++;
-        if (roleNames.size() == count) throw new BoardException("This board has enough players.");
+        if (number > 0 && roleNames.size() == count) throw new BoardException("This board has enough players.");
 
-        RoleDO role = boardPackage.getRoles().get(roleNames.get(players.size()).getName());
+        RoleDO role = boardPackage.getRoles().get(roleNames.get(count - 1).getName());
         PlayerRecordDO player = new PlayerRecordDO(this, role, playerId, playerName, number, makeElementRecords());
 
         players.add(player);
-        executeAction(new PlayerJoinAction(player));
-        if (roleNames.size() == count + 1) {
+        if (number > 0) executeAction(new PlayerJoinAction(player));
+        if (roleNames.size() == count) {
             executeAction(new BeginGameAction(this));
             executeAction(new BeginTurnAction(this, getCurrentPlayer()));
         }

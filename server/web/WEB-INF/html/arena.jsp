@@ -122,9 +122,12 @@
 
             function checkStatus() {
                 $.getJSON('arena/status.json', function(data, textStatus) {
-                    if (data.time > $(window).attr('lastUpdatedTime')) update();
-                    else {
+                    if (data.time > $(window).attr('lastUpdatedTime')) {
 //                        alert('new time: ' + data.time + ' lastUpdatedTime' + $(window).attr('lastUpdatedTime'));
+                        update();
+                    }
+                    else {
+//                        alert('check time: ' + data.time + ' lastUpdatedTime' + $(window).attr('lastUpdatedTime'));
                         setTimeout(checkStatus, 1000);
                     }
                 });

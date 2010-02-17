@@ -11,6 +11,7 @@ import com.killard.board.card.action.ChangeCardAttackAction;
 import com.killard.board.card.action.ChangeCardHealthAction;
 import com.killard.board.card.action.ChangePlayerElementAction;
 import com.killard.board.card.action.ChangePlayerHealthAction;
+import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.EquipCardAction;
@@ -193,6 +194,8 @@ public class ActionLogDO {
             else if (action instanceof EndTurnAction) populate((EndTurnAction) action);
             else if (action instanceof RemoveCardAttributeAction) populate((RemoveCardAttributeAction) action);
 
+        } else if (action instanceof DealCardAction) {
+            populate((DealCardAction) action);
         }
     }
 
@@ -214,6 +217,8 @@ public class ActionLogDO {
     protected void populate(CardAction<? extends Record> action) {
         this.playerId = action.getTarget().getOwner().getId();
         this.cardPosition = action.getTarget().getPosition();
+        this.cardElementSchoolName = action.getTarget().getElementSchool().getName();
+        this.cardName = action.getTarget().getName();
     }
 
     protected void populate(AddCardAttributeAction action) {
@@ -264,5 +269,11 @@ public class ActionLogDO {
 
     protected void populate(RemoveCardAttributeAction action) {
         this.attributeName = action.getAttribute().getName();
+    }
+
+    protected void populate(DealCardAction action) {
+        this.playerId = action.getTarget().getId();
+        this.cardElementSchoolName = action.getSource().getElementSchool().getName();
+        this.cardName = action.getSource().getName();
     }
 }

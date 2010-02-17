@@ -45,9 +45,14 @@
                 "self" : ${action.playerId == playerId}
                 },
             </c:when>
+            <c:when test="${action.actionClass == 'DealCardAction'}">
+                "card" : {
+                "elementSchool" : "${action.cardElementSchoolName}",
+                "name" : "${action.cardName}"
+                },
+            </c:when>
             <c:when test="${action.actionClass == 'EquipCardAction'}">
                 "card" : {
-                "packageBundleId" : "${board.package.bundleKey.id}",
                 "elementSchool" : "${action.cardElementSchoolName}",
                 "name" : "${action.cardName}",
                 "position" : "${action.cardPosition}"

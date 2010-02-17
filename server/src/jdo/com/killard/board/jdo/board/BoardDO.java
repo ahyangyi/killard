@@ -61,7 +61,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private List<Key> roleNames;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<PlayerRecordDO> players;
+    private List<PlayerRecordDO> players;
 
     @Persistent
     private Set<Key> dealtCardKeys;
@@ -86,7 +86,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         this.creator = creator;
         this.currentPlayerNumber = 1;
         this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
-        this.players = new TreeSet<PlayerRecordDO>();
+        this.players = new LinkedList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
         this.actionLogs = new ArrayList<ActionLogDO>();
@@ -158,7 +158,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         executeAction(new PlayerJoinAction(player));
         if (roleNames.size() == count + 1) {
             executeAction(new BeginGameAction(this));
-            executeAction(new BeginTurnAction(this, player));
+            executeAction(new BeginTurnAction(this, getCurrentPlayer()));
         }
         return player;
     }
@@ -179,12 +179,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     }
 
     public Player[] getPlayers() {
-        List<Player> result = new LinkedList<Player>();
-        for (Player player : players) {
-//            if (player.getNumber() > 0) result.add(player);
-            result.add(player);
-        }
-        return result.toArray(new Player[result.size()]);
+        return players.toArray(new Player[players.size()]);
     }
 
     public Player getCurrentPlayer() {
@@ -194,15 +189,19 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     public Player getNextPlayer() {
         for (Player player : players) if (player.getNumber() > currentPlayerNumber) return player;
-        return players.first();
+        return players.get(0);
     }
 
     public Player getPreviousPlayer() {
-        Player result = players.last();
+        Player previous = null;
+        Player last = null;
         for (Player player : players) {
-            if (player.getNumber() < currentPlayerNumber) result = player;
+            if (player.getNumber() > 0) {
+                last = player;
+                if (player.getNumber() < currentPlayerNumber) previous = player;
+            }
         }
-        return result;
+        return previous == null ? last : previous;
     }
 
     public Player getPlayer(int number) {

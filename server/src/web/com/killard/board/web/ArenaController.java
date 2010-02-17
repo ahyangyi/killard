@@ -80,9 +80,7 @@ public class ArenaController extends BasicController {
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("New game record for " + getUser().getNickname() + " package " + packageBundleId);
         PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
-        if (player != null) {
-            quit();
-        }
+        if (player != null) quit();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO gamePackage = getPackage(packageBundleId);
         BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);

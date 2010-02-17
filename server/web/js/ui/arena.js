@@ -461,6 +461,7 @@ function playerUpdate(i, player) {
     }
     if (player.self && player.current) {
         var btn = $('.corner').eq(3);
+        btn.unbind('click');
         btn.click(function() {
             $.get('/arena/endturn.html');
         });
@@ -518,6 +519,7 @@ function actionsUpdate(i, action) {
     else if (action.actionClass == 'BeginTurnAction') {
         if (action.player.self) {
             var btn = $('.corner').eq(3);
+            btn.unbind('click');
             btn.click(function() {
                 $.get('/arena/endturn.html');
             });
@@ -533,5 +535,8 @@ function actionsUpdate(i, action) {
     }
     else if (action.actionClass == 'EquipCardAction') {
         placeCard(action.playerNumber, action.card, action.self);
+    }
+    else if (action.actionClass == 'DealCardAction') {
+        dealCard(0, action.card);
     }
 }

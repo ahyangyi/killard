@@ -7,7 +7,7 @@
 "players":[
 <c:forEach var="player" items="${players}" varStatus="status">
     {
-        "username" : "${player.id}",
+        "username" : "${player.nickname}",
         "self" : ${player.id == playerId},
         "current" : ${player.number == board.currentPlayerNumber},
         "number" : ${player.number},
@@ -18,7 +18,10 @@
         <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
         <c:if test="${not (elementStatus.first and cardStatus.first)}">,</c:if>{
         "name" : "${card.key.name}",
-        "elementSchool" : "${card.elementSchool.name}"
+        "elementSchool" : "${card.elementSchool.name}",
+        "level" : ${card.level},
+        "maxHealth" : ${card.maxHealth},
+        "attack" : ${card.attack.value}
         }
         </c:forEach>
     </c:forEach>
@@ -31,8 +34,9 @@
         "name" : "${card.name}",
         "elementSchool" : "${card.elementSchool.key.name}",
         "position" : ${card.position},
-        "health" : ${card.health},
         "level" : ${card.level},
+        "maxHealth" : ${card.maxHealth},
+        "health" : ${card.health},
         "attack" : ${card.attack.value}
         }
     </c:forEach>

@@ -111,7 +111,6 @@
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
             $('.other img').hide();
-
             function update() {
                 $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
@@ -119,20 +118,12 @@
                             setTimeout(checkStatus, 1000);
                         });
             }
-
             function checkStatus() {
                 $.getJSON('arena/status.json', function(data, textStatus) {
-                    if (data.time > $(window).attr('lastUpdatedTime')) {
-//                        alert('new time: ' + data.time + ' lastUpdatedTime' + $(window).attr('lastUpdatedTime'));
-                        update();
-                    }
-                    else {
-//                        alert('check time: ' + data.time + ' lastUpdatedTime' + $(window).attr('lastUpdatedTime'));
-                        setTimeout(checkStatus, 1000);
-                    }
+                    if (data.time > $(window).attr('lastUpdatedTime')) update();
+                    else setTimeout(checkStatus, 1000);
                 });
             }
-
             $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).attr('lastUpdatedTime', data.time);
                 $.each(data.players, playerUpdate);

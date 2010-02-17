@@ -1,16 +1,16 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link type="text/css" href="/css/ui/arena.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/ui/searchbar.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/jquery/base/ui.all.css" rel="stylesheet"/>
-    <script type="text/javascript" src="/js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
-    <script type="text/javascript" src="/js/ui/arena.js"></script>
-    <script type="text/javascript" src="/js/ui/richlist.js"></script>
-    <script type="text/javascript" src="/js/ui/carousel.js"></script>
-    <title>Killard</title>
+    <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
+    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="js/ui/arena.js"></script>
+    <script type="text/javascript" src="js/ui/richlist.js"></script>
+    <script type="text/javascript" src="js/ui/carousel.js"></script>
+    <title>Killard Arena</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -110,25 +110,35 @@
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
             $('.other img').hide();
-
-            setTimeout(function() {
-                $.getJSON('test/arena/players0.json', function(players, textStatus) {
-                    $.each(players, playerUpdate);
+            function update() {
+                $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
+                        function(data, textStatus) {
+                            $.each(data.actions, actionsUpdate);
+                            setTimeout(checkStatus, 1000);
+                        });
+            }
+            function checkStatus() {
+                $.getJSON('arena/status.json', function(data, textStatus) {
+                    if (data.time > $(window).attr('lastUpdatedTime')) update();
+                    else setTimeout(checkStatus, 1000);
                 });
-            }, 1000);
-
-            setTimeout(function() {
-                $.getJSON('test/arena/players1.json', function(players, textStatus) {
-                    $.each(players, playerUpdate);
-                });
-            }, 4000);
-
-            setTimeout(function() {
-                $.getJSON('test/arena/actions0.json', '', function(actions, textStatus) {
-                    $.each(actions, actionsUpdate);
-                });
-            }, 10000);
+            }
+            $.getJSON('test/arena/board.json', function(data, textStatus) {
+                $(window).attr('lastUpdatedTime', data.time);
+                $.each(data.players, playerUpdate);
+//                checkStatus();
+            });
         });
+    </script>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost
+            + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    try {
+        var pageTracker = _gat._getTracker("UA-6297932-3");
+        pageTracker._trackPageview();
+    } catch(err) {
+    }
     </script>
 </head>
 <body>
@@ -137,26 +147,15 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back">&nbsp;</a></li>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list">
                     <ul class="cards">
                         <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
-                        <li><img class="item" src="image/0.png"/></li>
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward">&nbsp;</a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -172,26 +171,14 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back">&nbsp;</a></li>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list dealtCards">
                     <ul class="cards">
-                        <li><img class="item" src="image/1.png"/></li>
-                        <li><img class="item" src="image/2.png"/></li>
-                        <li><img class="item" src="image/3.png"/></li>
-                        <li><img class="item" src="image/4.png"/></li>
-                        <li><img class="item" src="image/5.png"/></li>
-                        <li><img class="item" src="image/6.png"/></li>
-                        <li><img class="item" src="image/7.png"/></li>
-                        <li><img class="item" src="image/8.png"/></li>
-                        <li><img class="item" src="image/9.png"/></li>
-                        <li><img class="item" src="image/10.png"/></li>
-                        <li><img class="item" src="image/11.png"/></li>
-                        <li><img class="item" src="image/12.png"/></li>
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward">&nbsp;</a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -213,21 +200,21 @@
             </div>
         </li>
         <li>
-            <div class="player" order="7">
+            <div class="player" number="7">
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/female.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="6">
+            <div class="player" number="6">
                 <ul>
                     <li><img src="image/role/role4.png"/></li>
                     <li><img src="image/head/head.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="5">
+            <div class="player" number="5">
                 <ul>
                     <li><img src="image/role/role3.png"/></li>
                     <li><img src="image/head/head.png"/></li>
@@ -244,14 +231,14 @@
 
     <ul class="center">
         <li>
-            <div class="player" order="4">
+            <div class="player" number="4">
                 <ul>
                     <li><img src="image/role/role2.png"/></li>
                     <li><img src="image/head/head.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="3">
+            <div class="player" number="3">
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/head.png"/></li>
@@ -261,89 +248,94 @@
         </li>
         <li>
             <div class="board">
+                <ul class="cardlist other" id="player1">
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
+                </ul>
                 <ul class="cardlist other" id="player2">
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/4.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player3">
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/4.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player4">
-                    <li class="card ui-state-default"><img src="image/11.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/12.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player5">
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player6">
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player7">
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/4.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player8">
-                    <li class="card ui-state-default"><img src="image/2.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/7.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player9">
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/4.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/8.png" class="cardimage"/></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player10">
-                    <li class="card ui-state-default"><img src="image/7.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/5.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"><img src="image/6.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/3.png" class="cardimage"/></li>
-                    <li class="card ui-state-default"><img src="image/1.png" class="cardimage"/></li>
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <div class="separator"></div>
-                <ul class="cardlist self" id="player1">
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default"></li>
-                    <li class="card ui-state-default">
-                        <img src="image/7.png" class="cardimage"/>
-                        <img src="image/skill.png" class="skillimage"/>
-                    </li>
+                <ul class="cardlist self">
+                    <li class="card ui-state-default" position="1"></li>
+                    <li class="card ui-state-default" position="2"></li>
+                    <li class="card ui-state-default" position="3"></li>
+                    <li class="card ui-state-default" position="4"></li>
+                    <li class="card ui-state-default" position="5"></li>
+                    <li class="card ui-state-default" position="6"></li>
                 </ul>
                 <div class="messagebox">
                     <p></p>
@@ -351,14 +343,14 @@
             </div>
         </li>
         <li>
-            <div class="player" order="8">
+            <div class="player" number="8">
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/head.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="9">
+            <div class="player" number="9">
                 <ul>
                     <li><img src="image/role/role3.png"/></li>
                     <li><img src="image/head/head.png"/></li>
@@ -375,21 +367,21 @@
             </div>
         </li>
         <li>
-            <div class="player" order="10">
+            <div class="player" number="10">
                 <ul>
                     <li><img src="image/role/role2.png"/></li>
                     <li><img src="image/head/head.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="1">
+            <div class="player" number="1">
                 <ul>
                     <li><img src="image/role/role3.png"/></li>
                     <li><img src="image/head/head.png"/></li>
                     <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
-            <div class="player" order="2">
+            <div class="player" number="2">
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/head.png"/></li>

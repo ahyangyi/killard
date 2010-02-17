@@ -401,6 +401,17 @@
             $('.self').find('.card').each(function(i, e) {
                 $(e).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
             });
+            this.card.each(function(i, c){
+                var numbers = $(c).find('span');
+                var cardWidth = parseInt(9 * boardLengthUnit);
+                var cardHeight = parseInt(14 * boardLengthUnit);
+                var fontSize = parseInt(9 * boardLengthUnit / 6);
+                numbers.css('font-size', fontSize);
+                numbers.eq(0).css('top', 0).css('left', 0);
+                numbers.eq(1).css('top', 0).css('left', cardWidth - fontSize);
+                numbers.eq(2).css('top', cardHeight - fontSize).css('left', 0);
+                numbers.eq(3).css('top', cardHeight - fontSize).css('left', cardWidth - fontSize);
+            });
 
             this.card.find('.skillimage').css('left', this.cardWidth / 3);
             this.card.find('.skillimage').css('top', this.cardHeight - this.cardWidth / 3);
@@ -457,7 +468,7 @@ function playerUpdate(i, player) {
         $.each(player.dealtCards, dealCard);
     }
     if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {placeCard(player.number, card, player.self);});
+        $.each(player.equippedCards, function(i, card) {equipCard(player.number, card, player.self);});
     }
     if (player.self && player.current) {
         var btn = $('.corner').eq(3);
@@ -482,7 +493,8 @@ function playerQuit(player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
+//    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
+    $('<li><img class="item" src="image/2.png"/></li>')
             .appendTo($('.dealtCards > .cards'))
             .width(arena.cardWidth)
             .height(arena.cardHeight)
@@ -494,7 +506,7 @@ function dealCard(i, card) {
             .attr('cardName', card.name);
 }
 
-function placeCard(playerNumber, card, self) {
+function equipCard(playerNumber, card, self) {
     var arena = $(".arena").data('arena');
     var cardList = self ? $('.self') : $('#player' + playerNumber);
     if (cardList.is(':hidden')) {
@@ -502,10 +514,41 @@ function placeCard(playerNumber, card, self) {
         cardList.show('drop', {direction:'up'});
     }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
+    cardDiv.hide();
+//    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
+//            .width(arena.cardWidth)
+//            .height(arena.cardHeight)
+//            .appendTo(cardDiv);
+    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .appendTo(cardDiv);
+    var fontSize = arena.cardWidth / 6;
+    if (card.level > 0)
+        $('<span>' + card.level + '</span>')
+                .css('top',0)
+                .css('left',0)
+                .css('font-size', fontSize)
+                .appendTo(cardDiv);
+    if (card.maxHealth > 0)
+        $('<span>' + card.maxHealth + '</span>')
+                .css('top',0)
+                .css('left',arena.cardWidth - fontSize)
+                .css('font-size', fontSize)
+                .appendTo(cardDiv);
+    if (card.health > 0)
+        $('<span>' + card.health + '</span>')
+                .css('top',arena.cardHeight - fontSize)
+                .css('left',0)
+                .css('font-size', fontSize)
+                .appendTo(cardDiv);
+    if (card.attack > 0)
+        $('<span>' + card.attack + '</span>')
+                .css('top',arena.cardHeight - fontSize)
+                .css('left',arena.cardWidth - fontSize)
+                .css('font-size', fontSize)
+                .appendTo(cardDiv);
+    cardDiv.show();
 }
 
 function actionsUpdate(i, action) {
@@ -534,7 +577,7 @@ function actionsUpdate(i, action) {
         }
     }
     else if (action.actionClass == 'EquipCardAction') {
-        placeCard(action.playerNumber, action.card, action.self);
+        equipCard(action.playerNumber, action.card, action.self);
     }
     else if (action.actionClass == 'DealCardAction') {
         dealCard(0, action.card);

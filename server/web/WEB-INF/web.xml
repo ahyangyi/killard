@@ -41,6 +41,11 @@
         <servlet-class>com.killard.board.web.StatusServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>com.killard.board.web.ActionServlet</servlet-class>
+    </servlet>
+
     <!--<servlet>-->
     <!--<servlet-name>MessageBrokerServlet</servlet-name>-->
     <!--<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>-->
@@ -88,6 +93,11 @@
     <servlet-mapping>
         <servlet-name>status</servlet-name>
         <url-pattern>/arena/status.json</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>/arena/actions.json</url-pattern>
     </servlet-mapping>
 
     <!--<servlet-mapping>-->

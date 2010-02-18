@@ -25,14 +25,14 @@
             "self" : ${action.playerId == playerId},
             "playerNumber" : "1",
         </c:if>
-        <c:if test="${action.actionClass == 'DealCardAction'}">
+        <c:if test="${action.action == 'DealCardAction'}">
             "card" : {
             "elementSchool" : "${action.cardElementSchoolName}",
             "name" : "${action.cardName}"
             },
         </c:if>
         "time" : "${action.time.time}",
-        "actionClass" : "${action.actionClass}"
+        "actionClass" : "${action.action}"
     }
 </c:forEach>
 ]

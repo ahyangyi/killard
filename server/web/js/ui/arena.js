@@ -553,14 +553,14 @@ function equipCard(playerNumber, card, self) {
 
 function actionsUpdate(i, action) {
     $(window).attr('lastUpdatedTime', action.time);
-    if (action.actionClass == 'PlayerJoinAction') {
-        playerUpdate(i, action.player);
+    if (action.action == 'PlayerJoinAction') {
+        playerUpdate(i, action.target);
     }
-    else if (action.actionClass == 'PlayerQuitAction') {
-        playerQuit(action.player);
+    else if (action.action == 'PlayerQuitAction') {
+        playerQuit(action.target);
     }
-    else if (action.actionClass == 'BeginTurnAction') {
-        if (action.player.self) {
+    else if (action.action == 'BeginTurnAction') {
+        if (action.target.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.click(function() {
@@ -569,17 +569,18 @@ function actionsUpdate(i, action) {
             btn.find('img').attr('src', '/image/corner/corner2a.png');
         }
     }
-    else if (action.actionClass == 'EndTurnAction') {
-        if (action.player.self) {
+    else if (action.action == 'EndTurnAction') {
+        if (action.target.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.find('img').attr('src', '/image/corner/corner2.png');
         }
     }
-    else if (action.actionClass == 'EquipCardAction') {
-        equipCard(action.playerNumber, action.card, action.self);
+    else if (action.action == 'EquipCardAction') {
+        equipCard(action.source.number, action.target, action.source.self);
     }
-    else if (action.actionClass == 'DealCardAction') {
-        dealCard(0, action.card);
+    else if (action.action == 'DealCardAction') {
+        if (action.target.self)
+            dealCard(0, action.source);
     }
 }

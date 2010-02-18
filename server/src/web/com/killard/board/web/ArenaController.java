@@ -19,12 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  * <p>
@@ -194,31 +191,6 @@ public class ArenaController extends BasicController {
             logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
-        return "arena/actions";
-    }
-
-    @RequestMapping(value = {"/arena/actions.html", "/arena/actions.xml", "/arena/actions.json"},
-            method = {RequestMethod.GET, RequestMethod.POST})
-    public String actions(
-            @RequestParam(value = "lastUpdatedTime", required = false, defaultValue = "0") long lastUpdatedTime,
-            ModelMap modelMap) throws Exception {
-        PlayerCache playerCache = CacheInstance.getInstance().getPlayerCache();
-        if (playerCache == null) {
-            getLog().warning("Player " + getUser().getNickname() + " attempts to get actions before entering game.");
-            return "arena/actions";
-        }
-
-        String playerId = CacheInstance.getInstance().getPlayerId();
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Query query = pm.newQuery(ActionLogDO.class);
-        query.setFilter("boardKey == bKey && time > lastUpdatedTime");
-        query.setOrdering("time ascending");
-        query.declareParameters("com.google.appengine.api.datastore.Key bKey, java.util.Date lastUpdatedTime");
-        Collection actions = (Collection) query.execute(playerCache.getBoardKey(), new Date(lastUpdatedTime));
-
-        modelMap.put("playerId", playerId);
-        modelMap.put("actions", actions);
-        modelMap.put("lastUpdatedTime", lastUpdatedTime);
         return "arena/actions";
     }
 

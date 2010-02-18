@@ -114,7 +114,7 @@
             function update() {
                 $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
-                            $.each(data.actions, actionsUpdate);
+                            $.each(data, actionsUpdate);
                             setTimeout(checkStatus, 1000);
                         });
             }

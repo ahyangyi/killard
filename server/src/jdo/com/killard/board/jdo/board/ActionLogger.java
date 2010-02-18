@@ -11,6 +11,6 @@ import com.killard.board.card.Action;
  * The implementations are not required to be thread safe.
  * </p>
  */
-public interface ActionLogger {
-    public String log(Action action);
+public interface ActionLogger<A extends Action> {
+    public String log(A action);
 }

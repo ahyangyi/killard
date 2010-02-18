@@ -138,14 +138,7 @@ public class ArenaController extends BasicController {
         return "arena/board";
     }
 
-    @RequestMapping(value = {"/arena/cards.json"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String cards(ModelMap modelMap) throws Exception {
-        modelMap.put("board", CacheInstance.getInstance().getBoard());
-        modelMap.put("player", CacheInstance.getInstance().getPlayer());
-        return "arena/dealtCards";
-    }
-
-    @RequestMapping(value = {"/arena/playcard.json"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/playcard.html", "/arena/playcard.xml", "/arena/playcard.json"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String playCard(@RequestParam("elementSchoolName") String elementSchoolName,
                            @RequestParam("cardName") String cardName,
                            @RequestParam("cardPosition") int cardPosition,

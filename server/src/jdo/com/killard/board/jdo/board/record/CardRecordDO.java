@@ -39,7 +39,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class CardRecordDO extends AbstractCardRecord {
+public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -322,5 +322,9 @@ public class CardRecordDO extends AbstractCardRecord {
             }
         }
         return false;
+    }
+
+    public int compareTo(CardRecordDO record) {
+        return key.compareTo(record.key);
     }
 }

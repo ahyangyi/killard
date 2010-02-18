@@ -493,8 +493,8 @@ function playerQuit(player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-//    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
-    $('<li><img class="item" src="image/2.png"/></li>')
+    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
+//    $('<li><img class="item" src="image/2.png"/></li>')
             .appendTo($('.dealtCards > .cards'))
             .width(arena.cardWidth)
             .height(arena.cardHeight)
@@ -515,14 +515,14 @@ function equipCard(playerNumber, card, self) {
     }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
     cardDiv.hide();
-//    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
-//            .width(arena.cardWidth)
-//            .height(arena.cardHeight)
-//            .appendTo(cardDiv);
-    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
+    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .appendTo(cardDiv);
+//    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
+//            .width(arena.cardWidth)
+//            .height(arena.cardHeight)
+//            .appendTo(cardDiv);
     var fontSize = arena.cardWidth / 6;
     if (card.level > 0)
         $('<span>' + card.level + '</span>')

@@ -20,7 +20,7 @@ import javax.jdo.annotations.PrimaryKey;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardPropertyDO {
+public class BoardPropertyDO implements Comparable<BoardPropertyDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -65,7 +65,7 @@ public class BoardPropertyDO {
     }
 
     public int compareTo(BoardPropertyDO compare) {
-        return getName().compareTo(compare.getName());
+        return key.compareTo(compare.key);
     }
 
 }

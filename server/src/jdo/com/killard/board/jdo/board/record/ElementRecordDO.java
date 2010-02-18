@@ -14,11 +14,8 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -30,7 +27,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<MetaCardDO> {
+public class ElementRecordDO implements Comparable<ElementRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -42,30 +39,28 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
     @Persistent
     private int amount;
 
-    @Persistent(cacheable = "false")
+    @Persistent
     private List<Key> dealtCardKeys;
 
     @NotPersistent
     private ElementSchoolDO elementSchool;
 
     @NotPersistent
-    private SortedSet<MetaCardDO> dealtCards;
+    private List<MetaCardDO> dealtCards;
 
     public ElementRecordDO(ElementSchoolDO elementSchool) {
         this.elementSchoolKey = elementSchool.getKey();
         this.amount = 10;
         this.dealtCardKeys = new LinkedList<Key>();
         this.elementSchool = elementSchool;
-        this.dealtCards = new TreeSet<MetaCardDO>();
+        this.dealtCards = new LinkedList<MetaCardDO>();
     }
 
     public void restore(BoardDO board) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolKey);
-        dealtCards = new TreeSet<MetaCardDO>(this);
-        for (Key key : dealtCardKeys) {
-            dealtCards.add(pm.getObjectById(MetaCardDO.class, key));
-        }
+        dealtCards = new LinkedList<MetaCardDO>();
+        for (Key key : dealtCardKeys) dealtCards.add(pm.getObjectById(MetaCardDO.class, key));
     }
 
     public Key getKey() {
@@ -106,12 +101,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO>, Comparator<
         this.key = keyBuilder.getKey();
     }
 
-    public int compare(MetaCardDO card1, MetaCardDO card2) {
-        if (card1.getLevel() == card2.getLevel()) return card1.compareTo(card2);
-        return card1.getLevel() - card2.getLevel();
-    }
-
     public int compareTo(ElementRecordDO elementRecord) {
-        return getKey().compareTo(elementRecord.getKey());
+        return key.compareTo(elementRecord.key);
     }
 }

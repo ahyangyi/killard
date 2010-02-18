@@ -23,9 +23,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -59,10 +59,10 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     private Function function;
 
     @Persistent
-    private SortedSet<SkillPropertyDO> properties;
+    private Set<SkillPropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<SkillDescriptorDO> descriptors;
+    private Set<SkillDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -82,8 +82,8 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         this.cost = cost;
         this.function = function;
 
-        this.properties = new TreeSet<SkillPropertyDO>();
-        this.descriptors = new TreeSet<SkillDescriptorDO>();
+        this.properties = new HashSet<SkillPropertyDO>();
+        this.descriptors = new HashSet<SkillDescriptorDO>();
     }
 
     protected SkillDO(MetaCardDO card, SkillDO source) {

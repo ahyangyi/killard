@@ -2,8 +2,8 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
@@ -20,7 +20,9 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -70,17 +72,17 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent(defaultFetchGroup = "false")
     private SortedSet<SkillDO> skills;
 
-    @Persistent(serialized = "true")
-    private SortedSet<String> visibleAttributes;
-
-    @Persistent(serialized = "true")
-    private SortedSet<String> hiddenAttributes;
+    @Persistent
+    private Set<String> visibleAttributes;
 
     @Persistent
-    private SortedSet<MetaCardPropertyDO> properties;
+    private Set<String> hiddenAttributes;
+
+    @Persistent
+    private Set<MetaCardPropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<MetaCardDescriptorDO> descriptors;
+    private Set<MetaCardDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -96,10 +98,10 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.equippable = true;
         this.visible = true;
         this.skills = new TreeSet<SkillDO>();
-        this.hiddenAttributes = new TreeSet<String>();
-        this.visibleAttributes = new TreeSet<String>();
-        this.properties = new TreeSet<MetaCardPropertyDO>();
-        this.descriptors = new TreeSet<MetaCardDescriptorDO>();
+        this.hiddenAttributes = new HashSet<String>();
+        this.visibleAttributes = new HashSet<String>();
+        this.properties = new HashSet<MetaCardPropertyDO>();
+        this.descriptors = new HashSet<MetaCardDescriptorDO>();
         this.definition = new Text("");
     }
 

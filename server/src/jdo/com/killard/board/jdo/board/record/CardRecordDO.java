@@ -26,7 +26,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -88,7 +88,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private boolean casted;
 
     @Persistent
-    private SortedSet<CardRecordPropertyDO> properties;
+    private Set<CardRecordPropertyDO> properties;
 
     @NotPersistent
     private MetaCardDO card;

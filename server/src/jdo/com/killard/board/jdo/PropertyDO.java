@@ -71,6 +71,6 @@ public abstract class PropertyDO implements Comparable<PropertyDO> {
     }
 
     public int compareTo(PropertyDO compare) {
-        return getKey().compareTo(compare.getKey());
+        return key.compareTo(compare.key);
     }
 }

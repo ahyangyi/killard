@@ -9,15 +9,14 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -40,16 +39,16 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     private String name;
 
     @Persistent(mappedBy = "elementSchool")
-    private SortedSet<MetaCardDO> cards;
+    private Set<MetaCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
-    private SortedSet<AttributeDO> attributes;
+    private Set<AttributeDO> attributes;
 
     @Persistent
-    private SortedSet<ElementSchoolPropertyDO> properties;
+    private Set<ElementSchoolPropertyDO> properties;
 
     @Persistent
-    private SortedSet<ElementSchoolDescriptorDO> descriptors;
+    private Set<ElementSchoolDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -60,10 +59,10 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         this.key = keyBuilder.getKey();
 
         this.name = name;
-        this.cards = new TreeSet<MetaCardDO>();
-        this.attributes = new TreeSet<AttributeDO>();
-        this.properties = new TreeSet<ElementSchoolPropertyDO>();
-        this.descriptors = new TreeSet<ElementSchoolDescriptorDO>();
+        this.cards = new HashSet<MetaCardDO>();
+        this.attributes = new HashSet<AttributeDO>();
+        this.properties = new HashSet<ElementSchoolPropertyDO>();
+        this.descriptors = new HashSet<ElementSchoolDescriptorDO>();
     }
 
     protected ElementSchoolDO(PackageDO pack, ElementSchoolDO source) {

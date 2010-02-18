@@ -2,14 +2,13 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -17,9 +16,9 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -56,10 +55,10 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private List<AttributeHandler> after;
 
     @Persistent
-    private SortedSet<RolePropertyDO> properties;
+    private Set<RolePropertyDO> properties;
 
     @Persistent
-    private SortedSet<RoleDescriptorDO> descriptors;
+    private Set<RoleDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -82,8 +81,8 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
 
-        this.properties = new TreeSet<RolePropertyDO>();
-        this.descriptors = new TreeSet<RoleDescriptorDO>();
+        this.properties = new HashSet<RolePropertyDO>();
+        this.descriptors = new HashSet<RoleDescriptorDO>();
     }
 
     protected RoleDO(PackageDO pack, RoleDO source) {

@@ -87,7 +87,7 @@ public abstract class DescriptorDO implements Comparable<DescriptorDO> {
         this.description = new Text(description);
     }
 
-    public int compareTo(DescriptorDO descriptorDO) {
-        return getKey().compareTo(descriptorDO.getKey());
+    public int compareTo(DescriptorDO compare) {
+        return key.compareTo(compare.key);
     }
 }

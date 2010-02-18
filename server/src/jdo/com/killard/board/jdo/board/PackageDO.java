@@ -18,8 +18,10 @@ import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -58,7 +60,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     private SortedSet<ElementSchoolDO> elementSchools;
 
     @Persistent
-    private SortedSet<PackageDescriptorDO> descriptors;
+    private Set<PackageDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -76,7 +78,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.roles = new TreeSet<RoleDO>();
         this.roleGroups = new TreeSet<RoleGroupDO>();
         this.elementSchools = new TreeSet<ElementSchoolDO>();
-        this.descriptors = new TreeSet<PackageDescriptorDO>();
+        this.descriptors = new HashSet<PackageDescriptorDO>();
     }
 
     protected PackageDO(PackageBundleDO bundle, PackageDO source) {
@@ -194,6 +196,6 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     }
 
     public int compareTo(PackageDO compare) {
-        return getKey().compareTo(compare.getKey());
+        return key.compareTo(compare.key);
     }
 }

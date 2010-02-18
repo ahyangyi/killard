@@ -81,7 +81,7 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     public abstract void setImageData(byte[] data);
 
-    public int compareTo(S descriptableDO) {
-        return getKey().compareTo(descriptableDO.getKey());
+    public int compareTo(S compare) {
+        return getKey().compareTo(compare.getKey());
     }
 }

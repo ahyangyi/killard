@@ -18,7 +18,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -66,7 +68,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private SortedSet<ElementRecordDO> elementRecords;
 
     @Persistent
-    private SortedSet<PlayerRecordPropertyDO> properties;
+    private Set<PlayerRecordPropertyDO> properties;
 
     @Persistent
     private boolean alive;
@@ -101,7 +103,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
 
-        this.properties = new TreeSet<PlayerRecordPropertyDO>();
+        this.properties = new HashSet<PlayerRecordPropertyDO>();
 
         this.alive = true;
         this.called = false;

@@ -2,8 +2,8 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
@@ -22,9 +22,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 /**
  * <p>
@@ -65,10 +65,10 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     private List<AttributeHandler> after;
 
     @Persistent
-    private SortedSet<AttributePropertyDO> properties;
+    private Set<AttributePropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
-    private SortedSet<AttributeDescriptorDO> descriptors;
+    private Set<AttributeDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
@@ -92,8 +92,8 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
 
-        this.properties = new TreeSet<AttributePropertyDO>();
-        this.descriptors = new TreeSet<AttributeDescriptorDO>();
+        this.properties = new HashSet<AttributePropertyDO>();
+        this.descriptors = new HashSet<AttributeDescriptorDO>();
     }
 
     protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {

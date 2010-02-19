@@ -492,9 +492,7 @@ function playerQuit(player) {
     playerDiv.toggleClass('emptyPlayer');
 
     var cardList = $('#player' + player.number);
-    cardList.find('li').each(function(i, li) {
-        $(li).empty();
-    });
+    cardList.find('li').empty();
 }
 
 function dealCard(i, card) {

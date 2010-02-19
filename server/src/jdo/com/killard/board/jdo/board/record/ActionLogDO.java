@@ -3,6 +3,8 @@ package com.killard.board.jdo.board.record;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
+import com.killard.board.card.Card;
+import com.killard.board.card.Player;
 import com.killard.board.jdo.board.ActionLoggerFactory;
 import com.killard.board.jdo.board.BoardDO;
 
@@ -41,6 +43,9 @@ public class ActionLogDO {
     @Persistent
     private Date time;
 
+    @Persistent
+    private String targetPlayerId;
+
     public ActionLogDO(BoardDO board, Action action) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length + 1);
@@ -49,6 +54,13 @@ public class ActionLogDO {
         this.action = action.getClass().getSimpleName();
         this.log = ActionLoggerFactory.getActionLogger(action).log(action);
         this.time = new Date();
+        if (action.getTarget() instanceof Player) {
+            targetPlayerId = ((Player)action.getTarget()).getId();
+        } else if (action.getTarget() instanceof Card) {
+            targetPlayerId = ((Card)action.getTarget()).getOwner().getId();
+        } else {
+            targetPlayerId = null;
+        }
     }
 
     public Key getKey() {
@@ -71,4 +83,7 @@ public class ActionLogDO {
         return time;
     }
 
+    public String getTargetPlayerId() {
+        return targetPlayerId;
+    }
 }

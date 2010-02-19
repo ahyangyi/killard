@@ -489,6 +489,12 @@ function playerQuit(player) {
     if (image.is(':visible')) {
         image.hide();
     }
+    playerDiv.toggleClass('emptyPlayer');
+
+    var cardList = $('#player' + player.number);
+    cardList.find('li').each(function(i, li) {
+        $(li).empty();
+    });
 }
 
 function dealCard(i, card) {
@@ -516,13 +522,10 @@ function equipCard(playerNumber, card, self) {
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
     cardDiv.hide();
     $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
+//    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .appendTo(cardDiv);
-//    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
-//            .width(arena.cardWidth)
-//            .height(arena.cardHeight)
-//            .appendTo(cardDiv);
     var fontSize = arena.cardWidth / 6;
     if (card.level > 0)
         $('<span>' + card.level + '</span>')
@@ -554,13 +557,15 @@ function equipCard(playerNumber, card, self) {
 function actionsUpdate(i, action) {
     $(window).attr('lastUpdatedTime', action.time);
     if (action.action == 'PlayerJoinAction') {
+        if (action.self) action.target.self = action.self;
         playerUpdate(i, action.target);
     }
     else if (action.action == 'PlayerQuitAction') {
+        if (action.self) action.target.self = action.self;
         playerQuit(action.target);
     }
     else if (action.action == 'BeginTurnAction') {
-        if (action.target.self) {
+        if (action.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.click(function() {
@@ -570,17 +575,17 @@ function actionsUpdate(i, action) {
         }
     }
     else if (action.action == 'EndTurnAction') {
-        if (action.target.self) {
+        if (action.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.find('img').attr('src', '/image/corner/corner2.png');
         }
     }
     else if (action.action == 'EquipCardAction') {
-        equipCard(action.source.number, action.target, action.source.self);
+        equipCard(action.source.number, action.target, action.self);
     }
     else if (action.action == 'DealCardAction') {
-        if (action.target.self)
+        if (action.self)
             dealCard(0, action.source);
     }
 }

@@ -60,12 +60,16 @@ public class ActionServlet extends HttpServlet {
         boolean first = true;
         for (Object action : actions) {
             ActionLogDO log = (ActionLogDO) action;
+            boolean self = instance.getPlayerId().equals(log.getTargetPlayerId());
             if (first) out.println("{");
             else out.println(",{");
             first = false;
             out.println("\"action\":\"" + log.getAction() + "\"");
             out.println(",\"time\":" + log.getTime().getTime());
-            out.println("," + log.getLog());
+            out.println(",\"self\":" + self);
+            if (self || !log.getAction().equals("DealCardAction")) {
+                if (!log.getLog().isEmpty()) out.println("," + log.getLog());
+            }
             out.println("}");
         }
         out.println("]");

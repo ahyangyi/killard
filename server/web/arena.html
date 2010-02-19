@@ -111,9 +111,10 @@
             $('.carousel').carousel();
             $('.other img').hide();
             function update() {
-                $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
+                $.getJSON('test/arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
-                            $.each(data.actions, actionsUpdate);
+                            alert('data: ' + data.length);
+                            $.each(data, actionsUpdate);
                             setTimeout(checkStatus, 1000);
                         });
             }
@@ -126,7 +127,7 @@
             $.getJSON('test/arena/board.json', function(data, textStatus) {
                 $(window).attr('lastUpdatedTime', data.time);
                 $.each(data.players, playerUpdate);
-//                checkStatus();
+                update();
             });
         });
     </script>

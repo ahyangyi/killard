@@ -59,25 +59,16 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
             executeAction(new EquipCardAction(owner, instance));
         } else {
             for (Skill skill : instance.getSkills()) {
-                executeAction(new CastCardAction(owner, instance, skill, instance));
+                executeAction(new CastCardAction(owner, instance, skill, new Object[]{instance}));
             }
         }
     }
 
-    public void cast(int cardPosition, int skillIndex) throws BoardException {
-        cast(cardPosition, skillIndex, 1, cardPosition);
-    }
-
-    public void cast(int cardPosition, int skillIndex, int targetPlayerPosition, int targetCardPosition)
-            throws BoardException {
+    public void cast(int cardPosition, int skillIndex, Object[] targets) throws BoardException {
         Player player = getCurrentPlayer();
         Card card = player.getEquippedCard(cardPosition);
 
-        Player targetPlayer = getPlayer(targetPlayerPosition);
-        Card targetCard = targetPlayer.getEquippedCard(targetCardPosition);
-        if (targetCard == null) targetCard = card;
-
-        executeAction(new CastCardAction(player, card, card.getSkills()[skillIndex], targetCard));
+        executeAction(new CastCardAction(player, card, card.getSkills()[skillIndex], targets));
     }
 
     public void endTurn() throws BoardException {

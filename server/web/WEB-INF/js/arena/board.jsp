@@ -6,7 +6,7 @@
 <%--@elvariable id="players" type="com.killard.board.jdo.board.record.PlayerRecordDO[]"--%>
 "players":[
 <c:forEach var="player" items="${players}" varStatus="status">
-    {
+    <c:if test="${not status.first}">,</c:if>{
         "username" : "${player.nickname}",
         "self" : ${player.id == playerId},
         "current" : ${player.number == board.currentPlayerNumber},
@@ -37,12 +37,25 @@
         "level" : ${card.level},
         "maxHealth" : ${card.maxHealth},
         "health" : ${card.health},
-        "attack" : ${card.attack.value}
+        "attack" : ${card.attack.value},
+        "skills" : [
+        <c:forEach var="skill" items="${card.skills}" varStatus="skillStatus">
+            <c:if test="${not skillStatus.first}">,</c:if>{
+            "name" : "${skill.name}",
+            "cost" : ${skill.cost},
+            "targets" : [
+            <c:forEach var="target" items="${skill.targets}" varStatus="targetStatus">
+                <c:if test="${not targetStatus.first}">,</c:if>"${target.name}"
+            </c:forEach>
+            ]
+            }
+        </c:forEach>
+        ]
         }
     </c:forEach>
     </c:if>
         ]
-    }<c:if test="${not status.last}">,</c:if>
+    }
 </c:forEach>
 ],
 "time":${time}

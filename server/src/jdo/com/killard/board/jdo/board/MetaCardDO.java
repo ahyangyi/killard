@@ -20,11 +20,10 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -69,8 +68,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent
     private Boolean visible;
 
-    @Persistent(defaultFetchGroup = "false")
-    private SortedSet<SkillDO> skills;
+    @Persistent
+    private List<SkillDO> skills;
 
     @Persistent
     private Set<String> visibleAttributes;
@@ -97,7 +96,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.attackType = AttackType.PHYSICAL.name();
         this.equippable = true;
         this.visible = true;
-        this.skills = new TreeSet<SkillDO>();
+        this.skills = new ArrayList<SkillDO>();
         this.hiddenAttributes = new HashSet<String>();
         this.visibleAttributes = new HashSet<String>();
         this.properties = new HashSet<MetaCardPropertyDO>();

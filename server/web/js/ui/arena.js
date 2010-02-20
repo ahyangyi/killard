@@ -14,25 +14,12 @@
             this.targets = [];
 
             this.card.find('.cardimage').click(function() {
-//                $(this).effect('explode', {pieces: 16}, 800, function() {
-//                    var card = $(this);
-//                    setTimeout(function() {
-//                        card.fadeIn(2000);
-//                    }, 1000);
-//                });
                 if (arena.targetList != null && arena.targetList.length > 0) {
                     if (arena.targetList[arena.targets.length] == 'owncard'
                             || arena.targetList[arena.targets.length] == 'otherscard') {
                         arena.targets.push($(this).attr('src'));
                         arena.fillTargets();
                     }
-                }
-            });
-
-            this.card.find('.skillimage').click(function() {
-                if (arena.targetList.length == 0) {
-                    arena.targetList = ['owncard', 'self', 'other', 'otherscard', 'all'];
-                    arena.fillTargets();
                 }
             });
 
@@ -97,12 +84,15 @@
 
             $('.self .card').droppable({
                 accept: '.item',
+                hoverClass: 'cardholder',
                 drop: function(event, ui) {
-                    $.post('arena/playcard.json',{
-                        'elementSchoolName':ui.draggable.attr('elementSchool'),
-                        'cardName':ui.draggable.attr('cardName'),
-                        'cardPosition':$(this).attr('position'),
-                        'targetPosition':0});
+                    if ($(this).children().length == 0) {
+                        $.post('arena/playcard.json', {
+                            'elementSchoolName':ui.draggable.attr('elementSchool'),
+                            'cardName':ui.draggable.attr('cardName'),
+                            'cardPosition':$(this).attr('position'),
+                            'targetPosition':0});
+                    }
                 }
             });
 
@@ -152,6 +142,13 @@
             }
             if (this.targets.length == this.targetList.length) {
                 $('#messagebox').hide();
+                $.post('arena/cast.json', {
+                    cardPosition:this.castCardPosition,
+                    skillIndex:this.castSkillIndex,
+                    target:"test"
+                });
+                this.castCardPosition = 0;
+                this.castSkillIndex = 0;
                 this.targetList = [];
                 this.targets = [];
             }
@@ -382,7 +379,7 @@
 
             this.cardlist.height(this.cardHeight);
             this.card.css('border', 'none');
-            this.card.css('background', 'none');
+//            this.card.css('background', 'none');
             $('.other').find('.card:lt(5)').css('margin-right', cardSeparator);
             $('.self').find('.card:lt(5)').css('margin-right', cardSeparator);
 
@@ -414,7 +411,7 @@
             });
 
             this.card.find('.skillimage').css('left', this.cardWidth / 3);
-            this.card.find('.skillimage').css('top', this.cardHeight - this.cardWidth / 3);
+            this.card.find('.skillimage').css('top', this.cardHeight - this.cardWidth / 2);
             this.card.find('.skillimage').width(this.cardWidth / 3);
             this.card.find('.skillimage').height(this.cardWidth / 6);
 
@@ -476,7 +473,7 @@ function playerUpdate(i, player) {
         btn.click(function() {
             $.get('/arena/endturn.html');
         });
-        btn.find('img').attr('src', '/image/corner/corner2a.png');
+        btn.find('img').attr('src', 'image/corner/corner2a.png');
     }
 }
 
@@ -497,8 +494,7 @@ function playerQuit(player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-    $('<li><img class="item" src="/arena/' + card.elementSchool + '/' + card.name + '/image.png"/></li>')
-//    $('<li><img class="item" src="image/2.png"/></li>')
+    $('<li><img class="item" src="arena/' + card.elementSchool + '/' + card.name + '.png"/></li>')
             .appendTo($('.dealtCards > .cards'))
             .width(arena.cardWidth)
             .height(arena.cardHeight)
@@ -518,13 +514,39 @@ function equipCard(playerNumber, card, self) {
         cardList.show('drop', {direction:'up'});
     }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    cardDiv.hide();
-    $('<img src="/arena/' + card.elementSchool + '/' + card.name + '/' + 'image.png" class="cardimage"/>')
-//    $('<img src="image/1.png" alt="' + card.name + '" class="cardimage"/>')
+//    cardDiv.hide();
+    $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
+            .click(function() {
+                if (arena.targetList != null && arena.targetList.length > 0) {
+                    if (arena.targetList[arena.targets.length] == 'owncard'
+                            || arena.targetList[arena.targets.length] == 'otherscard') {
+                        arena.targets.push('' + playerNumber + ':' + cardDiv.attr('position'));
+                        arena.fillTargets();
+                    }
+                }
+            })
             .appendTo(cardDiv);
     var fontSize = arena.cardWidth / 6;
+    if (card.skills.length > 0) {
+        $.each(card.skills, function(i, skill) {
+            $('<img src="image/skill.png' + '" class="skillimage"/>')
+                    .css('top', parseInt(arena.cardHeight - arena.cardWidth / 2))
+                    .css('left', parseInt(arena.cardWidth / 3))
+                    .width(parseInt(this.cardWidth / 3))
+                    .height(parseInt(this.cardWidth / 6))
+                    .click(function() {
+                        if (arena.targetList.length == 0) {
+                            arena.castCardPosition = card.position;
+                            arena.castSkillIndex = i + 1;
+                            arena.targetList = skill.targets;
+                            arena.fillTargets();
+                        }
+                    })
+                    .appendTo(cardDiv);
+        });
+    }
     if (card.level > 0)
         $('<span>' + card.level + '</span>')
                 .css('top',0)
@@ -549,7 +571,24 @@ function equipCard(playerNumber, card, self) {
                 .css('left',arena.cardWidth - fontSize)
                 .css('font-size', fontSize)
                 .appendTo(cardDiv);
-    cardDiv.show();
+//    cardDiv.show();
+    //TODO fix the resizing issue of skill image
+    arena.resize();
+}
+
+function dropCard(playerNumber, card, self) {
+    var arena = $(".arena").data('arena');
+    var cardList = self ? $('.self') : $('#player' + playerNumber);
+    if (cardList.is(':hidden')) {
+        $('.other:visible').hide('drop', {direction:'down'});
+        cardList.show('drop', {direction:'up'});
+    }
+    var cardDiv = cardList.find('li[position="' + card.position + '"]');
+    cardDiv.effect('explode', {pieces: 9}, 800, function() {
+        $(this).find('.skillimage').unbind('click');
+        $(this).unbind('click');
+        $(this).remove();
+    });
 }
 
 function actionsUpdate(i, action) {
@@ -567,20 +606,23 @@ function actionsUpdate(i, action) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.click(function() {
-                $.get('/arena/endturn.html');
+                $.get('arena/endturn.html');
             });
-            btn.find('img').attr('src', '/image/corner/corner2a.png');
+            btn.find('img').attr('src', 'image/corner/corner2a.png');
         }
     }
     else if (action.action == 'EndTurnAction') {
         if (action.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
-            btn.find('img').attr('src', '/image/corner/corner2.png');
+            btn.find('img').attr('src', 'image/corner/corner2.png');
         }
     }
     else if (action.action == 'EquipCardAction') {
         equipCard(action.source.number, action.target, action.self);
+    }
+    else if (action.action == 'DropCardAction') {
+        dropCard(action.source.number, action.target, action.self);
     }
     else if (action.action == 'DealCardAction') {
         if (action.self)

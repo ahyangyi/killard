@@ -32,12 +32,12 @@ import java.io.InputStream;
 @Controller
 public class ImageController extends BasicController {
 
-    @RequestMapping(value = "/package/*/*/*/image.png", method = RequestMethod.GET)
+    @RequestMapping(value = "/package/*/*/*.png", method = RequestMethod.GET)
     public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         Long packageBundleId = Long.parseLong(ids[2]);
         String elementSchoolName = ids[3];
-        String cardName = ids[4];
+        String cardName = ids[4].substring(0, ids[4].indexOf("."));
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

@@ -35,11 +35,11 @@ import java.io.IOException;
 @Controller
 public class ArenaController extends BasicController {
 
-    @RequestMapping(value = "/arena/*/*/image.png", method = RequestMethod.GET)
+    @RequestMapping(value = "/arena/*/*.png", method = RequestMethod.GET)
     public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         String elementSchoolName = ids[2];
-        String cardName = ids[3];
+        String cardName = ids[3].substring(0, ids[3].indexOf("."));
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -152,13 +152,19 @@ public class ArenaController extends BasicController {
         return "arena/actions";
     }
 
-    @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
-                       @RequestParam("skillIndex") int skillIndex, ModelMap modelMap) throws Exception {
+                       @RequestParam("skillIndex") int skillIndex,
+                       @RequestParam("target") String[] target,
+                       ModelMap modelMap) throws Exception {
         getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
-            board.cast(cardPosition, skillIndex);
+            Object[] targets = new Object[target.length];
+            for (int i = 0; i < target.length; i++) {
+                targets[i] = null;
+            }
+            board.cast(cardPosition, skillIndex - 1, targets);
             PersistenceHelper.getPersistenceManager().makePersistent(board);
             logBoard(board);
 //            modelMap.put("actions", board.getActions());

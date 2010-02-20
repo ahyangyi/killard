@@ -121,7 +121,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
         Card card = action.getTarget();
         if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
             if (card.getMaxHealth() > 0) return null;
-            if (card.hasSkill()) return new CastCardAction(card.getOwner(), card, card.getSkills()[0], card);
+            if (card.hasSkill()) return new CastCardAction(card.getOwner(), card, card.getSkills()[0], new Object[] {card});
         }
         return false;
     }
@@ -155,7 +155,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
 
     @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
     public List<Action> after(DefaultBoard board, DefaultBoard owner, CastCardAction action) {
-        return action.getSkill().execute(this, action.getTarget(), action.getTargetCard());
+        return action.getSkill().execute(this, action.getTarget(), action.getTargets());
     }
 
     public int compareTo(DefaultBoard compare) {

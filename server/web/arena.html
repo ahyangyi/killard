@@ -113,7 +113,6 @@
             function update() {
                 $.getJSON('test/arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {
-                            alert('data: ' + data.length);
                             $.each(data, actionsUpdate);
                             setTimeout(checkStatus, 1000);
                         });
@@ -124,10 +123,10 @@
                     else setTimeout(checkStatus, 1000);
                 });
             }
-            $.getJSON('test/arena/board.json', function(data, textStatus) {
+            $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).attr('lastUpdatedTime', data.time);
                 $.each(data.players, playerUpdate);
-                update();
+                checkStatus();
             });
         });
     </script>
@@ -250,93 +249,93 @@
         <li>
             <div class="board">
                 <ul class="cardlist other" id="player1">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player2">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player3">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player4">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player5">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player6">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player7">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player8">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player9">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" id="player10">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <div class="separator"></div>
                 <ul class="cardlist self">
-                    <li class="card ui-state-default" position="1"></li>
-                    <li class="card ui-state-default" position="2"></li>
-                    <li class="card ui-state-default" position="3"></li>
-                    <li class="card ui-state-default" position="4"></li>
-                    <li class="card ui-state-default" position="5"></li>
-                    <li class="card ui-state-default" position="6"></li>
+                    <li class="card" position="1"></li>
+                    <li class="card" position="2"></li>
+                    <li class="card" position="3"></li>
+                    <li class="card" position="4"></li>
+                    <li class="card" position="5"></li>
+                    <li class="card" position="6"></li>
                 </ul>
                 <div class="messagebox">
                     <p></p>

@@ -4,6 +4,8 @@ import com.killard.board.card.Card;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 
+import java.util.Arrays;
+
 /**
  * <p>
  * This class defines .
@@ -17,19 +19,19 @@ public final class CastCardAction extends CardAction<Player> {
 
     private final Skill skill;
 
-    private final Card targetCard;
+    private final Object[] targets;
 
-    public CastCardAction(Player source, Card target, Skill skill, Card targetCard) {
+    public CastCardAction(Player source, Card target, Skill skill, Object[] targets) {
         super(source, target);
         this.skill = skill;
-        this.targetCard = targetCard;
+        this.targets = Arrays.copyOf(targets, targets.length);
     }
 
     public Skill getSkill() {
         return skill;
     }
 
-    public Card getTargetCard() {
-        return targetCard;
+    public Object[] getTargets() {
+        return targets;
     }
 }

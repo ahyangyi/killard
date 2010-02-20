@@ -4,6 +4,8 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Card;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
+import com.killard.board.card.Skill;
+import com.killard.board.card.SkillTarget;
 import com.killard.board.jdo.board.ActionLogger;
 
 /**
@@ -61,7 +63,31 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
         buf.append(card.getAttack().getValue());
         buf.append(",\"position\":");
         buf.append(card.getPosition());
-        buf.append("}");
+        buf.append(",\"skills\":[");
+        boolean first = true;
+        for (Skill skill : card.getSkills()) {
+            if (!first) buf.append(",");
+            buf.append(logSkill(skill));
+            first = false;
+        }
+        buf.append("]}");
+        return buf.toString();
+    }
+
+    protected String logSkill(Skill skill) {
+        StringBuilder buf = new StringBuilder("{");
+        buf.append("\"name\":\"");
+        buf.append(skill.getName());
+        buf.append("\",\"targets\":[");
+        boolean first = true;
+        for (SkillTarget target : skill.getTargets()) {
+            if (!first) buf.append(",");
+            buf.append("\"");
+            buf.append(target.name());
+            buf.append("\"");
+            first = false;
+        }
+        buf.append("]}");
         return buf.toString();
     }
 }

@@ -135,6 +135,8 @@ public class ManageController extends BasicController {
                     if (file.getName().endsWith(".json")) {
                         String name = file.getName().substring(0, file.getName().length() - 5);
                         MetaCardDO card = elementSchool.newCard(name);
+                        card = pm.makePersistent(card);
+                        PersistenceHelper.doTransaction();
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
                             card.newDescriptor(BoardContext.getLocale(), name, "");
@@ -150,9 +152,11 @@ public class ManageController extends BasicController {
                             }
                             card.setImageData(out.toByteArray());
                         }
+                        pm.makePersistent(card);
+                        elementSchool = pm.makePersistent(elementSchool);
+                        PersistenceHelper.doTransaction();
                     }
                 }
-                pm.makePersistent(elementSchool);
                 redirect("/manage/load", request, response);
                 return;
             }

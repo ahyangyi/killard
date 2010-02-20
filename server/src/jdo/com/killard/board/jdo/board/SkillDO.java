@@ -129,9 +129,9 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         return function;
     }
 
-    public List<Action> execute(Board board, Card owner, Object... target) {
+    public List<Action> execute(Board board, Card owner, Object... targets) {
         Context ctx = new GlobalContext(owner);
-        ctx.addVariable("targets", target);
+        ctx.addVariable("targets", targets);
         ctx.addVariable("board", board);
         try {
             function.execute(ctx);

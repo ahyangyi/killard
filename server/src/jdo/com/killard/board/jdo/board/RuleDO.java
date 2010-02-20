@@ -137,6 +137,11 @@ public class RuleDO implements ActionListener<RuleDO> {
             owner.removeActionListener(attribute);
     }
 
+//    @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
+//    public List<Action> after(BoardDO board, BoardDO owner, CastCardAction action) {
+//        return action.getSkill().execute(owner, action.getTarget(), action.getTargets());
+//    }
+
     public Logger getLog() {
         return Logger.getLogger(getClass().getName());
     }

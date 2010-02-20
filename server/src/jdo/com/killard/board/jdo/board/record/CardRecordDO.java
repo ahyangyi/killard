@@ -133,7 +133,8 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.position = position;
 
         this.skillKeys = new LinkedList<Key>();
-//        for (Skill skill : card.getSkills()) addSkill(skill);
+        this.skills = new LinkedList<Skill>();
+        for (Skill skill : card.getSkills()) addSkill(skill);
 
         this.attributeKeys = new LinkedList<Key>();
         for (Attribute attribute : card.getAttributes()) addAttribute(attribute);
@@ -152,8 +153,9 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.card = pm.getObjectById(MetaCardDO.class, cardKey);
         this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
         this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
+        this.skills = new LinkedList<Skill>();
         for (Key key : skillKeys) {
-            addSkill(pm.getObjectById(SkillDO.class, key));
+            this.skills.add(pm.getObjectById(SkillDO.class, key));
         }
         for (Key key : attributeKeys) {
             AttributeDO attribute = pm.getObjectById(AttributeDO.class, key);
@@ -292,7 +294,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
 
     protected boolean addSkill(Skill skill) {
         SkillDO record = (SkillDO) skill;
-        return !skillKeys.contains(record.getKey()) && skills.add(skill) && skillKeys.add(record.getKey());
+        return !skillKeys.contains(record.getKey()) && skills.add(record) && skillKeys.add(record.getKey());
     }
 
     protected boolean removeSkill(Skill skill) {

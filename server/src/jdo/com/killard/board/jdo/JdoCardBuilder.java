@@ -1,7 +1,6 @@
 package com.killard.board.jdo;
 
 import com.killard.board.card.AttackType;
-import com.killard.board.card.SkillTarget;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
@@ -10,8 +9,9 @@ import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.Expression;
 import com.killard.board.parser.Function;
 import com.killard.board.parser.Node;
+import com.killard.board.parser.StringLiteral;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +95,14 @@ public class JdoCardBuilder {
         String name = getString(map, "name");
         int cost = getInt(map, "cost");
         Function function = (Function) map.get("execute");
-        card.newSkill(name, "", Arrays.asList(SkillTarget.self.name()), cost, function);
+        Object value = map.get("targets");
+        if (value instanceof List) {
+            List<String> targets = new LinkedList<String>();
+            for (Object v : (List) value) targets.add(((StringLiteral)v).getText());
+            card.newSkill(name, "", targets, cost, function);
+        }
+        else
+            card.newSkill(name, "", Collections.<String>emptyList(), cost, function);
     }
 
     public void buildAttributes(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {

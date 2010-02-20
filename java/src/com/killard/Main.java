@@ -1,9 +1,10 @@
 package com.killard;
 
+import java.net.URLDecoder;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String str = "a.png";
-        System.out.println(str.substring(0, str.indexOf(".")));
+        System.out.println(URLDecoder.decode("cardPosition=3&skillIndex=1&target%5B%5D=1%3A3&target%5B%5D=self"));
     }
 }

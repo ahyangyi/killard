@@ -155,7 +155,7 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
     public String cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex,
-                       @RequestParam("target") String[] target,
+                       @RequestParam("target[]") String[] target,
                        ModelMap modelMap) throws Exception {
         getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
         BoardDO board = CacheInstance.getInstance().getBoard();
@@ -172,7 +172,7 @@ public class ArenaController extends BasicController {
         return "arena/actions";
     }
 
-    @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml"},
+    @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml", "/arena/endturn.json"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endTurn(ModelMap modelMap) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());

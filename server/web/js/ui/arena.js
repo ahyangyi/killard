@@ -145,7 +145,7 @@
                 $.post('arena/cast.json', {
                     cardPosition:this.castCardPosition,
                     skillIndex:this.castSkillIndex,
-                    target:"test"
+                    target:this.targets
                 });
                 this.castCardPosition = 0;
                 this.castSkillIndex = 0;
@@ -471,7 +471,7 @@ function playerUpdate(i, player) {
         var btn = $('.corner').eq(3);
         btn.unbind('click');
         btn.click(function() {
-            $.get('/arena/endturn.html');
+            $.get('/arena/endturn.json');
         });
         btn.find('img').attr('src', 'image/corner/corner2a.png');
     }
@@ -585,9 +585,10 @@ function dropCard(playerNumber, card, self) {
     }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
     cardDiv.effect('explode', {pieces: 9}, 800, function() {
-        $(this).find('.skillimage').unbind('click');
-        $(this).unbind('click');
-        $(this).remove();
+        $(this).find('img').unbind('click');
+        $(this).empty();
+        $(this).show();
+        alert('drop card');
     });
 }
 
@@ -606,7 +607,7 @@ function actionsUpdate(i, action) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.click(function() {
-                $.get('arena/endturn.html');
+                $.get('arena/endturn.json');
             });
             btn.find('img').attr('src', 'image/corner/corner2a.png');
         }

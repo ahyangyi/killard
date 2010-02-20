@@ -588,7 +588,6 @@ function dropCard(playerNumber, card, self) {
         $(this).find('img').unbind('click');
         $(this).empty();
         $(this).show();
-        alert('drop card');
     });
 }
 

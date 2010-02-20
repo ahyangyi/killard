@@ -1,10 +1,10 @@
 package com.killard;
 
-import java.net.URLDecoder;
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(URLDecoder.decode("cardPosition=3&skillIndex=1&target%5B%5D=1%3A3&target%5B%5D=self"));
+        String str = "10:3";
+        int i = str.indexOf(":");
+        System.out.println(Integer.parseInt(str.substring(0, i)) + " | " + Integer.parseInt(str.substring(i + 1)));
     }
 }

@@ -2,6 +2,8 @@ package com.killard.board.web;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.killard.board.card.Skill;
+import com.killard.board.card.SkillTarget;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
@@ -155,8 +157,21 @@ public class ArenaController extends BasicController {
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             Object[] targets = new Object[target.length];
+            Skill skill = board.getCurrentPlayer().getEquippedCard(cardPosition).getSkills()[skillIndex - 1];
+            SkillTarget[] skillTargets = skill.getTargets();
             for (int i = 0; i < target.length; i++) {
-                targets[i] = null;
+                if (skillTargets[i] == SkillTarget.self) {
+                    targets[i] = board.getCurrentPlayer();
+                } else if (skillTargets[i] == SkillTarget.other) {
+                    targets[i] = board.getPlayer(Integer.parseInt(target[i]));
+                } else if (skillTargets[i] == SkillTarget.owncard) {
+                    targets[i] = board.getCurrentPlayer().getEquippedCard(Integer.parseInt(target[i]));
+                } else if (skillTargets[i] == SkillTarget.otherscard) {
+                    int p = target[i].indexOf(":");
+                    int number = Integer.parseInt(target[i].substring(0, p));
+                    int pos = Integer.parseInt(target[i].substring(p + 1));
+                    targets[i] = board.getPlayer(number).getEquippedCard(pos);
+                }
             }
             board.cast(cardPosition, skillIndex - 1, targets);
             PersistenceHelper.getPersistenceManager().makePersistent(board);

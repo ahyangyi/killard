@@ -60,12 +60,6 @@ public class ArenaController extends BasicController {
         }
     }
 
-    @RequestMapping(value = {"/arena/deal.html", "/arena/deal.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public void deal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        BoardDO board = CacheInstance.getInstance().getBoard();
-        PlayerRecordDO player = (PlayerRecordDO) board.getCurrentPlayer();
-    }
-
     @RequestMapping(value = {"/arena.html", "/arena.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String arena(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return "arena";
@@ -101,7 +95,7 @@ public class ArenaController extends BasicController {
         redirect("/arena", request, response);
     }
 
-    @RequestMapping(value = {"/arena/join.html", "/arena/join.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/join.html", "/arena/join.xml", "/arena/join.json"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("number") int number) throws Exception {
         getLog().fine("Join record for " + getUser().getNickname() + " at " + number);
 
@@ -186,7 +180,7 @@ public class ArenaController extends BasicController {
         return "arena/actions";
     }
 
-    @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml"},
+    @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml", "/arena/endcall.json"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public String endCall(ModelMap modelMap) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());

@@ -24,7 +24,7 @@
             });
 
             this.player.click(function() {
-                $.get('/arena/join.html', {'number':$(this).attr('number')});
+                $.get('/arena/join.json', {'number':$(this).attr('number')});
             });
 
             this.player.find('li :first').click(function() {
@@ -480,7 +480,7 @@ function playerUpdate(i, player) {
 function playerQuit(player) {
     var playerDiv = $('.player[number="' + player.number + '"]');
     playerDiv.click(function() {
-        $.get('/arena/join.html', {'number':playerDiv.attr('number')});
+        $.get('/arena/join.json', {'number':playerDiv.attr('number')});
     });
     var image = playerDiv.find('> ul > li > img');
     if (image.is(':visible')) {

@@ -110,7 +110,7 @@
             $(".arena").arena();
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
-            $('.other img').hide();
+            $('.other').hide();
             function update() {
                 $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
                         function(data, textStatus) {

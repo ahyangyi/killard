@@ -71,6 +71,8 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
             first = false;
         }
         buf.append("]}");
+        buf.append(",\"playerNumber\":");
+        buf.append(card.getOwner().getNumber());
         return buf.toString();
     }
 

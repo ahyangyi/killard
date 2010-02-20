@@ -13,10 +13,10 @@ import com.killard.board.card.action.CardAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class CardActionLogger extends BasicActionLogger<CardAction> {
+public class CardActionLogger<A extends CardAction> extends BasicActionLogger<A> {
 
     @Override
-    public String log(CardAction action) {
+    public String log(A action) {
         if (action.getSource() instanceof Player)
             return "\"source\":" + logPlayer((Player) action.getSource())
                     + ",\"target\":" + logCard((Card) action.getTarget());

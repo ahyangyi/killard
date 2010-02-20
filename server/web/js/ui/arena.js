@@ -506,22 +506,17 @@ function dealCard(i, card) {
             .attr('cardName', card.name);
 }
 
-function equipCard(playerNumber, card, self) {
+function renderCard(playerNumber, card, self) {
     var arena = $(".arena").data('arena');
     var cardList = self ? $('.self') : $('#player' + playerNumber);
-    if (cardList.is(':hidden')) {
-        $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'});
-    }
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
-//    cardDiv.hide();
     $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
             .width(arena.cardWidth)
             .height(arena.cardHeight)
             .click(function() {
                 if (arena.targetList != null && arena.targetList.length > 0) {
-                    if (arena.targetList[arena.targets.length] == 'owncard'
-                            || arena.targetList[arena.targets.length] == 'otherscard') {
+                    if ((self && arena.targetList[arena.targets.length] == 'owncard')
+                            || (!self && arena.targetList[arena.targets.length] == 'otherscard')) {
                         arena.targets.push('' + playerNumber + ':' + cardDiv.attr('position'));
                         arena.fillTargets();
                     }
@@ -571,13 +566,23 @@ function equipCard(playerNumber, card, self) {
                 .css('left',arena.cardWidth - fontSize)
                 .css('font-size', fontSize)
                 .appendTo(cardDiv);
-//    cardDiv.show();
     //TODO fix the resizing issue of skill image
     arena.resize();
 }
 
+function equipCard(playerNumber, card, self) {
+    var cardList = self ? $('.self') : $('#player' + playerNumber);
+    if (cardList.is(':hidden')) {
+        $('.other:visible').hide('drop', {direction:'down'});
+        cardList.show('drop', {direction:'up'}, function() {
+            renderCard(playerNumber, card, self);
+        });
+    } else {
+        renderCard(playerNumber, card, self);
+    }
+}
+
 function dropCard(playerNumber, card, self) {
-    var arena = $(".arena").data('arena');
     var cardList = self ? $('.self') : $('#player' + playerNumber);
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
@@ -589,6 +594,17 @@ function dropCard(playerNumber, card, self) {
         $(this).empty();
         $(this).show();
     });
+}
+
+function changeCardHealth(action) {
+    var cardList = action.self ? $('.self') : $('#player' + action.playerNumber);
+    if (cardList.is(':hidden')) {
+        $('.other:visible').hide('drop', {direction:'down'});
+        cardList.show('drop', {direction:'up'});
+    }
+    var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
+    var healthSpan = cardDiv.find('span').eq(2);
+    healthSpan.html('' + (parseInt(healthSpan.html()) - action.healthChange));
 }
 
 function actionsUpdate(i, action) {
@@ -623,6 +639,9 @@ function actionsUpdate(i, action) {
     }
     else if (action.action == 'DropCardAction') {
         dropCard(action.source.number, action.target, action.self);
+    }
+    else if (action.action == 'ChangeCardHealthAction') {
+        changeCardHealth(action);
     }
     else if (action.action == 'DealCardAction') {
         if (action.self)

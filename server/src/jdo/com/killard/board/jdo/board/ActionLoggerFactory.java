@@ -3,11 +3,13 @@ package com.killard.board.jdo.board;
 import com.killard.board.card.Action;
 import com.killard.board.card.action.BeginGameAction;
 import com.killard.board.card.action.CardAction;
+import com.killard.board.card.action.ChangeCardHealthAction;
 import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.DiscardCardAction;
 import com.killard.board.card.action.PlayerAction;
 import com.killard.board.jdo.board.logger.BeginGameActionLogger;
 import com.killard.board.jdo.board.logger.CardActionLogger;
+import com.killard.board.jdo.board.logger.ChangeCardHealthActionLogger;
 import com.killard.board.jdo.board.logger.DealCardActionLogger;
 import com.killard.board.jdo.board.logger.DiscardCardActionLogger;
 import com.killard.board.jdo.board.logger.PlayerActionLogger;
@@ -37,6 +39,7 @@ public enum ActionLoggerFactory {
         loggers.put(DealCardAction.class, new DealCardActionLogger());
         loggers.put(DiscardCardAction.class, new DiscardCardActionLogger());
         loggers.put(BeginGameAction.class, new BeginGameActionLogger());
+        loggers.put(ChangeCardHealthAction.class, new ChangeCardHealthActionLogger());
     }
 
     public static ActionLogger getActionLogger(Action action) {

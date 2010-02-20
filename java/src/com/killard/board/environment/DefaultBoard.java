@@ -141,7 +141,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     @AfterAction(actionClass = ChangeCardHealthAction.class, selfTargeted = false)
     public Object after(DefaultBoard board, DefaultBoard owner, ChangeCardHealthAction action) {
         if (action.getHealthChange().getValue() > action.getTarget().getHealth())
-            return new DropCardAction(action.getTarget().getOwner(), action.getTarget());
+            return new DropCardAction(action.getTarget());
         else return null;
     }
 

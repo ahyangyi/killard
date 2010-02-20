@@ -14,6 +14,7 @@ import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.RoleGroupDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
+import com.killard.board.web.cache.CacheInstance;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,6 +68,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
+        CacheInstance.getInstance().getCache().clear();
 
         redirect("/packages", request, response);
     }
@@ -81,6 +83,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.doTransaction();
         }
         extent.closeAll();
+        CacheInstance.getInstance().getCache().clear();
 
         PackageBundleDO bundle = new PackageBundleDO("Orions");
         pm.makePersistent(bundle);

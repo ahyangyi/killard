@@ -14,7 +14,7 @@ import com.killard.board.card.Player;
  */
 public final class DropCardAction extends CardAction<Player> {
 
-    public DropCardAction(Player source, Card target) {
-        super(source, target);
+    public DropCardAction(Card target) {
+        super(target.getOwner(), target);
     }
 }

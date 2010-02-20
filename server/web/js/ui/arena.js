@@ -529,7 +529,7 @@ function equipCard(playerNumber, card, self) {
             })
             .appendTo(cardDiv);
     var fontSize = arena.cardWidth / 6;
-    if (card.skills.length > 0) {
+    if (card.skills.length > 0 && self) {
         $.each(card.skills, function(i, skill) {
             $('<img src="image/skill.png' + '" class="skillimage"/>')
                     .css('top', parseInt(arena.cardHeight - arena.cardWidth / 2))

@@ -18,6 +18,7 @@ import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -87,7 +88,8 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     @Persistent
     private boolean casted;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<CardRecordPropertyDO> properties;
 
     @NotPersistent

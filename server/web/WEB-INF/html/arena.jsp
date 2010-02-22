@@ -112,16 +112,16 @@
             $('.carousel').carousel();
             $('.other').hide();
             function update() {
-                $.getJSON('arena/actions.json', {'since':$(window).attr('since')},
+                $.getJSON('arena/actions.json', {'since':$(window).data('since')},
                         function(data, textStatus) {
-                            $.each(data, actionsUpdate);
+                            $.each(data, actionUpdate);
                             update();
                         });
             }
             $.getJSON('arena/board.json', function(data, textStatus) {
-                $(window).attr('since', data.time);
+                $(window).data('since', data.time);
                 $.each(data.players, playerUpdate);
-                update();
+//                update();
             });
         });
     </script>
@@ -243,7 +243,7 @@
         </li>
         <li>
             <div class="board">
-                <ul class="cardlist other" id="player1">
+                <ul class="cardlist other" number="1">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -251,7 +251,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player2">
+                <ul class="cardlist other" number="2">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -259,7 +259,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player3">
+                <ul class="cardlist other" number="3">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -267,7 +267,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player4">
+                <ul class="cardlist other" number="4">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -275,7 +275,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player5">
+                <ul class="cardlist other" number="5">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -283,7 +283,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player6">
+                <ul class="cardlist other" number="6">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -291,7 +291,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player7">
+                <ul class="cardlist other" number="7">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -299,7 +299,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player8">
+                <ul class="cardlist other" number="8">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -307,7 +307,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player9">
+                <ul class="cardlist other" number="9">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>
@@ -315,7 +315,7 @@
                     <li class="card" position="5"></li>
                     <li class="card" position="6"></li>
                 </ul>
-                <ul class="cardlist other" id="player10">
+                <ul class="cardlist other" number="10">
                     <li class="card" position="1"></li>
                     <li class="card" position="2"></li>
                     <li class="card" position="3"></li>

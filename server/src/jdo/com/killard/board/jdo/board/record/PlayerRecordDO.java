@@ -12,6 +12,7 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.record.property.PlayerRecordPropertyDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -62,12 +63,15 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private boolean cardPlayed;
 
     @Persistent
+    @Element(dependent = "true")
     private SortedSet<CardRecordDO> equippedCards;
 
     @Persistent
+    @Element(dependent = "true")
     private SortedSet<ElementRecordDO> elementRecords;
 
     @Persistent
+    @Element(dependent = "true")
     private Set<PlayerRecordPropertyDO> properties;
 
     @Persistent

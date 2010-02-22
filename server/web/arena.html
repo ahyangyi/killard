@@ -111,20 +111,20 @@
             $('.carousel').carousel();
             $('.other').hide();
             function update() {
-                $.getJSON('test/arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
+                $.getJSON('test/arena/actions.json', {'since':$(window).data('since')},
                         function(data, textStatus) {
-                            $.each(data, actionsUpdate);
+                            $.each(data, actionUpdate);
                             setTimeout(checkStatus, 1000);
                         });
             }
             function checkStatus() {
                 $.getJSON('arena/status.json', function(data, textStatus) {
-                    if (data.time > $(window).attr('lastUpdatedTime')) update();
+                    if (data.time > $(window).data('since')) update();
                     else setTimeout(checkStatus, 1000);
                 });
             }
             $.getJSON('arena/board.json', function(data, textStatus) {
-                $(window).attr('lastUpdatedTime', data.time);
+                $(window).data('since', data.time);
                 $.each(data.players, playerUpdate);
                 checkStatus();
             });

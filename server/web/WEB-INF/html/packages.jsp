@@ -218,7 +218,7 @@
                     </div>
                 </div>
                 <div id="newGameForm">
-                    <form action="/arena/new.html" method="POST">
+                    <form action="/arena/new.html" method="GET">
                         <input id="packageBundleId" type="hidden" name="packageBundleId" value=""/>
                         <b>Player Number:</b>
                         <label>

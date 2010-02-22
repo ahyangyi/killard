@@ -16,6 +16,7 @@ import com.killard.board.jdo.FunctionHelper;
 import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 import com.killard.board.jdo.board.property.AttributePropertyDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -64,10 +65,12 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<AttributePropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<AttributeDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")

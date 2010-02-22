@@ -17,6 +17,7 @@ import com.killard.board.parser.ExecutionException;
 import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -58,10 +59,12 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent(serialized = "true")
     private Function function;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<SkillPropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<SkillDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")

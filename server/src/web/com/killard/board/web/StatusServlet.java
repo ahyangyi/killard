@@ -38,10 +38,6 @@ public class StatusServlet extends HttpServlet {
             out.println("{\"time\":0}");
         }
         else {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ignored) {
-            }
             Cache cache = instance.getCache();
             if (!cache.containsKey(playerCache.getBoardKey())) {
                 ActionLogDO[] actions = instance.getBoard().getActions();

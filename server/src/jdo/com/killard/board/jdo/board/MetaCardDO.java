@@ -47,7 +47,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent
     private String name;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text definition;
 
     @Persistent
@@ -68,16 +68,16 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent
     private Boolean visible;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private List<SkillDO> skills;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Set<String> visibleAttributes;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Set<String> hiddenAttributes;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Set<MetaCardPropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")

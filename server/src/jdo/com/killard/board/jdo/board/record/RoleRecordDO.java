@@ -15,6 +15,7 @@ import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
 import com.killard.board.jdo.board.record.property.RoleRecordPropertyDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -48,7 +49,8 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
     @Persistent
     private boolean visible;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<RoleRecordPropertyDO> properties;
 
     @Persistent(serialized = "true")

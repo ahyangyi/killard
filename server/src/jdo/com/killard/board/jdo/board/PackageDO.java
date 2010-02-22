@@ -10,6 +10,7 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -50,22 +51,27 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent(dependent = "true")
     private RuleDO rule;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private SortedSet<RoleDO> roles;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private SortedSet<RoleGroupDO> roleGroups;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private SortedSet<ElementSchoolDO> elementSchools;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<PackageDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private Blob image;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(mappedBy = "boardPackage", defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private SortedSet<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {

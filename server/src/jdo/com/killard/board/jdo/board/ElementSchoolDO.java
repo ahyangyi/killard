@@ -9,6 +9,7 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -38,16 +39,20 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     @Persistent
     private String name;
 
-    @Persistent(mappedBy = "elementSchool")
+    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<MetaCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<AttributeDO> attributes;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<ElementSchoolPropertyDO> properties;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
+    @Element(dependent = "true")
     private Set<ElementSchoolDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")

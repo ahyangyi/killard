@@ -46,6 +46,6 @@ public final class PersistenceHelper {
     public static void doTransaction() {
         if (persistenceManager.get().currentTransaction().isActive())
             persistenceManager.get().currentTransaction().commit();
-        persistenceManager.get().currentTransaction().begin();
+//        persistenceManager.get().currentTransaction().begin();
     }
 }

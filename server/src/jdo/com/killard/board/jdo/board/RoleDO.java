@@ -9,6 +9,7 @@ import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -55,9 +56,11 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private List<AttributeHandler> after;
 
     @Persistent
+    @Element(dependent = "true")
     private Set<RolePropertyDO> properties;
 
     @Persistent
+    @Element(dependent = "true")
     private Set<RoleDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")

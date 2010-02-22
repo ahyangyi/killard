@@ -2,6 +2,7 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -35,6 +36,7 @@ public class PackageBundleDO {
     private String name;
 
     @Persistent
+    @Element(dependent = "true")
     private Set<PlayerProfileDO> players;
 
     @Persistent
@@ -56,6 +58,7 @@ public class PackageBundleDO {
     private String status;
 
     @Persistent
+    @Element(dependent = "true")
     private SortedSet<PackageDO> packages;
 
     public PackageBundleDO(String name) {

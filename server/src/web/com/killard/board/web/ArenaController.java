@@ -137,14 +137,18 @@ public class ArenaController extends BasicController {
                            @RequestParam("cardPosition") int cardPosition,
                            @RequestParam("targetPosition") int targetPosition,
                            ModelMap modelMap) throws Exception {
+        long startTime = System.currentTimeMillis();
         getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
         BoardDO board = CacheInstance.getInstance().getBoard();
+        modelMap.put("time1", System.currentTimeMillis() - startTime);
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.playCard(elementSchoolName, cardName, cardPosition, CacheInstance.getInstance().getPlayer().getNumber());
             PersistenceHelper.getPersistenceManager().makePersistent(board);
+            modelMap.put("time2", System.currentTimeMillis() - startTime);
             logBoard(board);
 //            modelMap.put("actions", board.getActions());
         }
+        modelMap.put("time3", System.currentTimeMillis() - startTime);
         return "arena/actions";
     }
 
@@ -220,7 +224,6 @@ public class ArenaController extends BasicController {
         if (number > 0) {
             board.test();
             PersistenceHelper.getPersistenceManager().makePersistent(board);
-            PersistenceHelper.doTransaction();
         }
 
         // log board to cache
@@ -252,6 +255,7 @@ public class ArenaController extends BasicController {
     }
 
     protected void logBoard(BoardDO board) {
+        PersistenceHelper.doTransaction();
         ActionLogDO[] actions = board.getActions();
         CacheInstance.getInstance().getCache().put(board.getKey(), actions[actions.length - 1].getTime().getTime());
     }

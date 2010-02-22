@@ -5,6 +5,7 @@ import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
 
+import javax.cache.Cache;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.ServletException;
@@ -29,6 +30,7 @@ public class ActionServlet extends HttpServlet {
 
     protected void actions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        long startTime = System.currentTimeMillis();
         response.setContentType("application/json");
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
@@ -36,9 +38,9 @@ public class ActionServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        long lastUpdatedTime = 0l;
+        long since = 0l;
         try {
-            lastUpdatedTime = Long.parseLong(request.getParameter("lastUpdatedTime"));
+            since = Long.parseLong(request.getParameter("since"));
         } catch (Exception ignored) {
         }
 
@@ -49,12 +51,33 @@ public class ActionServlet extends HttpServlet {
             return;
         }
 
+        while (true) {
+            Cache cache = instance.getCache();
+            if (!cache.containsKey(playerCache.getBoardKey())) {
+                try {
+                    cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getTime().getTime());
+                } catch (Exception e) {
+                    out.println("[]");
+                    return;
+                }
+            }
+            if ((Long)cache.get(playerCache.getBoardKey()) > since) break;
+            if (System.currentTimeMillis() - startTime > 10000) {
+                out.println("[]");
+                return;
+            }
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException ignored) {
+            }
+        }
+
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(ActionLogDO.class);
-        query.setFilter("boardKey == bKey && time > lastUpdatedTime");
+        query.setFilter("boardKey == bKey && time > since");
         query.setOrdering("time ascending");
-        query.declareParameters("com.google.appengine.api.datastore.Key bKey, java.util.Date lastUpdatedTime");
-        Collection actions = (Collection) query.execute(playerCache.getBoardKey(), new Date(lastUpdatedTime));
+        query.declareParameters("com.google.appengine.api.datastore.Key bKey, java.util.Date since");
+        Collection actions = (Collection) query.execute(playerCache.getBoardKey(), new Date(since));
 
         out.println("[");
         boolean first = true;

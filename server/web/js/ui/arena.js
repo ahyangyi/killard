@@ -91,7 +91,10 @@
                             'elementSchoolName':ui.draggable.attr('elementSchool'),
                             'cardName':ui.draggable.attr('cardName'),
                             'cardPosition':$(this).attr('position'),
-                            'targetPosition':0});
+                            'targetPosition':0}, function(data) {
+                            alert('playcard');
+                            alert(data);
+                        });
                     }
                 }
             });
@@ -270,16 +273,12 @@
             var cornerLeftMargin = cornerMargin - cornerRightMargin;
 
             /* Render corners */
-//            this.corner.width(playerShortEdge);
-//            this.corner.height(playerShortEdge);
             this.corner.each(function() {
                 $('img', this).width(playerShortEdge);
                 $('img', this).height(playerShortEdge);
                 $(this).width(playerShortEdge);
                 $(this).height(playerShortEdge);
             });
-//            this.corner.find('img').width(playerShortEdge);
-//            this.corner.find('img').height(playerShortEdge);
 
             this.corner.eq(0).css('margin-right', cornerRightMargin);
             this.corner.eq(1).css('margin-left', cornerLeftMargin);
@@ -371,7 +370,6 @@
             $('.other').css('left', this.otherCardsLeft);
             $('.other').css('top', this.otherCardsTop);
             this.boardSeparator.width(this.board.width());
-//            this.boardSeparator.height(0);
             this.boardSeparator.css('left', this.otherCardsLeft);
             this.boardSeparator.css('top', this.otherCardsTop + this.cardHeight);
             $('.self').css('left', this.myCardsLeft);
@@ -379,7 +377,6 @@
 
             this.cardlist.height(this.cardHeight);
             this.card.css('border', 'none');
-//            this.card.css('background', 'none');
             $('.other').find('.card:lt(5)').css('margin-right', cardSeparator);
             $('.self').find('.card:lt(5)').css('margin-right', cardSeparator);
 
@@ -424,7 +421,8 @@
                 $('#messagebox').css('left', arenaMargin + arenaPadding + playerShortEdge + boardWidth / 2 - 200);
             }
             if (arenaScale < 1) {
-                $('#messagebox').css('top', arenaMargin + playerShortEdge + arenaPadding + boardHeight / 2 - $('#messagebox').height() / 2);
+                var top = arenaMargin + playerShortEdge + arenaPadding + boardHeight / 2 - $('#messagebox').height() / 2;
+                $('#messagebox').css('top', top);
             }
         }
     });
@@ -608,7 +606,7 @@ function changeCardHealth(action) {
 }
 
 function actionsUpdate(i, action) {
-    $(window).attr('lastUpdatedTime', action.time);
+    $(window).attr('since', action.time);
     if (action.action == 'PlayerJoinAction') {
         if (action.self) action.target.self = action.self;
         playerUpdate(i, action.target);

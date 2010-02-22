@@ -112,22 +112,16 @@
             $('.carousel').carousel();
             $('.other').hide();
             function update() {
-                $.getJSON('arena/actions.json', {'lastUpdatedTime':$(window).attr('lastUpdatedTime')},
+                $.getJSON('arena/actions.json', {'since':$(window).attr('since')},
                         function(data, textStatus) {
                             $.each(data, actionsUpdate);
-                            setTimeout(checkStatus, 1000);
+                            update();
                         });
             }
-            function checkStatus() {
-                $.getJSON('arena/status.json', function(data, textStatus) {
-                    if (data.time > $(window).attr('lastUpdatedTime')) update();
-                    else setTimeout(checkStatus, 1000);
-                });
-            }
             $.getJSON('arena/board.json', function(data, textStatus) {
-                $(window).attr('lastUpdatedTime', data.time);
+                $(window).attr('since', data.time);
                 $.each(data.players, playerUpdate);
-                checkStatus();
+                update();
             });
         });
     </script>

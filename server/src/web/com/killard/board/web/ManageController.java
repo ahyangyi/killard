@@ -1,5 +1,7 @@
 package com.killard.board.web;
 
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
@@ -52,6 +54,8 @@ public class ManageController extends BasicController {
     private final ScriptEngine engine = new ScriptEngine();
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
+
+    private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     static {
 //        Queue queue = QueueFactory.getQueue("rss-fetch");

@@ -129,6 +129,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         return actionLogs.toArray(new ActionLogDO[actionLogs.size()]);
     }
 
+    public ActionLogDO getLastActionLog() {
+        return actionLogs.get(actionLogs.size() - 1);
+    }
+
     public List<MessageDO> getMessages() {
         return Collections.unmodifiableList(messages);
     }

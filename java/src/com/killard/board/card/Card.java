@@ -13,8 +13,6 @@ public interface Card<T extends Card> extends MetaCard<T> {
 
     public Player getOwner();
 
-    public Player getTarget();
-
     public int getHealth();
 
     public int getPosition();

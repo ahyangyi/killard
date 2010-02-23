@@ -1,10 +1,12 @@
 package com.killard.board.web.cache;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 
 import javax.cache.Cache;
@@ -57,7 +59,6 @@ public enum CacheInstance {
 
     public PlayerCache getPlayerCache() {
         String id = getPlayerId();
-        Cache cache = CacheInstance.getInstance().getCache();
         if (cache.containsKey(id)) return (PlayerCache) cache.get(id);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -69,8 +70,8 @@ public enum CacheInstance {
 
         PlayerRecordDO player = (PlayerRecordDO) collection.iterator().next();
         BoardDO board = pm.getObjectById(BoardDO.class, player.getBoardKey());
-        board.restore();
-        PlayerCache playerCache = new PlayerCache(player.getKey(), board.getKey(), board.getPackageKey(), board.getBoardPackage().getBundleKey());
+        PlayerCache playerCache = new PlayerCache(player.getKey(), board.getKey(),
+                board.getPackageKey(), getPackage(board.getPackageKey()).getBundleKey());
         cache.put(id, playerCache);
         return playerCache;
     }
@@ -87,7 +88,16 @@ public enum CacheInstance {
         if (cache == null) return null;
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         BoardDO board = pm.getObjectById(BoardDO.class, cache.getBoardKey());
-        board.restore();
+        board.restore(getPackage(board.getPackageKey()));
         return board;
+    }
+
+    public PackageDO getPackage(Key key) {
+        if (cache.containsKey(key)) return (PackageDO) cache.get(key);
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        PackageDO pack = pm.getObjectById(PackageDO.class, key);
+        pm.makeTransient(pack);
+        cache.put(key, pack);
+        return pack;
     }
 }

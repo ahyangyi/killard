@@ -13,39 +13,48 @@ import javax.jdo.PersistenceManagerFactory;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class PersistenceHelper {
+public enum PersistenceHelper {
 
-    private static final PersistenceManagerFactory pmfInstance =
-            JDOHelper.getPersistenceManagerFactory("transactional");
+    helper;
 
-    private static final ThreadLocal<PersistenceManager> persistenceManager = new ThreadLocal<PersistenceManager>();
+    private final PersistenceManagerFactory pmfInstance =
+            JDOHelper.getPersistenceManagerFactory("transactions-optional");
+
+    private final ThreadLocal<PersistenceManager> persistenceManager = new ThreadLocal<PersistenceManager>();
 
     private PersistenceHelper() {
     }
 
     public static void openSession() {
-        persistenceManager.set(pmfInstance.getPersistenceManager());
-        persistenceManager.get().currentTransaction().begin();
+        PersistenceManager manager = helper.pmfInstance.getPersistenceManager();
+        helper.persistenceManager.set(manager);
+        manager.currentTransaction().begin();
     }
 
     public static PersistenceManager getPersistenceManager() {
-        return persistenceManager.get();
+        return helper.persistenceManager.get();
     }
 
     public static void closeSession() {
-        if (persistenceManager.get().currentTransaction().isActive())
-            persistenceManager.get().currentTransaction().commit();
-        persistenceManager.get().close();
+        PersistenceManager manager = getPersistenceManager();
+        if (manager.isClosed()) return;
+        if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
+        manager.close();
     }
 
     public static void rollback() {
-        if (persistenceManager.get().currentTransaction().isActive())
-            persistenceManager.get().currentTransaction().rollback();
+        PersistenceManager manager = getPersistenceManager();
+        if (manager.currentTransaction().isActive()) manager.currentTransaction().rollback();
     }
 
     public static void doTransaction() {
-        if (persistenceManager.get().currentTransaction().isActive())
-            persistenceManager.get().currentTransaction().commit();
-//        persistenceManager.get().currentTransaction().begin();
+        PersistenceManager manager = getPersistenceManager();
+        if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
+        manager.currentTransaction().begin();
+    }
+
+    public static void endTransaction() {
+        PersistenceManager manager = getPersistenceManager();
+        if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
     }
 }

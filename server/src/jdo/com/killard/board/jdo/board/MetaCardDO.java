@@ -48,7 +48,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private String name;
 
     @Persistent(defaultFetchGroup = "false")
-    private Text definition;
+    private transient Text definition;
 
     @Persistent
     private int level;
@@ -68,23 +68,23 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent
     private Boolean visible;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     private List<SkillDO> skills;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     private Set<String> visibleAttributes;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     private Set<String> hiddenAttributes;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     private Set<MetaCardPropertyDO> properties;
 
-    @Persistent(defaultFetchGroup = "false")
-    private Set<MetaCardDescriptorDO> descriptors;
+    @Persistent
+    private transient Set<MetaCardDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private transient Blob image;
 
     protected MetaCardDO(ElementSchoolDO elementSchool, String name) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());

@@ -9,6 +9,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.web.cache.CacheInstance;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ public class BasicController {
         return userService.getCurrentUser();
     }
 
-    protected BoardDO getBoardManager(long packageBundleId, long boardId) {
+    protected BoardDO getBoard(long packageBundleId, long boardId) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
@@ -56,7 +57,7 @@ public class BasicController {
         Key boardKey = KeyFactory.createKey(packageKey, BoardDO.class.getSimpleName(), boardId);
 
         BoardDO board = pm.getObjectById(BoardDO.class, boardKey);
-        board.restore();
+        board.restore(CacheInstance.getInstance().getPackage(board.getPackageKey()));
         return board;
     }
 

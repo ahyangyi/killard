@@ -121,7 +121,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
             element.restore(board);
         }
         for (CardRecordDO card : equippedCards) {
-            card.restore(board);
+            card.restore(board, this);
         }
         board.addActionListener(role, this);
         addStateListener(board);

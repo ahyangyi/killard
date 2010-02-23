@@ -123,10 +123,6 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
         return owner;
     }
 
-    public Player getTarget() {
-        return target;
-    }
-
     public int getPosition() {
         return position;
     }

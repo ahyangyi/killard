@@ -3,6 +3,7 @@ package com.killard.board.jdo;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.jdo.context.BoardContext;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -14,7 +15,8 @@ import java.util.Locale;
  * This class is mutable and not thread safe.
  * </p>
  */
-public abstract class DescriptableDO<S extends DescriptableDO, P extends PropertyDO, T extends DescriptorDO> implements Comparable<S> {
+public abstract class DescriptableDO<S extends DescriptableDO, P extends PropertyDO, T extends DescriptorDO>
+        implements Comparable<S>, Serializable {
 
     protected DescriptableDO() {
     }

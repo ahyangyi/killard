@@ -61,10 +61,10 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     @Persistent
     @Element(dependent = "true")
-    private Set<RoleDescriptorDO> descriptors;
+    private transient Set<RoleDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private transient Blob image;
 
     protected RoleDO(PackageDO pack, String name,
                      String definition,

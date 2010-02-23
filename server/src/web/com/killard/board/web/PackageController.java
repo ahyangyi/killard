@@ -66,15 +66,7 @@ public class PackageController extends BasicController {
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
-
-        List<BoardDO> boards = new ArrayList<BoardDO>();
-        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
-        for (BoardDO board : extent) {
-            board.restore();
-            if (board.getPackageKey().equals(bundle.getRelease().getKey())) boards.add(board);
-        }
-        modelMap.put("boards", boards);
-
+        modelMap.put("boards",  bundle.getRelease().getBoards());
         return "package/boards";
     }
 
@@ -89,7 +81,7 @@ public class PackageController extends BasicController {
         List<BoardDO> boards = new ArrayList<BoardDO>();
         Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
         for (BoardDO board : extent) {
-            if (board.getPackageKey().equals(bundle.getRelease().getKey())) boards.add(board);
+            if (board.getBoardPackage().getKey().equals(bundle.getRelease().getKey())) boards.add(board);
         }
         modelMap.put("boards", boards);
 

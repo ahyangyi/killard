@@ -53,9 +53,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private Key ownerKey;
 
     @Persistent
-    private Key targetKey;
-
-    @Persistent
     private int level;
 
     @Persistent
@@ -99,9 +96,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private PlayerRecordDO owner;
 
     @NotPersistent
-    private PlayerRecordDO target;
-
-    @NotPersistent
     private List<Skill> skills;
 
     @NotPersistent
@@ -123,7 +117,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.cardKey = card.getKey();
 
         setOwner(owner);
-        setTarget(target);
 
         this.level = card.getLevel();
         this.maxHealth = card.getMaxHealth();
@@ -150,11 +143,10 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.addStateListener(board);
     }
 
-    public void restore(BoardDO board) {
+    public void restore(BoardDO board, PlayerRecordDO player) {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         this.card = pm.getObjectById(MetaCardDO.class, cardKey);
-        this.owner = pm.getObjectById(PlayerRecordDO.class, ownerKey);
-        this.target = pm.getObjectById(PlayerRecordDO.class, targetKey);
+        this.owner = player;
         this.skills = new LinkedList<Skill>();
         for (Key key : skillKeys) {
             this.skills.add(pm.getObjectById(SkillDO.class, key));
@@ -247,10 +239,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         return owner;
     }
 
-    public Player getTarget() {
-        return target;
-    }
-
     public int getPosition() {
         return position;
     }
@@ -283,11 +271,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     protected void setOwner(Player owner) {
         this.owner = (PlayerRecordDO) owner;
         this.ownerKey = this.owner.getKey();
-    }
-
-    protected void setTarget(Player target) {
-        this.target = (PlayerRecordDO) target;
-        this.targetKey = this.target.getKey();
     }
 
     protected void setPosition(int position) {

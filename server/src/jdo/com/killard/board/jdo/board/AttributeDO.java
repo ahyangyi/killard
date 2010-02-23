@@ -56,25 +56,25 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent
     private Boolean visible;
 
-    @Persistent(serialized = "true")
+    @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> validators;
 
-    @Persistent(serialized = "true")
+    @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> before;
 
-    @Persistent(serialized = "true")
+    @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> after;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<AttributePropertyDO> properties;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     @Element(dependent = "true")
-    private Set<AttributeDescriptorDO> descriptors;
+    private transient Set<AttributeDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private transient Blob image;
 
     protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
                           String definition,

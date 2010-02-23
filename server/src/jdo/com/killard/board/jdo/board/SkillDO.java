@@ -59,16 +59,16 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent(serialized = "true")
     private Function function;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     @Element(dependent = "true")
     private Set<SkillPropertyDO> properties;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     @Element(dependent = "true")
-    private Set<SkillDescriptorDO> descriptors;
+    private transient Set<SkillDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private transient Blob image;
 
     protected SkillDO(MetaCardDO card, String name, String definition, List<String> targets, int cost, Function function) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());

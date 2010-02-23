@@ -39,24 +39,24 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     @Persistent
     private String name;
 
-    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
+    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<MetaCardDO> cards;
 
-    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "false")
+    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<AttributeDO> attributes;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<ElementSchoolPropertyDO> properties;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     @Element(dependent = "true")
-    private Set<ElementSchoolDescriptorDO> descriptors;
+    private transient Set<ElementSchoolDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private Blob image;
+    private transient Blob image;
 
     protected ElementSchoolDO(PackageDO pack, String name) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());

@@ -21,9 +21,10 @@ import com.killard.board.jdo.board.record.ElementRecordDO;
 import com.killard.board.jdo.board.record.MessageDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 
-import javax.jdo.annotations.Element;
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -46,7 +47,8 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private Key key;
 
     @Persistent
-    private PackageDO boardPackage;
+    @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
+    private Key packageKey;
 
     @Persistent
     private String creator;
@@ -58,29 +60,28 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     private List<Key> roleNames;
 
     @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
     private List<PlayerRecordDO> players;
 
     @Persistent
     private Set<Key> dealtCardKeys;
 
-    @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
+    @Persistent
     private SortedSet<BoardPropertyDO> properties;
 
     @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
     private List<ActionLogDO> actionLogs;
 
     @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
     private List<MessageDO> messages;
 
     @Persistent
     private Date startDate;
 
+    @NotPersistent
+    private PackageDO boardPackage;
+
     public BoardDO(PackageDO boardPackage, String creator, int playerNumber) {
-        this.boardPackage = boardPackage;
+        this.packageKey = boardPackage.getKey();
         this.creator = creator;
         this.currentPlayerNumber = 1;
         this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
@@ -90,9 +91,11 @@ public class BoardDO extends AbstractBoard<BoardDO> {
         this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
+        this.boardPackage = boardPackage;
     }
 
-    public void restore() {
+    public void restore(PackageDO boardPackage) {
+        this.boardPackage = boardPackage;
         for (PlayerRecordDO player : players) player.restore(this);
         addActionListener(getBoardPackage().getRule(), this);
     }
@@ -103,6 +106,10 @@ public class BoardDO extends AbstractBoard<BoardDO> {
 
     public Key getKey() {
         return key;
+    }
+
+    public Key getPackageKey() {
+        return packageKey;
     }
 
     public String getCreator() {

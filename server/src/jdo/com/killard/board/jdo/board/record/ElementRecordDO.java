@@ -2,12 +2,11 @@ package com.killard.board.jdo.board.record;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -57,10 +56,23 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
     }
 
     public void restore(BoardDO board) {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolKey);
+        for (ElementSchool e : board.getBoardPackage().getElementSchools()) {
+            ElementSchoolDO obj = (ElementSchoolDO) e;
+            if (obj.getKey().equals(elementSchoolKey)) {
+                elementSchool = obj;
+                break;
+            }
+        }
         dealtCards = new LinkedList<MetaCardDO>();
-        for (Key key : dealtCardKeys) dealtCards.add(pm.getObjectById(MetaCardDO.class, key));
+        MetaCardDO[] cards = elementSchool.getCards();
+        for (Key key : dealtCardKeys) {
+            for (MetaCardDO c : cards) {
+                if (c.getKey().equals(key)) {
+                    dealtCards.add(c);
+                    break;
+                }
+            }
+        }
     }
 
     public Key getKey() {

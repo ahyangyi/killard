@@ -79,7 +79,7 @@ public class ArenaController extends BasicController {
         PackageDO gamePackage = getPackage(packageBundleId);
         long timeStart = System.currentTimeMillis();
         BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);
-        pm.makePersistent(board);
+        board = pm.makePersistent(board);
 
         join(board, 1);
 //        redirect("/arena", request, response);
@@ -95,14 +95,15 @@ public class ArenaController extends BasicController {
         PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player == null || player.getBoardKey().getId() != boardId) {
             quit();
-            join(getBoardManager(packageBundleId, boardId), -1);
+            join(getBoard(packageBundleId, boardId), -1);
         }
 
         redirect("/arena", request, response);
     }
 
-    @RequestMapping(value = {"/arena/join.html", "/arena/join.xml", "/arena/join.json"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public void join(@RequestParam("number") int number) throws Exception {
+    @RequestMapping(value = {"/arena/join.html", "/arena/join.xml", "/arena/join.json"},
+            method = {RequestMethod.GET, RequestMethod.POST})
+    public void join(@RequestParam("number") int number, HttpServletResponse response) throws Exception {
         getLog().fine("Join record for " + getUser().getNickname() + " at " + number);
 
         BoardDO board = CacheInstance.getInstance().getBoard();
@@ -135,31 +136,32 @@ public class ArenaController extends BasicController {
         return "arena/board";
     }
 
-    @RequestMapping(value = {"/arena/playcard.html", "/arena/playcard.xml", "/arena/playcard.json"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String playCard(@RequestParam("elementSchoolName") String elementSchoolName,
+    @RequestMapping(value = {"/arena/playcard.html", "/arena/playcard.xml", "/arena/playcard.json"},
+            method = {RequestMethod.GET, RequestMethod.POST})
+    public void playCard(@RequestParam("elementSchoolName") String elementSchoolName,
                            @RequestParam("cardName") String cardName,
                            @RequestParam("cardPosition") int cardPosition,
-                           @RequestParam("targetPosition") int targetPosition,
-                           ModelMap modelMap) throws Exception {
+                           HttpServletResponse response) throws Exception {
         long startTime = System.currentTimeMillis();
         getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
-        BoardDO board = CacheInstance.getInstance().getBoard();
-        modelMap.put("time1", System.currentTimeMillis() - startTime);
-        if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
-            board.playCard(elementSchoolName, cardName, cardPosition, CacheInstance.getInstance().getPlayer().getNumber());
-            modelMap.put("time2", System.currentTimeMillis() - startTime);
+        CacheInstance instance = CacheInstance.getInstance();
+        BoardDO board = instance.getBoard();
+        response.getWriter().println("time1: " + (System.currentTimeMillis() - startTime) + "ms");
+        startTime = System.currentTimeMillis();
+        if (instance.getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
+            board.playCard(elementSchoolName, cardName, cardPosition, instance.getPlayer().getNumber());
+            response.getWriter().println("time2: " + (System.currentTimeMillis() - startTime) + "ms");
+            startTime = System.currentTimeMillis();
             logBoard(board);
-//            modelMap.put("actions", board.getActions());
         }
-        modelMap.put("time3", System.currentTimeMillis() - startTime);
-        return "arena/actions";
+        response.getWriter().println("time3: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
-    public String cast(@RequestParam("cardPosition") int cardPosition,
+    public void cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex,
                        @RequestParam("target[]") String[] target,
-                       ModelMap modelMap) throws Exception {
+                       HttpServletResponse response) throws Exception {
         getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
@@ -182,48 +184,40 @@ public class ArenaController extends BasicController {
             }
             board.cast(cardPosition, skillIndex - 1, targets);
             logBoard(board);
-//            modelMap.put("actions", board.getActions());
         }
-        return "arena/actions";
     }
 
     @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml", "/arena/endturn.json"},
             method = {RequestMethod.GET, RequestMethod.POST})
-    public String endTurn(ModelMap modelMap) throws Exception {
+    public void endTurn(HttpServletResponse response) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endTurn();
             logBoard(board);
-//            modelMap.put("actions", board.getActions());
         }
-        return "arena/actions";
     }
 
     @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml", "/arena/endcall.json"},
             method = {RequestMethod.GET, RequestMethod.POST})
-    public String endCall(ModelMap modelMap) throws Exception {
+    public void endCall(HttpServletResponse response) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endCall();
             logBoard(board);
-//            modelMap.put("actions", board.getActions());
         }
-        return "arena/actions";
     }
 
     protected void join(BoardDO board, int number) throws BoardException {
         CacheInstance instance = CacheInstance.getInstance();
-        PlayerRecordDO player = (PlayerRecordDO) board.addPlayer(instance.getPlayerId(), getUser().getNickname(), number);
+        board.addPlayer(instance.getPlayerId(), getUser().getNickname(), number);
         // It's important to do transaction immediately to make the Collection field persisted.
-//        PersistenceHelper.getPersistenceManager().makePersistent(board);
         PersistenceHelper.doTransaction();
 
         //TODO deal cards
         if (number > 0) {
             board.test();
-//            PersistenceHelper.getPersistenceManager().makePersistent(board);
         }
 
         // log board to cache
@@ -244,7 +238,7 @@ public class ArenaController extends BasicController {
             pm.deletePersistent(player);
             PersistenceHelper.doTransaction();
 
-            if (board.getPlayers().length == 0) {
+            if (board.getPlayers().length == 1) {
                 CacheInstance.getInstance().getCache().remove(board.getKey());
                 pm.deletePersistent(board);
                 PersistenceHelper.doTransaction();
@@ -255,7 +249,7 @@ public class ArenaController extends BasicController {
     }
 
     protected void logBoard(BoardDO board) {
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.endTransaction();
         CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getTime().getTime());
     }
 

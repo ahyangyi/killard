@@ -11,6 +11,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Locale;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @Inheritance(strategy= InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class DescriptorDO implements Comparable<DescriptorDO> {
+public abstract class DescriptorDO implements Comparable<DescriptorDO>, Serializable {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

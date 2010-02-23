@@ -76,8 +76,6 @@ public abstract class AbstractCardRecord<T extends AbstractCardRecord> implement
 
     protected abstract void setOwner(Player owner);
 
-    protected abstract void setTarget(Player target);
-
     protected abstract void setPosition(int position);
 
     protected abstract boolean removeSkill(Skill skill);

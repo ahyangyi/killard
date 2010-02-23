@@ -9,12 +9,13 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.LinkedList;
 
 /**
  * <p>
@@ -26,7 +27,7 @@ import java.util.LinkedList;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RoleGroupDO implements Comparable<RoleGroupDO> {
+public class RoleGroupDO implements Comparable<RoleGroupDO>, Serializable {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

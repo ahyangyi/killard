@@ -23,8 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -48,31 +46,31 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private String name;
 
-    @Persistent(dependent = "true")
+    @Persistent(dependent = "true", defaultFetchGroup = "true")
     private RuleDO rule;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private SortedSet<RoleDO> roles;
+    private Set<RoleDO> roles;
+
+    @Persistent(defaultFetchGroup = "true")
+    @Element(dependent = "true")
+    private Set<RoleGroupDO> roleGroups;
+
+    @Persistent(defaultFetchGroup = "true")
+    @Element(dependent = "true")
+    private Set<ElementSchoolDO> elementSchools;
+
+    @Persistent
+    @Element(dependent = "true")
+    private transient Set<PackageDescriptorDO> descriptors;
+
+    @Persistent(defaultFetchGroup = "false")
+    private transient Blob image;
 
     @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
-    private SortedSet<RoleGroupDO> roleGroups;
-
-    @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
-    private SortedSet<ElementSchoolDO> elementSchools;
-
-    @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
-    private Set<PackageDescriptorDO> descriptors;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Blob image;
-
-    @Persistent(mappedBy = "boardPackage", defaultFetchGroup = "false")
-    @Element(dependent = "true")
-    private SortedSet<BoardDO> boards;
+    private transient Set<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundle.getKey());
@@ -81,9 +79,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.bundleKey = bundle.getKey();
 
         this.name = bundle.getName();
-        this.roles = new TreeSet<RoleDO>();
-        this.roleGroups = new TreeSet<RoleGroupDO>();
-        this.elementSchools = new TreeSet<ElementSchoolDO>();
+        this.roles = new HashSet<RoleDO>();
+        this.roleGroups = new HashSet<RoleGroupDO>();
+        this.elementSchools = new HashSet<ElementSchoolDO>();
         this.descriptors = new HashSet<PackageDescriptorDO>();
     }
 
@@ -163,9 +161,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return candidates.get((int) (candidates.size() * Math.random()));
     }
 
-    public SortedSet<RoleGroupDO> getRoleGroups() {
+    public Set<RoleGroupDO> getRoleGroups() {
         for (RoleGroupDO group : roleGroups) group.restore(this.roles);
-        return Collections.unmodifiableSortedSet(roleGroups);
+        return Collections.unmodifiableSet(roleGroups);
     }
 
     public ElementSchoolDO newElementSchool(String name) {
@@ -199,6 +197,10 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     public void setImageData(byte[] data) {
         image = new Blob(data);
+    }
+
+    public Set<BoardDO> getBoards() {
+        return boards;
     }
 
     public int compareTo(PackageDO compare) {

@@ -10,6 +10,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ import javax.jdo.annotations.PrimaryKey;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @Inheritance(strategy= InheritanceStrategy.SUBCLASS_TABLE)
-public abstract class PropertyDO implements Comparable<PropertyDO> {
+public abstract class PropertyDO implements Comparable<PropertyDO>, Serializable {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

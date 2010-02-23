@@ -118,6 +118,7 @@ public enum CacheInstance {
             }
             ed.getProperties();
         }
+        // make transient
         pm.makeTransient(pack);
         cache.put(key, pack);
         return pack;

@@ -50,7 +50,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent
     private String name;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text definition;
 
     @Persistent
@@ -65,7 +65,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> after;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     @Element(dependent = "true")
     private Set<AttributePropertyDO> properties;
 

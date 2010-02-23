@@ -47,7 +47,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent
     private String name;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text definition;
 
     @Persistent

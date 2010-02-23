@@ -118,7 +118,7 @@ public enum CacheInstance {
             }
             ed.getProperties();
         }
-        // make transient
+        // Make transient so that we can put it into memcache.
         pm.makeTransient(pack);
         cache.put(key, pack);
         return pack;

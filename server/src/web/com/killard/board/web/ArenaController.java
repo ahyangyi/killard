@@ -68,7 +68,7 @@ public class ArenaController extends BasicController {
     }
 
     @RequestMapping(value = {"/arena/new.html", "/arena/new.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String newGame(@RequestParam("packageBundleId") long packageBundleId,
+    public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response,
                         ModelMap modelMap) throws Exception {
@@ -78,14 +78,14 @@ public class ArenaController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO gamePackage = getPackage(packageBundleId);
         long timeStart = System.currentTimeMillis();
-        BoardDO board = new BoardDO(gamePackage.getKey(), getUser().getNickname(), playerNumber);
+        BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);
         board = pm.makePersistent(board);
         PersistenceHelper.doTransaction();
 
         join(board, 1);
-//        redirect("/arena", request, response);
-        modelMap.put("time", System.currentTimeMillis() - timeStart);
-        return "arena/new";
+        redirect("/arena", request, response);
+//        modelMap.put("time", System.currentTimeMillis() - timeStart);
+//        return "arena/new";
     }
 
     @RequestMapping(value = {"/arena/enter.html", "/arena/enter.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -237,7 +237,7 @@ public class ArenaController extends BasicController {
             pm.deletePersistent(player);
             PersistenceHelper.doTransaction();
 
-            if (board.getPlayers().length == 1) {
+            if (board.getPlayers().length == 0) {
                 CacheInstance.getInstance().getCache().remove(board.getKey());
                 pm.deletePersistent(board);
                 PersistenceHelper.doTransaction();
@@ -248,7 +248,7 @@ public class ArenaController extends BasicController {
     }
 
     protected void logBoard(BoardDO board) {
-        PersistenceHelper.endTransaction();
+        PersistenceHelper.doTransaction();
         CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getTime().getTime());
     }
 

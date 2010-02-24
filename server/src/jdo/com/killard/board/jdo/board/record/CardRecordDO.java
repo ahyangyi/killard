@@ -104,6 +104,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
 
         this.cardKey = card.getKey();
 
+        this.board = board;
         setOwner(owner);
 
         this.level = card.getLevel();

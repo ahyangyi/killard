@@ -10,5 +10,7 @@
         <property name="javax.jdo.option.NontransactionalWrite" value="true"/>
         <property name="javax.jdo.option.RetainValues" value="true"/>
         <property name="datanucleus.appengine.autoCreateDatastoreTxns" value="true"/>
+        <!-- A value of NONE will silence the warning.  A value of ERROR will turn the warning into an exception. -->
+        <property name="datanucleus.appengine.ignorableMetaDataBehavior" value="NONE"/>
     </persistence-manager-factory>
 </jdoconfig>

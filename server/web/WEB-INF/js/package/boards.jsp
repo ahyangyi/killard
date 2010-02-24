@@ -3,7 +3,7 @@
 <%--@elvariable id="boards" type="java.util.List<com.killard.board.jdo.board.BoardDO>"--%>
 <c:forEach var="board" items="${boards}" varStatus="status">
     {
-        "packageBundleId" : "${board.package.bundleKey.id}",
+        "packageBundleId" : "${board.packageBundleKey.id}",
         "id" : "${board.key.id}",
         "username" : "${board.creator}",
         "players" : "${board.playerAmount}"

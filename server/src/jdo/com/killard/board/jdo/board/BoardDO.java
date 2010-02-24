@@ -56,6 +56,9 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     private Key packageKey;
 
     @Persistent
+    private Key packageBundleKey;
+
+    @Persistent
     private String creator;
 
     @Persistent
@@ -64,7 +67,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     @Persistent
     private List<Key> roleNames;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private List<PlayerRecordDO> players;
 
     @Persistent
@@ -97,8 +100,9 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     @NotPersistent
     private Map<Key, SkillDO> skills;
 
-    public BoardDO(Key packageKey, String creator, int playerNumber) {
-        this.packageKey = packageKey;
+    public BoardDO(PackageDO pack, String creator, int playerNumber) {
+        this.packageKey = pack.getKey();
+        this.packageBundleKey = pack.getBundleKey();
         this.creator = creator;
         this.currentPlayerNumber = 1;
         this.players = new LinkedList<PlayerRecordDO>();
@@ -121,6 +125,10 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
 
     public Key getPackageKey() {
         return packageKey;
+    }
+
+    public Key getPackageBundleKey() {
+        return packageBundleKey;
     }
 
     public String getCreator() {
@@ -264,7 +272,9 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
         for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
-            record.add(new ElementRecordDO((ElementSchoolDO) elementSchool));
+            ElementRecordDO elementRecord = new ElementRecordDO((ElementSchoolDO) elementSchool);
+            elementRecord.restore(this);
+            record.add(elementRecord);
         }
         return record;
     }
@@ -335,7 +345,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
                 }
             }
         }
-//        for (PlayerRecordDO player : players) player.restore(this);
+        for (PlayerRecordDO player : players) player.restore(this);
         addActionListener(boardPackage.getRule(), this);
     }
 }

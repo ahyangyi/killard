@@ -115,13 +115,19 @@
                 $.getJSON('arena/actions.json', {'since':$(window).data('since')},
                         function(data, textStatus) {
                             $.each(data, actionUpdate);
-                            update();
+                            checkStatus();
                         });
+            }
+            function checkStatus() {
+                $.getJSON('arena/status.json', function(data, textStatus) {
+                    if (data.time > $(window).data('since')) update();
+                    else setTimeout(checkStatus, 1000);
+                });
             }
             $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).data('since', data.time);
                 $.each(data.players, playerUpdate);
-//                update();
+                checkStatus();
             });
         });
     </script>

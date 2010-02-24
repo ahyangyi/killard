@@ -7,7 +7,6 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
-import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.RoleDO;
@@ -19,7 +18,6 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.listener.LoadCallback;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +35,7 @@ import java.util.TreeSet;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> implements LoadCallback {
+public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -64,11 +62,11 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> impleme
     @Persistent
     private boolean cardPlayed;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private SortedSet<CardRecordDO> equippedCards;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private SortedSet<ElementRecordDO> elementRecords;
 
@@ -116,6 +114,13 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> impleme
         this.winner = false;
         this.loser = false;
         this.turnCount = 0;
+    }
+
+    public void restore(BoardDO board) {
+        for (ElementRecordDO element : elementRecords) element.restore(board);
+        for (CardRecordDO card : equippedCards) card.restore(board, this);
+        board.addActionListener(role, this);
+        addStateListener(board);
     }
 
     public Key getKey() {
@@ -316,14 +321,5 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> impleme
 
     public int compareTo(PlayerRecordDO compare) {
         return key.compareTo(compare.key);
-    }
-
-    @Override
-    public void jdoPostLoad() {
-        BoardDO board = PersistenceHelper.getPersistenceManager().getObjectById(BoardDO.class, boardKey);
-//        for (ElementRecordDO element : elementRecords) element.restore(board);
-//        for (CardRecordDO card : equippedCards) card.restore(board, this);
-        board.addActionListener(role, this);
-        addStateListener(board);
     }
 }

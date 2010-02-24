@@ -105,8 +105,6 @@
                             'cardName':ui.draggable.attr('cardName'),
                             'cardPosition':$(this).attr('position'),
                             'targetPosition':0}, function(data) {
-                            alert('playcard');
-                            alert(data);
                         });
                     }
                 }
@@ -519,7 +517,7 @@ function dealCard(i, card) {
 
 function renderCard(playerNumber, card, self) {
     var arena = $(".arena").data('arena');
-    var cardList = self ? $('.self') : $('#player' + playerNumber);
+    var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
     $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
             .width(arena.cardWidth)

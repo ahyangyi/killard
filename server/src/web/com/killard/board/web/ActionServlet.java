@@ -5,7 +5,6 @@ import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
 
-import javax.cache.Cache;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.ServletException;
@@ -51,26 +50,26 @@ public class ActionServlet extends HttpServlet {
             return;
         }
 
-        while (true) {
-            Cache cache = instance.getCache();
-            if (!cache.containsKey(playerCache.getBoardKey())) {
-                try {
-                    cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getTime().getTime());
-                } catch (Exception e) {
-                    out.println("[]");
-                    return;
-                }
-            }
-            if ((Long)cache.get(playerCache.getBoardKey()) > since) break;
-            if (System.currentTimeMillis() - startTime > 10000) {
-                out.println("[]");
-                return;
-            }
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException ignored) {
-            }
-        }
+//        while (true) {
+//            Cache cache = instance.getCache();
+//            if (!cache.containsKey(playerCache.getBoardKey())) {
+//                try {
+//                    cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getTime().getTime());
+//                } catch (Exception e) {
+//                    out.println("[]");
+//                    return;
+//                }
+//            }
+//            if ((Long)cache.get(playerCache.getBoardKey()) > since) break;
+//            if (System.currentTimeMillis() - startTime > 10000) {
+//                out.println("[]");
+//                return;
+//            }
+//            try {
+//                Thread.sleep(800);
+//            } catch (InterruptedException ignored) {
+//            }
+//        }
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(ActionLogDO.class);

@@ -44,7 +44,7 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text definition;
 
     @Persistent(serialized = "true")

@@ -54,7 +54,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     private Text definition;
 
     @Persistent
-    private Boolean visible;
+    private boolean visible;
 
     @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> validators;
@@ -65,7 +65,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> after;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<AttributePropertyDO> properties;
 

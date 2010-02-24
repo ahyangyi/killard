@@ -4,15 +4,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.killard.board.card.ElementSchool;
-import com.killard.board.card.Skill;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
-import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 
 import javax.cache.Cache;
@@ -102,22 +96,6 @@ public enum CacheInstance {
         if (cache.containsKey(key)) return (PackageDO) cache.get(key);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO pack = pm.getObjectById(PackageDO.class, key);
-        pack.getRule();
-        pack.getRoleGroups();
-        pack.getRoles();
-        pack.getProperties();
-        for (ElementSchool e : pack.getElementSchools()) {
-            ElementSchoolDO ed = (ElementSchoolDO) e;
-            for (AttributeDO a : ed.getAttributes()) a.getProperties();
-            for (MetaCardDO c : ed.getCards()) {
-                for (Skill s : c.getSkills()) {
-                    SkillDO sd = (SkillDO) s;
-                    sd.getProperties();
-                }
-                c.getProperties();
-            }
-            ed.getProperties();
-        }
         // Make transient so that we can put it into memcache.
         pm.makeTransient(pack);
         cache.put(key, pack);

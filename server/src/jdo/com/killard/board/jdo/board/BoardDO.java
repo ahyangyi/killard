@@ -56,13 +56,13 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     @Persistent
     private int currentPlayerNumber;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private List<Key> roleNames;
 
     @Persistent(defaultFetchGroup = "false")
     private List<PlayerRecordDO> players;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private Set<Key> dealtCardKeys;
 
     @Persistent
@@ -97,7 +97,7 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     public void restore(PackageDO boardPackage) {
         this.boardPackage = boardPackage;
         for (PlayerRecordDO player : players) player.restore(this);
-        addActionListener(getBoardPackage().getRule(), this);
+        addActionListener(boardPackage.getRule(), this);
     }
 
     public PackageDO getBoardPackage() {

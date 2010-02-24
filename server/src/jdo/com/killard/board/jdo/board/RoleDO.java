@@ -43,7 +43,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     @Persistent
     private boolean visible;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     private Text definition;
 
     @Persistent(serialized = "true")
@@ -55,7 +55,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     @Persistent(serialized = "true")
     private List<AttributeHandler> after;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<RolePropertyDO> properties;
 

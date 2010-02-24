@@ -39,15 +39,15 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     @Persistent
     private String name;
 
-    @Persistent(mappedBy = "elementSchool")
+    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<MetaCardDO> cards;
 
-    @Persistent(mappedBy = "elementSchool")
+    @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<AttributeDO> attributes;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<ElementSchoolPropertyDO> properties;
 

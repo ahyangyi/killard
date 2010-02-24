@@ -46,18 +46,18 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private String name;
 
-    @Persistent(dependent = "true")
+    @Persistent(dependent = "true", defaultFetchGroup = "true")
     private RuleDO rule;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<RoleDO> roles;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<RoleGroupDO> roleGroups;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<ElementSchoolDO> elementSchools;
 
@@ -68,7 +68,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
     private transient Set<BoardDO> boards;
 

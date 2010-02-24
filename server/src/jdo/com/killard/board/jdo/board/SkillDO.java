@@ -59,7 +59,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent(serialized = "true")
     private Function function;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<SkillPropertyDO> properties;
 

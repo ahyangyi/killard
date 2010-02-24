@@ -63,12 +63,12 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private int attackValue;
 
     @Persistent
-    private Boolean equippable;
+    private boolean equippable;
 
     @Persistent
-    private Boolean visible;
+    private boolean visible;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private List<SkillDO> skills;
 
     @Persistent(defaultFetchGroup = "true")
@@ -77,7 +77,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent(defaultFetchGroup = "true")
     private Set<String> hiddenAttributes;
 
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private Set<MetaCardPropertyDO> properties;
 
     @Persistent

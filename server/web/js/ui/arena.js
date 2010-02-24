@@ -105,6 +105,7 @@
                             'cardName':ui.draggable.attr('cardName'),
                             'cardPosition':$(this).attr('position'),
                             'targetPosition':0}, function(data) {
+                            alert(data);
                         });
                     }
                 }
@@ -497,7 +498,7 @@ function playerQuit(player) {
     }
     playerDiv.toggleClass('emptyPlayer');
 
-    var cardList = $('#player' + player.number);
+    var cardList = $('.cardlist[number=' + player.number + ']');
     cardList.find('li').empty();
 }
 
@@ -592,7 +593,7 @@ function dropCard(playerNumber, card, self) {
 }
 
 function changeCardHealth(action) {
-    var cardList = action.self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
+    var cardList = action.self ? $('.self') : $('.cardlist[number=' + action.target.playerNumber + ']');
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
         cardList.show('drop', {direction:'up'});

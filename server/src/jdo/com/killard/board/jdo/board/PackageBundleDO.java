@@ -134,7 +134,7 @@ public class PackageBundleDO {
     }
 
     public PackageDO release() {
-        packages.add(new PackageDO(this, getDraft()));
+//        packages.add(new PackageDO(this, getDraft()));
         return getRelease();
     }
 

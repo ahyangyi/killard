@@ -111,7 +111,8 @@
             $('.carousel').carousel();
             $('.other').hide();
             function update() {
-                $.getJSON('test/arena/actions.json', {'since':$(window).data('since')},
+                $.getJSON('arena/actions.json',
+//                {'since':$(window).data('since')},
                         function(data, textStatus) {
                             $.each(data, actionUpdate);
                             setTimeout(checkStatus, 1000);
@@ -126,7 +127,7 @@
             $.getJSON('arena/board.json', function(data, textStatus) {
                 $(window).data('since', data.time);
                 $.each(data.players, playerUpdate);
-                checkStatus();
+                setTimeout(update, 1000);
             });
         });
     </script>

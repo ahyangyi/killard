@@ -63,6 +63,8 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
         buf.append(card.getAttack().getValue());
         buf.append(",\"position\":");
         buf.append(card.getPosition());
+        buf.append(",\"playerNumber\":");
+        buf.append(card.getOwner().getNumber());
         buf.append(",\"skills\":[");
         boolean first = true;
         for (Skill skill : card.getSkills()) {
@@ -71,8 +73,6 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
             first = false;
         }
         buf.append("]}");
-        buf.append(",\"playerNumber\":");
-        buf.append(card.getOwner().getNumber());
         return buf.toString();
     }
 

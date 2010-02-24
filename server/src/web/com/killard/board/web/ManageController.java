@@ -7,6 +7,7 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
@@ -60,6 +61,21 @@ public class ManageController extends BasicController {
     static {
 //        Queue queue = QueueFactory.getQueue("rss-fetch");
 //        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
+    }
+
+    @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
+    public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
+        for (BoardDO bundle : extent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
+            PersistenceHelper.doTransaction();
+        }
+        extent.closeAll();
+        CacheInstance.getInstance().getCache().clear();
+
+        redirect("/packages", request, response);
     }
 
     @RequestMapping(value = "/manage/clear.*", method = RequestMethod.GET)
@@ -179,7 +195,6 @@ public class ManageController extends BasicController {
 
         bundle.setStatus(PackageStatus.PUBLIC);
         bundle.release();
-        pm.makePersistent(bundle);
         
         redirect("/packages", request, response);
     }

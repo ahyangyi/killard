@@ -9,7 +9,6 @@ import com.killard.board.card.ElementSchool;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
-import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.MetaCardDO;
@@ -17,7 +16,6 @@ import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -90,19 +88,10 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private Set<CardRecordPropertyDO> properties;
 
     @NotPersistent
-    private MetaCardDO card;
+    private BoardDO board;
 
     @NotPersistent
     private PlayerRecordDO owner;
-
-    @NotPersistent
-    private List<Skill> skills;
-
-    @NotPersistent
-    private List<Attribute> visibleAttributes;
-
-    @NotPersistent
-    private List<Attribute> hiddenAttributes;
 
     public CardRecordDO() {
     }
@@ -113,7 +102,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         keyBuilder.addChild(getClass().getSimpleName(), position);
         this.key = keyBuilder.getKey();
 
-        this.card = card;
         this.cardKey = card.getKey();
 
         setOwner(owner);
@@ -128,7 +116,6 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.position = position;
 
         this.skillKeys = new LinkedList<Key>();
-        this.skills = new LinkedList<Skill>();
         for (Skill skill : card.getSkills()) addSkill(skill);
 
         this.attributeKeys = new LinkedList<Key>();
@@ -144,18 +131,9 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     }
 
     public void restore(BoardDO board, PlayerRecordDO player) {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        this.card = pm.getObjectById(MetaCardDO.class, cardKey);
+        this.board = board;
         this.owner = player;
-        this.skills = new LinkedList<Skill>();
-        for (Key key : skillKeys) {
-            this.skills.add(pm.getObjectById(SkillDO.class, key));
-        }
-        for (Key key : attributeKeys) {
-            AttributeDO attribute = pm.getObjectById(AttributeDO.class, key);
-            addAttribute(attribute);
-            board.addActionListener(attribute, card);
-        }
+        for (Key key : attributeKeys) board.addActionListener(board.getAttributeDO(key), getCard());
         addStateListener(board);
     }
 
@@ -164,7 +142,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     }
 
     public MetaCardDO getCard() {
-        return card;
+        return board.getMetaCardDO(cardKey);
     }
 
     public String getName() {
@@ -221,18 +199,27 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     }
 
     public Skill[] getSkills() {
-        if (skills == null) return new Skill[0];
-        return skills.toArray(new Skill[skills.size()]);
+        Skill[] skills = new Skill[skillKeys.size()];
+        for (int i = 0; i < skills.length; i++) skills[i] = board.getSkillDO(skillKeys.get(i));
+        return skills;
     }
 
     public Attribute[] getHiddenAttributes() {
-        if (hiddenAttributes == null) return new Attribute[0];
-        return hiddenAttributes.toArray(new Attribute[hiddenAttributes.size()]);
+        List<Attribute> attributes = new LinkedList<Attribute>();
+        for (Key key : attributeKeys) {
+            AttributeDO attribute = board.getAttributeDO(key);
+            if (!attribute.isVisible()) attributes.add(attribute);
+        }
+        return attributes.toArray(new Attribute[attributes.size()]);
     }
 
     public Attribute[] getVisibleAttributes() {
-        if (visibleAttributes == null) return new Attribute[0];
-        return visibleAttributes.toArray(new Attribute[visibleAttributes.size()]);
+        List<Attribute> attributes = new LinkedList<Attribute>();
+        for (Key key : attributeKeys) {
+            AttributeDO attribute = board.getAttributeDO(key);
+            if (attribute.isVisible()) attributes.add(attribute);
+        }
+        return attributes.toArray(new Attribute[attributes.size()]);
     }
 
     public Player getOwner() {
@@ -279,36 +266,20 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
 
     protected boolean addSkill(Skill skill) {
         SkillDO record = (SkillDO) skill;
-        return !skillKeys.contains(record.getKey()) && skills.add(record) && skillKeys.add(record.getKey());
+        return !skillKeys.contains(record.getKey()) && skillKeys.add(record.getKey());
     }
 
     protected boolean removeSkill(Skill skill) {
         SkillDO record = (SkillDO) skill;
-        return skillKeys.contains(record.getKey()) && skills.remove(skill) && skillKeys.remove(record.getKey());
+        return skillKeys.contains(record.getKey()) && skillKeys.remove(record.getKey());
     }
 
     protected boolean addAttribute(Attribute attribute) {
-        AttributeDO record = (AttributeDO) attribute;
-        if (!attributeKeys.contains(record.getKey())) {
-            if (attribute.isVisible()) {
-                if (visibleAttributes.add(attribute)) return attributeKeys.add(record.getKey());
-            } else {
-                if (hiddenAttributes.add(attribute)) return attributeKeys.add(record.getKey());
-            }
-        }
-        return false;
+        return attributeKeys.add(((AttributeDO)attribute).getKey());
     }
 
     protected boolean removeAttribute(Attribute attribute) {
-        AttributeDO record = (AttributeDO) attribute;
-        if (attributeKeys.contains(record.getKey())) {
-            if (attribute.isVisible()) {
-                if (visibleAttributes.remove(attribute)) return attributeKeys.remove(record.getKey());
-            } else {
-                if (hiddenAttributes.remove(attribute)) return attributeKeys.remove(record.getKey());
-            }
-        }
-        return false;
+        return attributeKeys.remove(((AttributeDO)attribute).getKey());
     }
 
     public int compareTo(CardRecordDO record) {

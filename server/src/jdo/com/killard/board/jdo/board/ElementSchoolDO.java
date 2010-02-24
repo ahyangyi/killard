@@ -36,9 +36,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent
-    private String name;
-
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
     private Set<MetaCardDO> cards;
@@ -63,7 +60,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
 
-        this.name = name;
         this.cards = new HashSet<MetaCardDO>();
         this.attributes = new HashSet<AttributeDO>();
         this.properties = new HashSet<ElementSchoolPropertyDO>();
@@ -79,7 +75,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     }
 
     public String getName() {
-        return name;
+        return key.getName();
     }
 
     public ElementSchoolPropertyDO[] getProperties() {
@@ -88,10 +84,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
 
     protected boolean addProperty(String name, String data) {
         return properties.add(new ElementSchoolPropertyDO(this, name, data));
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public MetaCardDO newCard(String name) {
@@ -105,11 +97,10 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     }
 
     public AttributeDO newAttribute(String name, boolean visible,
-                                    String definition,
                                     List<AttributeHandler> validators,
                                     List<AttributeHandler> before,
                                     List<AttributeHandler> after) {
-        AttributeDO attribute = new AttributeDO(this, name, visible, definition, validators, before, after);
+        AttributeDO attribute = new AttributeDO(this, name, visible, validators, before, after);
         attributes.add(attribute);
         return attribute;
     }

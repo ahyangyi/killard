@@ -78,8 +78,9 @@ public class ArenaController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO gamePackage = getPackage(packageBundleId);
         long timeStart = System.currentTimeMillis();
-        BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);
+        BoardDO board = new BoardDO(gamePackage.getKey(), getUser().getNickname(), playerNumber);
         board = pm.makePersistent(board);
+        PersistenceHelper.doTransaction();
 
         join(board, 1);
 //        redirect("/arena", request, response);
@@ -216,9 +217,7 @@ public class ArenaController extends BasicController {
         PersistenceHelper.doTransaction();
 
         //TODO deal cards
-        if (number > 0) {
-            board.test();
-        }
+        if (number > 0) board.test();
 
         // log board to cache
         logBoard(board);

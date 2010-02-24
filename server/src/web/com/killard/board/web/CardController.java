@@ -65,8 +65,7 @@ public class CardController extends BasicController {
     }
 
     @RequestMapping(value = "/package/*/*/*/edit.*", method = RequestMethod.POST)
-    public String updateCard(@RequestParam("definition") String definition,
-                             @RequestParam("image") MultipartFile file,
+    public String updateCard(@RequestParam("image") MultipartFile file,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         Long packageBundleId = Long.parseLong(ids[2]);
@@ -83,7 +82,6 @@ public class CardController extends BasicController {
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        card.setDefinition(definition);
         card.setImageData(file.getBytes());
         pm.makePersistent(card);
 

@@ -3,7 +3,6 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
@@ -38,13 +37,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private Key key;
 
     @Persistent
-    private String name;
-
-    @Persistent
     private boolean visible;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Text definition;
 
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
@@ -67,7 +60,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     private transient Blob image;
 
     protected RoleDO(PackageDO pack, String name,
-                     String definition,
                      List<AttributeHandler> validators,
                      List<AttributeHandler> before,
                      List<AttributeHandler> after) {
@@ -75,10 +67,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
 
-        this.name = name;
         this.visible = true;
-
-        this.definition = new Text(definition);
 
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
@@ -89,7 +78,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     }
 
     protected RoleDO(PackageDO pack, RoleDO source) {
-        this(pack, source.getName(), source.getDefinition(), source.getValidators(), source.getBefore(), source.getAfter());
+        this(pack, source.getName(), source.getValidators(), source.getBefore(), source.getAfter());
         for (RolePropertyDO property : source.getProperties()) properties.add(new RolePropertyDO(this, property));
 //        for (RoleDescriptorDO descriptor : source.descriptors)
 //            descriptors.add(new RoleDescriptorDO(this, descriptor));
@@ -100,7 +89,7 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     }
 
     public String getName() {
-        return name;
+        return key.getName();
     }
 
     protected boolean addProperty(String name, String data) {
@@ -145,13 +134,5 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     public List<AttributeHandler> getAfter() {
         return Collections.unmodifiableList(after);
-    }
-
-    public String getDefinition() {
-        return definition.getValue();
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = new Text(definition);
     }
 }

@@ -2,7 +2,6 @@ package com.killard.board.jdo.board.record;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
@@ -42,37 +41,16 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
     private List<Key> dealtCardKeys;
 
     @NotPersistent
-    private ElementSchoolDO elementSchool;
-
-    @NotPersistent
-    private List<MetaCardDO> dealtCards;
+    private BoardDO board;
 
     public ElementRecordDO(ElementSchoolDO elementSchool) {
         this.elementSchoolKey = elementSchool.getKey();
         this.amount = 10;
         this.dealtCardKeys = new LinkedList<Key>();
-        this.elementSchool = elementSchool;
-        this.dealtCards = new LinkedList<MetaCardDO>();
     }
 
     public void restore(BoardDO board) {
-        for (ElementSchool e : board.getBoardPackage().getElementSchools()) {
-            ElementSchoolDO obj = (ElementSchoolDO) e;
-            if (obj.getKey().equals(elementSchoolKey)) {
-                elementSchool = obj;
-                break;
-            }
-        }
-        dealtCards = new LinkedList<MetaCardDO>();
-        MetaCardDO[] cards = elementSchool.getCards();
-        for (Key key : dealtCardKeys) {
-            for (MetaCardDO c : cards) {
-                if (c.getKey().equals(key)) {
-                    dealtCards.add(c);
-                    break;
-                }
-            }
-        }
+        this.board = board;
     }
 
     public Key getKey() {
@@ -84,7 +62,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
     }
 
     public ElementSchoolDO getElementSchool() {
-        return elementSchool;
+        return board.getElementSchoolDO(elementSchoolKey);
     }
 
     public int getAmount() {
@@ -96,24 +74,26 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
     }
 
     public MetaCardDO[] getDealtCards() {
-        return dealtCards.toArray(new MetaCardDO[dealtCardKeys.size()]);
+        MetaCardDO[] cards = new MetaCardDO[dealtCardKeys.size()];
+        for (int i = 0; i < cards.length; i++) cards[i] = board.getMetaCardDO(dealtCardKeys.get(i));
+        return cards;
     }
 
     public boolean addDealtCard(MetaCardDO card) {
-        return dealtCards.add(card) && dealtCardKeys.add(card.getKey());
+        return dealtCardKeys.add(card.getKey());
     }
 
     public boolean removeDealtCard(MetaCardDO card) {
-        return dealtCards.remove(card) && dealtCardKeys.remove(card.getKey());
+        return dealtCardKeys.remove(card.getKey());
     }
 
     protected void setPlayer(PlayerRecordDO player) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), elementSchool.getKey().getName());
+        keyBuilder.addChild(getClass().getSimpleName(), elementSchoolKey.getName());
         this.key = keyBuilder.getKey();
     }
 
-    public int compareTo(ElementRecordDO elementRecord) {
-        return key.compareTo(elementRecord.key);
+    public int compareTo(ElementRecordDO compare) {
+        return key.compareTo(compare.key);
     }
 }

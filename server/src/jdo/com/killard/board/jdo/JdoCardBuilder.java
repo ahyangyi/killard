@@ -27,8 +27,8 @@ import java.util.Map;
  */
 public class JdoCardBuilder {
 
-    public void buildRule(PackageDO pack, String definition, Map map) throws InvalidCardException {
-        pack.rule(definition, buildAttributeHandlers(map, "validate"), buildAttributeHandlers(map, "before"),
+    public void buildRule(PackageDO pack, Map map) throws InvalidCardException {
+        pack.rule(buildAttributeHandlers(map, "validate"), buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));
     }
 
@@ -99,30 +99,29 @@ public class JdoCardBuilder {
         if (value instanceof List) {
             List<String> targets = new LinkedList<String>();
             for (Object v : (List) value) targets.add(((StringLiteral)v).getText());
-            card.newSkill(name, "", targets, cost, function);
+            card.newSkill(name, targets, cost, function);
         }
         else
-            card.newSkill(name, "", Collections.<String>emptyList(), cost, function);
+            card.newSkill(name, Collections.<String>emptyList(), cost, function);
     }
 
     public void buildAttributes(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         Object value = map.get("attribute");
         if (value instanceof Map) {
-            buildAttribute(elementSchool, "", (Map) value);
+            buildAttribute(elementSchool, (Map) value);
         }
         if (value instanceof List) {
             for (Object def : (List) value) {
                 if (def instanceof Map) {
-                    buildAttribute(elementSchool, "", (Map) def);
+                    buildAttribute(elementSchool, (Map) def);
                 }
             }
         }
     }
 
-    public void buildAttribute(ElementSchoolDO elementSchool, String definition, Map map) throws InvalidCardException {
+    public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
         AttributeDO attribute = elementSchool.newAttribute(getString(map, "name"),
                 getBoolean(map, "visible"),
-                definition,
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),
                 buildAttributeHandlers(map, "after"));

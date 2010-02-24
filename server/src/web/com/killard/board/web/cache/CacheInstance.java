@@ -87,9 +87,7 @@ public enum CacheInstance {
         PlayerCache cache = getPlayerCache();
         if (cache == null) return null;
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        BoardDO board = pm.getObjectById(BoardDO.class, cache.getBoardKey());
-        board.restore(getPackage(board.getPackageKey()));
-        return board;
+        return pm.getObjectById(BoardDO.class, cache.getBoardKey());
     }
 
     public PackageDO getPackage(Key key) {

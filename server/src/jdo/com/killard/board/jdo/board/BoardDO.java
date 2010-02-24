@@ -6,6 +6,7 @@ import com.killard.board.card.Card;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
+import com.killard.board.card.Skill;
 import com.killard.board.card.action.BeginGameAction;
 import com.killard.board.card.action.BeginTurnAction;
 import com.killard.board.card.action.DealCardAction;
@@ -20,6 +21,7 @@ import com.killard.board.jdo.board.record.CardRecordDO;
 import com.killard.board.jdo.board.record.ElementRecordDO;
 import com.killard.board.jdo.board.record.MessageDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
+import com.killard.board.web.cache.CacheInstance;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -28,19 +30,22 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.listener.LoadCallback;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class BoardDO extends AbstractBoard<BoardDO> {
+public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -56,22 +61,22 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     @Persistent
     private int currentPlayerNumber;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private List<Key> roleNames;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     private List<PlayerRecordDO> players;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private Set<Key> dealtCardKeys;
 
     @Persistent
     private SortedSet<BoardPropertyDO> properties;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     private List<ActionLogDO> actionLogs;
 
-    @Persistent(defaultFetchGroup = "false")
+    @Persistent
     private List<MessageDO> messages;
 
     @Persistent
@@ -80,24 +85,30 @@ public class BoardDO extends AbstractBoard<BoardDO> {
     @NotPersistent
     private PackageDO boardPackage;
 
-    public BoardDO(PackageDO boardPackage, String creator, int playerNumber) {
-        this.packageKey = boardPackage.getKey();
+    @NotPersistent
+    private Map<Key, ElementSchoolDO> elementSchools;
+
+    @NotPersistent
+    private Map<Key, AttributeDO> attributes;
+
+    @NotPersistent
+    private Map<Key, MetaCardDO> cards;
+
+    @NotPersistent
+    private Map<Key, SkillDO> skills;
+
+    public BoardDO(Key packageKey, String creator, int playerNumber) {
+        this.packageKey = packageKey;
         this.creator = creator;
         this.currentPlayerNumber = 1;
-        this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
         this.players = new LinkedList<PlayerRecordDO>();
         this.dealtCardKeys = new HashSet<Key>();
         this.properties = new TreeSet<BoardPropertyDO>();
         this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
-        this.boardPackage = boardPackage;
-    }
-
-    public void restore(PackageDO boardPackage) {
-        this.boardPackage = boardPackage;
-        for (PlayerRecordDO player : players) player.restore(this);
-        addActionListener(boardPackage.getRule(), this);
+        jdoPostLoad();
+        this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
     }
 
     public PackageDO getBoardPackage() {
@@ -285,5 +296,46 @@ public class BoardDO extends AbstractBoard<BoardDO> {
                 }
             }
         }
+    }
+
+    public ElementSchoolDO getElementSchoolDO(Key key) {
+        return elementSchools.get(key);
+    }
+
+    public AttributeDO getAttributeDO(Key key) {
+        return attributes.get(key);
+    }
+
+    public MetaCardDO getMetaCardDO(Key key) {
+        return cards.get(key);
+    }
+
+    public SkillDO getSkillDO(Key key) {
+        return skills.get(key);
+    }
+
+    @Override
+    public void jdoPostLoad() {
+        boardPackage = CacheInstance.getInstance().getPackage(packageKey);
+        elementSchools = new HashMap<Key, ElementSchoolDO>();
+        attributes = new HashMap<Key, AttributeDO>();
+        cards = new HashMap<Key, MetaCardDO>();
+        skills = new HashMap<Key, SkillDO>();
+        for (ElementSchool elementSchool : boardPackage.getElementSchools()) {
+            ElementSchoolDO elementSchoolDo = (ElementSchoolDO) elementSchool;
+            elementSchools.put(elementSchoolDo.getKey(), elementSchoolDo);
+            for (AttributeDO attributeDo : elementSchoolDo.getAttributes()){
+                attributes.put(attributeDo.getKey(), attributeDo);
+            }
+            for (MetaCardDO card: elementSchoolDo.getCards()) {
+                cards.put(card.getKey(), card);
+                for (Skill skill : card.getSkills()) {
+                    SkillDO skillDo = (SkillDO) skill;
+                    skills.put(skillDo.getKey(), skillDo);
+                }
+            }
+        }
+//        for (PlayerRecordDO player : players) player.restore(this);
+        addActionListener(boardPackage.getRule(), this);
     }
 }

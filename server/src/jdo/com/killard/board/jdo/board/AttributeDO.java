@@ -3,7 +3,6 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
@@ -48,12 +47,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     private ElementSchoolDO elementSchool;
 
     @Persistent
-    private String name;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Text definition;
-
-    @Persistent
     private boolean visible;
 
     @Persistent(serialized = "true", defaultFetchGroup = "true")
@@ -77,7 +70,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     private transient Blob image;
 
     protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
-                          String definition,
                           List<AttributeHandler> validators,
                           List<AttributeHandler> before,
                           List<AttributeHandler> after) {
@@ -86,10 +78,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         this.key = keyBuilder.getKey();
 
         this.elementSchool = elementSchool;
-        this.name = name;
         this.visible = visible;
-
-        this.definition = new Text(definition);
 
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
@@ -100,7 +89,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     }
 
     protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {
-        this(elementSchool, source.name, source.visible, source.getDefinition(), source.validators, source.before,
+        this(elementSchool, source.key.getName(), source.visible, source.validators, source.before,
                 source.after);
     }
 
@@ -113,7 +102,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     }
 
     public String getName() {
-        return name;
+        return key.getName();
     }
 
     public AttributePropertyDO[] getProperties() {
@@ -122,14 +111,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     protected boolean addProperty(String name, String data) {
         return properties.add(new AttributePropertyDO(this, name, data));
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDefinition() {
-        return definition.getValue();
     }
 
     public boolean isVisible() {

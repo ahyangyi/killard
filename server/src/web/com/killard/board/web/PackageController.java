@@ -161,7 +161,6 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         RuleDO oldRule = bundle.getDraft().getRule();
-        oldRule.setDefinition(definition);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getDraft());
         return "package/edit";

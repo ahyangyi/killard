@@ -3,7 +3,6 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Action;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
@@ -45,12 +44,6 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     private Key key;
 
     @Persistent
-    private String name;
-
-    @Persistent(defaultFetchGroup = "false")
-    private Text definition;
-
-    @Persistent
     private List<String> targets;
 
     @Persistent
@@ -70,14 +63,10 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
 
-    protected SkillDO(MetaCardDO card, String name, String definition, List<String> targets, int cost, Function function) {
+    protected SkillDO(MetaCardDO card, String name, List<String> targets, int cost, Function function) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), name);
         this.key = keyBuilder.getKey();
-
-        this.name = name;
-
-        this.definition = new Text(definition);
 
         this.targets = new ArrayList<String>(targets);
         this.targets.add(SkillTarget.self.name());
@@ -90,7 +79,7 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     }
 
     protected SkillDO(MetaCardDO card, SkillDO source) {
-        this(card, source.name, source.getDefinition(), source.targets, source.cost, source.function);
+        this(card, source.getName(), source.targets, source.cost, source.function);
         this.cost = source.cost;
     }
 
@@ -99,23 +88,15 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     }
 
     public String getName() {
-        return name;
+        return key.getName();
     }
 
     protected boolean addProperty(String name, String data) {
         return properties.add(new SkillPropertyDO(this, name, data));
     }
 
-    public String getDefinition() {
-        return definition.getValue();
-    }
-
     public SkillPropertyDO[] getProperties() {
         return properties.toArray(new SkillPropertyDO[properties.size()]);
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public SkillTarget[] getTargets() {

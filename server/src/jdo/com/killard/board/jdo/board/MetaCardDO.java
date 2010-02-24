@@ -3,7 +3,6 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
@@ -46,9 +45,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     @Persistent
     private String name;
-
-    @Persistent(defaultFetchGroup = "false")
-    private transient Text definition;
 
     @Persistent
     private int level;
@@ -101,7 +97,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visibleAttributes = new HashSet<String>();
         this.properties = new HashSet<MetaCardPropertyDO>();
         this.descriptors = new HashSet<MetaCardDescriptorDO>();
-        this.definition = new Text("");
     }
 
     protected MetaCardDO(ElementSchoolDO elementSchool, MetaCardDO source) {
@@ -126,10 +121,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Text getDefinition() {
-        return definition;
     }
 
     public ElementSchool getElementSchool() {
@@ -222,10 +213,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     // Setters
 
-    public void setDefinition(String definition) {
-        this.definition = new Text(definition);
-    }
-
     public void setLevel(int level) {
         this.level = level;
     }
@@ -250,8 +237,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visible = visible;
     }
 
-    public SkillDO newSkill(String name, String definition, List<String> targets, int cost, Function function) {
-        SkillDO skill = new SkillDO(this, name, definition, targets, cost, function);
+    public SkillDO newSkill(String name, List<String> targets, int cost, Function function) {
+        SkillDO skill = new SkillDO(this, name, targets, cost, function);
         skills.add(skill);
         return skill;
     }

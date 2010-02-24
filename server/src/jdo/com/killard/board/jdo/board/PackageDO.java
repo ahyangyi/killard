@@ -41,10 +41,10 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     private Key key;
 
     @Persistent
-    private Key bundleKey;
+    private String name;
 
     @Persistent
-    private String name;
+    private Key bundleKey;
 
     @Persistent(dependent = "true", defaultFetchGroup = "true")
     private RuleDO rule;
@@ -77,7 +77,6 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         keyBuilder.addChild(getClass().getSimpleName(), version);
         this.key = keyBuilder.getKey();
         this.bundleKey = bundle.getKey();
-
         this.name = bundle.getName();
         this.roles = new HashSet<RoleDO>();
         this.roleGroups = new HashSet<RoleGroupDO>();
@@ -115,27 +114,22 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return new PropertyDO[0];
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public RuleDO getRule() {
         return rule;
     }
 
-    public RuleDO rule(String definition,
-                       List<AttributeHandler> validators,
+    public RuleDO rule(List<AttributeHandler> validators,
                        List<AttributeHandler> before,
                        List<AttributeHandler> after) {
-        if (rule == null) rule = new RuleDO(this, definition, validators, before, after);
+        if (rule == null) rule = new RuleDO(this, validators, before, after);
         return rule;
     }
 
-    public RoleDO newRole(String name, String definition,
+    public RoleDO newRole(String name,
                           List<AttributeHandler> validators,
                           List<AttributeHandler> before,
                           List<AttributeHandler> after) {
-        RoleDO role = new RoleDO(this, name, definition, validators, before, after);
+        RoleDO role = new RoleDO(this, name, validators, before, after);
         roles.add(role);
         return role;
     }

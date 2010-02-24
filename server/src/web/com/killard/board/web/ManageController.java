@@ -99,10 +99,10 @@ public class ManageController extends BasicController {
         draft.newDescriptor(BoardContext.getLocale(), "Orions", "Orions");
 
         File ruleFile = new File(baseDirectory + "Rule.json");
-        builder.buildRule(draft, getString(ruleFile), engine.parse(ruleFile));
+        builder.buildRule(draft, engine.parse(ruleFile));
 
         List<AttributeHandler> handlers = new ArrayList<AttributeHandler>();
-        RoleDO role = draft.newRole("test", "", handlers, handlers, handlers);
+        RoleDO role = draft.newRole("test", handlers, handlers, handlers);
         RoleGroupDO group = draft.newRoleGroup();
         pm.makePersistent(group);
         PersistenceHelper.doTransaction();

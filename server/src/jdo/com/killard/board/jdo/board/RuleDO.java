@@ -2,10 +2,10 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Text;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.action.BeginTurnAction;
+import com.killard.board.card.action.CastCardAction;
 import com.killard.board.card.action.DealCardAction;
 import com.killard.board.card.action.DrawCardAction;
 import com.killard.board.card.action.DropCardAction;
@@ -44,9 +44,6 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-    @Persistent(defaultFetchGroup = "false")
-    private Text definition;
-
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
 
@@ -57,21 +54,19 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
     private List<AttributeHandler> after;
 
     protected RuleDO(PackageDO pack,
-                     String definition,
                      List<AttributeHandler> validators,
                      List<AttributeHandler> before,
                      List<AttributeHandler> after) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
         keyBuilder.addChild(getClass().getSimpleName(), 1);
         this.key = keyBuilder.getKey();
-        this.definition = new Text(definition);
         this.validators = new ArrayList<AttributeHandler>(validators);
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
     }
 
     protected RuleDO(PackageDO pack, RuleDO source) {
-        this(pack, source.definition.getValue(), source.validators, source.before, source.after);
+        this(pack, source.validators, source.before, source.after);
     }
 
     public Key getKey() {
@@ -88,14 +83,6 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
 
     public AttributeHandler[] getAfter() {
         return after.toArray(new AttributeHandler[after.size()]);
-    }
-
-    public String getDefinition() {
-        return definition.getValue();
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = new Text(definition);
     }
 
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
@@ -138,10 +125,10 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
             owner.removeActionListener(attribute);
     }
 
-//    @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
-//    public List<Action> after(BoardDO board, BoardDO owner, CastCardAction action) {
-//        return action.getSkill().execute(owner, action.getTarget(), action.getTargets());
-//    }
+    @AfterAction(actionClass = CastCardAction.class, selfTargeted = false)
+    public List<Action> after(BoardDO board, BoardDO owner, CastCardAction action) {
+        return action.getSkill().execute(owner, action.getTarget(), action.getTargets());
+    }
 
     public Logger getLog() {
         return Logger.getLogger(getClass().getName());

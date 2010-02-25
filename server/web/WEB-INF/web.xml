@@ -38,12 +38,12 @@
 
     <servlet>
         <servlet-name>status</servlet-name>
-        <servlet-class>com.killard.board.web.StatusServlet</servlet-class>
+        <servlet-class>com.killard.board.web.servlet.StatusServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>action</servlet-name>
-        <servlet-class>com.killard.board.web.ActionServlet</servlet-class>
+        <servlet-class>com.killard.board.web.servlet.ActionServlet</servlet-class>
     </servlet>
 
     <!--<servlet>-->

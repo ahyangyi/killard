@@ -1,4 +1,4 @@
-package com.killard.board.web;
+package com.killard.board.web.servlet;
 
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;

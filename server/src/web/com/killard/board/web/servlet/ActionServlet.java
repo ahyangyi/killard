@@ -1,9 +1,12 @@
 package com.killard.board.web.servlet;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
+import com.killard.board.web.util.ResponseUtils;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -12,9 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * <p>
@@ -29,72 +30,33 @@ public class ActionServlet extends HttpServlet {
 
     protected void actions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        long startTime = System.currentTimeMillis();
-        response.setContentType("application/json");
-        response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
-        response.setHeader("Pragma", "no-cache"); //HTTP 1.0
-        response.setDateHeader("Expires", 0); //prevents caching at the proxy server
-
-        PrintWriter out = response.getWriter();
-
-        long since = 0l;
+        long since;
         try {
             since = Long.parseLong(request.getParameter("since"));
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
 
         CacheInstance instance = CacheInstance.getInstance();
         PlayerCache playerCache = instance.getPlayerCache();
         if (playerCache == null) {
-            out.println("[]");
+            response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
             return;
         }
-
-//        while (true) {
-//            Cache cache = instance.getCache();
-//            if (!cache.containsKey(playerCache.getBoardKey())) {
-//                try {
-//                    cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getTime().getTime());
-//                } catch (Exception e) {
-//                    out.println("[]");
-//                    return;
-//                }
-//            }
-//            if ((Long)cache.get(playerCache.getBoardKey()) > since) break;
-//            if (System.currentTimeMillis() - startTime > 10000) {
-//                out.println("[]");
-//                return;
-//            }
-//            try {
-//                Thread.sleep(800);
-//            } catch (InterruptedException ignored) {
-//            }
-//        }
+        Key boardKey = playerCache.getBoardKey();
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardKey);
+        keyBuilder.addChild(ActionLogDO.class.getSimpleName(), since);
+        Key actionLogKey = keyBuilder.getKey();
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(ActionLogDO.class);
-        query.setFilter("boardKey == bKey && time > since");
-        query.setOrdering("time ascending");
-        query.declareParameters("com.google.appengine.api.datastore.Key bKey, java.util.Date since");
-        Collection actions = (Collection) query.execute(playerCache.getBoardKey(), new Date(since));
+        query.setFilter("boardKey == b && key > s");
+        query.setOrdering("key ascending");
+        query.declareParameters("com.google.appengine.api.datastore.Key b, com.google.appengine.api.datastore.Key s");
+        Collection actions = (Collection) query.execute(boardKey, actionLogKey);
 
-        out.println("[");
-        boolean first = true;
-        for (Object action : actions) {
-            ActionLogDO log = (ActionLogDO) action;
-            boolean self = instance.getPlayerId().equals(log.getTargetPlayerId());
-            if (first) out.println("{");
-            else out.println(",{");
-            first = false;
-            out.println("\"action\":\"" + log.getAction() + "\"");
-            out.println(",\"time\":" + log.getTime().getTime());
-            out.println(",\"self\":" + self);
-            if (self || !log.getAction().equals("DealCardAction")) {
-                if (!log.getLog().isEmpty()) out.println("," + log.getLog());
-            }
-            out.println("}");
-        }
-        out.println("]");
+        ResponseUtils.outputActions(response, actions);
     }
 
     @Override

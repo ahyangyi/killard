@@ -100,13 +100,30 @@
                 hoverClass: 'cardholder',
                 drop: function(event, ui) {
                     if ($(this).children().length == 0) {
+                        var elementSchool = ui.draggable.attr('elementSchool');
+                        var cardName = ui.draggable.attr('cardName');
+                        var position = $(this).attr('position');
+                        var cardImage = $('<img src="arena/' + elementSchool + '/' + cardName + '.png" class="cardimage"/>');
+                        cardImage.width(arena.cardWidth)
+                                .height(arena.cardHeight)
+                                .hide()
+                                .appendTo($(this))
+                                .fadeTo(1000, 0.5);
                         $.post('arena/playcard.json', {
-                            'elementSchoolName':ui.draggable.attr('elementSchool'),
-                            'cardName':ui.draggable.attr('cardName'),
-                            'cardPosition':$(this).attr('position'),
-                            'targetPosition':0}, function(data) {
-                            alert(data);
-                        });
+                            'elementSchoolName':elementSchool,
+                            'cardName':cardName,
+                            'cardPosition':position}, function(actions) {
+                            var equipped = false;
+                            $.each(actions, function(i, action) {
+                                if (action.action == 'EquipCardAction' && action.self
+                                        && action.target.position == position) equipped = true;
+                            });
+                            if (!equipped) {
+                                cardImage.fadeOut("slow", function() {$(this).remove()});
+                            }
+                            $.each(actions, actionUpdate);
+                        }, "json");
+                        $('#bottompanel').hide('drop', {direction:'down'});
                     }
                 }
             });
@@ -140,23 +157,20 @@
                     this.targets.push('self');
                 }
                 if (this.targetList[this.targets.length] == 'other') {
-                    $('#messagebox').text('Please select a player.');
+                    $('#tip').text('Please select a player.');
                     break;
                 }
                 if (this.targetList[this.targets.length] == 'owncard') {
-                    $('#messagebox').text('Please select a card of yours.');
+                    $('#tip').text('Please select a card of yours.');
                     break;
                 }
                 if (this.targetList[this.targets.length] == 'otherscard') {
-                    $('#messagebox').text('Please select a card of others.');
+                    $('#tip').text('Please select a card of others.');
                     break;
                 }
             }
-            if ($('#messagebox').is(':hidden')) {
-                $('#messagebox').show();
-            }
             if (this.targets.length == this.targetList.length) {
-                $('#messagebox').hide();
+                $('#tip').text('');
                 $.post('arena/cast.json', {
                     cardPosition:this.castCardPosition,
                     skillIndex:this.castSkillIndex,
@@ -219,6 +233,11 @@
             var h = Math.min(this.element.parent().height(), $(window).height());
             if (w <= 0) w = this.element.width();
             if (h <= 0) h = this.element.height();
+
+            $('#tip').css('top', h - $('#tip').height());
+            h = h - $('#tip').height() - $('#warning').height();
+
+            this.element.eq(0).css('top', $('#warning').height());
 
             /* Calculate width/height ratio of board. */
             var boardGap = 2 * (options.boardMarginRatio + options.boardPaddingRatio);
@@ -425,17 +444,6 @@
             this.card.find('.skillimage').height(this.cardWidth / 6);
 
             $('.bottompanel').css('top', $(window).height() - this.cardHeight - 2 * boardLengthUnit);
-
-            $('#messagebox').width(400);
-            $('#messagebox').css('top', playerShortEdge + arenaPadding + boardHeight / 2 - $('#messagebox').height() / 2);
-            $('#messagebox').css('left', arenaPadding + playerShortEdge + boardWidth / 2 - 200);
-            if (arenaScale > 1) {
-                $('#messagebox').css('left', arenaMargin + arenaPadding + playerShortEdge + boardWidth / 2 - 200);
-            }
-            if (arenaScale < 1) {
-                var top = arenaMargin + playerShortEdge + arenaPadding + boardHeight / 2 - $('#messagebox').height() / 2;
-                $('#messagebox').css('top', top);
-            }
         }
     });
 
@@ -520,10 +528,16 @@ function renderCard(playerNumber, card, self) {
     var arena = $(".arena").data('arena');
     var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
     var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
-            .width(arena.cardWidth)
-            .height(arena.cardHeight)
-            .appendTo(cardDiv);
+    if (cardDiv.children().length > 0) {
+        $('.cardimage', cardDiv).fadeTo(1000, 1);
+    } else {
+        $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
+                .width(arena.cardWidth)
+                .height(arena.cardHeight)
+                .hide()
+                .appendTo(cardDiv)
+                .fadeIn(1000);
+    }
     var fontSize = arena.cardWidth / 6;
     if (card.skills.length > 0 && self) {
         $.each(card.skills, function(i, skill) {
@@ -604,7 +618,8 @@ function changeCardHealth(action) {
 }
 
 function actionUpdate(i, action) {
-    $(window).data('since', action.time);
+    if (action.id <= $(window).data('since')) return;
+    $(window).data('since', action.id);
     if (action.action == 'PlayerJoinAction') {
         if (action.self) action.target.self = action.self;
         playerUpdate(i, action.target);

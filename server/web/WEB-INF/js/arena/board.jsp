@@ -1,6 +1,6 @@
 {
 <%@ include file="/WEB-INF/js/includes.jsp" %>
-<%--@elvariable id="time" type="long"--%>
+<%--@elvariable id="lastAction" type="long"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>
 <%--@elvariable id="players" type="com.killard.board.jdo.board.record.PlayerRecordDO[]"--%>
@@ -58,5 +58,5 @@
     }
 </c:forEach>
 ],
-"time":${time}
+"lastAction":${lastAction}
 }

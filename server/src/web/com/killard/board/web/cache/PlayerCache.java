@@ -15,13 +15,15 @@ import java.io.Serializable;
  */
 public class PlayerCache implements Serializable {
 
-    private Key playerKey;
+    private final Key playerKey;
 
-    private Key boardKey;
+    private final Key boardKey;
 
-    private Key packageKey;
+    private final Key packageKey;
 
-    private Key packageBundleKey;
+    private final Key packageBundleKey;
+
+    private long lastActionId;
 
     public PlayerCache(Key playerKey, Key boardKey, Key packageKey, Key packageBundleKey) {
         this.playerKey = playerKey;
@@ -44,5 +46,13 @@ public class PlayerCache implements Serializable {
 
     public Key getPackageBundleKey() {
         return packageBundleKey;
+    }
+
+    public long getLastActionId() {
+        return lastActionId;
+    }
+
+    public void setLastActionId(long lastActionId) {
+        this.lastActionId = lastActionId;
     }
 }

@@ -59,17 +59,6 @@
             display: none;
         }
 
-        #messagebox {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 2em;
-            z-index: 30;
-            background-image: url('/image/texture/white.png');
-            text-align: center;
-            display: none;
-        }
-
         .carousel {
             background-color: gray;
         }
@@ -78,6 +67,17 @@
             position: absolute;
             z-index: 0;
             top: 0;
+            left: 0;
+        }
+
+        #warning {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #tip {
+            position: absolute;
             left: 0;
         }
     </style>
@@ -113,21 +113,26 @@
             $('.other').hide();
             function update() {
                 $.getJSON('arena/actions.json', {'since':$(window).data('since')},
-                        function(data, textStatus) {
-                            $.each(data, actionUpdate);
-                            checkStatus();
+                        function(actions, textStatus) {
+                            $.each(actions, actionUpdate);
+                            setTimeout(checkStatus, 2000);
                         });
             }
             function checkStatus() {
-                $.getJSON('arena/status.json', function(data, textStatus) {
-                    if (data.time > $(window).data('since')) update();
-                    else setTimeout(checkStatus, 1000);
+                $.get('arena/status.json', function(data, textStatus) {
+                    if (parseInt(data) > $(window).data('since')) update();
+                    else setTimeout(checkStatus, 2000);
                 });
             }
+            $('#warning').ajaxError(function(event, request, settings) {
+                $(this).text('Error!').fadeIn("slow", function(){
+                    $(this).fadeOut("slow");
+                });
+            });
             $.getJSON('arena/board.json', function(data, textStatus) {
-                $(window).data('since', data.time);
+                $(window).data('since', data.lastAction);
                 $.each(data.players, playerUpdate);
-                checkStatus();
+                setTimeout(checkStatus, 2000);
             });
         });
     </script>
@@ -190,8 +195,6 @@
             </ul>
         </div>
     </div>
-</div>
-<div id="messagebox">
 </div>
 <div class="arena">
     <ul class="top">
@@ -397,6 +400,8 @@
         </li>
     </ul>
 </div>
+<div id="warning"></div>
+<div id="tip"></div>
 </div>
 </body>
 </html>

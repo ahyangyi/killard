@@ -143,11 +143,12 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
         return startDate;
     }
 
-    public ActionLogDO[] getActions() {
-        return actionLogs.toArray(new ActionLogDO[actionLogs.size()]);
+    public List<ActionLogDO> getActions() {
+        return Collections.unmodifiableList(actionLogs);
     }
 
     public ActionLogDO getLastActionLog() {
+        if (actionLogs.isEmpty()) return null;
         return actionLogs.get(actionLogs.size() - 1);
     }
 

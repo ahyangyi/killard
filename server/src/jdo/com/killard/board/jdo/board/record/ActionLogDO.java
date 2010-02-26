@@ -13,7 +13,6 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.util.Date;
 
 /**
  * <p>
@@ -41,19 +40,15 @@ public class ActionLogDO {
     private String log;
 
     @Persistent
-    private Date time;
-
-    @Persistent
     private String targetPlayerId;
 
     public ActionLogDO(BoardDO board, Action action) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(board.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), board.getActions().length + 1);
+        keyBuilder.addChild(getClass().getSimpleName(), board.getActions().size() + 1);
         this.key = keyBuilder.getKey();
         this.boardKey = board.getKey();
         this.action = action.getClass().getSimpleName();
         this.log = ActionLoggerFactory.getActionLogger(action).log(action);
-        this.time = new Date();
         if (action.getTarget() instanceof Player) {
             targetPlayerId = ((Player)action.getTarget()).getId();
         } else if (action.getTarget() instanceof Card) {
@@ -77,10 +72,6 @@ public class ActionLogDO {
 
     public String getLog() {
         return log;
-    }
-
-    public Date getTime() {
-        return time;
     }
 
     public String getTargetPlayerId() {

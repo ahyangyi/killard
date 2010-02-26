@@ -1,6 +1,5 @@
 package com.killard.board.web.servlet;
 
-import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
 
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * <p>
@@ -25,25 +23,30 @@ public class StatusServlet extends HttpServlet {
 
     protected void status(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
-        response.setHeader("Pragma", "no-cache"); //HTTP 1.0
-        response.setDateHeader("Expires", 0); //prevents caching at the proxy server
-
-        PrintWriter out = response.getWriter();
-
         CacheInstance instance = CacheInstance.getInstance();
         PlayerCache playerCache = instance.getPlayerCache();
         if (playerCache == null) {
-            out.println("{\"time\":0}");
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
         else {
             Cache cache = instance.getCache();
             if (!cache.containsKey(playerCache.getBoardKey())) {
-                ActionLogDO[] actions = instance.getBoard().getActions();
-                cache.put(playerCache.getBoardKey(), actions[actions.length - 1].getTime().getTime());
+                cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getKey().getId());
             }
-            out.println("{\"time\":" + cache.get(playerCache.getBoardKey()) + "}");
+            Long lastActionId = (Long) cache.get(playerCache.getBoardKey());
+            if (lastActionId > playerCache.getLastActionId()) {
+                // update player cache with id of the newest action.
+                playerCache.setLastActionId(lastActionId);
+                cache.put(instance.getPlayerId(), playerCache);
+                
+                response.setContentType("text/plain");
+                response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+                response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+                response.setDateHeader("Expires", 0); //prevents caching at the proxy server
+                response.getWriter().println(lastActionId);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            }
         }
     }
 

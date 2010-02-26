@@ -14,6 +14,7 @@ import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
+import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,8 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -136,9 +139,9 @@ public class ArenaController extends BasicController {
         modelMap.put("players", board.getPlayers());
         modelMap.put("playerId", playerId);
 
-        ActionLogDO[] actions = board.getActions();
-        if (actions.length > 0) modelMap.put("time", actions[actions.length - 1].getTime().getTime());
-        else modelMap.put("time", 0);
+        ActionLogDO action = board.getLastActionLog();
+        if (action != null) modelMap.put("lastAction", action.getKey().getId());
+        else modelMap.put("lastAction", 0);
 
         return "arena/board";
     }
@@ -149,19 +152,20 @@ public class ArenaController extends BasicController {
                            @RequestParam("cardName") String cardName,
                            @RequestParam("cardPosition") int cardPosition,
                            HttpServletResponse response) throws Exception {
-        long startTime = System.currentTimeMillis();
         getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
         CacheInstance instance = CacheInstance.getInstance();
         BoardDO board = instance.getBoard();
-        response.getWriter().println("time1: " + (System.currentTimeMillis() - startTime) + "ms");
-        startTime = System.currentTimeMillis();
+        int size = board.getActions().size();
         if (instance.getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.playCard(elementSchoolName, cardName, cardPosition, instance.getPlayer().getNumber());
-            response.getWriter().println("time2: " + (System.currentTimeMillis() - startTime) + "ms");
-            startTime = System.currentTimeMillis();
             logBoard(board);
         }
-        response.getWriter().println("time3: " + (System.currentTimeMillis() - startTime) + "ms");
+        List<ActionLogDO> actions = board.getActions();
+        if (actions.size() == size) {
+            ResponseUtils.outputActions(response, Collections.<ActionLogDO>emptyList());
+        } else {
+            ResponseUtils.outputActions(response, actions.subList(size, actions.size()));
+        }
     }
 
     @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
@@ -255,7 +259,7 @@ public class ArenaController extends BasicController {
 
     protected void logBoard(BoardDO board) {
         PersistenceHelper.doTransaction();
-        CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getTime().getTime());
+        CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getKey().getId());
     }
 
 }

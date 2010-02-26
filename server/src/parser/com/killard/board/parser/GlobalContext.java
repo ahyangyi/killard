@@ -2,7 +2,7 @@ package com.killard.board.parser;
 
 import com.killard.board.card.Action;
 import com.killard.board.card.AttackType;
-import com.killard.board.card.record.ExecutableActionUtil;
+import com.killard.board.card.record.ExecutableActions;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -89,7 +89,7 @@ public class GlobalContext implements Context {
     }
 
     public Constructor getActionConstructor(String name, Class... types) throws NoSuchMethodException {
-        for (Class c : ExecutableActionUtil.buildExecutableActionsMap().keySet()) {
+        for (Class c : ExecutableActions.instance.getRegisterActions()) {
             if (c.getSimpleName().equalsIgnoreCase(name)) {
                 for (Constructor ctor : c.getConstructors()) {
                     Class[] argTypes = ctor.getParameterTypes();

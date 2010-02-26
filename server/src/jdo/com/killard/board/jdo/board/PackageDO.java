@@ -1,8 +1,6 @@
 package com.killard.board.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
@@ -11,11 +9,9 @@ import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
 import javax.jdo.annotations.Element;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,13 +31,6 @@ import java.util.Set;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDescriptorDO> implements BoardPackage {
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-
-    @Persistent
-    private String name;
 
     @Persistent
     private Key bundleKey;
@@ -66,18 +55,12 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     private transient Set<PackageDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    private transient Blob image;
-
-    @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
     private transient Set<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(bundle.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), version);
-        this.key = keyBuilder.getKey();
+        super(bundle.getKey(), version);
         this.bundleKey = bundle.getKey();
-        this.name = bundle.getName();
         this.roles = new HashSet<RoleDO>();
         this.roleGroups = new HashSet<RoleGroupDO>();
         this.elementSchools = new HashSet<ElementSchoolDO>();
@@ -94,16 +77,8 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         }
     }
 
-    public Key getKey() {
-        return key;
-    }
-
     public Key getBundleKey() {
         return bundleKey;
-    }
-
-    public String getName() {
-        return name;
     }
 
     protected boolean addProperty(String name, String data) {
@@ -181,23 +156,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return descriptors.add(new PackageDescriptorDO(this, locale, name, description));
     }
 
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
-    }
-
     public Set<BoardDO> getBoards() {
         return boards;
-    }
-
-    public int compareTo(PackageDO compare) {
-        return key.compareTo(compare.key);
     }
 }

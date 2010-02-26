@@ -1,19 +1,14 @@
 package com.killard.board.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.RoleDescriptorDO;
 import com.killard.board.jdo.board.property.RolePropertyDO;
 
 import javax.jdo.annotations.Element;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,10 +26,6 @@ import java.util.Set;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescriptorDO> {
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
 
     @Persistent
     private boolean visible;
@@ -56,16 +47,11 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     @Element(dependent = "true")
     private transient Set<RoleDescriptorDO> descriptors;
 
-    @Persistent(defaultFetchGroup = "false")
-    private transient Blob image;
-
     protected RoleDO(PackageDO pack, String name,
                      List<AttributeHandler> validators,
                      List<AttributeHandler> before,
                      List<AttributeHandler> after) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
-        this.key = keyBuilder.getKey();
+        super(pack, name);
 
         this.visible = true;
 
@@ -82,14 +68,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         for (RolePropertyDO property : source.getProperties()) properties.add(new RolePropertyDO(this, property));
 //        for (RoleDescriptorDO descriptor : source.descriptors)
 //            descriptors.add(new RoleDescriptorDO(this, descriptor));
-    }
-
-    public Key getKey() {
-        return key;
-    }
-
-    public String getName() {
-        return key.getName();
     }
 
     protected boolean addProperty(String name, String data) {
@@ -110,18 +88,6 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new RoleDescriptorDO(this, locale, name, description));
-    }
-
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
     }
 
     public List<AttributeHandler> getValidators() {

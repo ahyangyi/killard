@@ -30,6 +30,7 @@ import com.killard.board.environment.ExecutableAction;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -40,10 +41,14 @@ import java.util.Map;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class ExecutableActionUtil {
+public enum ExecutableActions {
 
-    public static Map<Class<? extends Action>, ExecutableAction> buildExecutableActionsMap() {
-        Map<Class<? extends Action>, ExecutableAction> map = new HashMap<Class<? extends Action>, ExecutableAction>();
+    instance;
+
+    private Map<Class<? extends Action>, ExecutableAction> map;
+
+    ExecutableActions() {
+        map = new HashMap<Class<? extends Action>, ExecutableAction>();
         map.put(AddCardAttributeAction.class, new ExecutableAddCardAttributeAction());
         map.put(BeginPlayerCallAction.class, new ExecutableBeginPlayerCallAction());
         map.put(BeginTurnAction.class, new ExecutableBeginTurnAction());
@@ -69,6 +74,13 @@ public final class ExecutableActionUtil {
         map.put(RevivePlayerAction.class, new ExecutableRevivePlayerAction());
         map.put(TransferCardAction.class, new ExecutableTransferCardAction());
         map.put(WinAction.class, new ExecutableWinAction());
-        return map;
+    }
+
+    public <A extends Action> ExecutableAction getExecutableAction(A action) {
+        return map.get(action.getClass());
+    }
+
+    public Set<Class<? extends Action>> getRegisterActions() {
+        return map.keySet();
     }
 }

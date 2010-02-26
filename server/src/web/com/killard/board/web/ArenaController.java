@@ -51,14 +51,20 @@ public class ArenaController extends BasicController {
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        response.setContentType("image/png");
+        if (request.getDateHeader("If-Modified-Since") >= card.getModifiedDate().getTime() - 1000) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
         if (card.isRenderable()) {
+            response.setContentType("image/png");
+            response.setDateHeader("Last-Modified", card.getModifiedDate().getTime());
+            response.setHeader("Cache-Control", "private");
             try {
                 response.getOutputStream().write(card.getImageData());
             } catch (IOException ignored) {
             }
         } else {
-            throw new IOException("This board has no image.");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

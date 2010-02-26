@@ -64,7 +64,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private SortedSet<CardRecordDO> equippedCards;
+    private Set<CardRecordDO> equippedCards;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
@@ -103,7 +103,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.number = number;
         this.health = 50;
         this.cardPlayed = false;
-        this.equippedCards = new TreeSet<CardRecordDO>();
+        this.equippedCards = new HashSet<CardRecordDO>();
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
         this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
 

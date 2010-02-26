@@ -1,8 +1,6 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
@@ -14,11 +12,10 @@ import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.parser.Function;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,15 +33,8 @@ import java.util.Set;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, MetaCardDescriptorDO> implements MetaCard<MetaCardDO> {
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-
     @Persistent
     private ElementSchoolDO elementSchool;
-
-    @Persistent
-    private String name;
 
     @Persistent
     private int level;
@@ -65,6 +55,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private boolean visible;
 
     @Persistent(defaultFetchGroup = "true")
+    @Element(dependent = "true")
     private List<SkillDO> skills;
 
     @Persistent(defaultFetchGroup = "true")
@@ -74,20 +65,18 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private Set<String> hiddenAttributes;
 
     @Persistent(defaultFetchGroup = "true")
+    @Element(dependent = "true")
     private Set<MetaCardPropertyDO> properties;
 
     @Persistent
+    @Element(dependent = "true")
     private transient Set<MetaCardDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
 
     protected MetaCardDO(ElementSchoolDO elementSchool, String name) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
-        this.key = keyBuilder.getKey();
-
-        this.name = name;
+        super(elementSchool, name);
         this.elementSchool = elementSchool;
         this.attackType = AttackType.PHYSICAL.name();
         this.equippable = true;
@@ -100,15 +89,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     protected MetaCardDO(ElementSchoolDO elementSchool, MetaCardDO source) {
-        this(elementSchool, source.name);
-    }
-
-    public Key getKey() {
-        return key;
-    }
-
-    public String getName() {
-        return name;
+        this(elementSchool, source.getName());
     }
 
     public MetaCardPropertyDO[] getProperties() {
@@ -117,10 +98,6 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     protected boolean addProperty(String name, String data) {
         return properties.add(new MetaCardPropertyDO(this, name, data));
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ElementSchool getElementSchool() {
@@ -249,17 +226,5 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new MetaCardDescriptorDO(this, locale, name, description));
-    }
-
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
     }
 }

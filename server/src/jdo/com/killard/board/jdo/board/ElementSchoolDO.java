@@ -1,8 +1,6 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
@@ -10,11 +8,9 @@ import com.killard.board.jdo.board.descriptor.ElementSchoolDescriptorDO;
 import com.killard.board.jdo.board.property.ElementSchoolPropertyDO;
 
 import javax.jdo.annotations.Element;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +27,6 @@ import java.util.Set;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementSchoolPropertyDO, ElementSchoolDescriptorDO>
         implements ElementSchool {
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
@@ -56,10 +48,7 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
     private transient Blob image;
 
     protected ElementSchoolDO(PackageDO pack, String name) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(pack.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
-        this.key = keyBuilder.getKey();
-
+        super(pack, name);
         this.cards = new HashSet<MetaCardDO>();
         this.attributes = new HashSet<AttributeDO>();
         this.properties = new HashSet<ElementSchoolPropertyDO>();
@@ -68,14 +57,6 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
 
     protected ElementSchoolDO(PackageDO pack, ElementSchoolDO source) {
         this(pack, source.getName());
-    }
-
-    public Key getKey() {
-        return key;
-    }
-
-    public String getName() {
-        return key.getName();
     }
 
     public ElementSchoolPropertyDO[] getProperties() {
@@ -122,17 +103,5 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new ElementSchoolDescriptorDO(this, locale, name, description));
-    }
-
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
     }
 }

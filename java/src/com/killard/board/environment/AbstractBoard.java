@@ -10,7 +10,7 @@ import com.killard.board.card.action.CastCardAction;
 import com.killard.board.card.action.EndPlayerCallAction;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.EquipCardAction;
-import com.killard.board.card.record.ExecutableActionUtil;
+import com.killard.board.card.record.ExecutableActions;
 import com.killard.board.environment.event.ActionEvent;
 import com.killard.board.environment.event.ActionListener;
 import com.killard.board.environment.event.StateEvent;
@@ -35,9 +35,6 @@ import java.util.TreeSet;
 public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>, StateListener {
 
     private final Map<ActionListener, SortedSet<Comparable>> listeners = new LinkedHashMap<ActionListener, SortedSet<Comparable>>();
-
-    private final Map<Class<? extends Action>, ExecutableAction> executables =
-            ExecutableActionUtil.buildExecutableActionsMap();
 
     public AbstractBoard() {
     }
@@ -171,7 +168,7 @@ public abstract class AbstractBoard<T extends AbstractBoard> implements Board<T>
     }
 
     protected ExecutableAction getExecutableAction(Action action) {
-        return executables.get(action.getClass());
+        return ExecutableActions.instance.getExecutableAction(action);
     }
 
     protected void executeActions(List<Action> actions) throws BoardException {

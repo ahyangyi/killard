@@ -1,8 +1,5 @@
 package com.killard.board.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
@@ -17,11 +14,9 @@ import com.killard.board.parser.Function;
 import com.killard.board.parser.GlobalContext;
 
 import javax.jdo.annotations.Element;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,10 +33,6 @@ import java.util.Set;
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescriptorDO> implements Skill<SkillDO> {
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
 
     @Persistent
     private List<String> targets;
@@ -60,13 +51,8 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Element(dependent = "true")
     private transient Set<SkillDescriptorDO> descriptors;
 
-    @Persistent(defaultFetchGroup = "false")
-    private transient Blob image;
-
     protected SkillDO(MetaCardDO card, String name, List<String> targets, int cost, Function function) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(card.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
-        this.key = keyBuilder.getKey();
+        super(card, name);
 
         this.targets = new ArrayList<String>(targets);
         this.targets.add(SkillTarget.self.name());
@@ -81,14 +67,6 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     protected SkillDO(MetaCardDO card, SkillDO source) {
         this(card, source.getName(), source.targets, source.cost, source.function);
         this.cost = source.cost;
-    }
-
-    public Key getKey() {
-        return key;
-    }
-
-    public String getName() {
-        return key.getName();
     }
 
     protected boolean addProperty(String name, String data) {
@@ -131,17 +109,5 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new SkillDescriptorDO(this, locale, name, description));
-    }
-
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
     }
 }

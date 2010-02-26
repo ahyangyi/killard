@@ -40,7 +40,7 @@ public class PackageBundleDO {
     private Set<PlayerProfileDO> players;
 
     @Persistent
-    private Date createDate;
+    private Date createdDate;
 
     @Persistent
     private Date modifiedDate;
@@ -63,7 +63,7 @@ public class PackageBundleDO {
 
     public PackageBundleDO(String name) {
         this.name = name;
-        this.createDate = Calendar.getInstance().getTime();
+        this.createdDate = Calendar.getInstance().getTime();
         this.modifiedDate = Calendar.getInstance().getTime();
         this.players = new HashSet<PlayerProfileDO>();
         this.clonable = true;
@@ -88,8 +88,8 @@ public class PackageBundleDO {
         return name;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
     public Date getModifiedDate() {

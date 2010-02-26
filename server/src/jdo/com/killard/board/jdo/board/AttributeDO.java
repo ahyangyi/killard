@@ -1,8 +1,5 @@
 package com.killard.board.jdo.board;
 
-import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.Card;
@@ -16,11 +13,9 @@ import com.killard.board.jdo.board.descriptor.AttributeDescriptorDO;
 import com.killard.board.jdo.board.property.AttributePropertyDO;
 
 import javax.jdo.annotations.Element;
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,10 +33,6 @@ import java.util.Set;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO, AttributeDescriptorDO>
         implements Attribute<AttributeDO> {
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
 
     @Persistent
     private ElementSchoolDO elementSchool;
@@ -66,16 +57,11 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Element(dependent = "true")
     private transient Set<AttributeDescriptorDO> descriptors;
 
-    @Persistent(defaultFetchGroup = "false")
-    private transient Blob image;
-
     protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
                           List<AttributeHandler> validators,
                           List<AttributeHandler> before,
                           List<AttributeHandler> after) {
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(elementSchool.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), name);
-        this.key = keyBuilder.getKey();
+        super(elementSchool, name);
 
         this.elementSchool = elementSchool;
         this.visible = visible;
@@ -89,20 +75,12 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     }
 
     protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {
-        this(elementSchool, source.key.getName(), source.visible, source.validators, source.before,
+        this(elementSchool, source.getName(), source.visible, source.validators, source.before,
                 source.after);
-    }
-
-    public Key getKey() {
-        return key;
     }
 
     public ElementSchoolDO getElementSchool() {
         return elementSchool;
-    }
-
-    public String getName() {
-        return key.getName();
     }
 
     public AttributePropertyDO[] getProperties() {
@@ -123,18 +101,6 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     protected boolean addDescriptor(String locale, String name, String description) {
         return descriptors.add(new AttributeDescriptorDO(this, locale, name, description));
-    }
-
-    public boolean isRenderable() {
-        return image != null;
-    }
-
-    public byte[] getImageData() {
-        return image.getBytes();
-    }
-
-    public void setImageData(byte[] data) {
-        image = new Blob(data);
     }
 
     public AttributeHandler[] getValidators() {

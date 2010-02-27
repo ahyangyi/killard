@@ -642,7 +642,7 @@ function actionUpdate(i, action) {
         if (action.self) beginTurn();
     }
     else if (action.action == 'EndTurnAction') {
-        if (action.self) endTurn();
+        if (action.self) $('.self .skillimage').hide();
     }
     else if (action.action == 'EquipCardAction') {
         equipCard(action.source.number, action.target, action.self);
@@ -663,16 +663,14 @@ function beginTurn() {
     $('.corner').eq(3).unbind('click').click(endTurn)
             .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
     $('.self .skillimage').show();
-    $('#tip').text('Your turn');
+    $('#tip').text('Now it is your turn, take your time.');
 }
 
 function endTurn(){
     $('.corner').eq(3).unbind('click').find('img').attr('src', 'image/corner/corner2.png').css('cursor', 'default');
-    $('.self .skillimage').hide();
-    $('#tip').text('Please wait for others');
+    $('#tip').text('Please wait for next player to make decision.');
     $.getJSON('arena/endturn.json', function(actions){
         $.each(actions, actionUpdate);
-        $('.self .skillimage').hide();
     });
 }
 

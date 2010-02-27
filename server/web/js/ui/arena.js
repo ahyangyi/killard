@@ -119,7 +119,7 @@
                                 cardImage.fadeOut("slow", function() {$(this).remove()});
                             }
                             $.each(actions, actionUpdate);
-                        }, "json");
+                        }, 'json');
                         $('#bottompanel').hide('drop', {direction:'down'});
                     }
                 }
@@ -172,7 +172,9 @@
                     cardPosition:this.castCardPosition,
                     skillIndex:this.castSkillIndex,
                     target:this.targets
-                });
+                }, function(actions) {
+                    $.each(actions, actionUpdate);
+                }, 'json');
                 this.castCardPosition = 0;
                 this.castSkillIndex = 0;
                 this.targetList = [];
@@ -485,9 +487,7 @@ function playerUpdate(i, player) {
     if (player.self && player.current) {
         var btn = $('.corner').eq(3);
         btn.unbind('click');
-        btn.click(function() {
-            $.get('/arena/endturn.json');
-        });
+        btn.click(endTurn);
         btn.find('img').attr('src', 'image/corner/corner2a.png');
     }
 }
@@ -630,9 +630,7 @@ function actionUpdate(i, action) {
         if (action.self) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
-            btn.click(function() {
-                $.get('arena/endturn.json');
-            });
+            btn.click(endTurn);
             btn.find('img').attr('src', 'image/corner/corner2a.png');
             $('#tip').text('Your turn');
         }
@@ -658,4 +656,12 @@ function actionUpdate(i, action) {
         if (action.self)
             dealCard(0, action.source);
     }
+}
+
+function endTurn(){
+    $.getJSON('arena/endturn.json', function(actions){$.each(actions, actionUpdate)});
+}
+
+function endCall(){
+    $.getJSON('arena/endcall.json', function(actions){$.each(actions, actionUpdate)});
 }

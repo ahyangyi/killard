@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -18,11 +20,14 @@ import java.util.Collection;
  * </p>
  */
 public final class ResponseUtils {
+
+    public static void outputActions(HttpServletResponse response, List<ActionLogDO> actions, int start)
+            throws IOException {
+        if (start == actions.size()) outputActions(response, Collections.<ActionLogDO>emptyList());
+        else outputActions(response, actions.subList(start, actions.size()));
+    }
+
     public static void outputActions(HttpServletResponse response, Collection<ActionLogDO> actions) throws IOException {
-//        if (actions.isEmpty()) {
-//            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-//            return;
-//        }
         response.setContentType("application/json");
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0

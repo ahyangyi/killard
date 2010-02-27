@@ -25,8 +25,6 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * <p>
@@ -118,7 +116,9 @@ public class ArenaController extends BasicController {
 
         BoardDO board = CacheInstance.getInstance().getBoard();
         quit();
+        int start = board.getActions().size();
         join(board, number);
+        ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
     @RequestMapping(value = {"/arena/quit.html"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -155,17 +155,12 @@ public class ArenaController extends BasicController {
         getLog().fine("Play card for " + getUser().getNickname() + " at " + cardName);
         CacheInstance instance = CacheInstance.getInstance();
         BoardDO board = instance.getBoard();
-        int size = board.getActions().size();
+        int start = board.getActions().size();
         if (instance.getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.playCard(elementSchoolName, cardName, cardPosition, instance.getPlayer().getNumber());
             logBoard(board);
         }
-        List<ActionLogDO> actions = board.getActions();
-        if (actions.size() == size) {
-            ResponseUtils.outputActions(response, Collections.<ActionLogDO>emptyList());
-        } else {
-            ResponseUtils.outputActions(response, actions.subList(size, actions.size()));
-        }
+        ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
     @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
@@ -175,6 +170,7 @@ public class ArenaController extends BasicController {
                        HttpServletResponse response) throws Exception {
         getLog().fine("Cast card for " + getUser().getNickname() + " at " + cardPosition);
         BoardDO board = CacheInstance.getInstance().getBoard();
+        int start = board.getActions().size();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             Object[] targets = new Object[target.length];
             Skill skill = board.getCurrentPlayer().getEquippedCard(cardPosition).getSkills()[skillIndex];
@@ -193,9 +189,10 @@ public class ArenaController extends BasicController {
                     targets[i] = board.getPlayer(number).getEquippedCard(pos);
                 }
             }
-            board.cast(cardPosition, skillIndex - 1, targets);
+            board.cast(cardPosition, skillIndex, targets);
             logBoard(board);
         }
+        ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
     @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml", "/arena/endturn.json"},
@@ -203,10 +200,12 @@ public class ArenaController extends BasicController {
     public void endTurn(HttpServletResponse response) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());
         BoardDO board = CacheInstance.getInstance().getBoard();
+        int start = board.getActions().size();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endTurn();
             logBoard(board);
         }
+        ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
     @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml", "/arena/endcall.json"},
@@ -214,10 +213,12 @@ public class ArenaController extends BasicController {
     public void endCall(HttpServletResponse response) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());
         BoardDO board = CacheInstance.getInstance().getBoard();
+        int start = board.getActions().size();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             board.endCall();
             logBoard(board);
         }
+        ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
     protected void join(BoardDO board, int number) throws BoardException {

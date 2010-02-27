@@ -124,7 +124,7 @@
             }
             $('#warning').ajaxError(function(event, request, settings, error) {
                 $(this).text('Error:' + error).fadeIn("slow", function(){
-                    $(this).fadeOut("slow");
+                    setTimeout(function(){$('#warning').fadeOut("slow")}, 2000);
                 });
             });
             $.getJSON('arena/board.json', function(data, textStatus) {

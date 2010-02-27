@@ -33,6 +33,12 @@
                     arena.castSkillIndex = $(this).data('index');
                     arena.targetList = $(this).data('targets');
                     arena.fillTargets();
+                } else {
+                    arena.castCardPosition = 0;
+                    arena.castSkillIndex = 0;
+                    arena.targetList = [];
+                    arena.targets = [];
+                    $('#tip').text('');
                 }
             });
 
@@ -146,6 +152,7 @@
         },
 
         fillTargets: function() {
+            // Fill skill targets, if all filled then fire the skill.
             while (this.targets.length < this.targetList.length) {
                 if (this.targetList[this.targets.length] == 'all') {
                     this.targets.push('all');
@@ -168,11 +175,21 @@
             }
             if (this.targets.length == this.targetList.length) {
                 $('#tip').text('');
+                var skillImage = $('.self li[position=' + this.castCardPosition
+                        + '] .skillimage:eq(' + this.castSkillIndex + ')');
+                skillImage.fadeTo(1000, 0.5);
                 $.post('arena/cast.json', {
                     cardPosition:this.castCardPosition,
                     skillIndex:this.castSkillIndex,
                     target:this.targets
                 }, function(actions) {
+                    var casted = false;
+                    $.each(actions, function(i, action) {
+                        if (action.action == 'CastCardAction' && action.self
+                                && action.target.position == position) casted = true;
+                    });
+                    if (!casted) skillImage.effect('puff', function() {skillImage.hide()});
+                    else skillImage.fadeTo(1000, 1);
                     $.each(actions, actionUpdate);
                 }, 'json');
                 this.castCardPosition = 0;
@@ -484,12 +501,7 @@ function playerUpdate(i, player) {
     if (player.equippedCards) {
         $.each(player.equippedCards, function(i, card) {equipCard(player.number, card, player.self);});
     }
-    if (player.self && player.current) {
-        var btn = $('.corner').eq(3);
-        btn.unbind('click');
-        btn.click(endTurn);
-        btn.find('img').attr('src', 'image/corner/corner2a.png');
-    }
+    if (player.self && player.current) beginTurn();
 }
 
 function playerQuit(player) {
@@ -627,21 +639,10 @@ function actionUpdate(i, action) {
         playerQuit(action.target);
     }
     else if (action.action == 'BeginTurnAction') {
-        if (action.self) {
-            var btn = $('.corner').eq(3);
-            btn.unbind('click');
-            btn.click(endTurn);
-            btn.find('img').attr('src', 'image/corner/corner2a.png');
-            $('#tip').text('Your turn');
-        }
+        if (action.self) beginTurn();
     }
     else if (action.action == 'EndTurnAction') {
-        if (action.self) {
-            var btn = $('.corner').eq(3);
-            btn.unbind('click');
-            btn.find('img').attr('src', 'image/corner/corner2.png');
-            $('#tip').text('Please wait for others');
-        }
+        if (action.self) endTurn();
     }
     else if (action.action == 'EquipCardAction') {
         equipCard(action.source.number, action.target, action.self);
@@ -658,10 +659,26 @@ function actionUpdate(i, action) {
     }
 }
 
+function beginTurn() {
+    $('.corner').eq(3).unbind('click').click(endTurn)
+            .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
+    $('.self .skillimage').show();
+    $('#tip').text('Your turn');
+}
+
 function endTurn(){
-    $.getJSON('arena/endturn.json', function(actions){$.each(actions, actionUpdate)});
+    $('.corner').eq(3).unbind('click').find('img').attr('src', 'image/corner/corner2.png').css('cursor', 'default');
+    $('.self .skillimage').hide();
+    $('#tip').text('Please wait for others');
+    $.getJSON('arena/endturn.json', function(actions){
+        $.each(actions, actionUpdate);
+        $('.self .skillimage').hide();
+    });
 }
 
 function endCall(){
-    $.getJSON('arena/endcall.json', function(actions){$.each(actions, actionUpdate)});
+    $.getJSON('arena/endcall.json', function(actions){
+        $.each(actions, actionUpdate);
+        $('.self .skillimage').hide();
+    });
 }

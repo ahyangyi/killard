@@ -1,16 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link type="text/css" href="/css/ui/arena.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/ui/searchbar.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/jquery/base/ui.all.css" rel="stylesheet"/>
-    <script type="text/javascript" src="/js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
-    <script type="text/javascript" src="/js/ui/arena.js"></script>
-    <script type="text/javascript" src="/js/ui/richlist.js"></script>
-    <script type="text/javascript" src="/js/ui/carousel.js"></script>
+    <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
+    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="js/ui/arena.js"></script>
+    <script type="text/javascript" src="js/ui/richlist.js"></script>
+    <script type="text/javascript" src="js/ui/carousel.js"></script>
     <title>Killard Arena</title>
     <style type="text/css">
         body {
@@ -29,7 +28,7 @@
             z-index: 0;
             top: 0;
             left: 0;
-            background-image: url(/image/grid/grid.png);
+            background-image: url(image/grid/grid.png);
         }
 
         .panellayer {
@@ -66,7 +65,6 @@
         .arena {
             position: absolute;
             z-index: 0;
-            top: 0;
             left: 0;
         }
 
@@ -124,8 +122,8 @@
                     else setTimeout(checkStatus, 2000);
                 });
             }
-            $('#warning').ajaxError(function(event, request, settings) {
-                $(this).text('Error!').fadeIn("slow", function(){
+            $('#warning').ajaxError(function(event, request, settings, error) {
+                $(this).text('Error:' + error).fadeIn("slow", function(){
                     $(this).fadeOut("slow");
                 });
             });
@@ -136,16 +134,6 @@
             });
         });
     </script>
-    <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost
-            + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    try {
-        var pageTracker = _gat._getTracker("UA-6297932-3");
-        pageTracker._trackPageview();
-    } catch(err) {
-    }
-    </script>
 </head>
 <body>
 <div class="container">
@@ -153,15 +141,15 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list">
                     <ul class="cards">
-                        <li><img class="item" src="/image/0.png"/></li>
+                        <li><img class="item" src="image/0.png"/></li>
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -177,14 +165,14 @@
     <div class="top"></div>
     <div class="center">
         <ul>
-            <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
             <li class="content">
                 <div class="list dealtCards">
                     <ul class="cards">
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">
@@ -200,35 +188,35 @@
     <ul class="top">
         <li>
             <div class="corner" style="text-align:center;color:mediumvioletred;">
-                <img src="/image/corner/corner4.png"/>
+                <img src="image/corner/corner4.png"/>
             </div>
         </li>
         <li>
             <div class="player" number="7">
                 <ul>
-                    <li><img src="/image/role/role1.png"/></li>
-                    <li><img src="/image/head/female.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role1.png"/></li>
+                    <li><img src="image/head/female.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="6">
                 <ul>
-                    <li><img src="/image/role/role4.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role4.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="5">
                 <ul>
-                    <li><img src="/image/role/role3.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role3.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
         <li>
             <div class="corner" style="color:gold;text-align:center;">
-                <img src="/image/corner/corner3.png"/>
+                <img src="image/corner/corner3.png"/>
             </div>
         </li>
     </ul>
@@ -237,16 +225,16 @@
         <li>
             <div class="player" number="4">
                 <ul>
-                    <li><img src="/image/role/role2.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role2.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="3">
                 <ul>
-                    <li><img src="/image/role/role1.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role1.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
@@ -349,16 +337,16 @@
         <li>
             <div class="player" number="8">
                 <ul>
-                    <li><img src="/image/role/role1.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role1.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="9">
                 <ul>
-                    <li><img src="/image/role/role3.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role3.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
@@ -367,35 +355,35 @@
     <ul class="bottom">
         <li>
             <div class="corner">
-                <img src="/image/corner/corner1.png"/>
+                <img src="image/corner/corner1.png"/>
             </div>
         </li>
         <li>
             <div class="player" number="10">
                 <ul>
-                    <li><img src="/image/role/role2.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role2.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="1">
                 <ul>
-                    <li><img src="/image/role/role3.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role3.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
             <div class="player" number="2">
                 <ul>
-                    <li><img src="/image/role/role1.png"/></li>
-                    <li><img src="/image/head/head.png"/></li>
-                    <li><img src="/image/msg/msg.png"/></li>
+                    <li><img src="image/role/role1.png"/></li>
+                    <li><img src="image/head/head.png"/></li>
+                    <li><img src="image/msg/msg.png"/></li>
                 </ul>
             </div>
         </li>
         <li>
             <div class="corner">
-                <img src="/image/corner/corner2.png"/>
+                <img src="image/corner/corner2.png"/>
             </div>
         </li>
     </ul>

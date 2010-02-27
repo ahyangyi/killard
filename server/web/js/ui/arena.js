@@ -30,7 +30,7 @@
                 if (arena.targetList.length == 0) {
                     var card = $(this).parent();
                     arena.castCardPosition = card.attr('position');
-                    arena.castSkillIndex = $(this).data('index') + 1;
+                    arena.castSkillIndex = $(this).data('index');
                     arena.targetList = $(this).data('targets');
                     arena.fillTargets();
                 }
@@ -104,11 +104,8 @@
                         var cardName = ui.draggable.attr('cardName');
                         var position = $(this).attr('position');
                         var cardImage = $('<img src="arena/' + elementSchool + '/' + cardName + '.png" class="cardimage"/>');
-                        cardImage.width(arena.cardWidth)
-                                .height(arena.cardHeight)
-                                .hide()
-                                .appendTo($(this))
-                                .fadeTo(1000, 0.5);
+                        cardImage.width(arena.cardWidth).height(arena.cardHeight).hide()
+                                .appendTo($(this)).fadeTo(1000, 0.5);
                         $.post('arena/playcard.json', {
                             'elementSchoolName':elementSchool,
                             'cardName':cardName,
@@ -613,8 +610,9 @@ function changeCardHealth(action) {
         cardList.show('drop', {direction:'up'});
     }
     var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
+    cardDiv.effect('shake', {direction:'left'});
     var healthSpan = cardDiv.find('span').eq(2);
-    healthSpan.html('' + (parseInt(healthSpan.html()) - action.healthChange));
+    healthSpan.text((parseInt(healthSpan.text()) - action.healthChange));
 }
 
 function actionUpdate(i, action) {
@@ -636,6 +634,7 @@ function actionUpdate(i, action) {
                 $.get('arena/endturn.json');
             });
             btn.find('img').attr('src', 'image/corner/corner2a.png');
+            $('#tip').text('Your turn');
         }
     }
     else if (action.action == 'EndTurnAction') {
@@ -643,6 +642,7 @@ function actionUpdate(i, action) {
             var btn = $('.corner').eq(3);
             btn.unbind('click');
             btn.find('img').attr('src', 'image/corner/corner2.png');
+            $('#tip').text('Please wait for others');
         }
     }
     else if (action.action == 'EquipCardAction') {

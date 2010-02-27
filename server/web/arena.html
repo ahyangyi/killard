@@ -110,8 +110,7 @@
             $('.carousel').carousel();
             $('.other').hide();
             function update() {
-                $.getJSON('arena/actions.json',
-//                {'since':$(window).data('since')},
+                $.getJSON('arena/actions.json', {'since':$(window).data('since')},
                         function(actions, textStatus) {
                             $.each(actions, actionUpdate);
                             setTimeout(checkStatus, 2000);
@@ -125,7 +124,7 @@
             }
             $('#warning').ajaxError(function(event, request, settings, error) {
                 $(this).text('Error:' + error).fadeIn("slow", function(){
-//                    $(this).fadeOut("slow");
+                    $(this).fadeOut("slow");
                 });
             });
             $.getJSON('arena/board.json', function(data, textStatus) {

@@ -177,7 +177,7 @@ public class ArenaController extends BasicController {
         BoardDO board = CacheInstance.getInstance().getBoard();
         if (CacheInstance.getInstance().getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
             Object[] targets = new Object[target.length];
-            Skill skill = board.getCurrentPlayer().getEquippedCard(cardPosition).getSkills()[skillIndex - 1];
+            Skill skill = board.getCurrentPlayer().getEquippedCard(cardPosition).getSkills()[skillIndex];
             SkillTarget[] skillTargets = skill.getTargets();
             for (int i = 0; i < target.length; i++) {
                 if (skillTargets[i] == SkillTarget.self) {

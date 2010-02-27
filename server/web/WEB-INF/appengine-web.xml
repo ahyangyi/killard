@@ -15,9 +15,7 @@
         <include path="/**.swf"/>
         <include path="/**.htm"/>
         <include path="/**.txt"/>
-        <!--<include path="/index.html"/>-->
-        <!--<include path="/arena.html"/>-->
-        <!--<include path="/packages.html"/>-->
+        <include path="/arena.html"/>
         <exclude path="/package/**.png"/>
         <exclude path="/**.json"/>
         <exclude path="/**.html"/>

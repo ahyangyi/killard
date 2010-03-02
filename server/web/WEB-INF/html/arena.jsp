@@ -390,6 +390,18 @@
 </div>
 <div id="warning"></div>
 <div id="tip"></div>
+<div id="sidebar">
+    <h3><a href="#">Chat</a></h3>
+    <div>
+        <ul>
+        </ul>
+    </div>
+    <h3><a href="#">Players</a></h3>
+    <div>
+        <ul>
+        </ul>
+    </div>
+</div>
 </div>
 </body>
 </html>

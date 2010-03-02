@@ -28,7 +28,7 @@ public class MessageDO {
 
     @Persistent
     @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
-    private Key boardManagerKey;
+    private Key boardKey;
 
     @Persistent
     private String from;
@@ -40,14 +40,14 @@ public class MessageDO {
     private String message;
 
     public MessageDO(BoardDO board, String from, String to, String message) {
-        this.boardManagerKey = board.getKey();
+        this.boardKey = board.getKey();
         this.from = from;
         this.to = to;
         this.message = message;
     }
 
-    public Key getBoardManagerKey() {
-        return boardManagerKey;
+    public Key getBoardKey() {
+        return boardKey;
     }
 
     public String getFrom() {

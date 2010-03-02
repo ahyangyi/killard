@@ -188,7 +188,7 @@
                         if (action.action == 'CastCardAction' && action.self
                                 && action.target.position == position) casted = true;
                     });
-                    if (!casted) skillImage.effect('puff', function() {skillImage.hide()});
+                    if (casted) skillImage.effect('puff', function() {skillImage.hide()});
                     else skillImage.fadeTo(1000, 1);
                     $.each(actions, actionUpdate);
                 }, 'json');
@@ -247,18 +247,21 @@
             /* Retrieve width and size of arena. */
             var w = Math.min(this.element.parent().width(), $(window).width());
             var h = Math.min(this.element.parent().height(), $(window).height());
+            
             if (w <= 0) w = this.element.width();
             if (h <= 0) h = this.element.height();
+            w = w - $('#sidebar').width();
+            h = h - $('#tip').outerHeight() - $('#warning').outerHeight();
 
-            $('#tip').css('top', h - $('#tip').height());
-            h = h - $('#tip').height() - $('#warning').height();
+            $('#warning').width(w);
+            $('#tip').width(w).css('bottom', 0);
 
             this.element.eq(0).css('top', $('#warning').height());
 
             /* Calculate width/height ratio of board. */
             var boardGap = 2 * (options.boardMarginRatio + options.boardPaddingRatio);
-            var boardWidthRatio = 54 + 5 * options.cardSeparatorRatio + boardGap;
-            var boardHeightRatio = 28 + options.boardSeparatorRatio + boardGap;
+            var boardWidthRatio = 9 * options.cardAmount + (options.cardAmount - 1) * options.cardSeparatorRatio + boardGap;
+            var boardHeightRatio = 14 * 2 + options.boardSeparatorRatio + boardGap;
             var boardRatio = boardWidthRatio / boardHeightRatio;
 
             /* Since the width/height ratios of arena and board are different, we need to scale arena. */
@@ -321,8 +324,7 @@
 
             /* Render corners */
             this.corner.each(function() {
-                $('img', this).width(playerShortEdge);
-                $('img', this).height(playerShortEdge);
+                $('img', this).width(playerShortEdge).height(playerShortEdge);
                 $(this).width(playerShortEdge);
                 $(this).height(playerShortEdge);
             });
@@ -334,10 +336,7 @@
 
             /* Render players */
             /* North */
-            var player = this.player.slice(0, 3);
-            player.width(playerLongEdge);
-            player.height(playerShortEdge);
-            player.css({
+            this.player.slice(0, 3).width(playerLongEdge).height(playerShortEdge).css({
                 'margin-left' : playerHorizontalMargin,
                 'margin-right' : playerHorizontalMargin,
                 'margin-top' : 0,
@@ -345,10 +344,7 @@
             });
 
             /* West & East */
-            player = this.player.slice(3, 7);
-            player.width(playerShortEdge);
-            player.height(playerLongEdge);
-            player.css({
+            this.player.slice(3, 7).width(playerShortEdge).height(playerLongEdge).css({
                 'margin-left' : 0,
                 'margin-right' : 0,
                 'margin-top' : playerVerticalMargin,
@@ -356,10 +352,7 @@
             });
 
             /* South */
-            player = this.player.slice(7);
-            player.width(playerLongEdge);
-            player.height(playerShortEdge);
-            player.css({
+            this.player.slice(7).width(playerLongEdge).height(playerShortEdge).css({
                 'margin-left' : playerHorizontalMargin,
                 'margin-right' : playerHorizontalMargin,
                 'margin-top' : 0,
@@ -367,8 +360,7 @@
             });
 
             /* Set player size. */
-            this.player.find('img').width(playerShortEdge);
-            this.player.find('img').height(playerShortEdge);
+            this.player.find('img').width(playerShortEdge).height(playerShortEdge);
 
             /* We calculate board size as integers. */
             var boardWidth = w - 2 * (arenaPadding + playerShortEdge);
@@ -392,19 +384,23 @@
                 'padding-bottom' : boardPadding
             });
 
-            this.board.width(boardWidth - this.getHorizontalGap(this.board));
-            this.board.height(boardHeight - this.getVerticalGap(this.board));
+            this.board.width(boardWidth - this.getHorizontalGap(this.board))
+                    .height(boardHeight - this.getVerticalGap(this.board));
 
             /* Calculate card size as integers. */
-            this.cardWidth = parseInt(9 * boardLengthUnit);
-            this.cardHeight = parseInt(14 * boardLengthUnit);
-            var cardSeparator = parseInt((parseInt(this.board.width()) - 6 * this.cardWidth) / 5);
+            var cardWidth = parseInt(9 * boardLengthUnit);
+            var cardHeight = parseInt(14 * boardLengthUnit);
+            var cardSeparator = parseInt((this.board.width() - options.cardAmount * this.cardWidth) / (options.cardAmount - 1));
+            this.cardWidth = cardWidth;
+            this.cardHeight = cardHeight;
             this.cardSeparator = cardSeparator;
 
             var boardSeparatorMargin = boardHeight - 2 * boardMargin - 2 * boardPadding - 2 * this.cardHeight -
                                        this.getVerticalBorder(this.board);
-            this.boardSeparator.css('margin-top', parseInt(boardSeparatorMargin / 2));
-            this.boardSeparator.css('margin-bottom', boardSeparatorMargin - parseInt(boardSeparatorMargin / 2));
+            this.boardSeparator.css({
+                'margin-top': parseInt(boardSeparatorMargin / 2),
+                'margin-bottom': boardSeparatorMargin - parseInt(boardSeparatorMargin / 2)
+            });
 
             /* Render cards */
             this.otherCardsLeft = arenaPadding + playerShortEdge + boardMargin + boardPadding +
@@ -414,33 +410,27 @@
             this.myCardsLeft = this.otherCardsLeft;
             this.myCardsTop = arenaPadding + playerShortEdge + boardMargin + boardPadding + this.cardHeight +
                               boardSeparatorMargin + this.getVerticalBorder(this.boardSeparator);
-            $('.other').css('left', this.otherCardsLeft);
-            $('.other').css('top', this.otherCardsTop);
+            $('.other').css({'left': this.otherCardsLeft, 'top': this.otherCardsTop});
             this.boardSeparator.width(this.board.width());
-            this.boardSeparator.css('left', this.otherCardsLeft);
-            this.boardSeparator.css('top', this.otherCardsTop + this.cardHeight);
-            $('.self').css('left', this.myCardsLeft);
-            $('.self').css('top', this.myCardsTop);
+            this.boardSeparator.css({'left': this.otherCardsLeft,'top': this.otherCardsTop + cardHeight});
+            $('.self').css({'left': this.myCardsLeft, 'top': this.myCardsTop});
 
             this.cardlist.height(this.cardHeight);
-            this.card.css('border', 'none');
             $('.other').find('.card:lt(5)').css('margin-right', cardSeparator);
             $('.self').find('.card:lt(5)').css('margin-right', cardSeparator);
 
             this.card.width(this.cardWidth);
             this.card.height(this.cardHeight);
-            this.card.find('.cardimage').width(this.cardWidth);
-            this.card.find('.cardimage').height(this.cardHeight);
-            $('.item').width(this.cardWidth);
-            $('.item').height(this.cardHeight);
+            this.card.find('.cardimage').width(this.cardWidth).height(this.cardHeight);
+            $('.item').width(this.cardWidth).height(this.cardHeight);
 
             $('.other').each(function() {
                 $(this).find('.card').each(function(i, e) {
-                    $(e).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
+                    $(e).css('left', i * (cardSeparator + cardWidth));
                 });
             });
             $('.self').find('.card').each(function(i, e) {
-                $(e).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
+                $(e).css('left', i * (cardSeparator + cardWidth));
             });
             this.card.each(function(i, c){
                 var numbers = $(c).find('span');
@@ -454,10 +444,12 @@
                 numbers.eq(3).css('top', cardHeight - fontSize).css('left', cardWidth - fontSize);
             });
 
-            this.card.find('.skillimage').css('left', this.cardWidth / 3);
-            this.card.find('.skillimage').css('top', this.cardHeight - this.cardWidth / 2);
-            this.card.find('.skillimage').width(this.cardWidth / 3);
-            this.card.find('.skillimage').height(this.cardWidth / 6);
+            this.card.find('.skillimage').css({
+                'width': parseInt(cardWidth / 3),
+                'height': parseInt(cardWidth / 6),
+                'left': parseInt(cardWidth / 3),
+                'top': parseInt(cardHeight - cardWidth / 2)
+            });
 
             $('.bottompanel').css('top', $(window).height() - this.cardHeight - 2 * boardLengthUnit);
         }
@@ -472,11 +464,12 @@
             boardSeparator : '.separator',
             cardlist : '.cardlist',
             card : '.card',
+            cardAmount : 5,
             arenaPaddingRatio : 0.75,
             boardMarginRatio : 1.5,
             boardPaddingRatio : 2,
             boardSeparatorRatio : 2,
-            cardSeparatorRatio : 2
+            cardSeparatorRatio : 2.5
         }
     });
 })(jQuery);
@@ -663,12 +656,12 @@ function beginTurn() {
     $('.corner').eq(3).unbind('click').click(endTurn)
             .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
     $('.self .skillimage').show();
-    $('#tip').text('Now it is your turn, take your time.');
+    $('#tip').text('Your Turn');
 }
 
 function endTurn(){
     $('.corner').eq(3).unbind('click').find('img').attr('src', 'image/corner/corner2.png').css('cursor', 'default');
-    $('#tip').text('Please wait for next player to make decision.');
+    $('#tip').text('Waiting For Others');
     $.getJSON('arena/endturn.json', function(actions){
         $.each(actions, actionUpdate);
     });

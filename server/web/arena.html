@@ -54,12 +54,17 @@
         #bottompanel {
             position: absolute;
             left: 0;
+            bottom: 0;
             z-index: 100;
             display: none;
         }
 
         .carousel {
-            background-color: gray;
+            background-image: url(image/texture/darkgray.png);
+        }
+
+        .carousel .arrow {
+            background-image: url(image/texture/white.png);
         }
 
         .arena {
@@ -78,6 +83,11 @@
             position: absolute;
             left: 0;
         }
+
+        .ui-accordion .ui-accordion-content {
+            background: url(image/texture/gray.png);
+            padding: 1em 1em
+        }
     </style>
     <script type="text/javascript">
         $(function() {
@@ -88,30 +98,38 @@
                 arena.resize();
                 sidebar.resize();
                 var cards = $('.carousel .center .list ul li');
-                cards.width(arena.cardWidth);
-                cards.css('padding-right', arena.cardSeparator);
+                cards.width(arena.cardWidth)
+                        .css('padding-right', arena.cardSeparator)
+                        .css('padding-top', parseInt(arena.cardSeparator / 2));
                 if (carousel.is(':visible')) {
-                    carousel.height(arena.cardHeight + 32);
+                    carousel.height(arena.cardHeight + arena.cardSeparator + 32);
                 } else {
-                    carousel.height(arena.cardHeight);
+                    carousel.height(arena.cardHeight + arena.cardSeparator);
                 }
-                carousel.find('.list').height(arena.cardHeight);
+                carousel.find('.list').height(arena.cardHeight + arena.cardSeparator);
                 carousel.each(function() {
                     $(this).data('carousel').resize();
                 });
                 if (carousel.is(':visible')) {
                     $('#bottompanel').css('top', $(window).height() - carousel.height());
                 } else {
-                    $('#bottompanel').css('top', $(window).height() - arena.cardHeight - 32);
+                    $('#bottompanel').css('top', $(window).height() - arena.cardHeight - arena.cardSeparator - 32);
                 }
             }
             $.event.add(window, "load", resizeWindow);
             $.event.add(window, "resize", resizeWindow);
-            $(".arena").arena();
-            $("#sidebar").accordion({
+            $('.arena').arena();
+            $('#sidebar').accordion({
                 autoHeight: false,
                 fillSpace: true
             });
+//            $('#sidebar').resizable({
+//                handles: 'w',
+//                alsoResize: '.container',
+//                stop: function(event, ui) {
+//                    $('.arena').data('arena').resize();
+//                }
+//            });
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
             $('.other').hide();
@@ -389,7 +407,7 @@
     <h3><a href="#">Chat</a></h3>
     <div>
         <label>
-            <input type="text"/>
+            <input type="text" size="15"/>
         </label>
         <hr/>
         <ul>

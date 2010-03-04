@@ -1,0 +1,286 @@
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.arena {
+    display: inline;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.arena .player {
+    /*background: url(../../image/texture/white.png);*/
+}
+
+.emptyPlayer {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background: url(../../image/texture/black.png);
+}
+
+.selfPlayer {
+    background: url(../../image/texture/green.png);
+}
+
+.arena .player ul {
+    font-size: 0;
+}
+
+.arena .player ul li img{
+    display: none;
+}
+
+.arena .top {
+    display: block;
+    width: 100%;
+}
+
+.arena .top li {
+    display: inline;
+    float: left;
+}
+
+.arena .top .player {
+    display: inline;
+    float: left;
+}
+
+.arena .top .player ul li {
+    display: inline;
+    float: left;
+}
+
+.arena .center {
+    display: block;
+    width: 100%;
+}
+
+.arena .center li {
+    display: inline;
+    float: left;
+}
+
+.arena .center .player {
+    display: block;
+}
+
+.arena .center .player li {
+    display: block;
+}
+
+.arena .bottom {
+    display: block;
+    float: right;
+    width: 100%;
+}
+
+.arena .bottom li {
+    display: inline;
+    float: left;
+}
+
+.arena .bottom .player {
+    display: inline;
+    float: left;
+}
+
+.corner {
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+}
+
+.corner img {
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+.corner .buttonoff {
+    visibility: visible;
+    position: relative;
+    top: -200%;
+}
+
+.corner .buttonon {
+    visibility: hidden;
+    position: relative;
+    top: -100%;
+}
+
+.corner .buttonactive {
+    visibility: hidden;
+}
+
+.corner:hover .buttonoff {
+    visibility: hidden;
+}
+
+.corner:hover .buttonon {
+    visibility: visible;
+}
+
+.corner:hover .buttonactive {
+    visibility: hidden;
+}
+
+.corner:active .buttonoff {
+    visibility: hidden;
+}
+
+.corner:active .buttonon {
+    visibility: hidden;
+}
+
+.corner:active .buttonactive {
+    visibility: visible;
+}
+
+.player ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.player img {
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
+}
+
+.board {
+    margin: 0;
+    padding: 0;
+    border: 3px solid white;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    background-image: url("../../image/texture/black.png");
+}
+
+.board .separator {
+    display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 2px;
+    background-color: lightgray;
+    font-size: 0;
+}
+
+.cardholder {
+    background-color: lightgray;
+}
+
+.cardlist {
+    display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    position: absolute;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.cardimage {
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
+    z-index: 50;
+}
+
+.card .label {
+    position: absolute;
+    display:inline;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+.label div {
+    position: absolute;
+    display:table-cell;
+    vertical-align:middle;
+    width: 100%;
+    top: 35%;
+    text-align:center;
+}
+
+.card .level {
+    top: 0;
+    left: 0;
+}
+
+.card .maxHealth {
+    top: 0;
+    right: 0;
+}
+
+.card .health {
+    bottom: 0;
+    left: 0;
+}
+
+.card .attack {
+    bottom: 0;
+    right: 0;
+}
+
+.skillimage {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+#warning {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    height: 1em;
+    background-color: #dc143c;
+    text-align: center;
+    display: none;
+}
+
+#tip {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    height: 1em;
+    font-size: 24px;
+    background: url(../../image/texture/white.png);
+    text-align: center;
+}
+
+#sidebar {
+    width: 250px;
+    height: 100%;
+    float: right;
+}
+
+#sidebar div {
+    overflow:auto;
+}
+
+#sidebar div ul {
+    width: 100%;
+}
+
+#sidebar li {
+    font-size: 8px;
+    margin-bottom: 0.5em;
+}

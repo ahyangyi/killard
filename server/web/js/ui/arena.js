@@ -70,7 +70,6 @@
             this.player.find('li :last').click(function() {
                 var head = $(this).parent().prev();
                 head.effect('shake', {direction:'left'});
-                $('.message').dialog('open');
             });
 
             this.corner.eq(0).click(function() {
@@ -144,7 +143,6 @@
 
         destroy: function() {
             this.card.data('sortable').destroy();
-            this.player.find('.message').data('dialog').destroy();
         },
 
         _setData: function(key, value) {
@@ -250,13 +248,13 @@
             
             if (w <= 0) w = this.element.width();
             if (h <= 0) h = this.element.height();
-            w = w - $('#sidebar').width();
+            w = w - $('#sidebar').outerWidth();
             h = h - $('#tip').outerHeight() - $('#warning').outerHeight();
 
             $('#warning').width(w);
             $('#tip').width(w).css('bottom', 0);
 
-            this.element.eq(0).css('top', $('#warning').height());
+            this.element.eq(0).css('top', $('#warning').outerHeight());
 
             /* Calculate width/height ratio of board. */
             var boardGap = 2 * (options.boardMarginRatio + options.boardPaddingRatio);
@@ -323,11 +321,8 @@
             var cornerLeftMargin = cornerMargin - cornerRightMargin;
 
             /* Render corners */
-            this.corner.each(function() {
-                $('img', this).width(playerShortEdge).height(playerShortEdge);
-                $(this).width(playerShortEdge);
-                $(this).height(playerShortEdge);
-            });
+            this.corner.width(playerShortEdge).height(playerShortEdge)
+                    .find('img').width(playerShortEdge).height(playerShortEdge);
 
             this.corner.eq(0).css('margin-right', cornerRightMargin);
             this.corner.eq(1).css('margin-left', cornerLeftMargin);
@@ -382,17 +377,13 @@
                 'padding-right' : boardPadding,
                 'padding-top' : boardPadding,
                 'padding-bottom' : boardPadding
-            });
-
-            this.board.width(boardWidth - this.getHorizontalGap(this.board))
+            }).width(boardWidth - this.getHorizontalGap(this.board))
                     .height(boardHeight - this.getVerticalGap(this.board));
 
             /* Calculate card size as integers. */
-            var cardWidth = parseInt(9 * boardLengthUnit);
-            var cardHeight = parseInt(14 * boardLengthUnit);
+            this.cardWidth = parseInt(9 * boardLengthUnit);
+            this.cardHeight = parseInt(14 * boardLengthUnit);
             var cardSeparator = parseInt((this.board.width() - options.cardAmount * this.cardWidth) / (options.cardAmount - 1));
-            this.cardWidth = cardWidth;
-            this.cardHeight = cardHeight;
             this.cardSeparator = cardSeparator;
 
             var boardSeparatorMargin = boardHeight - 2 * boardMargin - 2 * boardPadding - 2 * this.cardHeight -
@@ -410,48 +401,42 @@
             this.myCardsLeft = this.otherCardsLeft;
             this.myCardsTop = arenaPadding + playerShortEdge + boardMargin + boardPadding + this.cardHeight +
                               boardSeparatorMargin + this.getVerticalBorder(this.boardSeparator);
-            $('.other').css({'left': this.otherCardsLeft, 'top': this.otherCardsTop});
-            this.boardSeparator.width(this.board.width());
-            this.boardSeparator.css({'left': this.otherCardsLeft,'top': this.otherCardsTop + cardHeight});
-            $('.self').css({'left': this.myCardsLeft, 'top': this.myCardsTop});
+            $('.other').css({
+                'left': this.otherCardsLeft,
+                'top': this.otherCardsTop
+            });
+            this.boardSeparator.width(this.board.width()).css({
+                'left': this.otherCardsLeft,
+                'top': this.otherCardsTop + this.cardHeight
+            });
+            $('.self').css({
+                'left': this.myCardsLeft,
+                'top': this.myCardsTop
+            });
 
             this.cardlist.height(this.cardHeight);
-            $('.other').find('.card:lt(5)').css('margin-right', cardSeparator);
-            $('.self').find('.card:lt(5)').css('margin-right', cardSeparator);
 
-            this.card.width(this.cardWidth);
-            this.card.height(this.cardHeight);
-            this.card.find('.cardimage').width(this.cardWidth).height(this.cardHeight);
-            $('.item').width(this.cardWidth).height(this.cardHeight);
+            this.card.width(this.cardWidth).height(this.cardHeight)
+                    .find('.cardimage').width(this.cardWidth).height(this.cardHeight);
 
-            $('.other').each(function() {
-                $(this).find('.card').each(function(i, e) {
-                    $(e).css('left', i * (cardSeparator + cardWidth));
+            $('.other').each(function(j, o) {
+                $(this).find('.card').each(function(i, card) {
+                    $(card).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
                 });
             });
             $('.self').find('.card').each(function(i, e) {
-                $(e).css('left', i * (cardSeparator + cardWidth));
+                $(e).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
             });
-            this.card.each(function(i, c){
-                var numbers = $(c).find('span');
-                var cardWidth = parseInt(9 * boardLengthUnit);
-                var cardHeight = parseInt(14 * boardLengthUnit);
-                var fontSize = parseInt(9 * boardLengthUnit / 6);
-                numbers.css('font-size', fontSize);
-                numbers.eq(0).css('top', 0).css('left', 0);
-                numbers.eq(1).css('top', 0).css('left', cardWidth - fontSize);
-                numbers.eq(2).css('top', cardHeight - fontSize).css('left', 0);
-                numbers.eq(3).css('top', cardHeight - fontSize).css('left', cardWidth - fontSize);
+            var labelSize = parseInt(this.cardWidth / 3);
+            this.card.find('.label').width(labelSize).height(labelSize).css('font-size', parseInt(this.cardWidth / 8));
+
+            this.card.find('.skillimage').width(parseInt(this.cardWidth / 3))
+                    .height(parseInt(this.cardWidth / 6)).css({
+                'left': parseInt(this.cardWidth / 3),
+                'top': parseInt(this.cardHeight - this.cardWidth / 2)
             });
 
-            this.card.find('.skillimage').css({
-                'width': parseInt(cardWidth / 3),
-                'height': parseInt(cardWidth / 6),
-                'left': parseInt(cardWidth / 3),
-                'top': parseInt(cardHeight - cardWidth / 2)
-            });
-
-            $('.bottompanel').css('top', $(window).height() - this.cardHeight - 2 * boardLengthUnit);
+            $('.item').width(this.cardWidth).height(this.cardHeight);
         }
     });
 
@@ -469,7 +454,7 @@
             boardMarginRatio : 1.5,
             boardPaddingRatio : 2,
             boardSeparatorRatio : 2,
-            cardSeparatorRatio : 2.5
+            cardSeparatorRatio : 2
         }
     });
 })(jQuery);
@@ -492,7 +477,10 @@ function playerUpdate(i, player) {
         $.each(player.dealtCards, dealCard);
     }
     if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {equipCard(player.number, card, player.self);});
+        $.each(player.equippedCards, function(i, card) {renderCard(player.number, card, player.self);});
+    }
+    if (!player.self) {
+        $('.cardlist[number=' + player.number + ']').show();
     }
     if (player.self && player.current) beginTurn();
 }
@@ -540,7 +528,7 @@ function renderCard(playerNumber, card, self) {
                 .appendTo(cardDiv)
                 .fadeIn(1000);
     }
-    var fontSize = arena.cardWidth / 6;
+    var fontSize = arena.cardWidth / 8;
     if (card.skills.length > 0 && self) {
         $.each(card.skills, function(i, skill) {
             $('<img src="image/skill.png' + '" class="skillimage"/>')
@@ -553,32 +541,19 @@ function renderCard(playerNumber, card, self) {
                     .appendTo(cardDiv);
         });
     }
+    var labelSize = parseInt(cardDiv.width() / 3);
     if (card.level > 0)
-        $('<span>' + card.level + '</span>')
-                .css('top',0)
-                .css('left',0)
-                .css('font-size', fontSize)
-                .appendTo(cardDiv);
+        $('<div class="label level"><div>' + card.level + '</div></div>').width(labelSize).height(labelSize)
+                .css('font-size', fontSize).appendTo(cardDiv);
     if (card.maxHealth > 0)
-        $('<span>' + card.maxHealth + '</span>')
-                .css('top',0)
-                .css('left',arena.cardWidth - fontSize)
-                .css('font-size', fontSize)
-                .appendTo(cardDiv);
+        $('<div class="label maxHealth"><div>' + card.maxHealth + '</div></div>').width(labelSize).height(labelSize)
+                .css('font-size', fontSize).appendTo(cardDiv);
     if (card.health > 0)
-        $('<span>' + card.health + '</span>')
-                .css('top',arena.cardHeight - fontSize)
-                .css('left',0)
-                .css('font-size', fontSize)
-                .appendTo(cardDiv);
+        $('<div class="label health"><div>' + card.health + '</div></div>').width(labelSize).height(labelSize)
+                .css('font-size', fontSize).appendTo(cardDiv);
     if (card.attack > 0)
-        $('<span>' + card.attack + '</span>')
-                .css('top',arena.cardHeight - fontSize)
-                .css('left',arena.cardWidth - fontSize)
-                .css('font-size', fontSize)
-                .appendTo(cardDiv);
-    //TODO fix the resizing issue of skill image
-    arena.resize();
+        $('<div class="label attack"><div>' + card.attack + '</div></div>').width(labelSize).height(labelSize)
+                .css('font-size', fontSize).appendTo(cardDiv);
 }
 
 function equipCard(playerNumber, card, self) {
@@ -595,29 +570,41 @@ function equipCard(playerNumber, card, self) {
 
 function dropCard(playerNumber, card, self) {
     var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
+
+    var animateDropCardHealth = function() {
+        var cardDiv = cardList.find('li[position="' + card.position + '"]');
+        cardDiv.effect('explode', {pieces: 9}, 800, function() {
+            $(this).find('.skillimage').removeData('index');
+            $(this).find('.skillimage').removeData('targets');
+            $(this).empty();
+            $(this).show();
+        });
+    };
+
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'});
+        cardList.show('drop', {direction:'up'}, animateDropCardHealth);
+    } else {
+        animateDropCardHealth();
     }
-    var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    cardDiv.effect('explode', {pieces: 9}, 800, function() {
-        $(this).find('.skillimage').removeData('index');
-        $(this).find('.skillimage').removeData('targets');
-        $(this).empty();
-        $(this).show();
-    });
 }
 
 function changeCardHealth(action) {
     var cardList = action.self ? $('.self') : $('.cardlist[number=' + action.target.playerNumber + ']');
+
+    var animateChangeCardHealth = function() {
+        var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
+        cardDiv.effect('shake', {direction:'left'});
+        var healthSpan = cardDiv.find('span').eq(2);
+        healthSpan.text((parseInt(healthSpan.text()) - action.healthChange));
+    };
+
     if (cardList.is(':hidden')) {
         $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'});
+        cardList.show('drop', {direction:'up'}, animateChangeCardHealth);
+    } else {
+        animateChangeCardHealth();
     }
-    var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
-    cardDiv.effect('shake', {direction:'left'});
-    var healthSpan = cardDiv.find('span').eq(2);
-    healthSpan.text((parseInt(healthSpan.text()) - action.healthChange));
 }
 
 function actionUpdate(i, action) {

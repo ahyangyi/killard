@@ -15,7 +15,6 @@
 
         resize: function() {
             var options = this.options;
-            //            alert('h=' + $(this.element).parent().height());
             this.height = parseInt($(this.element).parent().height() / options.limit);
             this.wrapper.parent().css({ height : this.height * options.limit });
         },

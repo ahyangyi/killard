@@ -8,13 +8,29 @@ ul li {
     margin: 0;
     padding: 0;
     border: 0;
+    display: inline;
 }
 
 .arena {
-    display: inline;
-    float: left;
-    margin: 0;
-    padding: 0;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+}
+
+#toppanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    display: none;
+}
+
+#bottompanel {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    display: none;
 }
 
 .arena .player {
@@ -31,12 +47,37 @@ ul li {
     background: url(../../image/texture/green.png);
 }
 
+.arena .player {
+    position: relative;
+}
+
 .arena .player ul {
     font-size: 0;
 }
 
 .arena .player ul li img{
     display: none;
+}
+
+.arena .player ul li .score{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.arena .player ul li .element{
+    position: absolute;
+    text-align: center;
+    display: none;
+}
+
+.arena .player ul li .element .elementAmount{
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
 }
 
 .arena .top {
@@ -79,7 +120,6 @@ ul li {
 
 .arena .bottom {
     display: block;
-    float: right;
     width: 100%;
 }
 
@@ -96,59 +136,12 @@ ul li {
 .corner {
     margin: 0;
     padding: 0;
-    font-style: italic;
 }
 
 .corner img {
     display: block;
     width: 0;
     height: 0;
-}
-
-.corner .buttonoff {
-    visibility: visible;
-    position: relative;
-    top: -200%;
-}
-
-.corner .buttonon {
-    visibility: hidden;
-    position: relative;
-    top: -100%;
-}
-
-.corner .buttonactive {
-    visibility: hidden;
-}
-
-.corner:hover .buttonoff {
-    visibility: hidden;
-}
-
-.corner:hover .buttonon {
-    visibility: visible;
-}
-
-.corner:hover .buttonactive {
-    visibility: hidden;
-}
-
-.corner:active .buttonoff {
-    visibility: hidden;
-}
-
-.corner:active .buttonon {
-    visibility: hidden;
-}
-
-.corner:active .buttonactive {
-    visibility: visible;
-}
-
-.player ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
 }
 
 .player img {
@@ -210,14 +203,6 @@ ul li {
     margin: 0;
     padding: 0;
     z-index: 100;
-}
-
-.label div {
-    position: absolute;
-    display:table-cell;
-    vertical-align:middle;
-    width: 100%;
-    top: 35%;
     text-align:center;
 }
 
@@ -249,6 +234,9 @@ ul li {
 }
 
 #warning {
+    position: absolute;
+    left: 0;
+    top: 0;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     height: 1em;
@@ -258,6 +246,8 @@ ul li {
 }
 
 #tip {
+    position: absolute;
+    left: 0;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     height: 1em;
@@ -268,7 +258,6 @@ ul li {
 
 #sidebar {
     width: 250px;
-    height: 100%;
     float: right;
 }
 
@@ -283,4 +272,5 @@ ul li {
 #sidebar li {
     font-size: 12px;
     margin-bottom: 0.5em;
+    display: block;
 }

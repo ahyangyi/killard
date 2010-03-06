@@ -20,23 +20,24 @@
     margin: 0 10px;
 }
 
-.searchbar .tag a {
+.searchbar .tag span {
     display: block;
     margin: 0;
     padding: 0;
     background: #DFDFDF;
     color: #666;
     text-decoration: none;
+    cursor: pointer;
 }
 
-.searchbar .tag a:hover {
+.searchbar .tag span:hover {
     background: #D1D1D1;
     color: #000;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
 }
 
-.searchbar .tag a.selected {
+.searchbar .tag span.selected {
     background: #AFAFAF;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

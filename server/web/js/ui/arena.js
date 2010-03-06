@@ -50,9 +50,9 @@
                 var playerDiv = $(this).parent().parent().parent();
                 if (!playerDiv.attr('self')) {
                     var number = playerDiv.attr('number');
-                    var cardList = $('.cardlist[number=' + number + '] img');
+                    var cardList = $('.cardlist[number=' + number + ']');
                     if (cardList.is(':hidden')) {
-                        $('.other img:visible').hide('drop', {direction:'down'});
+                        $('.other:visible').hide('drop', {direction:'down'});
                         cardList.show('drop', {direction:'up'});
                     }
                 }
@@ -67,16 +67,16 @@
                 }
             });
 
-            this.player.find('li :last').click(function() {
-                var head = $(this).parent().prev();
-                head.effect('shake', {direction:'left'});
+            this.player.find('.score').click(function() {
+                $(this).parent().find('.element').slideToggle();
             });
 
             this.corner.eq(0).click(function() {
-                $('#toppanel').show('drop', {direction:'up'}, function() {
-                    var items = $('#toppanel .center .list ul li');
-                    $('#toppanel .center .list ul').width(items.outerWidth() * items.length);
-                });
+//                $('#toppanel').show('drop', {direction:'up'}, function() {
+//                    var items = $('#toppanel .center .list ul li');
+//                    $('#toppanel .center .list ul').width(items.outerWidth() * items.length);
+//                });
+                $('#toppanel').slideToggle();
             }).css('cursor', 'pointer');
 
             this.corner.eq(2).hover(
@@ -92,10 +92,13 @@
                     ).mouseup(
                     function() {
                         $(this).find('img').attr('src', 'image/corner/corner1a.png');
-                        $('#bottompanel').show('drop', {direction:'down'}, function() {
+                        $('#bottompanel').slideToggle(function() {
+                            $('#bottompanel .center').height(arena.cardHeight + arena.cardSeparator);
+                            $('#bottompanel .center li').height(arena.cardHeight + arena.cardSeparator);
+                            $('#bottompanel .center .list').height(arena.cardHeight + arena.cardSeparator);
                             var items = $('#bottompanel .center .list ul li');
+                            items.height(arena.cardHeight + arena.cardSeparator);
                             $('#bottompanel .center .list ul').width(items.outerWidth() * items.length);
-                            $('.item').draggable({ opacity: 0.7, helper: 'clone' });
                         });
                     }
                     ).css('cursor', 'pointer');
@@ -125,17 +128,17 @@
                             }
                             $.each(actions, actionUpdate);
                         }, 'json');
-                        $('#bottompanel').hide('drop', {direction:'down'});
+                        $('#bottompanel').slideToggle();
                     }
                 }
             });
 
             $('#toppanel').click(function() {
-                $(this).hide('drop', {direction:'up'});
+                $(this).slideToggle();
             });
 
             $('#bottompanel').click(function() {
-                $(this).hide('drop', {direction:'down'});
+                $(this).slideToggle();
             });
 
             this.resize();
@@ -353,9 +356,32 @@
                 'margin-top' : 0,
                 'margin-bottom' : 0
             });
+            
+            this.player.slice(0, 3).each(function(){
+                $(this).find('.element').each(function(i, e) {
+                    $(e).css({'left': (i - 0.5) * playerShortEdge, 'top': playerShortEdge});
+                });
+            });
+            this.player.slice(3, 5).each(function() {
+                $(this).find('.element').each(function(i, e) {
+                    $(e).css({'right': - playerShortEdge, 'bottom': (i - 2.5) * playerShortEdge});
+                });
+            });
+            this.player.slice(5, 7).each(function() {
+                $(this).find('.element').each(function(i, e) {
+                    $(e).css({'right': playerShortEdge, 'bottom': (i - 2.5) * playerShortEdge});
+                });
+            });
+            this.player.slice(7).each(function() {
+                $(this).find('.element').each(function(i, e) {
+                    $(e).css({'right': (i - 2.5) * playerShortEdge, 'bottom': playerShortEdge});
+                });
+            });
 
             /* Set player size. */
             this.player.find('img').width(playerShortEdge).height(playerShortEdge);
+            this.player.find('div').width(playerShortEdge).height(playerShortEdge)
+                    .css({'font-size': parseInt(playerShortEdge / 2), 'line-height': playerShortEdge + 'px'});
 
             /* We calculate board size as integers. */
             var boardWidth = w - 2 * (arenaPadding + playerShortEdge);
@@ -416,7 +442,8 @@
                     .find('.cardimage').width(this.cardWidth).height(this.cardHeight);
 
             var labelSize = parseInt(this.cardWidth / 3);
-            this.card.find('.label').width(labelSize).height(labelSize).css('font-size', parseInt(this.cardWidth / 8));
+            this.card.find('.label').width(labelSize).height(labelSize)
+                    .css({'font-size': parseInt(this.cardWidth / 8), 'line-height': labelSize + 'px'});
 
             this.card.find('.skillimage').width(parseInt(this.cardWidth / 3))
                     .height(parseInt(this.cardWidth / 6)).css({
@@ -426,10 +453,29 @@
 
             $('.item').width(this.cardWidth).height(this.cardHeight);
         },
+        
+        updateElements: function() {
+
+            /* North */
+            this.player.slice(0, 3).find('.element').each(function(i, e) {
+                $(e).css({'right': (i - 2) * playerShortEdge, 'bottom': - playerShortEdge});
+            });
+
+            /* West & East */
+            this.player.slice(3, 7).find('.element').each(function(i, e) {
+                $(e).css({'right': playerShortEdge, 'bottom': (i - 2) * playerShortEdge});
+            });
+
+            /* South */
+            this.player.slice(7).find('.element').each(function(i, e) {
+                $(e).css({'right': (i - 2.5) * playerShortEdge, 'bottom': playerShortEdge});
+            });
+        },
 
         updateCards: function() {
             var labelSize = parseInt(this.cardWidth / 3);
-            this.card.find('.label').width(labelSize).height(labelSize).css('font-size', parseInt(this.cardWidth / 8));
+            this.card.find('.label').width(labelSize).height(labelSize)
+                    .css({'font-size': parseInt(this.cardWidth / 8), 'line-height': labelSize + 'px'});
         }
     });
 
@@ -455,7 +501,7 @@
 function playerUpdate(i, player) {
     var playerDiv = $('.player[number="' + player.number + '"]');
     playerDiv.unbind('click');
-    var image = playerDiv.find('> ul > li > img');
+    var image = playerDiv.find('> ul > li img');
     if (image.is(':hidden')) {
         image.show();
         if (player.self) {
@@ -470,7 +516,7 @@ function playerUpdate(i, player) {
         $.each(player.dealtCards, dealCard);
     }
     if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {renderCard(player.number, card, player.self);});
+        $.each(player.equippedCards, function(i, card) {equipCard(player.number, card, player.self);});
     }
     if (!player.self) {
         $('.cardlist[number=' + player.number + ']').show();
@@ -495,16 +541,15 @@ function playerQuit(player) {
 
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
-    $('<li><img class="item" src="arena/' + card.elementSchool + '/' + card.name + '.png"/></li>')
-            .appendTo($('.dealtCards > .cards'))
-            .width(arena.cardWidth)
-            .height(arena.cardHeight)
-            .css('padding-right', arena.cardSeparator)
-            .find('img')
-            .width(arena.cardWidth)
-            .height(arena.cardHeight)
-            .attr('elementSchool', card.elementSchool)
-            .attr('cardName', card.name);
+    var cardPadding = parseInt(arena.cardSeparator / 2);
+    var cardLi = $('<li></li>').width(arena.cardWidth).height(arena.cardHeight)
+            .css({'padding-left': cardPadding, 'padding-right': cardPadding, 'padding-top': cardPadding})
+            .appendTo($('.dealtCards > .cards'));
+    $(new Image).attr({'src': 'arena/' + card.elementSchool + '/' + card.name + '.png'})
+            .addClass('item')
+            .width(arena.cardWidth).height(arena.cardHeight)
+            .attr({'elementSchool': card.elementSchool, 'cardName': card.name})
+            .appendTo(cardLi).draggable({ opacity: 0.7, helper: 'clone' });
 }
 
 function renderCard(playerNumber, card, self) {
@@ -536,17 +581,17 @@ function renderCard(playerNumber, card, self) {
     }
     var labelSize = parseInt(cardDiv.width() / 3);
     if (card.level > 0)
-        $('<div class="label level"><div>' + card.level + '</div></div>').width(labelSize).height(labelSize)
-                .css('font-size', fontSize).appendTo(cardDiv);
+        $('<div class="label level">' + card.level + '</div>').width(labelSize).height(labelSize)
+                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
     if (card.maxHealth > 0)
-        $('<div class="label maxHealth"><div>' + card.maxHealth + '</div></div>').width(labelSize).height(labelSize)
-                .css('font-size', fontSize).appendTo(cardDiv);
+        $('<div class="label maxHealth">' + card.maxHealth + '</div>').width(labelSize).height(labelSize)
+                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
     if (card.health > 0)
-        $('<div class="label health"><div>' + card.health + '</div></div>').width(labelSize).height(labelSize)
-                .css('font-size', fontSize).appendTo(cardDiv);
+        $('<div class="label health">' + card.health + '</div>').width(labelSize).height(labelSize)
+                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
     if (card.attack > 0)
-        $('<div class="label attack"><div>' + card.attack + '</div></div>').width(labelSize).height(labelSize)
-                .css('font-size', fontSize).appendTo(cardDiv);
+        $('<div class="label attack">' + card.attack + '</div>').width(labelSize).height(labelSize)
+                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
     arena.updateCards();
 }
 

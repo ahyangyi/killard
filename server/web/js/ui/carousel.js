@@ -4,12 +4,12 @@
             var $carousel = this;
 
             $('.list', this.element).mousewheel(function (event, delta) {
-                return $carousel.gotoPage(- delta);
+                return $carousel.gotoPage(-delta);
             });
 
             // Bind to the forward and back buttons
             $('a.back', this.element).click(function () {
-                return $carousel.gotoPage(- 1);
+                return $carousel.gotoPage(-1);
             });
 
             $('a.forward', this.element).click(function () {
@@ -49,13 +49,11 @@
             var center = $('.center', this.element);
             var bottom = $('.bottom', this.element);
             var centerWidth = $(this.element).width() - 2 * 37;
-            var centerHeight = $(this.element).height() - top.outerHeight() - bottom.outerHeight();
-            $('> .center > ul > .content', this.element).width(centerWidth);
+            var centerHeight = $(this.element).height() - 32;
             center.height(centerHeight);
-            $('> .center > ul > li', this.element).height(centerHeight);
-            var list = $('.list', this.element);
-            list.height(centerHeight);
-            list.find('li').height(centerHeight);
+            $('> ul > .content', center).width(centerWidth);
+            $('> ul > li', center).height(centerHeight);
+            $('.list', center).height(centerHeight).find('li').height(centerHeight);
         }
     });
 

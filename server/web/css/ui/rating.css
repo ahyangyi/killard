@@ -1,0 +1,20 @@
+.rating {
+    background-image:url(../../image/rating.png);
+    background-repeat:no-repeat;
+    height:12px;
+    text-indent:-900em;
+    font-size:1em;
+    margin:0 0 9px;
+}
+
+.none {
+        background-position: 82px 0px;
+}
+
+.four {
+        background-position: 82px -48px;
+}
+
+.five {
+        background-position: 82px -60px;
+}

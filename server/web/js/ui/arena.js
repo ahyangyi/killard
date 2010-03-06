@@ -401,32 +401,20 @@
             this.myCardsLeft = this.otherCardsLeft;
             this.myCardsTop = arenaPadding + playerShortEdge + boardMargin + boardPadding + this.cardHeight +
                               boardSeparatorMargin + this.getVerticalBorder(this.boardSeparator);
-            $('.other').css({
-                'left': this.otherCardsLeft,
-                'top': this.otherCardsTop
-            });
+            $('.other').css({'left': this.otherCardsLeft, 'top': this.otherCardsTop});
             this.boardSeparator.width(this.board.width()).css({
                 'left': this.otherCardsLeft,
                 'top': this.otherCardsTop + this.cardHeight
             });
-            $('.self').css({
-                'left': this.myCardsLeft,
-                'top': this.myCardsTop
-            });
+            $('.self').css({'left': this.myCardsLeft,'top': this.myCardsTop});
 
-            this.cardlist.height(this.cardHeight);
+            this.cardlist.width(this.cardWidth * options.cardAmount + this.cardSeparator * (options.cardAmount - 1))
+                    .height(this.cardHeight);
+            this.cardlist.find(options.card + ':lt(4)').css('margin-right', cardSeparator);
 
             this.card.width(this.cardWidth).height(this.cardHeight)
                     .find('.cardimage').width(this.cardWidth).height(this.cardHeight);
 
-            $('.other').each(function(j, o) {
-                $(this).find('.card').each(function(i, card) {
-                    $(card).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
-                });
-            });
-            $('.self').find('.card').each(function(i, e) {
-                $(e).css('left', i * (cardSeparator + parseInt(9 * boardLengthUnit)));
-            });
             var labelSize = parseInt(this.cardWidth / 3);
             this.card.find('.label').width(labelSize).height(labelSize).css('font-size', parseInt(this.cardWidth / 8));
 
@@ -437,6 +425,11 @@
             });
 
             $('.item').width(this.cardWidth).height(this.cardHeight);
+        },
+
+        updateCards: function() {
+            var labelSize = parseInt(this.cardWidth / 3);
+            this.card.find('.label').width(labelSize).height(labelSize).css('font-size', parseInt(this.cardWidth / 8));
         }
     });
 
@@ -521,7 +514,7 @@ function renderCard(playerNumber, card, self) {
     if (cardDiv.children().length > 0) {
         $('.cardimage', cardDiv).fadeTo(1000, 1);
     } else {
-        $('<img src="arena/' + card.elementSchool + '/' + card.name + '.png" class="cardimage"/>')
+        $(new Image).attr('src', 'arena/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
                 .width(arena.cardWidth)
                 .height(arena.cardHeight)
                 .hide()
@@ -531,11 +524,11 @@ function renderCard(playerNumber, card, self) {
     var fontSize = arena.cardWidth / 8;
     if (card.skills.length > 0 && self) {
         $.each(card.skills, function(i, skill) {
-            $('<img src="image/skill.png' + '" class="skillimage"/>')
+            $(new Image).attr('src', 'image/skill.png').addClass('skillimage')
                     .css('top', parseInt(arena.cardHeight - arena.cardWidth / 2))
                     .css('left', parseInt(arena.cardWidth / 3))
-                    .width(parseInt(this.cardWidth / 3))
-                    .height(parseInt(this.cardWidth / 6))
+                    .width(parseInt(arena.cardWidth / 3))
+                    .height(parseInt(arena.cardWidth / 6))
                     .data('index', i)
                     .data('targets', skill.targets)
                     .appendTo(cardDiv);
@@ -554,6 +547,7 @@ function renderCard(playerNumber, card, self) {
     if (card.attack > 0)
         $('<div class="label attack"><div>' + card.attack + '</div></div>').width(labelSize).height(labelSize)
                 .css('font-size', fontSize).appendTo(cardDiv);
+    arena.updateCards();
 }
 
 function equipCard(playerNumber, card, self) {

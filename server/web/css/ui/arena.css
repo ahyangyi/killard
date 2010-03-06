@@ -190,7 +190,7 @@ ul li {
 }
 
 .card {
-    position: absolute;
+    position: relative;
     display: inline;
     margin: 0;
     padding: 0;
@@ -281,6 +281,6 @@ ul li {
 }
 
 #sidebar li {
-    font-size: 8px;
+    font-size: 12px;
     margin-bottom: 0.5em;
 }

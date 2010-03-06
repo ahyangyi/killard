@@ -96,7 +96,7 @@
                 var sidebar = $('#sidebar').data('accordion');
                 var carousel = $('.carousel');
                 arena.resize();
-                sidebar.resize();
+                if (sidebar) sidebar.resize();
                 var cards = $('.carousel .center .list ul li');
                 cards.width(arena.cardWidth)
                         .css('padding-right', arena.cardSeparator)
@@ -342,9 +342,6 @@
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
                 </ul>
-                <div class="messagebox">
-                    <p></p>
-                </div>
             </div>
         </li>
         <li>

@@ -1,0 +1,30 @@
+#arenapanel {
+    width: 70%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url(../../image/texture/p2.png);
+}
+
+div.package {
+    margin: auto;
+    padding: 0;
+    width: 90%;
+    height: 70%;
+    background-image: url("../../image/texture/0.jpg");
+}
+
+div.package ul {
+    width: 100%;
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.package ul li {
+    display: inline;
+    float: left;
+    margin: 0;
+    padding: 0;
+}

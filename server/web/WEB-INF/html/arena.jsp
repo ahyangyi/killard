@@ -1,9 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
@@ -54,12 +54,17 @@
         #bottompanel {
             position: absolute;
             left: 0;
+            bottom: 0;
             z-index: 100;
             display: none;
         }
 
         .carousel {
-            background-color: gray;
+            background-image: url(image/texture/darkgray.png);
+        }
+
+        .carousel .arrow {
+            background-image: url(image/texture/white.png);
         }
 
         .arena {
@@ -78,34 +83,53 @@
             position: absolute;
             left: 0;
         }
+
+        .ui-accordion .ui-accordion-content {
+            background: url(image/texture/gray.png);
+            padding: 1em 1em
+        }
     </style>
     <script type="text/javascript">
         $(function() {
             function resizeWindow() {
                 var arena = $(".arena").data('arena');
+                var sidebar = $('#sidebar').data('accordion');
                 var carousel = $('.carousel');
                 arena.resize();
+                sidebar.resize();
                 var cards = $('.carousel .center .list ul li');
-                cards.width(arena.cardWidth);
-                cards.css('padding-right', arena.cardSeparator);
+                cards.width(arena.cardWidth)
+                        .css('padding-right', arena.cardSeparator)
+                        .css('padding-top', parseInt(arena.cardSeparator / 2));
                 if (carousel.is(':visible')) {
-                    carousel.height(arena.cardHeight + 32);
+                    carousel.height(arena.cardHeight + arena.cardSeparator + 32);
                 } else {
-                    carousel.height(arena.cardHeight);
+                    carousel.height(arena.cardHeight + arena.cardSeparator);
                 }
-                carousel.find('.list').height(arena.cardHeight);
+                carousel.find('.list').height(arena.cardHeight + arena.cardSeparator);
                 carousel.each(function() {
                     $(this).data('carousel').resize();
                 });
                 if (carousel.is(':visible')) {
                     $('#bottompanel').css('top', $(window).height() - carousel.height());
                 } else {
-                    $('#bottompanel').css('top', $(window).height() - arena.cardHeight - 32);
+                    $('#bottompanel').css('top', $(window).height() - arena.cardHeight - arena.cardSeparator - 32);
                 }
             }
             $.event.add(window, "load", resizeWindow);
             $.event.add(window, "resize", resizeWindow);
-            $(".arena").arena();
+            $('.arena').arena();
+            $('#sidebar').accordion({
+                autoHeight: false,
+                fillSpace: true
+            });
+//            $('#sidebar').resizable({
+//                handles: 'w',
+//                alsoResize: '.container',
+//                stop: function(event, ui) {
+//                    $('.arena').data('arena').resize();
+//                }
+//            });
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
             $('.other').hide();
@@ -246,7 +270,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="2">
                     <li class="card" position="1"></li>
@@ -254,7 +277,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="3">
                     <li class="card" position="1"></li>
@@ -262,7 +284,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="4">
                     <li class="card" position="1"></li>
@@ -270,7 +291,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="5">
                     <li class="card" position="1"></li>
@@ -278,7 +298,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="6">
                     <li class="card" position="1"></li>
@@ -286,7 +305,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="7">
                     <li class="card" position="1"></li>
@@ -294,7 +312,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="8">
                     <li class="card" position="1"></li>
@@ -302,7 +319,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="9">
                     <li class="card" position="1"></li>
@@ -310,7 +326,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <ul class="cardlist other" number="10">
                     <li class="card" position="1"></li>
@@ -318,7 +333,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <div class="separator"></div>
                 <ul class="cardlist self">
@@ -327,7 +341,6 @@
                     <li class="card" position="3"></li>
                     <li class="card" position="4"></li>
                     <li class="card" position="5"></li>
-                    <li class="card" position="6"></li>
                 </ul>
                 <div class="messagebox">
                     <p></p>
@@ -393,14 +406,32 @@
 <div id="sidebar">
     <h3><a href="#">Chat</a></h3>
     <div>
+        <label>
+            <input type="text" size="15"/>
+        </label>
+        <hr/>
         <ul>
+            <li><span style="color:green;">test:</span>Hello</li>
+            <li><span style="color:green;">test:</span>World</li>
+            <li><span style="color:red;">player:</span>Be quick</li>
+            <li><span style="color:green;">test:</span>Next turn</li>
+            <li><span style="color:red;">player:</span>Good game</li>
+            <li><span style="color:green;">test:</span>Hello</li>
+            <li><span style="color:green;">test:</span>World</li>
+            <li><span style="color:red;">player:</span>Be quick</li>
+            <li><span style="color:green;">test:</span>Next turn</li>
+            <li><span style="color:red;">player:</span>Good game</li>
+            <li><span style="color:green;">test:</span>Hello</li>
+            <li><span style="color:green;">test:</span>World</li>
+            <li><span style="color:red;">player:</span>Be quick</li>
+            <li><span style="color:green;">test:</span>Next turn</li>
+            <li><span style="color:red;">player:</span>Good game</li>
         </ul>
     </div>
     <h3><a href="#">Players</a></h3>
-    <div>
-        <ul>
-        </ul>
-    </div>
+    <div>Second content</div>
+    <h3><a href="#">Game Information</a></h3>
+    <div>Invite others to join this game</div>
 </div>
 </div>
 </body>

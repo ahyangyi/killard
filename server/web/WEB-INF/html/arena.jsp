@@ -57,6 +57,11 @@
                 var cardPadding = parseInt(arena.cardSeparator / 2);
                 cards.width(arena.cardWidth).height(arena.cardHeight)
                         .css({'padding-left': cardPadding, 'padding-right': cardPadding, 'padding-top': cardPadding});
+                cards.find('img').width(arena.cardWidth).height(arena.cardHeight);
+                var fontSize = arena.cardWidth / 8;
+                var labelSize = parseInt(arena.cardWidth / 3);
+                cards.find('.label').width(labelSize).height(labelSize)
+                    .css({'font-size': fontSize, 'line-height': labelSize + 'px'});
                 carousel.height(arena.cardHeight + arena.cardSeparator + 32);
                 carousel.each(function() {
                     $(this).data('carousel').resize();
@@ -80,6 +85,7 @@
             $('.carousel').carousel();
             $('.player > ul > li > img').hide();
             $('.other').hide();
+
             function update() {
                 $.getJSON('arena/actions.json', {'since':$(window).data('since')},
                         function(actions, textStatus) {

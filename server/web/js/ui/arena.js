@@ -563,7 +563,7 @@ function playerQuit(player) {
 function dealCard(i, card) {
     var arena = $(".arena").data('arena');
     var cardPadding = parseInt(arena.cardSeparator / 2);
-    var cardLi = $('<li></li>').addClass('card').width(arena.cardWidth).height(arena.cardHeight)
+    var cardLi = $('<li></li>').width(arena.cardWidth).height(arena.cardHeight)
             .css({'padding-left': cardPadding, 'padding-right': cardPadding, 'padding-top': cardPadding})
             .appendTo($('.dealtCards > .cards'));
     var cardDiv = $('<div></div>').addClass('item').addClass('card')

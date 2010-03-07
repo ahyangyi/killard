@@ -85,6 +85,7 @@
             $('.carousel').carousel();
             $('.player > ul > li > img').hide();
             $('.other').hide();
+            
             function update() {
                 $.getJSON('arena/actions.json', {'since':$(window).data('since')},
                         function(actions, textStatus) {

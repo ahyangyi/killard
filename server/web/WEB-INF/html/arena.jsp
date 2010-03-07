@@ -385,7 +385,7 @@
     <h3><a href="#">Chat</a></h3>
     <div>
         <label>
-            <input type="text" size="15"/>
+            <input type="text" size="15" id="chatinput"/>
         </label>
         <hr/>
         <ul>

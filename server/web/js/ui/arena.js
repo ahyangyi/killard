@@ -141,6 +141,13 @@
                 $(this).slideToggle();
             });
 
+            $('#chatinput').keyup(function(event) {
+                if (event.keyCode == '13') {
+                    var msg = $(this).attr('value');
+                    $.post('arena/message.json', {'message': msg}, chatUpdate, 'json');
+                }
+            });
+
             this.resize();
 //            this.board.transparent({opacity:options.boardOpacity});
         },
@@ -646,6 +653,13 @@ function equipCard(playerNumber, card, self) {
     } else {
         renderCard(playerNumber, card, self);
     }
+}
+
+function chatUpdate(messages) {
+    $.each(messages, function(i, message) {
+        $('<li>' + message.player + ':' + message.content + '</li>')
+                .appendTo($('#sidebar > div:first > ul'));
+    });
 }
 
 function actionUpdate(i, action) {

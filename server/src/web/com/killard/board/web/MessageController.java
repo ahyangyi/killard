@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * <p>
  * This class defines .
@@ -20,21 +22,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MessageController extends BasicController {
 
-    @RequestMapping(value = "/messages.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/arena/messages.*", method = RequestMethod.GET)
     public String messages(ModelMap modelMap) throws Exception {
         BoardDO board = CacheInstance.getInstance().getBoard();
         modelMap.put("messages", board.getMessages());
         return "action/messages";
     }
 
-    @RequestMapping(value = "/message.*", method = RequestMethod.POST)
-    public String message(@RequestParam(value = "to", required = false) String to,
-                          @RequestParam("message") String message,
-                          ModelMap modelMap) throws Exception {
-        BoardDO board = CacheInstance.getInstance().getBoard();
+    @RequestMapping(value = {"/arena/message.json", "/arena/message.xml", "/arena/message.html"},
+            method = {RequestMethod.GET, RequestMethod.POST})
+    public void message(@RequestParam(value = "to", required = false) String to,
+                        @RequestParam("message") String message,
+                        HttpServletResponse response) throws Exception {
+        CacheInstance instance = CacheInstance.getInstance();
+        BoardDO board = instance.getBoard();
         board.postMessage(CacheInstance.getInstance().getPlayerId(), to, message);
-        modelMap.put("messages", board.getMessages());
-        return "action/messages";
+        response.setContentType("application/json");
+        response.getWriter().println("[{\"player\":\"" + instance.getPlayer().getNickname() + "\",\"content\":\"" + message + "\"}]");
     }
 
 }

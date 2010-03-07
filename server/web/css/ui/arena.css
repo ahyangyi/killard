@@ -13,7 +13,6 @@ ul li {
 
 .arena {
     position: absolute;
-    z-index: 0;
     left: 0;
 }
 
@@ -29,7 +28,7 @@ ul li {
     position: absolute;
     left: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 200;
     display: none;
 }
 
@@ -53,10 +52,6 @@ ul li {
 
 .arena .player ul {
     font-size: 0;
-}
-
-.arena .player ul li img{
-    display: none;
 }
 
 .arena .player ul li .score{
@@ -149,16 +144,18 @@ ul li {
     padding: 0;
     width: 0;
     height: 0;
+    z-index: 10;
 }
 
 .board {
+    position: relative;
     margin: 0;
     padding: 0;
+    /*z-index: 1;*/
     border: 3px solid white;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     background-image: url("../../image/texture/black.png");
-    position: relative;
 }
 
 .board .transparent {
@@ -217,12 +214,12 @@ ul li {
     left: 0;
 }
 
-.card .maxHealth {
+.card .health {
     top: 0;
     right: 0;
 }
 
-.card .health {
+.card .range {
     bottom: 0;
     left: 0;
 }

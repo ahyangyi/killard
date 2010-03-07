@@ -49,6 +49,7 @@
 }
 
 .carousel .center .list ul li {
+    position: relative;
     display: inline;
     float: left;
     margin: 0;

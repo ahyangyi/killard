@@ -78,6 +78,7 @@
 //            });
             $('.player').toggleClass('emptyPlayer');
             $('.carousel').carousel();
+            $('.player > ul > li > img').hide();
             $('.other').hide();
             function update() {
                 $.getJSON('arena/actions.json', {'since':$(window).data('since')},
@@ -148,12 +149,6 @@
     <div class="bottom">
         <div class="searchbar">
             <ul>
-                <li class="tag"><span>AIR:7</span></li>
-                <li class="tag"><span>FIRE:6</span></li>
-                <li class="tag"><span>EARTH:6</span></li>
-                <li class="tag"><span>WATER:5</span></li>
-                <li class="tag"><span>LIFE:8</span></li>
-                <li class="tag"><span>DEATH:6</span></li>
             </ul>
         </div>
     </div>
@@ -170,7 +165,10 @@
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/female.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li>
+                        <img src="image/msg/msg.png"/>
+                        <div class="score"></div>
+                    </li>
                 </ul>
             </div>
             <div class="player" number="6">
@@ -179,27 +177,7 @@
                     <li><img src="image/head/head.png"/></li>
                     <li>
                         <img src="image/msg/msg.png"/>
-                        <div class="score">125</div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">7</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">14</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">9</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">6</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">1</div>
-                        </div>
+                        <div class="score"></div>
                     </li>
                 </ul>
             </div>
@@ -207,7 +185,10 @@
                 <ul>
                     <li><img src="image/role/role3.png"/></li>
                     <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li>
+                        <img src="image/msg/msg.png"/>
+                        <div class="score"></div>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -226,31 +207,7 @@
                     <li><img src="image/head/head.png"/></li>
                     <li>
                         <img src="image/msg/msg.png"/>
-                        <div class="score">56</div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">7</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">14</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">9</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">6</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">1</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">10</div>
-                        </div>
+                        <div class="score"></div>
                     </li>
                 </ul>
             </div>
@@ -258,7 +215,10 @@
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li>
+                        <img src="image/msg/msg.png"/>
+                        <div class="score"></div>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -351,31 +311,7 @@
                     <li><img src="image/head/head.png"/></li>
                     <li>
                         <img src="image/msg/msg.png"/>
-                        <div class="score">56</div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">7</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">14</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">9</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">6</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">1</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">10</div>
-                        </div>
+                        <div class="score"></div>
                     </li>
                 </ul>
             </div>
@@ -385,31 +321,7 @@
                     <li><img src="image/head/head.png"/></li>
                     <li>
                         <img src="image/msg/msg.png"/>
-                        <div class="score">56</div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">7</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">14</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">9</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">6</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">1</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">10</div>
-                        </div>
+                        <div class="score"></div>
                     </li>
                 </ul>
             </div>
@@ -427,7 +339,10 @@
                 <ul>
                     <li><img src="image/role/role2.png"/></li>
                     <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li>
+                        <img src="image/msg/msg.png"/>
+                        <div class="score"></div>
+                    </li>
                 </ul>
             </div>
             <div class="player" number="1">
@@ -436,31 +351,7 @@
                     <li><img src="image/head/head.png"/></li>
                     <li>
                         <img src="image/msg/msg.png"/>
-                        <div class="score">56</div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">7</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">14</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">9</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">6</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">1</div>
-                        </div>
-                        <div class="element">
-                            <img src="image/msg/msg.png"/>
-                            <div class="elementAmount">10</div>
-                        </div>
+                        <div class="score"></div>
                     </li>
                 </ul>
             </div>
@@ -468,7 +359,10 @@
                 <ul>
                     <li><img src="image/role/role1.png"/></li>
                     <li><img src="image/head/head.png"/></li>
-                    <li><img src="image/msg/msg.png"/></li>
+                    <li>
+                        <img src="image/msg/msg.png"/>
+                        <div class="score"></div>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -489,21 +383,6 @@
         </label>
         <hr/>
         <ul>
-            <li><span style="color:green;">test:</span>Hello</li>
-            <li><span style="color:green;">test:</span>World</li>
-            <li><span style="color:red;">player:</span>Be quick</li>
-            <li><span style="color:green;">test:</span>Next turn</li>
-            <li><span style="color:red;">player:</span>Good game</li>
-            <li><span style="color:green;">test:</span>Hello</li>
-            <li><span style="color:green;">test:</span>World</li>
-            <li><span style="color:red;">player:</span>Be quick</li>
-            <li><span style="color:green;">test:</span>Next turn</li>
-            <li><span style="color:red;">player:</span>Good game</li>
-            <li><span style="color:green;">test:</span>Hello</li>
-            <li><span style="color:green;">test:</span>World</li>
-            <li><span style="color:red;">player:</span>Be quick</li>
-            <li><span style="color:green;">test:</span>Next turn</li>
-            <li><span style="color:red;">player:</span>Good game</li>
         </ul>
     </div>
     <h3><a href="#">Players</a></h3>

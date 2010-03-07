@@ -12,20 +12,26 @@
         "current" : ${player.number == board.currentPlayerNumber},
         "number" : ${player.number},
         "health" : ${player.health},
-        "dealtCards" : [
-    <c:if test="${player.id == playerId and player.number > 0}">
+        "elementRecords" : [
     <c:forEach var="element" items="${player.elementRecords}" varStatus="elementStatus">
-        <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
-        <c:if test="${not (elementStatus.first and cardStatus.first)}">,</c:if>{
-        "name" : "${card.key.name}",
-        "elementSchool" : "${card.elementSchool.name}",
-        "level" : ${card.level},
-        "maxHealth" : ${card.maxHealth},
-        "attack" : ${card.attack.value}
+        <c:if test="${not elementStatus.first}">,</c:if>{
+        "elementSchool": "${element.elementSchool.name}",
+        "amount": ${element.amount}
+        <c:if test="${player.id == playerId and player.number > 0}">
+        ,"dealtCards": [
+            <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
+                <c:if test="${not cardStatus.first}">,</c:if>{
+                "name" : "${card.key.name}",
+                "elementSchool" : "${card.elementSchool.name}",
+                "level" : ${card.level},
+                "maxHealth" : ${card.maxHealth},
+                "attack" : ${card.attack.value}
+                }
+            </c:forEach>
+        ]
+        </c:if>
         }
-        </c:forEach>
     </c:forEach>
-    </c:if>
         ],
         "equippedCards" : [
     <c:if test="${player.number > 0}">

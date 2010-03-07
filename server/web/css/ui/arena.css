@@ -158,6 +158,12 @@ ul li {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     background-image: url("../../image/texture/black.png");
+    position: relative;
+}
+
+.board .transparent {
+    -webkit-border-radius: 23px;
+    -moz-border-radius: 23px;
 }
 
 .board .separator {

@@ -142,6 +142,7 @@
             });
 
             this.resize();
+//            this.board.transparent({opacity:options.boardOpacity});
         },
 
         destroy: function() {
@@ -405,6 +406,7 @@
                 'padding-bottom' : boardPadding
             }).width(boardWidth - this.getHorizontalGap(this.board))
                     .height(boardHeight - this.getVerticalGap(this.board));
+            this.board.transparent({update: true, opacity:options.boardOpacity});
 
             /* Calculate card size as integers. */
             this.cardWidth = parseInt(9 * boardLengthUnit);
@@ -420,12 +422,10 @@
             });
 
             /* Render cards */
-            this.otherCardsLeft = arenaPadding + playerShortEdge + boardMargin + boardPadding +
-                                  parseInt(this.board.css('border-top-width'));
-            this.otherCardsTop = arenaPadding + playerShortEdge + boardMargin + boardPadding +
-                                 parseInt(this.board.css('border-left-width'));
+            this.otherCardsLeft = boardPadding + parseInt(this.board.css('border-top-width'));
+            this.otherCardsTop = boardPadding + parseInt(this.board.css('border-left-width'));
             this.myCardsLeft = this.otherCardsLeft;
-            this.myCardsTop = arenaPadding + playerShortEdge + boardMargin + boardPadding + this.cardHeight +
+            this.myCardsTop = boardPadding + this.cardHeight +
                               boardSeparatorMargin + this.getVerticalBorder(this.boardSeparator);
             $('.other').css({'left': this.otherCardsLeft, 'top': this.otherCardsTop});
             this.boardSeparator.width(this.board.width()).css({
@@ -482,6 +482,7 @@
     $.extend($.ui.arena, {
         version: "0.1",
         defaults: {
+            boardOpacity: 0.6,
             corner : '.corner',
             player : '.player',
             board : '.board',

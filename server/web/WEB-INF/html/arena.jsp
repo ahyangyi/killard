@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
+    <!--<link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>-->
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
@@ -110,53 +110,60 @@
         *	ACCORDIAN WIDGET
         *#########################
         */
-        /*.ui-layout-east {*/
-        /* content-div has Accordion */
-            /*padding: 0;*/
-            /*overflow: hidden;*/
-        /*}*/
-        /*div.basic {*/
-            /*margin: 0;*/
-            /*padding: 0;*/
-        /*}*/
+        .ui-layout-east {
+            padding: 0;
+            overflow: hidden;
+        }
 
-        /*.basic > a,*/
-        /*.basic > a.selected,*/
-        /*.basic > a.active,*/
-        /*.basic > a:hover {*/
-            /*color: black; *//*font-weight:	bold;*/
-            /*text-transform: uppercase;*/
-            /*text-decoration: none;*/
-            /*outline: none;*/
-            /*border-top: 1px solid #FFF;*/
-            /*border-bottom: 1px solid #999;*/
-            /*cursor: pointer;*/
-            /*display: block;*/
-            /*padding: 5px;*/
-        /*}*/
+        div.basic {
+            margin: 0;
+            padding: 0;
+        }
 
-        /*.basic > a {*/
-            /*background: #00a0c6 url("image/tab0.gif");*/
-        /*}*/
+        .basic > a,
+        .basic > a.selected,
+        .basic > a.active,
+        .basic > a:hover {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+            outline: none;
+            border-top: 1px solid #FFF;
+            border-bottom: 1px solid #999;
+            cursor: pointer;
+            display: block;
+            padding: 5px;
+        }
 
-        /*.basic > a.selected,*/
-        /*.basic > a.active,*/
-        /*.basic > a:hover {*/
-            /*background-image: url("image/tab2.gif");*/
-        /*}*/
-        /*.basic > a.active {*/
-            /*color: #00C;*/
-        /*}*/
-        /*.basic > div.scrolling {*/
-            /*overflow: auto !important;*/
-        /*}*/
-        /*.basic > div > p {*/
-            /*padding: 0 10px;*/
-            /*margin: 1.5ex 0;*/
-        /*}*/
-        /*.basic > div > ul {*/
-            /*margin-top: 1ex;*/
-        /*}*/
+        .basic > a {
+            background: #00a0c6 url("image/tab0.gif");
+        }
+
+        .basic > a.selected,
+        .basic > a.active,
+        .basic > a:hover {
+            background-image: url("image/tab2.gif");
+        }
+
+        .basic > a.active {
+            color: #00C;
+        }
+
+        .basic > div {
+        }
+
+        .basic > div.scrolling {
+            overflow: auto !important;
+        }
+
+        .basic > div > p {
+            padding: 0 10px;
+            margin: 1.5ex 0;
+        }
+
+        .basic > div > ul {
+            margin-top: 1ex;
+        }
     </style>
     <script type="text/javascript">
         $(function() {
@@ -482,7 +489,7 @@
 
 <div class="ui-layout-east" style="display: none;">
 <div id="sidebar" class="basic">
-    <h3><a href="#">Chat</a></h3>
+    <a href="#">Chat</a>
     <div>
         <label>
             <input type="text" size="15" id="chatinput"/>
@@ -491,9 +498,9 @@
         <ul>
         </ul>
     </div>
-    <h3><a href="#">Players</a></h3>
+    <a href="#">Players</a>
     <div>Second content</div>
-    <h3><a href="#">Game Information</a></h3>
+    <a href="#">Game Information</a>
     <div>Invite others to join this game</div>
 </div>
 </div>

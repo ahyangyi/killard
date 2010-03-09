@@ -4,16 +4,15 @@
             var options = this.options;
             var arena = this;
 
-            this.corner = this.element.find(options.corner);
-            this.player = this.element.find(options.player);
-            this.board = this.element.find(options.board);
-            this.boardSeparator = this.element.find(options.boardSeparator);
-            this.card = this.element.find(options.card);
-            this.cardlist = this.element.find(options.cardlist);
+            this.corner = $('.corner', this.element);
+            this.player = $('.player', this.element);
+            this.board = $('.board', this.element);
+            this.boardSeparator = $('.separator', this.element);
+            this.cardlist = $('.cardlist', this.element);
             this.targetList = [];
             this.targets = [];
 
-            this.card.find('.cardimage').live('click', function() {
+            $('.cardimage').live('click', function() {
                 if (arena.targetList != null && arena.targetList.length > 0) {
                     var card = $(this).parent();
                     var cardList = $(this).parent().parent();
@@ -26,7 +25,7 @@
                     }
                 }
             });
-            this.card.find('.skillimage').live('click', function() {
+            $('.skillimage').live('click', function() {
                 if (arena.targetList.length == 0) {
                     var card = $(this).parent();
                     arena.castCardPosition = card.attr('position');
@@ -92,14 +91,8 @@
                     ).mouseup(
                     function() {
                         $(this).find('img').attr('src', 'image/corner/corner1a.png');
-                        $('#bottompanel').slideToggle(function() {
-                            $('#bottompanel .center').height(arena.cardHeight + arena.cardSeparator);
-                            $('#bottompanel .center li').height(arena.cardHeight + arena.cardSeparator);
-                            $('#bottompanel .center .list').height(arena.cardHeight + arena.cardSeparator);
-                            var items = $('#bottompanel .center .list ul li');
-                            items.height(arena.cardHeight + arena.cardSeparator);
-                            $('#bottompanel .center .list ul').width(items.outerWidth() * items.length);
-                        });
+//                        $('#bottompanel .center').height(arena.cardHeight + arena.cardSeparator);
+                        $('#bottompanel').slideToggle();
                     }
                     ).css('cursor', 'pointer');
 
@@ -153,7 +146,6 @@
         },
 
         destroy: function() {
-            this.card.data('sortable').destroy();
         },
 
         _setData: function(key, value) {
@@ -259,13 +251,6 @@
             
             if (w <= 0) w = this.element.width();
             if (h <= 0) h = this.element.height();
-            w = w - $('#sidebar').outerWidth();
-            h = h - $('#tip').outerHeight() - $('#warning').outerHeight();
-
-            $('#warning').width(w);
-            $('#tip').width(w).css('bottom', 0);
-
-            this.element.eq(0).css('top', $('#warning').outerHeight());
 
             /* Calculate width/height ratio of board. */
             var boardGap = 2 * (options.boardMarginRatio + options.boardPaddingRatio);
@@ -335,6 +320,9 @@
             /* Render corners */
             this.corner.width(playerShortEdge).height(playerShortEdge)
                     .find('img').width(playerShortEdge).height(playerShortEdge);
+            this.corner.find('.label').css({
+                'font-size': parseInt(playerShortEdge / 2) + 'px', 'line-height': playerShortEdge + 'px'
+            });
 
             this.corner.eq(0).css('margin-right', cornerRightMargin);
             this.corner.eq(1).css('margin-left', cornerLeftMargin);
@@ -395,8 +383,7 @@
             /* Calculate card size as integers. */
             this.cardWidth = parseInt(9 * boardLengthUnit);
             this.cardHeight = parseInt(14 * boardLengthUnit);
-            var cardSeparator = parseInt((this.board.width() - options.cardAmount * this.cardWidth) / (options.cardAmount - 1));
-            this.cardSeparator = cardSeparator;
+            this.cardSeparator = parseInt((this.board.width() - options.cardAmount * this.cardWidth) / (options.cardAmount - 1));
 
             var boardSeparatorMargin = boardHeight - 2 * boardMargin - 2 * boardPadding - 2 * this.cardHeight -
                                        this.getVerticalBorder(this.board);
@@ -420,22 +407,31 @@
 
             this.cardlist.width(this.cardWidth * options.cardAmount + this.cardSeparator * (options.cardAmount - 1))
                     .height(this.cardHeight);
-            this.cardlist.find(options.card + ':lt(4)').css('margin-right', cardSeparator);
+            this.cardlist.find('.card:lt(4)').css('margin-right', this.cardSeparator);
 
-            this.card.width(this.cardWidth).height(this.cardHeight)
+            $('.card').width(this.cardWidth).height(this.cardHeight)
                     .find('.cardimage').width(this.cardWidth).height(this.cardHeight);
 
             var labelSize = parseInt(this.cardWidth / 3);
-            this.card.find('.label').width(labelSize).height(labelSize)
+            $('.card .label').width(labelSize).height(labelSize)
                     .css({'font-size': parseInt(this.cardWidth / 8), 'line-height': labelSize + 'px'});
 
-            this.card.find('.skillimage').width(parseInt(this.cardWidth / 3))
+            $('.skillimage').width(parseInt(this.cardWidth / 3))
                     .height(parseInt(this.cardWidth / 6)).css({
                 'left': parseInt(this.cardWidth / 3),
                 'top': parseInt(this.cardHeight - this.cardWidth / 2)
             });
 
-            $('.item').width(this.cardWidth).height(this.cardHeight);
+            var cardPadding = parseInt(this.cardSeparator / 2);
+            var dealtCards = $('#dealtCards > li');
+            dealtCards.width(this.cardWidth).height(this.cardHeight).css({
+                'padding-left': cardPadding,
+                'padding-right': cardPadding,
+                'padding-top': cardPadding,
+                'padding-bottom': cardPadding
+            });
+            $('#dealtCards').width(dealtCards.length * (this.cardWidth + this.cardSeparator));
+            $('.carousel').carousel('resize');
         },
         
         updateElements: function() {
@@ -473,8 +469,327 @@
 
         updateCards: function() {
             var labelSize = parseInt(this.cardWidth / 3);
-            this.card.find('.label').width(labelSize).height(labelSize)
+            $('.card .label').width(labelSize).height(labelSize)
                     .css({'font-size': parseInt(this.cardWidth / 8), 'line-height': labelSize + 'px'});
+        },
+
+        updatePlayer: function(player) {
+            var arena = this;
+            var playerDiv = $('.player[number="' + player.number + '"]');
+            playerDiv.unbind('click');
+            var image = playerDiv.find('> ul > li img');
+            if (image.is(':hidden')) {
+                image.show();
+                if (player.self) {
+                    playerDiv.attr('self', true);
+                    playerDiv.toggleClass('selfPlayer');
+                    $('.player').unbind('click');
+                } else {
+                    playerDiv.toggleClass('emptyPlayer');
+                }
+            }
+            var scoreArea = playerDiv.find('> ul > li:last');
+            scoreArea.find('.score').text(player.health);
+            if (player.elementRecords) {
+                $.each(player.elementRecords, function(i, elementRecord) {
+                    var element = scoreArea.find('> .element[elementSchool=' + elementRecord.elementSchool + ']');
+                    if (element.length > 0) {
+                        element.find('.elementAmount').text(elementRecord.amount);
+                    } else {
+                        element = $('<div class="element"></div>').attr({elementSchool: elementRecord.elementSchool})
+                                .css({'z-index': 10})
+                                .appendTo(scoreArea);
+                        $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
+                        $('<div class="elementAmount">' + elementRecord.amount + '</div>').appendTo(element);
+                    }
+                    if (player.self) {
+                        var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
+                        var barElement = searchbar.find('.element[elementSchool=' + elementRecord.elementSchool + ']');
+                        if (barElement.length > 0) {
+                            barElement.find('span:last').text(elementRecord.amount);
+                        } else {
+                            barElement =
+                            $('<li class="tag element"></li>').attr({elementSchool: elementRecord.elementSchool})
+                                    .appendTo(searchbar);
+                            $('<span>' + elementRecord.elementSchool + ':</span>').appendTo(barElement);
+                            $('<span>' + elementRecord.amount + '</span>').appendTo(barElement);
+                        }
+                        if (elementRecord.dealtCards) {
+                            $.each(elementRecord.dealtCards, function(i, card) {arena.dealCard(i, card);});
+                        }
+                    }
+                });
+                this.updateElements();
+            }
+            if (player.equippedCards) {
+                $.each(player.equippedCards, function(i, card) {
+                    arena.equipCard(player.number, card, player.self);
+                });
+            }
+            if (!player.self) {
+                $('.cardlist[number=' + player.number + ']').show();
+            }
+            if (player.self && player.current) this.beginTurn();
+        },
+
+        quitPlayer: function(player) {
+            var playerDiv = $('.player[number="' + player.number + '"]');
+            playerDiv.click(function() {
+                $.get('/arena/join.json', {'number':playerDiv.attr('number')});
+            });
+            var image = playerDiv.find('> ul > li > img');
+            if (image.is(':visible')) {
+                image.hide();
+            }
+            playerDiv.toggleClass('emptyPlayer');
+
+            var cardList = $('.cardlist[number=' + player.number + ']');
+            cardList.find('li').empty();
+        },
+
+        dealCard: function(i, card) {
+            var cardPadding = parseInt(this.cardSeparator / 2);
+            var cardLi = $('<li></li>').width(this.cardWidth).height(this.cardHeight).css({
+                'padding-left': cardPadding,
+                'padding-right': cardPadding,
+                'padding-top': cardPadding,
+                'padding-bottom': cardPadding
+            }).appendTo($('#dealtCards'));
+
+            $('#dealtCards').width($('#dealtCards > li').length * (this.cardWidth + this.cardSeparator));
+            
+            var cardDiv = $('<div></div>').addClass('item').addClass('card')
+                    .width(this.cardWidth).height(this.cardHeight)
+                    .attr({'elementSchool': card.elementSchool, 'cardName': card.name})
+                    .appendTo(cardLi)
+                    .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
+
+            $(new Image).attr({'src': 'arena/' + card.elementSchool + '/' + card.name + '.png'})
+                    .addClass('cardimage')
+                    .width(this.cardWidth).height(this.cardHeight)
+                    .appendTo(cardDiv);
+
+            var fontSize = this.cardWidth / 8;
+            var labelSize = parseInt(this.cardWidth / 3);
+            if (card.level > 0)
+                $('<div>' + card.level
+                        + '</div>').addClass('label').addClass('level').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.maxHealth > 0)
+                $('<div>' + card.maxHealth
+                        + '</div>').addClass('label').addClass('health').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.maxHealth > 0)
+                $('<div>' + 1 + '</div>').addClass('label').addClass('range').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.attack > 0)
+                $('<div>' + card.attack
+                        + '</div>').addClass('label').addClass('attack').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            cardDiv.find('.label').width(labelSize).height(labelSize)
+                    .css({'font-size': fontSize, 'line-height': labelSize + 'px'});
+        },
+
+        renderCard: function(playerNumber, card, self) {
+            var arena = this;
+            var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
+            var cardDiv = cardList.find('li[position="' + card.position + '"]');
+            if (cardDiv.children().length > 0) {
+                $('.cardimage', cardDiv).fadeTo(1000, 1);
+            } else {
+                $(new Image).attr('src', 'arena/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
+                        .width(this.cardWidth)
+                        .height(this.cardHeight)
+                        .hide()
+                        .appendTo(cardDiv)
+                        .fadeIn(1000);
+            }
+            var fontSize = this.cardWidth / 8;
+            if (card.skills.length > 0 && self) {
+                $.each(card.skills, function(i, skill) {
+                    $(new Image).attr('src', 'image/skill.png').addClass('skillimage')
+                            .css({'top': parseInt(arena.cardHeight - arena.cardWidth/ 2), 'left': parseInt(arena.cardWidth / 3)})
+                            .width(parseInt(arena.cardWidth / 3))
+                            .height(parseInt(arena.cardWidth / 6))
+                            .data('index', i)
+                            .data('targets', skill.targets)
+                            .appendTo(cardDiv);
+                });
+            }
+            var labelSize = parseInt(cardDiv.width() / 3);
+            if (card.level > 0)
+                $('<div>' + card.level
+                        + '</div>').addClass('label').addClass('level').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.maxHealth > 0)
+                $('<div>' + card.health
+                        + '</div>').addClass('label').addClass('health').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.health > 0)
+                $('<div>' + 1 + '</div>').addClass('label').addClass('range').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            if (card.attack > 0)
+                $('<div>' + card.attack
+                        + '</div>').addClass('label').addClass('attack').width(labelSize).height(labelSize)
+                        .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
+            this.updateCards();
+        },
+
+        equipCard: function(playerNumber, card, self) {
+            var arena = this;
+            var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
+            if (cardList.is(':hidden')) {
+                $('.other:visible').hide('drop', {direction:'down'});
+                cardList.show('drop', {direction:'up'}, function() {
+                    arena.renderCard(playerNumber, card, self);
+                });
+            } else {
+                this.renderCard(playerNumber, card, self);
+            }
+        },
+
+        chatUpdate: function(messages) {
+            $.each(messages, function(i, message) {
+                $('<li>' + message.player + ':' + message.content + '</li>')
+                        .appendTo($('#sidebar > div:first > ul'));
+            });
+        },
+
+        beginTurn: function() {
+            $('.corner').eq(3).unbind('click').click(this.endTurn)
+                    .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
+            $('.self .skillimage').show();
+            $('#tip').text('Your Turn');
+        },
+
+        endTurn: function() {
+            var arena = this;
+            $.getJSON('arena/endturn.json', function(actions) {
+                $.each(actions, arena.actionUpdate);
+                $('.corner').eq(3).unbind('click')
+                        .find('img').attr('src', 'image/corner/corner2.png').css('cursor', 'default');
+                $('#tip').text('Waiting For Others');
+            });
+        },
+
+        endCall: function() {
+            var arena = this;
+            $.getJSON('arena/endcall.json', function(actions) {
+                $.each(actions, arena.actionUpdate);
+                $('.self .skillimage').hide();
+            });
+        },
+
+        actionUpdate: function(i, action) {
+            if (action.id <= $(window).data('since')) return;
+            $(window).data('since', action.id);
+            try {
+                eval('this.' + action.action + '(action)');
+            } catch (e) {
+                alert(e);
+            }
+        },
+
+        PlayerJoinAction: function(action) {
+            if (action.self) action.target.self = action.self;
+            this.updatePlayer(action.target);
+        },
+
+        PlayerQuitAction: function(action) {
+            if (action.self) action.target.self = action.self;
+            this.quitPlayer(action.target);
+        },
+
+        BeginTurnAction: function(action) {
+            if (action.self) this.beginTurn();
+        },
+
+        EndTurnAction: function(action) {
+            if (action.self) $('.self .skillimage').hide();
+        },
+
+        ChangePlayerHealthAction: function(action) {
+            var playerDiv = $('.player[number="' + action.target.number + '"]');
+            var score = playerDiv.find('> ul > li:last').find('.score');
+            score.text(parseInt(score.text()) + action.value);
+        },
+
+        ChangePlayerElementAction: function(action) {
+            var playerDiv = $('.player[number="' + action.target.number + '"]');
+            var scoreArea = playerDiv.find('> ul > li:last');
+            var element = scoreArea.find('> .element[elementSchool=' + action.elementSchool + ']');
+            if (element.length > 0) {
+                var elementAmount = element.find('.elementAmount');
+                elementAmount.text(parseInt(elementAmount.text()) + action.value);
+            } else {
+                element = $('<div class="element"></div>').attr({elementSchool: action.elementSchool})
+                        .appendTo(scoreArea);
+                $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
+                $('<div class="elementAmount">' + action.value + '</div>').appendTo(element);
+            }
+            if (action.self) {
+                var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
+                var barElement = searchbar.find('.element[elementSchool=' + action.elementSchool + ']');
+                if (barElement.length > 0) {
+                    var elementLabel = barElement.find('span:last');
+                    elementLabel.text(parseInt(elementLabel.text()) + action.value);
+                } else {
+                    barElement = $('<li class="tag element"></li>').attr({elementSchool: action.elementSchool})
+                            .appendTo(searchbar);
+                    $('<span>' + action.elementSchool + ':</span>').appendTo(barElement);
+                    $('<span>' + action.value + '</span>').appendTo(barElement);
+                }
+            }
+        },
+
+        CastCardAction: function(action) {
+        },
+
+        DealCardAction: function(action) {
+            if (action.self) this.dealCard(0, action.source);
+        },
+
+        EquipCardAction: function(action) {
+            this.equipCard(action.source.number, action.target, action.self);
+        },
+
+        DropCardAction: function(action) {
+            var cardList = action.self ? $('.self') : $('.cardlist[number=' + action.source.number + ']');
+
+            var animateDropCardHealth = function() {
+                var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
+                cardDiv.effect('explode', {pieces: 9}, 800, function() {
+                    $(this).find('.skillimage').removeData('index');
+                    $(this).find('.skillimage').removeData('targets');
+                    $(this).empty();
+                    $(this).show();
+                });
+            };
+
+            if (cardList.is(':hidden')) {
+                $('.other:visible').hide('drop', {direction:'down'});
+                cardList.show('drop', {direction:'up'}, animateDropCardHealth);
+            } else {
+                animateDropCardHealth();
+            }
+        },
+
+        ChangeCardHealthAction: function(action) {
+            var cardList = action.self ? $('.self') : $('.cardlist[number=' + action.target.playerNumber + ']');
+
+            var animateChangeCardHealth = function() {
+                var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
+                cardDiv.effect('shake', {direction:'left'});
+                var healthSpan = cardDiv.find('span').eq(2);
+                healthSpan.text((parseInt(healthSpan.text()) - action.healthChange));
+            };
+
+            if (cardList.is(':hidden')) {
+                $('.other:visible').hide('drop', {direction:'down'});
+                cardList.show('drop', {direction:'up'}, animateChangeCardHealth);
+            } else {
+                animateChangeCardHealth();
+            }
         }
     });
 
@@ -482,12 +797,6 @@
         version: "0.1",
         defaults: {
             boardOpacity: 0.6,
-            corner : '.corner',
-            player : '.player',
-            board : '.board',
-            boardSeparator : '.separator',
-            cardlist : '.cardlist',
-            card : '.card',
             cardAmount : 5,
             arenaPaddingRatio : 0.75,
             boardMarginRatio : 1.5,
@@ -497,300 +806,3 @@
         }
     });
 })(jQuery);
-
-function playerUpdate(i, player) {
-    var arena = $(".arena").data('arena');
-    var playerDiv = $('.player[number="' + player.number + '"]');
-    playerDiv.unbind('click');
-    var image = playerDiv.find('> ul > li img');
-    if (image.is(':hidden')) {
-        image.show();
-        if (player.self) {
-            playerDiv.attr('self', true);
-            playerDiv.toggleClass('selfPlayer');
-            $('.player').unbind('click');
-        } else {
-            playerDiv.toggleClass('emptyPlayer');
-        }
-    }
-    var scoreArea = playerDiv.find('> ul > li:last');
-    scoreArea.find('.score').text(player.health);
-    if (player.elementRecords) {
-        $.each(player.elementRecords, function(i, elementRecord){
-            var element = scoreArea.find('> .element[elementSchool=' + elementRecord.elementSchool + ']');
-            if (element.length > 0) {
-                element.find('.elementAmount').text(elementRecord.amount);
-            } else {
-                element = $('<div class="element"></div>').attr({elementSchool: elementRecord.elementSchool})
-                        .css({'z-index': 10})
-                        .appendTo(scoreArea);
-                $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
-                $('<div class="elementAmount">' + elementRecord.amount + '</div>').appendTo(element);
-            }
-            if (player.self) {
-                var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
-                var barElement = searchbar.find('.element[elementSchool=' + elementRecord.elementSchool + ']');
-                if (barElement.length > 0) {
-                    barElement.find('span:last').text(elementRecord.amount);
-                } else {
-                    barElement = $('<li class="tag element"></li>').attr({elementSchool: elementRecord.elementSchool})
-                        .appendTo(searchbar);
-                    $('<span>' + elementRecord.elementSchool + ':</span>').appendTo(barElement);
-                    $('<span>' + elementRecord.amount + '</span>').appendTo(barElement);
-                }
-                if (elementRecord.dealtCards) $.each(elementRecord.dealtCards, dealCard);
-            }
-        });
-        arena.updateElements();
-    }
-    if (player.equippedCards) {
-        $.each(player.equippedCards, function(i, card) {equipCard(player.number, card, player.self);});
-    }
-    if (!player.self) {
-        $('.cardlist[number=' + player.number + ']').show();
-    }
-    if (player.self && player.current) beginTurn();
-}
-
-function playerQuit(player) {
-    var playerDiv = $('.player[number="' + player.number + '"]');
-    playerDiv.click(function() {
-        $.get('/arena/join.json', {'number':playerDiv.attr('number')});
-    });
-    var image = playerDiv.find('> ul > li > img');
-    if (image.is(':visible')) {
-        image.hide();
-    }
-    playerDiv.toggleClass('emptyPlayer');
-
-    var cardList = $('.cardlist[number=' + player.number + ']');
-    cardList.find('li').empty();
-}
-
-function dealCard(i, card) {
-    var arena = $(".arena").data('arena');
-    var cardPadding = parseInt(arena.cardSeparator / 2);
-    var cardLi = $('<li></li>').width(arena.cardWidth).height(arena.cardHeight)
-            .css({'padding-left': cardPadding, 'padding-right': cardPadding, 'padding-top': cardPadding})
-            .appendTo($('.dealtCards > .cards'));
-    var cardDiv = $('<div></div>').addClass('item').addClass('card')
-            .width(arena.cardWidth).height(arena.cardHeight)
-            .attr({'elementSchool': card.elementSchool, 'cardName': card.name})
-            .appendTo(cardLi)
-            .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
-
-    $(new Image).attr({'src': 'arena/' + card.elementSchool + '/' + card.name + '.png'})
-            .width(arena.cardWidth).height(arena.cardHeight)
-            .appendTo(cardDiv);
-
-    var fontSize = arena.cardWidth / 8;
-    var labelSize = parseInt(arena.cardWidth / 3);
-    if (card.level > 0)
-        $('<div>' + card.level + '</div>').addClass('label').addClass('level').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.maxHealth > 0)
-        $('<div>' + card.maxHealth + '</div>').addClass('label').addClass('health').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.maxHealth > 0)
-        $('<div>' + 1 + '</div>').addClass('label').addClass('range').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.attack > 0)
-        $('<div>' + card.attack + '</div>').addClass('label').addClass('attack').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    cardDiv.find('.label').width(labelSize).height(labelSize)
-                    .css({'font-size': fontSize, 'line-height': labelSize + 'px'});
-}
-
-function renderCard(playerNumber, card, self) {
-    var arena = $(".arena").data('arena');
-    var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
-    var cardDiv = cardList.find('li[position="' + card.position + '"]');
-    if (cardDiv.children().length > 0) {
-        $('.cardimage', cardDiv).fadeTo(1000, 1);
-    } else {
-        $(new Image).attr('src', 'arena/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
-                .width(arena.cardWidth)
-                .height(arena.cardHeight)
-                .hide()
-                .appendTo(cardDiv)
-                .fadeIn(1000);
-    }
-    var fontSize = arena.cardWidth / 8;
-    if (card.skills.length > 0 && self) {
-        $.each(card.skills, function(i, skill) {
-            $(new Image).attr('src', 'image/skill.png').addClass('skillimage')
-                    .css({'top': parseInt(arena.cardHeight - arena.cardWidth / 2), 'left': parseInt(arena.cardWidth / 3)})
-                    .width(parseInt(arena.cardWidth / 3))
-                    .height(parseInt(arena.cardWidth / 6))
-                    .data('index', i)
-                    .data('targets', skill.targets)
-                    .appendTo(cardDiv);
-        });
-    }
-    var labelSize = parseInt(cardDiv.width() / 3);
-    if (card.level > 0)
-        $('<div>' + card.level + '</div>').addClass('label').addClass('level').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.maxHealth > 0)
-        $('<div>' + card.health + '</div>').addClass('label').addClass('health').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.health > 0)
-        $('<div>' + 1 + '</div>').addClass('label').addClass('range').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    if (card.attack > 0)
-        $('<div>' + card.attack + '</div>').addClass('label').addClass('attack').width(labelSize).height(labelSize)
-                .css({'font-size': fontSize, 'line-height': labelSize + 'px'}).appendTo(cardDiv);
-    arena.updateCards();
-}
-
-function equipCard(playerNumber, card, self) {
-    var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
-    if (cardList.is(':hidden')) {
-        $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'}, function() {
-            renderCard(playerNumber, card, self);
-        });
-    } else {
-        renderCard(playerNumber, card, self);
-    }
-}
-
-function chatUpdate(messages) {
-    $.each(messages, function(i, message) {
-        $('<li>' + message.player + ':' + message.content + '</li>')
-                .appendTo($('#sidebar > div:first > ul'));
-    });
-}
-
-function actionUpdate(i, action) {
-    if (action.id <= $(window).data('since')) return;
-    $(window).data('since', action.id);
-    if (action.action == 'PlayerJoinAction') {
-        if (action.self) action.target.self = action.self;
-        playerUpdate(i, action.target);
-    }
-    else if (action.action == 'PlayerQuitAction') {
-        if (action.self) action.target.self = action.self;
-        playerQuit(action.target);
-    }
-    else if (action.action == 'BeginTurnAction') {
-        if (action.self) beginTurn();
-    }
-    else if (action.action == 'EndTurnAction') {
-        if (action.self) $('.self .skillimage').hide();
-    }
-    else if (action.action == 'ChangePlayerHealthAction') {
-        changePlayerHealth(action);
-    }
-    else if (action.action == 'ChangePlayerElementAction') {
-        changePlayerElement(action);
-    }
-    else if (action.action == 'EquipCardAction') {
-        equipCard(action.source.number, action.target, action.self);
-    }
-    else if (action.action == 'DropCardAction') {
-        dropCard(action.source.number, action.target, action.self);
-    }
-    else if (action.action == 'ChangeCardHealthAction') {
-        changeCardHealth(action);
-    }
-    else if (action.action == 'DealCardAction') {
-        if (action.self)
-            dealCard(0, action.source);
-    }
-}
-
-function beginTurn() {
-    $('.corner').eq(3).unbind('click').click(endTurn)
-            .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
-    $('.self .skillimage').show();
-    $('#tip').text('Your Turn');
-}
-
-function endTurn(){
-    $('.corner').eq(3).unbind('click').find('img').attr('src', 'image/corner/corner2.png').css('cursor', 'default');
-    $('#tip').text('Waiting For Others');
-    $.getJSON('arena/endturn.json', function(actions){
-        $.each(actions, actionUpdate);
-    });
-}
-
-function endCall(){
-    $.getJSON('arena/endcall.json', function(actions){
-        $.each(actions, actionUpdate);
-        $('.self .skillimage').hide();
-    });
-}
-
-function changePlayerHealth(action) {
-    var playerDiv = $('.player[number="' + action.target.number + '"]');
-    var score = playerDiv.find('> ul > li:last').find('.score');
-    score.text(parseInt(score.text()) + action.value);
-}
-
-function changePlayerElement(action) {
-    var playerDiv = $('.player[number="' + action.target.number + '"]');
-    var scoreArea = playerDiv.find('> ul > li:last');
-    var element = scoreArea.find('> .element[elementSchool=' + action.elementSchool + ']');
-    if (element.length > 0) {
-        var elementAmount = element.find('.elementAmount');
-        elementAmount.text(parseInt(elementAmount.text()) + action.value);
-    } else {
-        element = $('<div class="element"></div>').attr({elementSchool: action.elementSchool})
-                .appendTo(scoreArea);
-        $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
-        $('<div class="elementAmount">' + action.value + '</div>').appendTo(element);
-    }
-    if (action.self) {
-        var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
-        var barElement = searchbar.find('.element[elementSchool=' + action.elementSchool + ']');
-        if (barElement.length > 0) {
-            var elementLabel = barElement.find('span:last');
-            elementLabel.text(parseInt(elementLabel.text()) + action.value);
-        } else {
-            barElement = $('<li class="tag element"></li>').attr({elementSchool: action.elementSchool})
-                    .appendTo(searchbar);
-            $('<span>' + action.elementSchool + ':</span>').appendTo(barElement);
-            $('<span>' + action.value + '</span>').appendTo(barElement);
-        }
-    }
-}
-
-function dropCard(playerNumber, card, self) {
-    var cardList = self ? $('.self') : $('.cardlist[number=' + playerNumber + ']');
-
-    var animateDropCardHealth = function() {
-        var cardDiv = cardList.find('li[position="' + card.position + '"]');
-        cardDiv.effect('explode', {pieces: 9}, 800, function() {
-            $(this).find('.skillimage').removeData('index');
-            $(this).find('.skillimage').removeData('targets');
-            $(this).empty();
-            $(this).show();
-        });
-    };
-
-    if (cardList.is(':hidden')) {
-        $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'}, animateDropCardHealth);
-    } else {
-        animateDropCardHealth();
-    }
-}
-
-function changeCardHealth(action) {
-    var cardList = action.self ? $('.self') : $('.cardlist[number=' + action.target.playerNumber + ']');
-
-    var animateChangeCardHealth = function() {
-        var cardDiv = cardList.find('li[position="' + action.target.position + '"]');
-        cardDiv.effect('shake', {direction:'left'});
-        var healthSpan = cardDiv.find('span').eq(2);
-        healthSpan.text((parseInt(healthSpan.text()) - action.healthChange));
-    };
-
-    if (cardList.is(':hidden')) {
-        $('.other:visible').hide('drop', {direction:'down'});
-        cardList.show('drop', {direction:'up'}, animateChangeCardHealth);
-    } else {
-        animateChangeCardHealth();
-    }
-}

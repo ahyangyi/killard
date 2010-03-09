@@ -32,7 +32,7 @@ ul li {
     display: none;
 }
 
-.arena .player {
+#arena .player {
     /*background: url(../../image/texture/white.png);*/
 }
 
@@ -46,15 +46,15 @@ ul li {
     background: url(../../image/texture/green.png);
 }
 
-.arena .player {
+#arena .player {
     position: relative;
 }
 
-.arena .player ul {
+#arena .player ul {
     font-size: 0;
 }
 
-.arena .player ul li .score{
+#arena .player ul li .score{
     position: absolute;
     bottom: 0;
     right: 0;
@@ -62,73 +62,74 @@ ul li {
     cursor: pointer;
 }
 
-.arena .player ul li .element{
+#arena .player ul li .element{
     position: absolute;
     text-align: center;
     display: none;
 }
 
-.arena .player ul li .element .elementAmount{
+#arena .player ul li .element .elementAmount{
     position: absolute;
     top: 0;
     left: 0;
     text-align: center;
 }
 
-.arena .top {
+#arena > .top {
     display: block;
     width: 100%;
 }
 
-.arena .top li {
+#arena > .top li {
     display: inline;
     float: left;
 }
 
-.arena .top .player {
+#arena > .top .player {
     display: inline;
     float: left;
 }
 
-.arena .top .player ul li {
+#arena .top .player ul li {
     display: inline;
     float: left;
 }
 
-.arena .center {
+#arena > .center {
     display: block;
     width: 100%;
 }
 
-.arena .center li {
+#arena > .center li {
     display: inline;
     float: left;
 }
 
-.arena .center .player {
+#arena > .center .player {
     display: block;
 }
 
-.arena .center .player li {
+#arena > .center .player li {
     display: block;
 }
 
-.arena .bottom {
+#arena > .bottom {
     display: block;
     width: 100%;
 }
 
-.arena .bottom li {
+#arena > .bottom li {
     display: inline;
     float: left;
 }
 
-.arena .bottom .player {
+#arena > .bottom .player {
     display: inline;
     float: left;
 }
 
 .corner {
+    position: relative;
     margin: 0;
     padding: 0;
 }
@@ -137,6 +138,15 @@ ul li {
     display: block;
     width: 0;
     height: 0;
+}
+
+.corner .label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 .player img {
@@ -195,8 +205,6 @@ ul li {
 .cardimage {
     margin: 0;
     padding: 0;
-    width: 0;
-    height: 0;
     z-index: 50;
 }
 
@@ -237,31 +245,20 @@ ul li {
 }
 
 #warning {
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    height: 1em;
-    background-color: #dc143c;
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size: 24px;
+    /*background-color: #dc143c;*/
+    background-color: #faebd7;
     text-align: center;
-    display: none;
 }
 
 #tip {
-    position: absolute;
-    left: 0;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    height: 1em;
+    height: 1.5em;
+    line-height: 1.5em;
     font-size: 24px;
     background: url(../../image/texture/white.png);
     text-align: center;
-}
-
-#sidebar {
-    width: 250px;
-    float: right;
 }
 
 #sidebar div {

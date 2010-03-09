@@ -1,24 +1,28 @@
 (function ($) {
     $.widget("ui.carousel", {
         _init: function() {
-            var $carousel = this;
+            var carousel = this;
 
-            $('.list', this.element).mousewheel(function (event, delta) {
-                return $carousel.gotoPage(-delta);
+            $('.content', this.element).mousewheel(function (event, delta) {
+                return carousel.gotoPage(-delta);
             });
 
             // Bind to the forward and back buttons
             $('a.back', this.element).click(function () {
-                return $carousel.gotoPage(-1);
+                var items = $('.center .content ul li', carousel.element);
+                var page = carousel.centerWidth() / items.width() / 2;
+                return carousel.gotoPage(-page);
             });
 
             $('a.forward', this.element).click(function () {
-                return $carousel.gotoPage(1);
+                var items = $('.center .content ul li', carousel.element);
+                var page = carousel.centerWidth() / items.width() / 2;
+                return carousel.gotoPage(page);
             });
 
             // create a public interface to move to a specific page
             $(this.element).bind('goto', function (event, page) {
-                $carousel.gotoPage(page);
+                carousel.gotoPage(page);
             });
         },
 
@@ -30,9 +34,10 @@
         },
 
         gotoPage: function(page) {
-            var $wrapper = $('.list', this.element),
-                    $single = $wrapper.find('> ul > li :first'),
-                    singleWidth = $single.outerWidth();
+            var $wrapper = $('.content', this.element);
+            var $single = $wrapper.find('> ul > li :first');
+            var singleWidth = $single.outerWidth();
+
             if (page > 0 && page < 1) page = 1;
             if (page < 0 && page > -1) page = -1;
             var left = singleWidth * page;
@@ -45,15 +50,12 @@
         },
 
         resize: function() {
-            var top = $('.top', this.element);
-            var center = $('.center', this.element);
-            var bottom = $('.bottom', this.element);
-            var centerWidth = $(this.element).width() - 2 * 37;
-            var centerHeight = $(this.element).height() - 32;
-            center.height(centerHeight);
-            $('> ul > .content', center).width(centerWidth);
-            $('> ul > li', center).height(centerHeight);
-            $('.list', center).height(centerHeight).find('li').height(centerHeight);
+            var items = $('.center .content ul li', this.element);
+            $('> .center > .content', this.element).width(this.centerWidth());
+        },
+
+        centerWidth: function() {
+            return $(this.element).width() - 2 * 37;
         }
     });
 

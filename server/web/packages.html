@@ -6,9 +6,7 @@
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery/ui.core.js"></script>
-    <script type="text/javascript" src="js/jquery/effects.core.js"></script>
-    <script type="text/javascript" src="js/jquery/effects.scale.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="js/ui/carousel.js"></script>
     <script type="text/javascript" src="js/ui/richlist.js"></script>
@@ -74,18 +72,18 @@
     </style>
     <script type="text/javascript">
         function updateGameList() {
-            $.getJSON('test/package/boards.json', '', function(data, textStatus) {
-                var richlist = $('.richlist').data('richlist');
-                richlist._clear();
-                $.each(data, function(i, item) {
-                    richlist.items.push('<li>\
-                        <a href="arena.html" title="View round">\
-                        <img width="' + richlist.height + '" height="' + richlist.height + '" src="image/head/head.png" title=""/></a>\
-                        <h5><a href="arena.html" title="Join Game">Join</a></h5>\
-                        <p class="info">Nov 29th 2008 by <a href="arena.html">hello</a></p>\
-                        </li>');
-                });
-            });
+//            $.getJSON('test/package/boards.json', '', function(data, textStatus) {
+//                var richlist = $('.richlist').data('richlist');
+//                richlist._clear();
+//                $.each(data, function(i, item) {
+//                    richlist.items.push('<li>\
+//                        <a href="arena.html" title="View round">\
+//                        <img width="' + richlist.height + '" height="' + richlist.height + '" src="image/head/head.png" title=""/></a>\
+//                        <h5><a href="arena.html" title="Join Game">Join</a></h5>\
+//                        <p class="info">Nov 29th 2008 by <a href="arena.html">hello</a></p>\
+//                        </li>');
+//                });
+//            });
         }
         function showPackage(image) {
             $('#package #description img').attr('src', image);
@@ -166,8 +164,8 @@
                 var itemHeight = carouselHeight - $('.searchbar').height();
                 itemDiv.width(itemHeight);
                 itemDiv.css('margin-right', itemHeight / 4);
-                $('.carousel .center .list ul li').width( itemDiv.width() * 5 / 4);
-                $('.carousel .center .list ul').width(itemDiv.length * itemDiv.width() * 5 / 4);
+                $('.carousel .center li').width( itemDiv.width() * 5 / 4);
+                $('.carousel .center ul').width(itemDiv.length * itemDiv.width() * 5 / 4);
                 arrowImg.css('margin-top', (itemHeight - arrowImg.height()) / 2);
 
                 carousel.resize();
@@ -179,7 +177,7 @@
             $('.carousel').carousel();
             $('.richlist').richlist();
 
-            $.getJSON('test/packages.json', '', function(data, textStatus) {
+            $.getJSON('packages.json', '', function(data, textStatus) {
                 $.each(data, function(i, item) {
                     $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture + '\')" class="item" src="' + item.picture + '"/></li>');
                 });
@@ -268,15 +266,11 @@
 <div class="carousel">
     <div class="top"></div>
     <div class="center">
-        <ul>
-            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
-            <li class="content">
-                <div class="list">
-                    <ul id="packageList"></ul>
-                </div>
-            </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
-        </ul>
+        <div class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></div>
+        <div class="content">
+            <ul id="packageList"></ul>
+        </div>
+        <div class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></div>
     </div>
     <div class="bottom">
         <div class="searchbar">

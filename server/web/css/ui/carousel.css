@@ -2,64 +2,50 @@
     width: 100%;
 }
 
-.carousel .arrow {
-    display: block;
-    width: 37px;
-    cursor: pointer;
-}
-
-.carousel .forward {
-    float: right;
-}
-
-.carousel .back {
-    float: left;
-}
-
 .carousel div {
     display: block;
 }
 
-.carousel .center ul {
-    display: block;
+.carousel .center {
+    display: table-row;
     width: 100%;
-    list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.carousel .center ul li {
-    display: inline;
-    float: left;
+.carousel .center > div {
+    display: table-cell;
     margin: 0;
     padding: 0;
+    vertical-align: middle;
 }
 
-.carousel .center .list {
-    width: 100%; /* .packages width - (.list margin-left + .list margin-right) */
+.carousel .arrow {
+    position: relative;
+    width: 37px;
+    cursor: pointer;
+}
+
+.carousel .arrow a img {
+    width: 37px;
+    height: 37px;
+}
+
+.carousel .center .content {
+    display: block;
     overflow: hidden;
 }
 
-.carousel .center .list ul {
-    list-style-image: none;
-    list-style-position: outside;
-    list-style-type: none;
+.carousel .center .content ul {
+    list-style: none outside none;
     margin: 0;
     padding: 0;
 }
 
-.carousel .center .list ul li {
+.carousel .center .content ul li {
     display: inline;
     float: left;
     margin: 0;
     padding: 0;
-    width: 6%;
-    height: 100%;
-}
-
-.carousel .center .item {
-    margin: 0;
-    padding: 0;
-    width: 100%;
     height: 100%;
 }

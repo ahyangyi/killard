@@ -190,8 +190,8 @@
 <body>
 
 <div id="loading">
-    <div style="padding:100px;">
-        Loading...
+    <div style="padding:100px;text-align:center;">
+        <h3>Loading...</h3>
         <div id="loadingbar"></div>
     </div>
 </div>

@@ -69,6 +69,13 @@ public class ArenaController extends BasicController {
         }
     }
 
+    @RequestMapping(value = {"/arena/package.json"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String getPackage(ModelMap modelMap) throws Exception {
+        CacheInstance instance = CacheInstance.getInstance();
+        modelMap.put("package", instance.getPackage(instance.getPlayerCache().getPackageKey()));
+        return "arena/package";
+    }
+
     @RequestMapping(value = {"/arena.html", "/arena.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String arena(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return "arena";

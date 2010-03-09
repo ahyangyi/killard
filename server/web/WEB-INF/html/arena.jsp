@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <!--<link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>-->
+    <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
@@ -167,6 +167,7 @@
     </style>
     <script type="text/javascript">
         $(function() {
+            $('#loadingbar').progressbar();
             $('body').layout({
                 east__size: 250,
                 north__spacing_open: 0,
@@ -180,48 +181,27 @@
                     $('#sidebar').accordion('resize');
                 }
             });
-
             $('.carousel').carousel();
             $('#sidebar').accordion({fillSpace: true});
             $('#arena').arena();
-
-            $('.player').toggleClass('emptyPlayer');
-            $('.player > ul > li > img').hide();
-            $('.other').hide();
-
-            function update() {
-                $.getJSON('arena/actions.json', {'since':$(window).data('since')},
-                        function(actions, textStatus) {
-                            $.each(actions, function(i, action) {$('#arena').arena('actionUpdate', i, action);});
-                            setTimeout(checkStatus, 2000);
-                        });
-            }
-            function checkStatus() {
-                $.get('arena/status.json', function(data, textStatus) {
-                    if (parseInt(data) > $(window).data('since')) update();
-                    else setTimeout(checkStatus, 2000);
-                });
-            }
-            $('#warning').ajaxError(function(event, request, settings, error) {
-                $(this).text('Error:' + error).fadeIn("slow", function(){
-                    setTimeout(function(){$('#warning').fadeOut("slow")}, 2000);
-                });
-            });
-            $.getJSON('arena/board.json', function(data, textStatus) {
-                $(window).data('since', data.lastAction);
-                $.each(data.players, function(i, player){$('#arena').arena('updatePlayer', player);});
-                setTimeout(checkStatus, 2000);
-            });
         });
     </script>
 </head>
 <body>
+
+<div id="loading">
+    <div style="padding:100px;">
+        Loading...
+        <div id="loadingbar"></div>
+    </div>
+</div>
+
 <div class="ui-layout-north" style="display: none;">
     <div id="warning"></div>
 </div>
 
 <div class="ui-layout-center" style="display: none;">
-<div id="arena">
+
 <div class="carousel" id="toppanel">
     <div class="center">
         <div class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></div>
@@ -233,6 +213,8 @@
         <div class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></div>
     </div>
 </div>
+
+<div id="arena">
 
 <ul class="top">
     <li>
@@ -467,6 +449,8 @@
     </li>
 </ul>
 
+</div>
+
 <div class="carousel" id="bottompanel">
     <div class="center">
         <div class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></div>
@@ -482,8 +466,6 @@
             </ul>
         </div>
     </div>
-</div>
-
 </div>
 </div>
 

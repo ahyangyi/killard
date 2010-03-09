@@ -137,11 +137,22 @@
             $('#chatinput').keyup(function(event) {
                 if (event.keyCode == '13') {
                     var msg = $(this).attr('value');
-                    $.post('arena/message.json', {'message': msg}, chatUpdate, 'json');
+                    $.post('arena/message.json', {'message': msg}, arena.updateChatMessages, 'json');
                 }
             });
 
+            $('#warning').ajaxError(function(event, request, settings, error) {
+                $(this).text('Error:' + error).fadeIn("slow", function(){
+                    setTimeout(function(){$('#warning').fadeOut("slow")}, 2000);
+                });
+            });
+            
+            this.player.toggleClass('emptyPlayer');
+            this.player.find('> ul > li > img').hide();
+            $('.other', this.element).hide();
+
             this.resize();
+            this.load();
 //            this.board.transparent({opacity:options.boardOpacity});
         },
 
@@ -240,6 +251,54 @@
 
         getVerticalPadding: function(element) {
             return this.getInt(element, 'padding-top') + this.getInt(element, 'padding-bottom');
+        },
+
+        updateProgressBar: function(value) {
+            var progress = $('#loadingbar').data('progressbar');
+            $('#loadingbar').progressbar('value', progress.value() + value);
+            if (Math.ceil(progress.value()) >= 100) $('#loading').fadeOut('slow');
+        },
+
+        load: function() {
+            this.updateProgressBar(5);
+            var arena = this;
+            $.getJSON('arena/package.json', function(data, textStatus) {
+                var elementSchool, card;
+                var count = 0;
+                for (elementSchool in data) for (card in data[elementSchool]) count++;
+                for (elementSchool in data) {
+                    for (card in data[elementSchool]) {
+                        $(new Image).load(function() {
+                            arena.updateProgressBar(85 / count);
+                        }).attr({'src': 'arena/' + elementSchool + '/' + card + '.png'});
+                    }
+                }
+            });
+            $.getJSON('arena/board.json', function(data, textStatus) {
+                arena.updateProgressBar(5);
+                $(window).data('since', data.lastAction);
+                $.each(data.players, function(i, player){$('#arena').arena('updatePlayer', player);});
+                arena.updateProgressBar(5);
+                setTimeout(function(){arena.checkStatus();}, 2000);
+            });
+        },
+
+        update: function() {
+            var arena = this;
+            $.getJSON('arena/actions.json', {'since':$(window).data('since')}, function(actions, textStatus) {
+                $.each(actions, function(i, action) {
+                    arena.actionUpdate(i, action);
+                });
+                setTimeout(function() {arena.checkStatus();}, 2000);
+            });
+        },
+
+        checkStatus: function() {
+            var arena = this;
+            $.get('arena/status.json', function(data, textStatus) {
+                if (parseInt(data) > $(window).data('since')) arena.update();
+                else setTimeout(function(){arena.checkStatus();}, 2000);
+            });
         },
 
         resize: function() {
@@ -648,7 +707,7 @@
             }
         },
 
-        chatUpdate: function(messages) {
+        updateChatMessages: function(messages) {
             $.each(messages, function(i, message) {
                 $('<li>' + message.player + ':' + message.content + '</li>')
                         .appendTo($('#sidebar > div:first > ul'));

@@ -1,19 +1,29 @@
-ul {
+#loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+}
+
+#arena {
+    position: absolute;
+    left: 0;
+}
+
+#arena ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
 
-ul li {
+#arena ul li {
     margin: 0;
     padding: 0;
     border: 0;
     display: inline;
-}
-
-.arena {
-    position: absolute;
-    left: 0;
 }
 
 #toppanel {

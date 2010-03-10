@@ -52,11 +52,15 @@
         $(function() {
             $('#loadingbar').progressbar();
             $('body').layout({
-                east__size: 250,
+                togglerLength_open: 50,
+                togglerLength_closed: 50,
+                north__resizable: false,
+                north__closable: false,
                 north__spacing_open: 0,
+                south__resizable: false,
+                south__closable: false,
                 south__spacing_open: 0,
-                east__togglerLength_open: "100%",
-                east__togglerLength_closed: "100%",
+                east__size: 250,
                 center__onresize: function () {
                     $('#arena').arena('resize');
                 },

@@ -114,7 +114,7 @@
                             if (!equipped) {
                                 cardImage.fadeOut("slow", function() {$(this).remove()});
                             }
-                            $.each(actions, actionUpdate);
+                            $.each(actions, arena.actionUpdate);
                         }, 'json');
                         $('#bottompanel').slideToggle();
                     }

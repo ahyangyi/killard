@@ -16,6 +16,14 @@
     text-align: center;
 }
 
+#menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 500;
+    margin: 10px;
+}
+
 #tip {
     height: 1.5em;
     line-height: 1.5em;

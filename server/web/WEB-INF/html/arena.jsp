@@ -8,7 +8,7 @@
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
-    <script type="text/javascript" src="js/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="js/ui/transparent.js"></script>
     <script type="text/javascript" src="js/ui/arena.js"></script>
@@ -32,6 +32,11 @@
             background-image: url(image/texture/white.png);
         }
 
+        .ui-state-disabled {
+            opacity: .80;
+            filter: alpha(opacity = 80);
+        }
+
         .ui-accordion .ui-accordion-content {
             background: url(image/texture/gray.png);
             padding: 1em 1em
@@ -52,8 +57,8 @@
         $(function() {
             $('#loadingbar').progressbar();
             $('body').layout({
-                togglerLength_open: 50,
-                togglerLength_closed: 50,
+                togglerLength_open: 35,
+                togglerLength_closed: 35,
                 north__resizable: true,
                 north__closable: false,
                 north__spacing_open: 1,
@@ -91,6 +96,9 @@
 
 <div class="ui-layout-north" style="display: none;">
     <div id="warning"></div>
+    <div id="menu">
+        <a href="arena/quit.html">Quit</a>
+    </div>
 </div>
 
 <div class="ui-layout-center" style="display: none;">
@@ -369,24 +377,24 @@
 </div>
 
 <div class="ui-layout-east" style="display: none;">
-        <div id="sidebar" class="basic">
-            <a href="#">Chat</a>
+    <div id="sidebar" class="basic">
+        <a href="#">Chat</a>
 
-            <div>
-                <label>
-                    <input type="text" size="15" id="chatinput"/>
-                </label>
-                <hr/>
-                <ul>
-                </ul>
-            </div>
-            <a href="#">Players</a>
-
-            <div>Second content</div>
-            <a href="#">Game Information</a>
-
-            <div>Invite others to join this game</div>
+        <div>
+            <label>
+                <input type="text" size="15" id="chatinput"/>
+            </label>
+            <hr/>
+            <ul>
+            </ul>
         </div>
+        <a href="#">Players</a>
+
+        <div>Second content</div>
+        <a href="#">Game Information</a>
+
+        <div>Invite others to join this game</div>
+    </div>
 </div>
 
 <div class="ui-layout-south" style="display: none;">

@@ -372,11 +372,11 @@
             var cornerLeftMargin = cornerMargin - cornerRightMargin;
 
             /* Render corners */
-            this.corner.width(playerShortEdge).height(playerShortEdge)
-                    .find('img').width(playerShortEdge).height(playerShortEdge);
+            this.corner.find('img').width(playerShortEdge).height(playerShortEdge);
             this.corner.find('.label').css({
                 'font-size': parseInt(playerShortEdge / 2) + 'px', 'line-height': playerShortEdge + 'px'
             });
+            this.corner.width(playerShortEdge).height(playerShortEdge);
 
             this.corner.eq(0).css('margin-right', cornerRightMargin);
             this.corner.eq(1).css('margin-left', cornerLeftMargin);
@@ -604,15 +604,15 @@
 
         dealCard: function(i, card) {
             var cardPadding = parseInt(this.cardSeparator / 2);
+            var dealtCards = $('#dealtCards');
             var cardLi = $('<li></li>').width(this.cardWidth).height(this.cardHeight).css({
                 'padding-left': cardPadding,
                 'padding-right': cardPadding,
                 'padding-top': cardPadding,
                 'padding-bottom': cardPadding
-            }).appendTo($('#dealtCards'));
+            }).appendTo(dealtCards);
 
-            $('#dealtCards').width($('#dealtCards > li').length * (this.cardWidth + this.cardSeparator));
-            $('#bottompanel > .center').height(this.cardHeight + this.cardSeparator);
+            dealtCards.width(dealtCards.find('li').length * (this.cardWidth + this.cardSeparator));
             
             var cardDiv = $('<div></div>').addClass('item').addClass('card')
                     .width(this.cardWidth).height(this.cardHeight)

@@ -144,11 +144,11 @@ ul li {
     padding: 0;
 }
 
-.corner img {
-    display: block;
-    width: 0;
-    height: 0;
-}
+/*.corner img {*/
+    /*display: block;*/
+    /*width: 0;*/
+    /*height: 0;*/
+/*}*/
 
 .corner .label {
     position: absolute;

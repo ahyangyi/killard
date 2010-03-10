@@ -3,7 +3,7 @@
         _init: function() {
             var carousel = this;
 
-            $('.content', this.element).mousewheel(function (event, delta) {
+            $('.list', this.element).mousewheel(function (event, delta) {
                 return carousel.gotoPage(-delta);
             });
 
@@ -34,7 +34,7 @@
         },
 
         gotoPage: function(page) {
-            var $wrapper = $('.content', this.element);
+            var $wrapper = $('.list', this.element);
             var $single = $wrapper.find('> ul > li :first');
             var singleWidth = $single.outerWidth();
 
@@ -50,8 +50,7 @@
         },
 
         resize: function() {
-            var items = $('.center .content ul li', this.element);
-            $('> .center > .content', this.element).width(this.centerWidth());
+            $('.center .content .list', this.element).width(this.centerWidth());
         },
 
         centerWidth: function() {

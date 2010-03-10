@@ -71,10 +71,6 @@
             });
 
             this.corner.eq(0).click(function() {
-//                $('#toppanel').show('drop', {direction:'up'}, function() {
-//                    var items = $('#toppanel .center .list ul li');
-//                    $('#toppanel .center .list ul').width(items.outerWidth() * items.length);
-//                });
                 $('#toppanel').slideToggle();
             }).css('cursor', 'pointer');
 
@@ -91,7 +87,6 @@
                     ).mouseup(
                     function() {
                         $(this).find('img').attr('src', 'image/corner/corner1a.png');
-//                        $('#bottompanel .center').height(arena.cardHeight + arena.cardSeparator);
                         $('#bottompanel').slideToggle();
                     }
                     ).css('cursor', 'pointer');
@@ -256,7 +251,7 @@
         updateProgressBar: function(value) {
             var progress = $('#loadingbar').data('progressbar');
             $('#loadingbar').progressbar('value', progress.value() + value);
-            if (Math.ceil(progress.value()) >= 100) $('#loading').fadeOut('slow');
+            if (Math.ceil(progress.value()) >= 100) $('#loading').hide();
         },
 
         load: function() {
@@ -437,7 +432,7 @@
                 'padding-bottom' : boardPadding
             }).width(boardWidth - this.getHorizontalGap(this.board))
                     .height(boardHeight - this.getVerticalGap(this.board));
-            this.board.transparent({update: true, opacity:options.boardOpacity});
+//            this.board.transparent({update: true, opacity:options.boardOpacity});
 
             /* Calculate card size as integers. */
             this.cardWidth = parseInt(9 * boardLengthUnit);
@@ -490,6 +485,7 @@
                 'padding-bottom': cardPadding
             });
             $('#dealtCards').width(dealtCards.length * (this.cardWidth + this.cardSeparator));
+            $('#bottompanel > .center').height(this.cardHeight + this.cardSeparator);
             $('.carousel').carousel('resize');
         },
         
@@ -616,6 +612,7 @@
             }).appendTo($('#dealtCards'));
 
             $('#dealtCards').width($('#dealtCards > li').length * (this.cardWidth + this.cardSeparator));
+            $('#bottompanel > .center').height(this.cardHeight + this.cardSeparator);
             
             var cardDiv = $('<div></div>').addClass('item').addClass('card')
                     .width(this.cardWidth).height(this.cardHeight)

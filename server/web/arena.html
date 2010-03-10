@@ -27,7 +27,7 @@
         }
 
         .carousel .arrow {
-            background-image: url(image/texture/gray.png);
+            background-image: url(image/texture/white.png);
         }
 
         .ui-accordion .ui-accordion-content {
@@ -114,7 +114,6 @@
             padding: 0;
             overflow: hidden;
         }
-
         div.basic {
             margin: 0;
             padding: 0;
@@ -125,6 +124,7 @@
         .basic > a.active,
         .basic > a:hover {
             color: black;
+            font-weight:	bold;
             text-transform: uppercase;
             text-decoration: none;
             outline: none;
@@ -144,23 +144,16 @@
         .basic > a:hover {
             background-image: url("image/tab2.gif");
         }
-
         .basic > a.active {
             color: #00C;
         }
-
-        .basic > div {
-        }
-
         .basic > div.scrolling {
             overflow: auto !important;
         }
-
         .basic > div > p {
             padding: 0 10px;
             margin: 1.5ex 0;
         }
-
         .basic > div > ul {
             margin-top: 1ex;
         }
@@ -201,19 +194,21 @@
 </div>
 
 <div class="ui-layout-center" style="display: none;">
-
 <div class="carousel" id="toppanel">
     <div class="center">
-        <div class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></div>
-        <div class="content">
-            <ul class="cards">
-                <div><img class="item card" src="image/0.png"/></div>
-            </ul>
-        </div>
-        <div class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></div>
+        <ul>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+            <li class="content">
+                <div class="list">
+                    <ul class="cards">
+                        <li><img class="item" src="image/0.png"/></li>
+                    </ul>
+                </div>
+            </li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+        </ul>
     </div>
 </div>
-
 <div id="arena">
 
 <ul class="top">
@@ -453,12 +448,16 @@
 
 <div class="carousel" id="bottompanel">
     <div class="center">
-        <div class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></div>
-        <div class="content">
-            <ul class="cards" id="dealtCards">
-            </ul>
-        </div>
-        <div class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></div>
+        <ul>
+            <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+            <li class="content">
+                <div class="list">
+                    <ul id="dealtCards">
+                    </ul>
+                </div>
+            </li>
+            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+        </ul>
     </div>
     <div class="bottom">
         <div class="searchbar">
@@ -471,7 +470,7 @@
 
 <div class="ui-layout-east" style="display: none;">
 <div id="sidebar" class="basic">
-    <a href="#">Chat</a>
+    <h3><a href="#">Chat</a></h3>
     <div>
         <label>
             <input type="text" size="15" id="chatinput"/>
@@ -480,9 +479,9 @@
         <ul>
         </ul>
     </div>
-    <a href="#">Players</a>
+    <h3><a href="#">Players</a></h3>
     <div>Second content</div>
-    <a href="#">Game Information</a>
+    <h3><a href="#">Game Information</a></h3>
     <div>Invite others to join this game</div>
 </div>
 </div>

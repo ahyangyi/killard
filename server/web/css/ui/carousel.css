@@ -8,6 +8,11 @@
     cursor: pointer;
 }
 
+.carousel .arrow img {
+    width: 37px;
+    height: 37px;
+}
+
 .carousel .forward {
     float: right;
 }

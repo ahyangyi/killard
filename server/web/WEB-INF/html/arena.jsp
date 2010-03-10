@@ -28,10 +28,6 @@
             background-image: url(image/texture/darkgray.png);
         }
 
-        .carousel .arrow {
-            background-image: url(image/texture/white.png);
-        }
-
         .ui-state-disabled {
             opacity: .80;
             filter: alpha(opacity = 80);
@@ -364,7 +360,7 @@
                     </ul>
                 </div>
             </li>
-            <li style="float:right;" class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+            <li class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
         </ul>
     </div>
     <div class="bottom">

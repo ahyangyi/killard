@@ -486,6 +486,10 @@
             });
             $('#dealtCards').width(dealtCards.length * (this.cardWidth + this.cardSeparator));
             $('#bottompanel > .center').height(this.cardHeight + this.cardSeparator);
+            $('#bottompanel > .center > ul > li').height(this.cardHeight + this.cardSeparator);
+            $('#bottompanel > .center > ul > .arrow > a').css({
+                'margin-top': parseInt((this.cardHeight + this.cardSeparator - 37) / 2)
+            });
             $('.carousel').carousel('resize');
         },
         

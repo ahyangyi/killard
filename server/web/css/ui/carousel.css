@@ -20,6 +20,10 @@
     display: block;
 }
 
+.carousel .center {
+    width: 100%;
+}
+
 .carousel .center ul {
     display: block;
     width: 100%;

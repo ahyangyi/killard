@@ -16,8 +16,12 @@
 .ui-layout-resizer {
     /* all 'resizer-bars' */
     background: #DDD;
-    border: 1px solid #BBB;
-    border-width: 0;
+    border: 0 solid #BBB;
+}
+
+.ui-layout-resizer-north,
+.ui-layout-resizer-south {
+    background: black;
 }
 
 .ui-layout-resizer-drag {
@@ -108,9 +112,12 @@
     border-width: 0 1px; /* left/right borders */
 }
 
-.ui-layout-toggler-west,
 .ui-layout-toggler-east {
-    border-width: 1px 0; /* top/bottom borders */
+    background: url(../image/toggle-right.gif);
+}
+
+.ui-layout-toggler-east-closed {
+    background: url(../image/toggle-left.gif);
 }
 
 /* hide the toggler-button when the pane is 'slid open' */

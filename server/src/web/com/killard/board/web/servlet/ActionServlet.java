@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -28,6 +30,8 @@ import java.util.Collection;
  */
 public class ActionServlet extends HttpServlet {
 
+    private final Logger log = Logger.getLogger("Killard");
+
     protected void actions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long since;
@@ -39,23 +43,34 @@ public class ActionServlet extends HttpServlet {
         }
 
         CacheInstance instance = CacheInstance.getInstance();
-        PlayerCache playerCache = instance.getPlayerCache();
-        if (playerCache == null) {
-            response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
-            return;
+        Collection actions;
+        try {
+            PersistenceHelper.open();
+            PlayerCache playerCache = instance.getPlayerCache();
+            if (playerCache == null) {
+                response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
+                return;
+            }
+            Key boardKey = playerCache.getBoardKey();
+            KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardKey);
+            keyBuilder.addChild(ActionLogDO.class.getSimpleName(), since);
+            Key actionLogKey = keyBuilder.getKey();
+
+            PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+            Query query = pm.newQuery(ActionLogDO.class);
+            query.setFilter("boardKey == b && key > s");
+            query.setOrdering("key ascending");
+            query.declareParameters(
+                    "com.google.appengine.api.datastore.Key b, com.google.appengine.api.datastore.Key s");
+            actions = (Collection) query.execute(boardKey, actionLogKey);
+            PersistenceHelper.getPersistenceManager().makeTransientAll(actions);
+        } catch (Throwable e) {
+            PersistenceHelper.rollback();
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServletException(e.getMessage(), e);
+        } finally {
+            PersistenceHelper.close();
         }
-        Key boardKey = playerCache.getBoardKey();
-        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(boardKey);
-        keyBuilder.addChild(ActionLogDO.class.getSimpleName(), since);
-        Key actionLogKey = keyBuilder.getKey();
-
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Query query = pm.newQuery(ActionLogDO.class);
-        query.setFilter("boardKey == b && key > s");
-        query.setOrdering("key ascending");
-        query.declareParameters("com.google.appengine.api.datastore.Key b, com.google.appengine.api.datastore.Key s");
-        Collection actions = (Collection) query.execute(boardKey, actionLogKey);
-
         ResponseUtils.outputActions(response, actions);
     }
 

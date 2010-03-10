@@ -37,7 +37,7 @@ public class RoleGroupDO implements Comparable<RoleGroupDO>, Serializable {
     @Extension(vendorName="datanucleus", key="gae.parent-pk", value="true")
     private Key packageKey;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private List<Key> roleKeys;
 
     @NotPersistent

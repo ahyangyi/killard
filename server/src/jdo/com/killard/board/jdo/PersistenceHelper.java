@@ -25,17 +25,18 @@ public enum PersistenceHelper {
     private PersistenceHelper() {
     }
 
-    public static void openSession() {
+    public static void open() {
         PersistenceManager manager = helper.pmfInstance.getPersistenceManager();
         helper.persistenceManager.set(manager);
-        manager.currentTransaction().begin();
     }
 
     public static PersistenceManager getPersistenceManager() {
+        PersistenceManager pm = helper.persistenceManager.get();
+        if (pm == null || pm.isClosed()) open();
         return helper.persistenceManager.get();
     }
 
-    public static void closeSession() {
+    public static void close() {
         PersistenceManager manager = getPersistenceManager();
         if (manager.isClosed()) return;
         if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
@@ -47,14 +48,9 @@ public enum PersistenceHelper {
         if (manager.currentTransaction().isActive()) manager.currentTransaction().rollback();
     }
 
-    public static void doTransaction() {
+    public static void commit() {
         PersistenceManager manager = getPersistenceManager();
         if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
         manager.currentTransaction().begin();
-    }
-
-    public static void endTransaction() {
-        PersistenceManager manager = getPersistenceManager();
-        if (manager.currentTransaction().isActive()) manager.currentTransaction().commit();
     }
 }

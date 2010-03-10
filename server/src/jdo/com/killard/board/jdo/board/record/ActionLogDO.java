@@ -34,7 +34,7 @@ public class ActionLogDO {
     private Key boardKey;
 
     @Persistent
-    private String action;
+    private String actionClass;
 
     @Persistent
     private String log;
@@ -47,7 +47,7 @@ public class ActionLogDO {
         keyBuilder.addChild(getClass().getSimpleName(), board.getActions().size() + 1);
         this.key = keyBuilder.getKey();
         this.boardKey = board.getKey();
-        this.action = action.getClass().getSimpleName();
+        this.actionClass = action.getClass().getSimpleName();
         this.log = ActionLoggerFactory.getActionLogger(action).log(action);
         if (action.getTarget() instanceof Player) {
             targetPlayerId = ((Player)action.getTarget()).getId();
@@ -67,7 +67,7 @@ public class ActionLogDO {
     }
 
     public String getAction() {
-        return action;
+        return actionClass;
     }
 
     public String getLog() {

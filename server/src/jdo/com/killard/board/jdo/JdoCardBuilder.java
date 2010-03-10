@@ -139,7 +139,7 @@ public class JdoCardBuilder {
             attribute.newDescriptor(BoardContext.getLocale(), name, name);
         }
         PersistenceHelper.getPersistenceManager().makePersistent(attribute);
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.commit();
     }
 
     protected int getInt(Map map, String name) {

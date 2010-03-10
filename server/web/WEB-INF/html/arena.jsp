@@ -6,7 +6,7 @@
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.layout.min.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
@@ -52,16 +52,26 @@
         $(function() {
             $('#loadingbar').progressbar();
             $('body').layout({
+                togglerLength_open: 50,
+                togglerLength_closed: 50,
+                north__resizable: true,
+                north__closable: false,
+                north__spacing_open: 1,
+                south__resizable: true,
+                south__closable: false,
+                south__spacing_open: 1,
                 east__size: 250,
-                north__spacing_open: 0,
-                south__spacing_open: 0,
-                east__togglerLength_open: "100%",
-                east__togglerLength_closed: "100%",
                 center__onresize: function () {
                     $('#arena').arena('resize');
                 },
                 east__onresize: function () {
                     $('#sidebar').accordion('resize');
+                },
+                east__onopen: function () {
+                    $('#sidebar').accordion({fillSpace: true});
+                },
+                east__onclose: function () {
+                    $('#sidebar').accordion('destroy');
                 }
             });
             $('.carousel').carousel();

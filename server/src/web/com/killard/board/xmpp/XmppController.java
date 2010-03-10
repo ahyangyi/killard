@@ -81,7 +81,7 @@ public class XmppController extends BasicController {
 //    protected void newGame(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player != null) quitGame(from);
-//        PersistenceHelper.doTransaction();
+//        PersistenceHelper.commit();
 //        int packageId = Integer.parseInt(args[1]);
 //        PackageDO packageDO = PersistenceHelper.getPersistenceManager().getObjectById(PackageDO.class, packageId);
 //        BoardDO boardManager = new BoardDO(packageDO, 2);

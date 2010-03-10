@@ -148,7 +148,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     }
 
     public ActionLogDO getLastActionLog() {
-        if (actionLogs.isEmpty()) return null;
+        if (actionLogs == null || actionLogs.isEmpty()) return null;
         return actionLogs.get(actionLogs.size() - 1);
     }
 

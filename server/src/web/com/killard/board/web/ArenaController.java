@@ -94,7 +94,7 @@ public class ArenaController extends BasicController {
         long timeStart = System.currentTimeMillis();
         BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);
         board = pm.makePersistent(board);
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.commit();
 
         join(board, 1);
         redirect("/arena", request, response);
@@ -232,7 +232,7 @@ public class ArenaController extends BasicController {
         CacheInstance instance = CacheInstance.getInstance();
         board.addPlayer(instance.getPlayerId(), getUser().getNickname(), number);
         // It's important to do transaction immediately to make the Collection field persisted.
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.commit();
 
         //TODO deal cards
         if (number > 0) board.test();
@@ -253,12 +253,12 @@ public class ArenaController extends BasicController {
             } catch (BoardException ignored) {
             }
             pm.deletePersistent(player);
-            PersistenceHelper.doTransaction();
+            PersistenceHelper.commit();
 
             if (board.getPlayers().length == 0) {
                 CacheInstance.getInstance().getCache().remove(board.getKey());
                 pm.deletePersistent(board);
-                PersistenceHelper.doTransaction();
+                PersistenceHelper.commit();
             } else {
                 logBoard(board);
             }
@@ -266,7 +266,7 @@ public class ArenaController extends BasicController {
     }
 
     protected void logBoard(BoardDO board) {
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.commit();
         CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getKey().getId());
     }
 

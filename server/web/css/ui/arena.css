@@ -8,6 +8,22 @@
     z-index: 1000;
 }
 
+#warning {
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size: 24px;
+    background: #f3f3f3;
+    text-align: center;
+}
+
+#tip {
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size: 24px;
+    background: #f3f3f3;
+    text-align: center;
+}
+
 ul {
     margin: 0;
     padding: 0;
@@ -209,7 +225,7 @@ ul li {
 .cardimage {
     margin: 0;
     padding: 0;
-    z-index: 50;
+    /*z-index: 50;*/
 }
 
 .card .label {
@@ -246,23 +262,6 @@ ul li {
     margin: 0;
     padding: 0;
     z-index: 100;
-}
-
-#warning {
-    height: 1.5em;
-    line-height: 1.5em;
-    font-size: 24px;
-    /*background-color: #dc143c;*/
-    background-color: #faebd7;
-    text-align: center;
-}
-
-#tip {
-    height: 1.5em;
-    line-height: 1.5em;
-    font-size: 24px;
-    background: url(../../image/texture/white.png);
-    text-align: center;
 }
 
 #sidebar div {

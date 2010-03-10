@@ -27,7 +27,22 @@
 
     <filter-mapping>
         <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>/arena/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PersistenceManagerFilter</filter-name>
+        <url-pattern>/package/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PersistenceManagerFilter</filter-name>
+        <url-pattern>/packages.*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>PersistenceManagerFilter</filter-name>
+        <url-pattern>/manage/*</url-pattern>
     </filter-mapping>
 
     <servlet>
@@ -92,12 +107,12 @@
 
     <servlet-mapping>
         <servlet-name>status</servlet-name>
-        <url-pattern>/arena/status.json</url-pattern>
+        <url-pattern>/update/status.json</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>action</servlet-name>
-        <url-pattern>/arena/actions.json</url-pattern>
+        <url-pattern>/update/actions.json</url-pattern>
     </servlet-mapping>
 
     <!--<servlet-mapping>-->

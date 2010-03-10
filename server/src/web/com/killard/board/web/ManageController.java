@@ -70,7 +70,7 @@ public class ManageController extends BasicController {
         Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
         for (BoardDO bundle : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
-            PersistenceHelper.doTransaction();
+            PersistenceHelper.commit();
         }
         extent.closeAll();
         CacheInstance.getInstance().getCache().clear();
@@ -85,7 +85,7 @@ public class ManageController extends BasicController {
         Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
         for (PackageBundleDO bundle : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
-            PersistenceHelper.doTransaction();
+            PersistenceHelper.commit();
         }
         extent.closeAll();
         CacheInstance.getInstance().getCache().clear();
@@ -100,7 +100,7 @@ public class ManageController extends BasicController {
         Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
         for (PackageBundleDO bundle : extent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
-            PersistenceHelper.doTransaction();
+            PersistenceHelper.commit();
         }
         extent.closeAll();
         CacheInstance.getInstance().getCache().clear();
@@ -121,16 +121,10 @@ public class ManageController extends BasicController {
         RoleDO role = draft.newRole("test", handlers, handlers, handlers);
         RoleGroupDO group = draft.newRoleGroup();
         pm.makePersistent(group);
-        PersistenceHelper.doTransaction();
+        PersistenceHelper.commit();
+        group = pm.getObjectById(RoleGroupDO.class, group.getKey());
         group.addRole(role);
         group.addRole(role);
-//        System.out.println("create group " + group.getKey() + " " + group.getRoleKeys().length);
-        pm.makePersistent(group);
-        PersistenceHelper.doTransaction();
-//        System.out.println("init group " + group.getKey() + " " + group.getRoleKeys().length);
-
-        pm.makePersistent(bundle);
-
         redirect("/manage/load", request, response);
     }
 
@@ -159,7 +153,7 @@ public class ManageController extends BasicController {
                         String name = file.getName().substring(0, file.getName().length() - 5);
                         MetaCardDO card = elementSchool.newCard(name);
                         card = pm.makePersistent(card);
-                        PersistenceHelper.doTransaction();
+                        PersistenceHelper.commit();
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
                             card.newDescriptor(BoardContext.getLocale(), name, "");
@@ -177,7 +171,7 @@ public class ManageController extends BasicController {
                         }
                         pm.makePersistent(card);
                         elementSchool = pm.makePersistent(elementSchool);
-                        PersistenceHelper.doTransaction();
+                        PersistenceHelper.commit();
                     }
                 }
                 redirect("/manage/load", request, response);

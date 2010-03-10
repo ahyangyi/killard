@@ -9,8 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -31,7 +31,8 @@ public class PersistenceManagerFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         try {
-            PersistenceHelper.openSession();
+            PersistenceHelper.open();
+            PersistenceHelper.getPersistenceManager().currentTransaction().begin();
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (IOException e) {
             PersistenceHelper.rollback();
@@ -46,7 +47,7 @@ public class PersistenceManagerFilter implements Filter {
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException(e.getMessage(), e);
         } finally {
-            PersistenceHelper.closeSession();
+            PersistenceHelper.close();
         }
     }
 

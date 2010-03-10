@@ -26,8 +26,8 @@
                 }
             });
             $('.skillimage').live('click', function() {
+                var card = $(this).parent();
                 if (arena.targetList.length == 0) {
-                    var card = $(this).parent();
                     arena.castCardPosition = card.attr('position');
                     arena.castSkillIndex = $(this).data('index');
                     arena.targetList = $(this).data('targets');
@@ -114,7 +114,7 @@
                             if (!equipped) {
                                 cardImage.fadeOut("slow", function() {$(this).remove()});
                             }
-                            $.each(actions, arena.actionUpdate);
+                            $.each(actions, function(i, action) {arena.actionUpdate(i, action);});
                         }, 'json');
                         $('#bottompanel').slideToggle();
                     }
@@ -280,7 +280,7 @@
 
         update: function() {
             var arena = this;
-            $.getJSON('arena/actions.json', {'since':$(window).data('since')}, function(actions, textStatus) {
+            $.getJSON('update/actions.json', {'since':$(window).data('since')}, function(actions, textStatus) {
                 $.each(actions, function(i, action) {
                     arena.actionUpdate(i, action);
                 });
@@ -290,7 +290,7 @@
 
         checkStatus: function() {
             var arena = this;
-            $.get('arena/status.json', function(data, textStatus) {
+            $.get('update/status.json', function(data, textStatus) {
                 if (parseInt(data) > $(window).data('since')) arena.update();
                 else setTimeout(function(){arena.checkStatus();}, 2000);
             });
@@ -739,11 +739,13 @@
         actionUpdate: function(i, action) {
             if (action.id <= $(window).data('since')) return;
             $(window).data('since', action.id);
-            try {
-                eval('this.' + action.action + '(action)');
-            } catch (e) {
-                alert(e);
+            var actionHandler = this[action.action];
+            if (actionHandler == null) {
+                alert(action.action + ' is not supported');
+                if ($('#sidebar > div:first > ul').children().length == 0)
+                    for (k in this) $('#sidebar > div:first > ul').append($('<li>' + k + '</li>'));
             }
+            else eval('this.' + action.action + '(action)');
         },
 
         PlayerJoinAction: function(action) {

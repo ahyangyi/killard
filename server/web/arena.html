@@ -1,10 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link type="text/css" href="css/jquery/base/ui.all.css" rel="stylesheet"/>
+    <link type="text/css" href="css/accordion.css" rel="stylesheet"/>
+    <link type="text/css" href="css/layout.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.layout.min.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
@@ -35,127 +37,15 @@
             padding: 1em 1em
         }
 
-        .ui-layout-resizer {
-        /* all 'resizer-bars' */
-            background: #DDD;
-            border: 1px solid #BBB;
-            border-width: 0;
-        }
-
-        .ui-layout-resizer-drag {
-        /* REAL resizer while resize in progress */
-        }
-
-        .ui-layout-resizer-hover {
-        /* affects both open and closed states */
-        }
-
-        /* NOTE: It looks best when 'hover' and 'dragging' are set to the same color,
-           otherwise color shifts while dragging when bar can't keep up with mouse */
-        .ui-layout-resizer-open-hover, /* hover-color to 'resize' */
-        .ui-layout-resizer-dragging {
-        /* resizer beging 'dragging' */
-            background: #C4E1A4;
-        }
-
-        .ui-layout-resizer-dragging {
-        /* CLONED resizer being dragged */
-            border-left: 1px solid #BBB;
-            border-right: 1px solid #BBB;
-        }
-
-        /* NOTE: Add a 'dragging-limit' color to provide visual feedback when resizer hits min/max size limits */
-        .ui-layout-resizer-dragging-limit {
-        /* CLONED resizer at min or max size-limit */
-            background: #E1A4A4; /* red */
-        }
-
-        .ui-layout-resizer-closed-hover {
-        /* hover-color to 'slide open' */
-            background: #EBD5AA;
-        }
-
-        .ui-layout-resizer-sliding {
-        /* resizer when pane is 'slid open' */
-            opacity: .10; /* show only a slight shadow */
-            filter: alpha(opacity = 10);
-        }
-
-        .ui-layout-resizer-sliding-hover {
-        /* sliding resizer - hover */
-            opacity: 1.00; /* on-hover, show the resizer-bar normally */
-            filter: alpha(opacity = 100);
-        }
-
-        /* sliding resizer - add 'outside-border' to resizer on-hover
-         * this sample illustrates how to target specific panes and states */
-        .ui-layout-resizer-north-sliding-hover {
-            border-bottom-width: 1px;
-        }
-
-        .ui-layout-resizer-south-sliding-hover {
-            border-top-width: 1px;
-        }
-
-        .ui-layout-resizer-west-sliding-hover {
-            border-right-width: 1px;
-        }
-
-        .ui-layout-resizer-east-sliding-hover {
-            border-left-width: 1px;
-        }
-
-        /*
-        *#########################
-        *	ACCORDIAN WIDGET
-        *#########################
-        */
         .ui-layout-east {
             padding: 0;
             overflow: hidden;
         }
-        div.basic {
-            margin: 0;
-            padding: 0;
-        }
 
-        .basic > a,
-        .basic > a.selected,
-        .basic > a.active,
-        .basic > a:hover {
-            color: black;
-            font-weight:	bold;
-            text-transform: uppercase;
-            text-decoration: none;
-            outline: none;
-            border-top: 1px solid #FFF;
-            border-bottom: 1px solid #999;
-            cursor: pointer;
-            display: block;
-            padding: 5px;
-        }
-
-        .basic > a {
-            background: #00a0c6 url("image/tab0.gif");
-        }
-
-        .basic > a.selected,
-        .basic > a.active,
-        .basic > a:hover {
-            background-image: url("image/tab2.gif");
-        }
-        .basic > a.active {
-            color: #00C;
-        }
-        .basic > div.scrolling {
-            overflow: auto !important;
-        }
-        .basic > div > p {
-            padding: 0 10px;
-            margin: 1.5ex 0;
-        }
-        .basic > div > ul {
-            margin-top: 1ex;
+        #sidebar h4 {
+            font-size: 0.9em;
+            font-weight: normal;
+            border-width: 1px 0 0;
         }
     </style>
     <script type="text/javascript">
@@ -469,21 +359,24 @@
 </div>
 
 <div class="ui-layout-east" style="display: none;">
-<div id="sidebar" class="basic">
-    <h3><a href="#">Chat</a></h3>
-    <div>
-        <label>
-            <input type="text" size="15" id="chatinput"/>
-        </label>
-        <hr/>
-        <ul>
-        </ul>
-    </div>
-    <h3><a href="#">Players</a></h3>
-    <div>Second content</div>
-    <h3><a href="#">Game Information</a></h3>
-    <div>Invite others to join this game</div>
-</div>
+        <div id="sidebar" class="basic">
+            <a href="#">Chat</a>
+
+            <div>
+                <label>
+                    <input type="text" size="15" id="chatinput"/>
+                </label>
+                <hr/>
+                <ul>
+                </ul>
+            </div>
+            <a href="#">Players</a>
+
+            <div>Second content</div>
+            <a href="#">Game Information</a>
+
+            <div>Invite others to join this game</div>
+        </div>
 </div>
 
 <div class="ui-layout-south" style="display: none;">

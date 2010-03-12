@@ -245,7 +245,7 @@ public class ArenaController extends BasicController {
         CacheInstance instance = CacheInstance.getInstance();
         BoardDO board = instance.getBoard();
         if (board != null) {
-            PlayerCache playerCache = (PlayerCache) instance.getCache().remove(instance.getPlayerId());
+            PlayerCache playerCache = (PlayerCache) instance.getBoardCache().remove(instance.getPlayerId());
             PersistenceManager pm = PersistenceHelper.getPersistenceManager();
             PlayerRecordDO player = pm.getObjectById(PlayerRecordDO.class, playerCache.getPlayerKey());
             try {
@@ -256,7 +256,7 @@ public class ArenaController extends BasicController {
             PersistenceHelper.commit();
 
             if (board.getPlayers().length == 0) {
-                CacheInstance.getInstance().getCache().remove(board.getKey());
+                CacheInstance.getInstance().getBoardCache().remove(board.getKey());
                 pm.deletePersistent(board);
                 PersistenceHelper.commit();
             } else {
@@ -267,7 +267,7 @@ public class ArenaController extends BasicController {
 
     protected void logBoard(BoardDO board) {
         PersistenceHelper.commit();
-        CacheInstance.getInstance().getCache().put(board.getKey(), board.getLastActionLog().getKey().getId());
+        CacheInstance.getInstance().getBoardCache().put(board.getKey(), board.getLastActionLog().getKey().getId());
     }
 
 }

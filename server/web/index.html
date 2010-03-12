@@ -1,15 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
 <head>
+    <link type="text/css" href="css/layout.css" rel="stylesheet"/>
     <link type="text/css" href="css/menu.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/richlist.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/rating.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
-    <script type="text/javascript" src="js/ui/carousel.js"></script>
-    <script type="text/javascript" src="js/ui/richlist.js"></script>
-    <script type="text/javascript" src="js/ui/searchbar.js"></script>
+    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
     <title>Killard Games</title>
     <style type="text/css">
         body {
@@ -32,30 +27,36 @@
     </style>
     <script type="text/javascript">
         $(function () {
-            function resizeWindow() {
-                var dashboardDiv = $('.dashboard');
-                var dashboardImg = $('.dashboard img');
-
-                var h = $(window).height() - $('.topbar').outerHeight() - $('.bottombar').outerHeight();
-                var dashboardVerticalMargin = parseInt(dashboardDiv.css('margin-top'));
-                var packageInnerHeight = h - 2 * dashboardVerticalMargin;
-
-                dashboardDiv.width($(window).width() - parseInt(dashboardDiv.css('margin-left')) - parseInt(dashboardDiv.css('margin-right')));
-                dashboardDiv.height(packageInnerHeight);
-
-                var wUnit = dashboardImg.width() / 4;
-                var hUnit = dashboardDiv.height() / 3;
-                var unit = Math.min(wUnit, hUnit);
-                dashboardImg.width(parseInt(4 * unit));
-                dashboardImg.height(parseInt(3 * unit));
-                dashboardImg.fadeIn('slow');
+            function resize() {
+                var centerPadding = parseInt(Math.min($(window).width() / 80, $(window).height() / 45));
+                var centerHeight = $(window).height() - $('.topbar').outerHeight() - $('.bottombar').outerHeight();
+                $('.container').css({
+                    'padding-top' : centerPadding,
+                    'padding-bottom' : centerPadding,
+                    'padding-left' : 2 * centerPadding,
+                    'padding-right' : 2 * centerPadding
+                }).height(centerHeight - 2 * centerPadding);
             }
-            $.event.add(window, 'load', resizeWindow);
-            $.event.add(window, 'resize', resizeWindow);
+
+            resize();
+
+            $('.container').layout({
+                resizable: false,
+                closable: false,
+                spacing_open: 0,
+                west__size: "30%",
+                west__onresize: function () {
+                },
+                center__onresize: function () {
+                }
+            });
+            $.event.add(window, 'load', resize);
+            $.event.add(window, 'resize', resize);
         });
     </script>
 </head>
 <body>
+
 <div class="topbar">
     <div id="logo">
         <img src="image/logo.png"/>
@@ -72,18 +73,31 @@
         </ul>
     </div>
 </div>
-<div class="dashboard">
-    <h1 style="display:inline;width:40%;">Gaming! Gaming!</h1>
-    <img src="image/index.png" style="vertical-align:middle;width:60%;"/>
+
+<div class="container">
+    <div class="ui-layout-west" style="display:none;">
+        <div class="ui-layout-content">
+            <h3>Online board game engine</h3>
+            <p style="vertical-align:middle;">
+                Creative ideas.
+            </p>
+        </div>
+    </div>
+    <div class="ui-layout-center" style="display:none;">
+        <div class="ui-layout-content">
+            <img src="image/index.png"/>
+        </div>
+    </div>
 </div>
+
 <div class="bottombar">
-<div class="menu">
-    <ul>
-        <li>Killard &copy; 2010|</li>
-        <li><a href="#">Terms</a>|</li>
-        <li><a href="#">Privacy</a></li>
-    </ul>
-</div>
+    <div class="menu">
+        <ul>
+            <li>Killard &copy; 2010|</li>
+            <li><a href="#">Terms</a>|</li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

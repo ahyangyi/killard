@@ -73,7 +73,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.commit();
         }
         extent.closeAll();
-        CacheInstance.getInstance().getCache().clear();
+        CacheInstance.getInstance().getBoardCache().clear();
 
         redirect("/packages", request, response);
     }
@@ -88,7 +88,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.commit();
         }
         extent.closeAll();
-        CacheInstance.getInstance().getCache().clear();
+        CacheInstance.getInstance().getBoardCache().clear();
 
         redirect("/packages", request, response);
     }
@@ -103,7 +103,7 @@ public class ManageController extends BasicController {
             PersistenceHelper.commit();
         }
         extent.closeAll();
-        CacheInstance.getInstance().getCache().clear();
+        CacheInstance.getInstance().getBoardCache().clear();
 
         PackageBundleDO bundle = new PackageBundleDO("Orions");
         pm.makePersistent(bundle);

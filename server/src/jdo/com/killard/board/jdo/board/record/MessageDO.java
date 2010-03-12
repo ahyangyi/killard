@@ -9,6 +9,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.Date;
 
 /**
  * <p>
@@ -39,11 +40,15 @@ public class MessageDO {
     @Persistent
     private String message;
 
+    @Persistent
+    private Date date;
+
     public MessageDO(BoardDO board, String from, String to, String message) {
         this.boardKey = board.getKey();
         this.from = from;
         this.to = to;
         this.message = message;
+        this.date = new Date();
     }
 
     public Key getBoardKey() {
@@ -60,5 +65,9 @@ public class MessageDO {
 
     public String getMessage() {
         return message;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

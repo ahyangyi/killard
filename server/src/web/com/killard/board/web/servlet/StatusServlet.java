@@ -29,7 +29,7 @@ public class StatusServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
         else {
-            Cache cache = instance.getCache();
+            Cache cache = instance.getBoardCache();
             if (!cache.containsKey(playerCache.getBoardKey())) {
                 cache.put(playerCache.getBoardKey(), instance.getBoard().getLastActionLog().getKey().getId());
             }

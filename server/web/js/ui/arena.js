@@ -70,10 +70,6 @@
                 $(this).parent().find('.element').slideToggle();
             });
 
-            this.corner.eq(0).click(function() {
-                $('#toppanel').slideToggle();
-            }).css('cursor', 'pointer');
-
             this.corner.eq(2).hover(
                     function() {
                         $(this).find('img').attr('src', 'image/corner/corner1a.png');
@@ -129,9 +125,10 @@
                 $(this).slideToggle();
             });
 
-            $('#chatinput').keyup(function(event) {
-                if (event.keyCode == '13') {
+            $('.chat-input').keyup(function(event) {
+                if (event.keyCode == '13' && $(this).attr('value').length > 0) {
                     var msg = $(this).attr('value');
+                    $(this).attr('value', '');
                     $.post('arena/message.json', {'message': msg}, arena.updateChatMessages, 'json');
                 }
             });
@@ -246,54 +243,6 @@
 
         getVerticalPadding: function(element) {
             return this.getInt(element, 'padding-top') + this.getInt(element, 'padding-bottom');
-        },
-
-        updateProgressBar: function(value) {
-            var progress = $('#loadingbar').data('progressbar');
-            $('#loadingbar').progressbar('value', progress.value() + value);
-            if (Math.ceil(progress.value()) >= 100) $('#loading').hide();
-        },
-
-        load: function() {
-            this.updateProgressBar(5);
-            var arena = this;
-            $.getJSON('arena/package.json', function(data, textStatus) {
-                var elementSchool, card;
-                var count = 0;
-                for (elementSchool in data) for (card in data[elementSchool]) count++;
-                for (elementSchool in data) {
-                    for (card in data[elementSchool]) {
-                        $(new Image).load(function() {
-                            arena.updateProgressBar(85 / count);
-                        }).attr({'src': 'arena/' + elementSchool + '/' + card + '.png'});
-                    }
-                }
-            });
-            $.getJSON('arena/board.json', function(data, textStatus) {
-                arena.updateProgressBar(5);
-                $(window).data('since', data.lastAction);
-                $.each(data.players, function(i, player){$('#arena').arena('updatePlayer', player);});
-                arena.updateProgressBar(5);
-                setTimeout(function(){arena.checkStatus();}, 2000);
-            });
-        },
-
-        update: function() {
-            var arena = this;
-            $.getJSON('update/actions.json', {'since':$(window).data('since')}, function(actions, textStatus) {
-                $.each(actions, function(i, action) {
-                    arena.actionUpdate(i, action);
-                });
-                setTimeout(function() {arena.checkStatus();}, 2000);
-            });
-        },
-
-        checkStatus: function() {
-            var arena = this;
-            $.get('update/status.json', function(data, textStatus) {
-                if (parseInt(data) > $(window).data('since')) arena.update();
-                else setTimeout(function(){arena.checkStatus();}, 2000);
-            });
         },
 
         resize: function() {
@@ -485,12 +434,16 @@
                 'padding-bottom': cardPadding
             });
             $('#dealtCards').width(dealtCards.length * (this.cardWidth + this.cardSeparator));
-            $('#bottompanel > .center').height(this.cardHeight + this.cardSeparator);
-            $('#bottompanel > .center > ul > li').height(this.cardHeight + this.cardSeparator);
-            $('#bottompanel > .center > ul > .arrow > a').css({
+            $('#bottompanel .center').height(this.cardHeight + this.cardSeparator);
+            $('#bottompanel .center ul li').height(this.cardHeight + this.cardSeparator);
+            $('#bottompanel .center ul .arrow a').css({
                 'margin-top': parseInt((this.cardHeight + this.cardSeparator - 37) / 2)
             });
             $('.carousel').carousel('resize');
+
+            var messagesBox = $('.sidebar div .chat-messages-box');
+            var inputBox = $('.sidebar div .chat-input-box');
+            messagesBox.height(messagesBox.parent().height() - inputBox.outerHeight());
         },
         
         updateElements: function() {
@@ -532,7 +485,59 @@
                     .css({'font-size': parseInt(this.cardWidth / 8), 'line-height': labelSize + 'px'});
         },
 
+        updateProgressBar: function(value) {
+            var progress = $('#loadingbar').data('progressbar');
+            $('#loadingbar').progressbar('value', progress.value() + value);
+            if (Math.ceil(progress.value()) >= 100) $('#loading').hide();
+        },
+
+        load: function() {
+            this.updateProgressBar(5);
+            var arena = this;
+            $.getJSON('arena/package.json', function(data, textStatus) {
+                var elementSchool, card;
+                var count = 0;
+                for (elementSchool in data) for (card in data[elementSchool]) count++;
+                for (elementSchool in data) {
+                    for (card in data[elementSchool]) {
+                        $(new Image).load(function() {
+                            arena.updateProgressBar(85 / count);
+                        }).attr({'src': 'arena/' + elementSchool + '/' + card + '.png'});
+                    }
+                }
+            });
+            $.getJSON('arena/board.json', function(data, textStatus) {
+                arena.updateProgressBar(5);
+                $(window).data('since', data.lastAction);
+                $.each(data.players, function(i, player){arena.updatePlayer(player);});
+                arena.updateProgressBar(5);
+                setTimeout(function(){arena.checkStatus();}, 2000);
+            });
+        },
+
+        update: function() {
+            var arena = this;
+            $.getJSON('update/actions.json', {'since':$(window).data('since')}, function(actions, textStatus) {
+                $.each(actions, function(i, action) {
+                    arena.actionUpdate(i, action);
+                });
+                setTimeout(function() {arena.checkStatus();}, 2000);
+            });
+        },
+
+        checkStatus: function() {
+            var arena = this;
+            $.get('update/status.json', function(data, textStatus) {
+                if (parseInt(data) > $(window).data('since')) arena.update();
+                else setTimeout(function(){arena.checkStatus();}, 2000);
+            });
+        },
+
         updatePlayer: function(player) {
+            var playersCountLabel = $('.corner:eq(1) > .label');
+            playersCountLabel.text(parseInt(playersCountLabel.text()) + 1);
+            $('<li></li>').text(player.username).appendTo($('.players-list'));
+
             var arena = this;
             var playerDiv = $('.player[number="' + player.number + '"]');
             playerDiv.unbind('click');
@@ -558,7 +563,7 @@
                         element = $('<div class="element"></div>').attr({elementSchool: elementRecord.elementSchool})
                                 .css({'z-index': 10})
                                 .appendTo(scoreArea);
-                        $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
+                        $(new Image).attr({src:'image/msg/blank.png'}).appendTo(element);
                         $('<div class="elementAmount">' + elementRecord.amount + '</div>').appendTo(element);
                     }
                     if (player.self) {
@@ -710,14 +715,17 @@
 
         updateChatMessages: function(messages) {
             $.each(messages, function(i, message) {
-                $('<li>' + message.player + ':' + message.content + '</li>')
-                        .appendTo($('#sidebar > div:first > ul'));
+                var messagesBox = $('.sidebar div .chat-messages-box');
+                $('<li>' + message.player + ':' + Math.random() + '</li>').appendTo($('ul', messagesBox));
+                messagesBox.scrollTop(messagesBox.attr('scrollHeight'));
             });
         },
 
         beginTurn: function() {
             $('.corner').eq(3).unbind('click').click(this.endTurn)
                     .find('img').attr('src', 'image/corner/corner2a.png').css('cursor', 'pointer');
+            var turnLabel = $('.corner:eq(0) > .label');
+            turnLabel.text(parseInt(turnLabel.text()) + 1);
             $('.self .skillimage').show();
             $('#tip').text('Your Turn');
         },
@@ -746,10 +754,15 @@
             var actionHandler = this[action.action];
             if (actionHandler == null) {
                 alert(action.action + ' is not supported');
-                if ($('#sidebar > div:first > ul').children().length == 0)
-                    for (k in this) $('#sidebar > div:first > ul').append($('<li>' + k + '</li>'));
+                if ($('.sidebar > div:first > div > ul').children().length == 0)
+                    for (k in this) $('.sidebar > div:first > div > ul').append($('<li>' + k + '</li>'));
             }
             else eval('this.' + action.action + '(action)');
+        },
+
+        PlayerEnterAction: function(action) {
+            var turnLabel = $('.corner:eq(1) > .label');
+            turnLabel.text(parseInt(turnLabel.text()) + 1);
         },
 
         PlayerJoinAction: function(action) {
@@ -758,6 +771,8 @@
         },
 
         PlayerQuitAction: function(action) {
+            var turnLabel = $('.corner:eq(1) > .label');
+            turnLabel.text(parseInt(turnLabel.text()) - 1);
             if (action.self) action.target.self = action.self;
             this.quitPlayer(action.target);
         },

@@ -31,25 +31,44 @@ public enum CacheInstance {
 
     instance;
 
-    private final Cache cache;
+    private final Cache packageCache;
+
+    private final Cache boardCache;
+
+    private final Cache messageCache;
 
     private CacheInstance() {
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
-        Cache c = null;
+        props.put(GCacheFactory.EXPIRATION_DELTA, 24 * 60 * 60);
+        packageCache = createCache(props);
+        props.put(GCacheFactory.EXPIRATION_DELTA, 60 * 60);
+        boardCache = createCache(props);
+        props.put(GCacheFactory.EXPIRATION_DELTA, 20 * 60);
+        messageCache = createCache(props);
+    }
+
+    private static Cache createCache(Map<String, Object> props) {
         try {
-            c = CacheManager.getInstance().getCacheFactory().createCache(props);
+            return CacheManager.getInstance().getCacheFactory().createCache(props);
         } catch (CacheException ignored) {
+            return null;
         }
-        cache = c;
     }
 
     public static CacheInstance getInstance() {
         return instance;
     }
 
-    public Cache getCache() {
-        return cache;
+    public Cache getPackageCache() {
+        return packageCache;
+    }
+
+    public Cache getBoardCache() {
+        return boardCache;
+    }
+
+    public Cache getMessageCache() {
+        return messageCache;
     }
 
     public String getPlayerId() {
@@ -59,7 +78,7 @@ public enum CacheInstance {
 
     public PlayerCache getPlayerCache() {
         String id = getPlayerId();
-        if (cache.containsKey(id)) return (PlayerCache) cache.get(id);
+        if (boardCache.containsKey(id)) return (PlayerCache) boardCache.get(id);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Query query = pm.newQuery(PlayerRecordDO.class);
@@ -72,7 +91,7 @@ public enum CacheInstance {
         BoardDO board = pm.getObjectById(BoardDO.class, player.getBoardKey());
         PlayerCache playerCache = new PlayerCache(player.getKey(), board.getKey(),
                 board.getPackageKey(), getPackage(board.getPackageKey()).getBundleKey());
-        cache.put(id, playerCache);
+        boardCache.put(id, playerCache);
         return playerCache;
     }
 
@@ -91,12 +110,12 @@ public enum CacheInstance {
     }
 
     public PackageDO getPackage(Key key) {
-        if (cache.containsKey(key)) return (PackageDO) cache.get(key);
+        if (boardCache.containsKey(key)) return (PackageDO) boardCache.get(key);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO pack = pm.getObjectById(PackageDO.class, key);
         // Make transient so that we can put it into memcache.
         pm.makeTransient(pack);
-        cache.put(key, pack);
+        boardCache.put(key, pack);
         return pack;
     }
 }

@@ -1,39 +1,6 @@
-div.topbar {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 110px; /*border-bottom: solid gray 1px;*/
-    background: #e6e6e6;
-}
-
-div.bottombar {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 50px;
-    border-top: solid gray 1px; /*background:#e6e6e6;*/
-}
-
-div.bottombar .menu{
-    padding-top: 10px;
-}
-
-#logo {
-    display: inline;
-    float: left;
-    margin: 15px 100px;
-}
-
-#logo img {
-    display:inline;
-    vertical-align:middle;
-}
-
 div.menu {
     margin: 0;
-    padding-top: 70px;
+    padding: 0;
     text-align: center;
 }
 
@@ -49,8 +16,42 @@ div.menu ul li {
     vertical-align: bottom;
 }
 
+div.topbar {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 110px;
+    background: #e6e6e6;
+}
+
 div.topbar .menu {
     display: inline;
     float: right;
     margin-right: 100px;
+    padding-top: 70px;
+}
+
+div.bottombar {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 50px;
+    border-top: solid gray 1px;
+}
+
+div.bottombar .menu {
+    padding-top: 10px;
+}
+
+#logo {
+    position: absolute;
+    top: 15px;
+    left: 100px;
+}
+
+#logo img {
+    display:inline;
+    vertical-align:middle;
 }

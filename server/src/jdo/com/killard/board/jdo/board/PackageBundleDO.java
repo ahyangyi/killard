@@ -1,6 +1,7 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -62,6 +63,7 @@ public class PackageBundleDO {
     private SortedSet<PackageDO> packages;
 
     public PackageBundleDO(String name) {
+        KeyFactory.Builder keyBuilder = new KeyFactory.Builder(getClass().getSimpleName(), name);
         this.name = name;
         this.createdDate = Calendar.getInstance().getTime();
         this.modifiedDate = Calendar.getInstance().getTime();

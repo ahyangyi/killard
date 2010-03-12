@@ -35,7 +35,7 @@
 
         .ui-accordion .ui-accordion-content {
             background: url(image/texture/gray.png);
-            padding: 1em 1em
+            padding: 1em 1em;
         }
 
         .ui-layout-east {
@@ -43,7 +43,7 @@
             overflow: hidden;
         }
 
-        #sidebar h4 {
+        .sidebar h4 {
             font-size: 0.9em;
             font-weight: normal;
             border-width: 1px 0 0;
@@ -63,21 +63,21 @@
                 south__spacing_open: 1,
                 east__size: 250,
                 center__onresize: function () {
-                    $('#arena').arena('resize');
+                    $('.arena').arena('resize');
                 },
                 east__onresize: function () {
-                    $('#sidebar').accordion('resize');
+                    $('.sidebar').accordion('resize');
                 },
                 east__onopen: function () {
-                    $('#sidebar').accordion({fillSpace: true});
+                    $('.sidebar').accordion({fillSpace: true});
                 },
                 east__onclose: function () {
-                    $('#sidebar').accordion('destroy');
+                    $('.sidebar').accordion('destroy');
                 }
             });
             $('.carousel').carousel();
-            $('#sidebar').accordion({fillSpace: true});
-            $('#arena').arena();
+            $('.sidebar').accordion({fillSpace: true, active: 2});
+            $('.arena').arena();
         });
     </script>
 </head>
@@ -86,6 +86,7 @@
 <div id="loading">
     <div style="padding:100px;text-align:center;">
         <h3>Loading...</h3>
+
         <div id="loadingbar"></div>
     </div>
 </div>
@@ -113,14 +114,14 @@
         </ul>
     </div>
 </div>
-<div id="arena">
+<div class="arena">
 
 <ul class="top">
     <li>
         <div class="corner">
             <img src="image/corner/corner4.png"/>
 
-            <div class="label">1</div>
+            <div class="label">0</div>
         </div>
     </li>
     <li>
@@ -129,7 +130,7 @@
                 <li><img src="image/role/role1.png"/></li>
                 <li><img src="image/head/female.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -140,7 +141,7 @@
                 <li><img src="image/role/role4.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -151,7 +152,7 @@
                 <li><img src="image/role/role3.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -162,7 +163,7 @@
         <div class="corner">
             <img src="image/corner/corner3.png"/>
 
-            <div class="label">1</div>
+            <div class="label">0</div>
         </div>
     </li>
 </ul>
@@ -174,7 +175,7 @@
                 <li><img src="image/role/role2.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -185,7 +186,7 @@
                 <li><img src="image/role/role1.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -280,7 +281,7 @@
                 <li><img src="image/role/role1.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -291,7 +292,7 @@
                 <li><img src="image/role/role3.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -312,7 +313,7 @@
                 <li><img src="image/role/role2.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -323,7 +324,7 @@
                 <li><img src="image/role/role3.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -334,7 +335,7 @@
                 <li><img src="image/role/role1.png"/></li>
                 <li><img src="image/head/head.png"/></li>
                 <li>
-                    <img src="image/msg/msg.png"/>
+                    <img src="image/msg/blank.png"/>
 
                     <div class="score"></div>
                 </li>
@@ -373,23 +374,31 @@
 </div>
 
 <div class="ui-layout-east" style="display: none;">
-    <div id="sidebar" class="basic">
-        <a href="#">Chat</a>
+    <div class="ui-layout-content">
+        <div class="sidebar basic">
+            <a href="#">Game Information</a>
 
-        <div>
-            <label>
-                <input type="text" size="15" id="chatinput"/>
-            </label>
-            <hr/>
-            <ul>
-            </ul>
+            <div>Invite others to join this game</div>
+            <a href="#">Players</a>
+
+            <div>
+                <ul class="players-list"></ul>
+            </div>
+            <a href="#">Chat</a>
+
+            <div>
+                <div class="chat-messages-box">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="chat-input-box">
+                    <hr/>
+                    <label>
+                        <input type="text" class="chat-input"/>
+                    </label>
+                </div>
+            </div>
         </div>
-        <a href="#">Players</a>
-
-        <div>Second content</div>
-        <a href="#">Game Information</a>
-
-        <div>Invite others to join this game</div>
     </div>
 </div>
 

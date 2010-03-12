@@ -24,6 +24,8 @@
             $(this.element).bind('goto', function (event, page) {
                 carousel.gotoPage(page);
             });
+
+            this.resize();
         },
 
         destroy : function() {
@@ -50,11 +52,20 @@
         },
 
         resize: function() {
+            var centerHeight = $('.center', this.element).height();
             $('.center .content .list', this.element).width(this.centerWidth());
+//            $('.center', this.element).height($(this.element).height() - $('.bottom', this.element).height());
+
+            if (centerHeight > 0) {
+                $('.center ul li', this.element).height(centerHeight);
+                $('.center ul .arrow a', this.element).css({
+                    'margin-top': parseInt((centerHeight - 37) / 2)
+                });
+            }
         },
 
         centerWidth: function() {
-            return $(this.element).width() - 2 * 37;
+            return $(this.element).width() - 2 * 50;
         }
     });
 

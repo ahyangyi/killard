@@ -195,7 +195,6 @@ ul li {
     position: relative;
     margin: 0;
     padding: 0;
-    /*z-index: 1;*/
     border: 3px solid white;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;

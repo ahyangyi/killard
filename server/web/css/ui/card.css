@@ -1,0 +1,23 @@
+.vmenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vmenu a:link,
+.vmenu a:visited {
+    display: block;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #999999;
+    width: 300px;
+    height: 2em;
+    line-height: 2em;
+    text-decoration: none;
+    padding-left: 1em;
+}
+
+.vmenu a:hover,
+.vmenu a:active {
+    background-color: #cccccc;
+}

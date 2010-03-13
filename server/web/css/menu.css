@@ -1,3 +1,12 @@
+body {
+    font: .75em / 1.5em Helvetica, Arial, "Liberation Sans", "Bitstream Vera Sans", sans-serif;
+}
+
+form {
+    margin:0;
+    padding:0;
+}
+
 div.menu {
     margin: 0;
     padding: 0;
@@ -14,6 +23,7 @@ div.menu ul {
 div.menu ul li {
     display: inline;
     vertical-align: bottom;
+    padding-right: 0.5em;
 }
 
 div.topbar {
@@ -21,15 +31,15 @@ div.topbar {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 110px;
-    background: #e6e6e6;
+    height: 76px;
+    background: url(../image/bg_topbar.png);
 }
 
 div.topbar .menu {
     display: inline;
     float: right;
     margin-right: 100px;
-    padding-top: 70px;
+    line-height: 76px;
 }
 
 div.bottombar {
@@ -37,21 +47,20 @@ div.bottombar {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 50px;
+    height: 1.5em;
+    line-height: 1.5em;
     border-top: solid gray 1px;
-}
-
-div.bottombar .menu {
-    padding-top: 10px;
+    font-family: serif;
 }
 
 #logo {
     position: absolute;
-    top: 15px;
+    top: 3px;
     left: 100px;
 }
 
 #logo img {
-    display:inline;
-    vertical-align:middle;
+    display: inline;
+    float: left;
+    vertical-align: middle;
 }

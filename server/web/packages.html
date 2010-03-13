@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://apps.facebook.com/ns/1.0" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link type="text/css" href="css/layout.css" rel="stylesheet"/>
     <link type="text/css" href="css/menu.css" rel="stylesheet"/>
@@ -22,12 +22,28 @@
             background: #f9f9f9;
         }
 
+        .ui-layout-center {
+            padding-left: 50px;
+        }
+
+        .ui-layout-east {
+            padding-right:50px;
+        }
+
         .carousel .content {
             background: #D1D1D1;
         }
 
         .carousel .bottom {
             display: none;
+        }
+
+        .cards-show img {
+            padding: 15px;
+            border: 1px solid #ccc;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            background-color: #eee;
         }
     </style>
     <script type="text/javascript">
@@ -51,7 +67,7 @@
                     'line-height': cornerLength + 'px'
                 }).height(cornerLength);
 
-                $('.dashboard .description img').width( 2 * cornerLength).height( 2 * cornerLength);
+                $('.dashboard .description img').width( 2 * cornerLength);
             }
             
             resize();
@@ -122,23 +138,28 @@
     </div>
     <div class="menu">
         <ul>
-            <li><a href="index.html">Home</a>|</li>
-            <li><a href="packages.html">All Games</a>|</li>
-            <li><a href="arena.html">Arena</a>|</li>
-            <li><a href="#">DIY</a>|</li>
-            <li><a href="#">Help</a>|</li>
+            <li><a href="index.html">Home</a></li>
+            <li>|</li>
+            <li><a href="packages.html">All Games</a></li>
+            <li>|</li>
+            <li><a href="arena.html">Arena</a></li>
+            <li>|</li>
+            <li><a href="#">DIY</a></li>
+            <li>|</li>
+            <li><a href="#">Help</a></li>
+            <li>|</li>
             <li><a href="#">Logout</a></li>
         </ul>
     </div>
 </div>
 
 <div class="container">
-    <div class="ui-layout-center" style="display:none;padding-left:50px;">
+    <div class="ui-layout-center">
         <div class="dashboard">
-            <div class="corner" style="top:0;left:0;"><img src="image/ring.png"/></div>
-            <div class="corner" style="top:0;right:0;"><img src="image/ring.png"/></div>
-            <div class="corner" style="bottom:0;left:0;"><img src="image/ring.png"/></div>
-            <div class="corner" style="bottom:0;right:0;"><img src="image/ring.png"/></div>
+            <div class="corner" style="top:0;left:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="top:0;right:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;left:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;right:0;"><img src="image/cycle.png"/></div>
             <div class="title">    
                 <div class="menu">
                     <ul>
@@ -151,7 +172,11 @@
             <div class="description">
                 <div class="menu">
                     <ul>
-                        <li><img src="image/index.png"/></li>
+                        <li>
+                            <div class="cards-show">
+                                <img src="arena/AIR/Spellbreaker.png"/>
+                            </div>
+                        </li>
                         <li>
                             <p>This game is talking about animals.</p>
                         </li>
@@ -180,13 +205,13 @@
             </div>
         </div>
     </div>
-    <div class="ui-layout-east" style="display:none;padding-right:50px;">
+    <div class="ui-layout-east">
         <div class="richlist" style="height:95%;">
             <ul>
             </ul>
         </div>
     </div>
-    <div class="ui-layout-south" style="display: none;">
+    <div class="ui-layout-south">
         <div class="carousel" style="height:100%;">
             <div class="center" style="height:100%;">
                 <ul>
@@ -220,8 +245,10 @@
 <div class="bottombar">
     <div class="menu">
         <ul>
-            <li>Killard &copy; 2010|</li>
-            <li><a href="#">Terms</a>|</li>
+            <li>Killard &copy; 2010</li>
+            <li>|</li>
+            <li><a href="#">Terms</a></li>
+            <li>|</li>
             <li><a href="#">Privacy</a></li>
         </ul>
     </div>

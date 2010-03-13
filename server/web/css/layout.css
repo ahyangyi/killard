@@ -1,3 +1,23 @@
+.ui-layout-north {
+    display: none;
+}
+
+.ui-layout-west {
+    display: none;
+}
+
+.ui-layout-center {
+    display: none;
+}
+
+.ui-layout-east {
+    display: none;
+}
+
+.ui-layout-south {
+    display: none;
+}
+
 /*
  *	PANES & CONTENT-DIVs
  */

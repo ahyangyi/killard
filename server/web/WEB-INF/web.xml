@@ -82,11 +82,6 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.json</url-pattern>
     </servlet-mapping>
 
@@ -97,7 +92,7 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.png</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -126,17 +121,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>board-action</web-resource-name>
-            <url-pattern>/arena.html</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>arena-action</web-resource-name>
+            <web-resource-name>arena</web-resource-name>
             <url-pattern>/arena/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>

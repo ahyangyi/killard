@@ -69,40 +69,36 @@ public class ArenaController extends BasicController {
         }
     }
 
-    @RequestMapping(value = {"/arena/package.json"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/package"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getPackage(ModelMap modelMap) throws Exception {
         CacheInstance instance = CacheInstance.getInstance();
         modelMap.put("package", instance.getPackage(instance.getPlayerCache().getPackageKey()));
         return "arena/package";
     }
 
-    @RequestMapping(value = {"/arena.html", "/arena.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String arena(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = {"/arena"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String arena() throws Exception {
         return "arena";
     }
 
-    @RequestMapping(value = {"/arena/new.html", "/arena/new.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/new"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
-                        HttpServletRequest request, HttpServletResponse response,
-                        ModelMap modelMap) throws Exception {
+                        HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("New game record for " + getUser().getNickname() + " package " + packageBundleId);
         PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player != null) quit();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageDO gamePackage = getPackage(packageBundleId);
-        long timeStart = System.currentTimeMillis();
         BoardDO board = new BoardDO(gamePackage, getUser().getNickname(), playerNumber);
         board = pm.makePersistent(board);
         PersistenceHelper.commit();
 
         join(board, 1);
         redirect("/arena", request, response);
-//        modelMap.put("time", System.currentTimeMillis() - timeStart);
-//        return "arena/new";
     }
 
-    @RequestMapping(value = {"/arena/enter.html", "/arena/enter.xml"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/enter"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void enter(@RequestParam("packageBundleId") long packageBundleId,
                       @RequestParam("boardId") long boardId,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -116,8 +112,7 @@ public class ArenaController extends BasicController {
         redirect("/arena", request, response);
     }
 
-    @RequestMapping(value = {"/arena/join.html", "/arena/join.xml", "/arena/join.json"},
-            method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/join"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("number") int number, HttpServletResponse response) throws Exception {
         getLog().fine("Join record for " + getUser().getNickname() + " at " + number);
 
@@ -128,7 +123,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/quit.html"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/quit"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Quit record for " + getUser().getNickname());
 
@@ -137,7 +132,7 @@ public class ArenaController extends BasicController {
         redirect("/packages", request, response);
     }
 
-    @RequestMapping(value = {"/arena/board.json"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/arena/board"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         CacheInstance instance = CacheInstance.getInstance();
         String playerId = instance.getPlayerId();
@@ -153,7 +148,7 @@ public class ArenaController extends BasicController {
         return "arena/board";
     }
 
-    @RequestMapping(value = {"/arena/playcard.html", "/arena/playcard.xml", "/arena/playcard.json"},
+    @RequestMapping(value = {"/arena/playcard"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void playCard(@RequestParam("elementSchoolName") String elementSchoolName,
                            @RequestParam("cardName") String cardName,
@@ -170,7 +165,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/cast.html", "/arena/cast.xml", "/arena/cast.json"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/arena/cast"}, method = RequestMethod.POST)
     public void cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex,
                        @RequestParam("target[]") String[] target,
@@ -202,7 +197,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/endturn.html", "/arena/endturn.xml", "/arena/endturn.json"},
+    @RequestMapping(value = {"/arena/endturn"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void endTurn(HttpServletResponse response) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());
@@ -215,7 +210,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/endcall.html", "/arena/endcall.xml", "/arena/endcall.json"},
+    @RequestMapping(value = {"/arena/endcall"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void endCall(HttpServletResponse response) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());

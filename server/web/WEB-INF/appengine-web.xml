@@ -13,12 +13,11 @@
         <include path="/**.jpg"/>
         <include path="/**.css"/>
         <include path="/**.swf"/>
-        <include path="/**.htm"/>
         <include path="/**.txt"/>
-        <include path="/arena.html"/>
+        <exclude path="/arena/**.png"/>
         <exclude path="/package/**.png"/>
-        <exclude path="/**.json"/>
         <exclude path="/**.html"/>
+        <exclude path="/**.json"/>
         <exclude path="/**.xml"/>
     </static-files>
 

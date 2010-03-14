@@ -51,10 +51,6 @@ public class ImageController extends BasicController {
         response.setContentType("image/png");
         if (card.isRenderable()) {
             byte[] data = card.getImageData();
-//            ImagesService imagesService = ImagesServiceFactory.getImagesService();
-//            Image oldImage = ImagesServiceFactory.makeImage(data);
-//            Transform resize = ImagesServiceFactory.makeResize(171, 264);
-//            Image cardImage = imagesService.applyTransform(resize, oldImage);
 
             try {
                 response.getOutputStream().write(data);

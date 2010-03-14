@@ -3,6 +3,7 @@ package com.killard.board.jdo;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.context.BoardContext;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -42,6 +43,9 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     @Persistent
     private Date modifiedDate;
+
+    @Persistent
+    private Image.Format imageFormat;
 
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
@@ -140,6 +144,14 @@ public abstract class DescriptableDO<S extends DescriptableDO, P extends Propert
 
     public boolean isRenderable() {
         return image != null;
+    }
+
+    public Image.Format getImageFormat() {
+        return imageFormat;
+    }
+
+    public void setImageFormat(Image.Format imageFormat) {
+        this.imageFormat = imageFormat;
     }
 
     public byte[] getImageData() {

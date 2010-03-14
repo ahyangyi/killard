@@ -43,6 +43,7 @@ form .field, form .buttons {
 
 form .field label {
     display: block;
+    margin-bottom: 1em;
 }
 
 form ul.fields {

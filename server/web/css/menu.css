@@ -36,9 +36,8 @@ div.topbar {
 }
 
 div.topbar .menu {
-    display: inline;
     float: right;
-    margin-right: 100px;
+    margin-right: 60px;
     line-height: 76px;
 }
 

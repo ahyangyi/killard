@@ -6,7 +6,7 @@
     <link type="text/css" href="css/ui/arena.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
@@ -69,7 +69,7 @@
                     $('.sidebar').accordion('resize');
                 },
                 east__onopen: function () {
-                    $('.sidebar').accordion({fillSpace: true});
+                    $('.sidebar').accordion({fillSpace: true, active: 2});
                 },
                 east__onclose: function () {
                     $('.sidebar').accordion('destroy');

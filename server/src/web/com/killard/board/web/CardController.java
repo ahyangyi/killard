@@ -2,6 +2,10 @@ package com.killard.board.web;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.Transform;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
@@ -142,7 +146,12 @@ public class CardController extends BasicController {
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        card.setImageData(file.getBytes());
+        ImagesService imagesService = ImagesServiceFactory.getImagesService();
+        Image oldImage = ImagesServiceFactory.makeImage(file.getBytes());
+        Transform resize = ImagesServiceFactory.makeResize(171, 264);
+        Image cardImage = imagesService.applyTransform(resize, oldImage);
+        cardImage.getFormat().name();
+        card.setImageData(cardImage.getImageData());
         pm.makePersistent(card);
 
         redirect("/arena", request, response);

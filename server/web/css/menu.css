@@ -22,8 +22,6 @@ div.menu ul {
 
 div.menu ul li {
     display: inline;
-    vertical-align: bottom;
-    padding-right: 0.5em;
 }
 
 div.topbar {

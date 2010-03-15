@@ -67,8 +67,8 @@ public class CardController extends BasicController {
         modelMap.put("card", card);
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
-        modelMap.put("elementSchool", elementSchool);
-        return "package/card/view";
+        modelMap.put("element", elementSchool);
+        return "card/view";
     }
 
     @RequestMapping(value = {"/*/*/*/*.png"}, method = RequestMethod.GET)
@@ -134,7 +134,7 @@ public class CardController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/card/view";
+        return "card/view";
     }
 
     @RequestMapping(value = "/*/*/*/delete", method = RequestMethod.POST)
@@ -161,8 +161,8 @@ public class CardController extends BasicController {
 
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
-        modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool/view";
+        modelMap.put("element", elementSchool);
+        return "elementschool/view";
     }
 
     @RequestMapping(value = "/*/*/*/updateimage", method = RequestMethod.POST)

@@ -45,6 +45,18 @@
             -moz-border-radius: 20px;
             background-color: #eee;
         }
+
+        div.description ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        div.description ul li {
+            display: inline;
+            float: left;
+            word-wrap: break-word;
+        }
     </style>
     <script type="text/javascript">
         $(function () {
@@ -67,7 +79,18 @@
                     'line-height': cornerLength + 'px'
                 }).height(cornerLength);
 
+                $('.dashboard .description').css({
+                    'margin-left': cornerLength,
+                    'margin-right': cornerLength
+                });
+
                 $('.dashboard .description img').width( 2 * cornerLength);
+                $('.dashboard .description li').width(parseInt(($('.dashboard').width() - 2 * cornerLength) / 2))
+                        .height(parseInt(($('.dashboard').height() - 3 * cornerLength)))
+                        .css({
+                    'margin-top': parseInt(cornerLength /2 ),
+                    'margin-bottom': parseInt(cornerLength /2 )
+                });
             }
 
             resize();
@@ -152,18 +175,16 @@
                 </div>
             </div>
             <div class="description">
-                <div class="menu">
-                    <ul>
-                        <li>
-                            <div class="cards-show">
-                                <img src="games/orions/1/AIR/Spellbreaker.png"/>
-                            </div>
-                        </li>
-                        <li>
-                            <p>This game is talking about animals.</p>
-                        </li>
-                    </ul>
-                </div>
+                <ul>
+                    <li>
+                        <div class="cards-show">
+                            <img src="games/orions/1/AIR/Spellbreaker.png"/>
+                        </div>
+                    </li>
+                    <li>
+                        <p>This game is talking about animals.</p>
+                    </li>
+                </ul>
             </div>
             <div class="new-game-form">
                 <form action="/arena/new.html" method="POST">

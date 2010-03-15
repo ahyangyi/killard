@@ -109,6 +109,10 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return role;
     }
 
+    public RoleDO[] getAllRoles() {
+        return roles.toArray(new RoleDO[roles.size()]);
+    }
+
     public Map<String, RoleDO> getRoles() {
         Map<String, RoleDO> map = new HashMap<String, RoleDO>();
         for (RoleDO role : roles) map.put(role.getName(), role);

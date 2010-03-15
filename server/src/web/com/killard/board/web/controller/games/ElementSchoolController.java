@@ -37,15 +37,16 @@ public class ElementSchoolController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
-        Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
-
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getRelease();
+        Key elementSchoolkey =
+                KeyFactory.createKey(pack.getKey(), ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+
         ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementSchoolkey);
 
         modelMap.put("bundle", bundle);
-        modelMap.put("elementSchool", elementSchool);
+        modelMap.put("package", pack);
+        modelMap.put("element", elementSchool);
         return "elementschool/view";
     }
 

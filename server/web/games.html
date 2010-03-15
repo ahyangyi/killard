@@ -41,9 +41,18 @@
         .cards-show img {
             padding: 15px;
             border: 1px solid #ccc;
-            -webkit-border-radius: 20px;
-            -moz-border-radius: 20px;
             background-color: #eee;
+        }
+
+        div.description ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        div.description ul li {
+            display: inline;
+            float: left;
         }
     </style>
     <script type="text/javascript">
@@ -67,7 +76,29 @@
                     'line-height': cornerLength + 'px'
                 }).height(cornerLength);
 
+                $('.dashboard .description').css({
+                    'margin-left': cornerLength,
+                    'margin-right': cornerLength
+                });
+
                 $('.dashboard .description img').width( 2 * cornerLength);
+                $('.dashboard .description li').width(parseInt(($('.dashboard').width() - 2 * cornerLength) / 2))
+                        .height(parseInt(($('.dashboard').height() - 3 * cornerLength)))
+                        .css({
+                    'margin-top': parseInt(cornerLength /2 ),
+                    'margin-bottom': parseInt(cornerLength /2 )
+                });
+
+                var h = $('.carousel .center').height();
+                var padding = parseInt(h / 10);
+                var w = h - parseInt(h / 5);
+                $('.carousel .center .content .list li img').width(w).height(w);
+                $('.carousel .center .content .list li').css({
+                        'padding-top': padding,
+                        'padding-bottom': padding,
+                        'padding-left': padding,
+                        'padding-right': padding
+                }).width(w).height(w);
             }
             
             resize();
@@ -125,9 +156,10 @@
                     var packageLi = $('<li></li>').appendTo($("#packageList"));
                     $(new Image).attr('src', game.picture).addClass('item').click(function() {
                         showGame(game);
-                    }).width($('.carousel .center').height()).appendTo(packageLi);
+                    }).appendTo(packageLi);
+                    resize();
                 });
-                showGame(data[0]);
+//                showGame(data[0]);
             });
         });
     </script>
@@ -172,18 +204,16 @@
                 </div>
             </div>
             <div class="description">
-                <div class="menu">
-                    <ul>
-                        <li>
-                            <div class="cards-show">
-                                <img src="games/orions/1/AIR/Spellbreaker.png"/>
-                            </div>
-                        </li>
-                        <li>
-                            <p>This game is talking about animals.</p>
-                        </li>
-                    </ul>
-                </div>
+                <ul>
+                    <li>
+                        <div class="cards-show">
+                            <img src="games/orions/1/AIR/Spellbreaker.png"/>
+                        </div>
+                    </li>
+                    <li>
+                        <p>This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.</p>
+                    </li>
+                </ul>
             </div>
             <div class="new-game-form">
                 <form action="/arena/new.html" method="POST">
@@ -220,7 +250,12 @@
                     <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
                     <li class="content">
                         <div class="list">
-                            <ul id="packageList"></ul>
+                            <ul id="packageList">
+                                <li class="item"><img src="image/cards/1.png"/></li>
+                                <li class="item"><img src="image/cards/2.png"/></li>
+                                <li class="item"><img src="image/cards/3.png"/></li>
+                                <li class="item"><img src="image/cards/4.png"/></li>
+                            </ul>
                         </div>
                     </li>
                     <li class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>

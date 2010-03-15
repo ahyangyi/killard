@@ -64,6 +64,7 @@
     padding: 0;
     width: 6%;
     height: 100%;
+    overflow: hidden;
 }
 
 .carousel .center .item {

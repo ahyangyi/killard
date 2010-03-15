@@ -1,4 +1,4 @@
-package com.killard.board.web;
+package com.killard.board.web.controller;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -39,7 +39,7 @@ public class BasicController {
 
     protected void redirect(String method, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String uri = request.getRequestURI();
-        String resource = uri.substring(uri.indexOf("."));
+        String resource = uri.indexOf(".") > 0 ? uri.substring(uri.indexOf(".")) : "";
         response.sendRedirect(method + resource);
     }
 
@@ -65,8 +65,8 @@ public class BasicController {
         return bundle.getRelease();
     }
     
-    protected Long getPackageBundleId(String uri) {
-        return Long.parseLong(uri.split("/")[2]);
+    protected String getPackageBundleId(String uri) {
+        return uri.split("/")[2];
     }
 
 }

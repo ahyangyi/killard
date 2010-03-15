@@ -10,7 +10,6 @@
        http://www.springframework.org/schema/jee
        http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
-
     <!-- ========================= VIEW DEFINITIONS ========================= -->
 
     <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
@@ -31,17 +30,17 @@
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="text/html"/>
-                    <property name="prefix" value="/WEB-INF/html/"/>
+                    <property name="prefix" value="/WEB-INF/html/games/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="application/json"/>
-                    <property name="prefix" value="/WEB-INF/js/"/>
+                    <property name="prefix" value="/WEB-INF/json/games/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="text/xml"/>
-                    <property name="prefix" value="/WEB-INF/xml/"/>
+                    <property name="prefix" value="/WEB-INF/xml/games/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>
@@ -75,10 +74,6 @@
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 
-    <context:component-scan base-package="com.killard.board.web">
-        <context:exclude-filter type="regex" expression=".*Servlet"/>
-    </context:component-scan>
-
-    <context:component-scan base-package="com.killard.board.xmpp"/>
+    <context:component-scan base-package="com.killard.board.web.controller.games"/>
 
 </beans>

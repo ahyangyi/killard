@@ -1,6 +1,6 @@
 package com.killard.board.web.rss;
 
-import com.killard.board.web.BasicController;
+import com.killard.board.web.controller.BasicController;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;

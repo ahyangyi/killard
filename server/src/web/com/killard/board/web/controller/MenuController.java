@@ -1,21 +1,8 @@
-package com.killard.board.web;
+package com.killard.board.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.ui.ModelMap;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Extent;
-
-import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.PackageStatus;
-
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * <p>

@@ -1,13 +1,12 @@
-package com.killard.board.web;
+package com.killard.board.web.controller.games;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesServiceFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
+import com.killard.board.web.controller.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * <p>
@@ -32,8 +28,8 @@ import java.io.InputStream;
 @Controller
 public class ImageController extends BasicController {
 
-    @RequestMapping(value = "/package/*/*/*.png", method = RequestMethod.GET)
-    public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/*/*/*.png", method = RequestMethod.GET)
+    public void getCardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         Long packageBundleId = Long.parseLong(ids[2]);
         String elementSchoolName = ids[3];
@@ -59,21 +55,6 @@ public class ImageController extends BasicController {
         } else {
             throw new IOException("This board has no image.");
         }
-    }
-
-    public Image makeNumberImage(int number, HttpServletRequest request) throws IOException {
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        InputStream in = new FileInputStream(request.getRealPath("/WEB-INF/card/" + String.valueOf(number) + ".png"));
-        byte[] data = new byte[256];
-        int length;
-        try {
-            while ((length = in.read(data)) > 0) {
-                buf.write(data, 0, length);
-            }
-        } finally {
-            in.close();
-        }
-        return ImagesServiceFactory.makeImage(buf.toByteArray());
     }
 
 }

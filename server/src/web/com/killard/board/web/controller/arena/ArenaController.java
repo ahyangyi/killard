@@ -1,4 +1,4 @@
-package com.killard.board.web;
+package com.killard.board.web.controller.arena;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -14,6 +14,7 @@ import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
 import com.killard.board.web.cache.CacheInstance;
 import com.killard.board.web.cache.PlayerCache;
+import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,7 +39,12 @@ import java.io.IOException;
 @Controller
 public class ArenaController extends BasicController {
 
-    @RequestMapping(value = "/arena/*/*.png", method = RequestMethod.GET)
+    @RequestMapping(value = {"/arena"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String arena() throws Exception {
+        return "arena";
+    }
+
+    @RequestMapping(value = "/*/*.png", method = RequestMethod.GET)
     public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         String elementSchoolName = ids[2];
@@ -69,23 +75,18 @@ public class ArenaController extends BasicController {
         }
     }
 
-    @RequestMapping(value = {"/arena/package"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/package"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getPackage(ModelMap modelMap) throws Exception {
         CacheInstance instance = CacheInstance.getInstance();
         modelMap.put("package", instance.getPackage(instance.getPlayerCache().getPackageKey()));
         return "arena/package";
     }
 
-    @RequestMapping(value = {"/arena"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String arena() throws Exception {
-        return "arena";
-    }
-
-    @RequestMapping(value = {"/arena/new"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/new"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("New game record for " + getUser().getNickname() + " package " + packageBundleId);
+        getLog().fine("New games record for " + getUser().getNickname() + " package " + packageBundleId);
         PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player != null) quit();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -98,7 +99,7 @@ public class ArenaController extends BasicController {
         redirect("/arena", request, response);
     }
 
-    @RequestMapping(value = {"/arena/enter"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/enter"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void enter(@RequestParam("packageBundleId") long packageBundleId,
                       @RequestParam("boardId") long boardId,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -112,7 +113,7 @@ public class ArenaController extends BasicController {
         redirect("/arena", request, response);
     }
 
-    @RequestMapping(value = {"/arena/join"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/join"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void join(@RequestParam("number") int number, HttpServletResponse response) throws Exception {
         getLog().fine("Join record for " + getUser().getNickname() + " at " + number);
 
@@ -123,7 +124,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/quit"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/quit"}, method = {RequestMethod.GET, RequestMethod.POST})
     public void quit(HttpServletRequest request, HttpServletResponse response) throws Exception {
         getLog().fine("Quit record for " + getUser().getNickname());
 
@@ -132,7 +133,7 @@ public class ArenaController extends BasicController {
         redirect("/packages", request, response);
     }
 
-    @RequestMapping(value = {"/arena/board"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/board"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String board(ModelMap modelMap) throws Exception {
         CacheInstance instance = CacheInstance.getInstance();
         String playerId = instance.getPlayerId();
@@ -148,7 +149,7 @@ public class ArenaController extends BasicController {
         return "arena/board";
     }
 
-    @RequestMapping(value = {"/arena/playcard"},
+    @RequestMapping(value = {"/playcard"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void playCard(@RequestParam("elementSchoolName") String elementSchoolName,
                            @RequestParam("cardName") String cardName,
@@ -165,7 +166,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/cast"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cast"}, method = RequestMethod.POST)
     public void cast(@RequestParam("cardPosition") int cardPosition,
                        @RequestParam("skillIndex") int skillIndex,
                        @RequestParam("target[]") String[] target,
@@ -197,7 +198,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/endturn"},
+    @RequestMapping(value = {"/endturn"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void endTurn(HttpServletResponse response) throws Exception {
         getLog().fine("End turn for " + getUser().getNickname());
@@ -210,7 +211,7 @@ public class ArenaController extends BasicController {
         ResponseUtils.outputActions(response, board.getActions(), start);
     }
 
-    @RequestMapping(value = {"/arena/endcall"},
+    @RequestMapping(value = {"/endcall"},
             method = {RequestMethod.GET, RequestMethod.POST})
     public void endCall(HttpServletResponse response) throws Exception {
         getLog().fine("End call for " + getUser().getNickname());

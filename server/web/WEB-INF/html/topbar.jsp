@@ -1,16 +1,16 @@
 <%@ include file="/WEB-INF/html/includes.jsp" %>
 <div class="topbar">
     <div id="logo">
-        <img src="image/logo.png"/>
-        <img src="image/title.png"/>
+        <img src="<c:url value="/image/logo.png"/>"/>
+        <img src="<c:url value="/image/title.png"/>"/>
     </div>
     <div class="menu">
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>|</li>
-            <li><a href="browser.html">All Games</a></li>
+            <li><a href="<c:url value="/games"/>">All Games</a></li>
             <li>|</li>
-            <li><a href="arena.html">Arena</a></li>
+            <li><a href="<c:url value="/arena"/>">Arena</a></li>
             <li>|</li>
             <li><a href="#">DIY</a></li>
             <li>|</li>

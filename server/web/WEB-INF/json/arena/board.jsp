@@ -1,5 +1,5 @@
 {
-<%@ include file="/WEB-INF/js/includes.jsp" %>
+<%@ include file="/WEB-INF/json/includes.jsp" %>
 <%--@elvariable id="lastAction" type="long"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
 <%--@elvariable id="playerId" type="java.lang.String"--%>

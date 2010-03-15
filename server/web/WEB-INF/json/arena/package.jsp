@@ -1,5 +1,5 @@
 {
-<%@ include file="/WEB-INF/js/includes.jsp" %>
+<%@ include file="/WEB-INF/json/includes.jsp" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <c:forEach var="elementSchool" items="${package.elementSchools}" varStatus="status">
     <c:if test="${not status.first}">,</c:if>

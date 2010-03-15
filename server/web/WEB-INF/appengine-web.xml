@@ -14,9 +14,9 @@
         <include path="/**.css"/>
         <include path="/**.swf"/>
         <include path="/**.txt"/>
+        <include path="/**.html"/>
         <exclude path="/arena/**.png"/>
         <exclude path="/package/**.png"/>
-        <exclude path="/**.html"/>
         <exclude path="/**.json"/>
         <exclude path="/**.xml"/>
     </static-files>

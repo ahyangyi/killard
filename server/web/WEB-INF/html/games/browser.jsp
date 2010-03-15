@@ -119,7 +119,7 @@
                 setTimeout(updateGameList, 0);
             }
 
-            $.getJSON('packages.json', '', function(data, textStatus) {
+            $.getJSON('games/packages.json', '', function(data, textStatus) {
                 $.each(data, function(i, item) {
                     $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture
                             + '\')" class="item" src="' + item.picture + '"/></li>');
@@ -131,7 +131,7 @@
     </script>
 </head>
 <body>
-<%@include file="topbar.jsp"%>
+<%@include file="../topbar.jsp"%>
 <div class="container">
     <div class="ui-layout-center">
         <div class="dashboard">
@@ -206,8 +206,8 @@
             <div class="bottom">
                 <div class="searchbar">
                     <ul>
-                        <li class="tag"><a href="#">card</a></li>
-                        <li class="tag"><a href="#">chess</a></li>
+                        <li class="tag"><a href="browser.jsp#">card</a></li>
+                        <li class="tag"><a href="browser.jsp#">chess</a></li>
                         <li class="searchbox">
                             <div class="wrapper">
                                 <input class="text" type="text"/>
@@ -220,6 +220,6 @@
         </div>
     </div>
 </div>
-<%@include file="bottombar.jsp"%>
+<%@include file="../bottombar.jsp"%>
 </body>
 </html>

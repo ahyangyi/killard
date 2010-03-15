@@ -1,9 +1,10 @@
 [
-<%@ include file="/WEB-INF/js/includes.jsp" %>
+<%@ include file="/WEB-INF/json/includes.jsp" %>
 <%--@elvariable id="packages" type="java.util.List<com.killard.board.jdo.board.PackageDO>"--%>
 <c:forEach var="package" items="${packages}" varStatus="status">
     {
-        "id" : "${package.bundleKey.id}",
+        "bundle" : "${package.bundleKey.name}",
+        "id" : "${package.key.id}",
         "title" : "${package.descriptor.name}",
         "description" : "${package.descriptor.description}",
         "picture" : "image/index.png"

@@ -374,7 +374,7 @@
 
 <div class="ui-layout-east" style="display: none;">
     <div id="sidebar" class="basic">
-        <a href="#">Chat</a>
+        <a href="arena.jsp#">Chat</a>
 
         <div>
             <label>
@@ -384,10 +384,10 @@
             <ul>
             </ul>
         </div>
-        <a href="#">Players</a>
+        <a href="arena.jsp#">Players</a>
 
         <div>Second content</div>
-        <a href="#">Game Information</a>
+        <a href="arena.jsp#">Game Information</a>
 
         <div>Invite others to join this game</div>
     </div>

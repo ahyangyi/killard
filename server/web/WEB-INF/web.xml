@@ -32,12 +32,7 @@
 
     <filter-mapping>
         <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>/package/*</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>/packages.*</url-pattern>
+        <url-pattern>/games/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
@@ -46,7 +41,13 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>dispatcher</servlet-name>
+        <servlet-name>arena</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>games</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -76,38 +77,28 @@
     <!--</servlet>-->
 
     <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <servlet-name>arena</servlet-name>
+        <url-pattern>/arena/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.json</url-pattern>
+        <servlet-name>games</servlet-name>
+        <url-pattern>/games/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.xml</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
+        <servlet-name>arena</servlet-name>
         <url-pattern>/_ah/xmpp/message/chat/</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>status</servlet-name>
-        <url-pattern>/update/status.json</url-pattern>
+        <url-pattern>/update/status.*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>action</servlet-name>
-        <url-pattern>/update/actions.json</url-pattern>
+        <url-pattern>/update/actions.*</url-pattern>
     </servlet-mapping>
 
     <!--<servlet-mapping>-->
@@ -132,7 +123,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>manage</web-resource-name>
-            <url-pattern>/manage/*</url-pattern>
+            <url-pattern>/games/manage/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>

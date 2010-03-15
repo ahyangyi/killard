@@ -6,7 +6,7 @@ import java.util.EventObject;
 
 /**
  * <p>
- * This class defines action event on game board.
+ * This class defines action event on games board.
  * </p>
  * <p>
  * <strong>Thread safety:</strong>

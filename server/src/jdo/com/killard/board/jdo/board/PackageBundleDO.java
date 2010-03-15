@@ -64,6 +64,7 @@ public class PackageBundleDO {
 
     public PackageBundleDO(String name) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(getClass().getSimpleName(), name);
+        this.key = keyBuilder.getKey();
         this.name = name;
         this.createdDate = Calendar.getInstance().getTime();
         this.modifiedDate = Calendar.getInstance().getTime();

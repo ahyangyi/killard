@@ -1,14 +1,14 @@
-package com.killard.board.web;
+package com.killard.board.web.controller.games;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.jdo.board.ElementSchoolDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageStatus;
 import com.killard.board.jdo.board.RuleDO;
+import com.killard.board.web.controller.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,6 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,12 +34,12 @@ import java.util.List;
 @Controller
 public class PackageController extends BasicController {
 
-    @RequestMapping(value = {"/browser"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/games", method = {RequestMethod.GET, RequestMethod.POST})
     public String browser(ModelMap modelMap) throws Exception {
         return "browser";
     }
 
-    @RequestMapping(value = {"/packages"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getPackages(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         List<PackageDO> packages = new LinkedList<PackageDO>();
@@ -53,7 +52,7 @@ public class PackageController extends BasicController {
         return "packages";
     }
 
-    @RequestMapping(value = "/newpackage", method = RequestMethod.POST)
+    @RequestMapping(value = "/newpackage", method = {RequestMethod.GET, RequestMethod.POST})
     public String newPackage(@RequestParam("packageName") String packageName,
                              ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -61,10 +60,10 @@ public class PackageController extends BasicController {
         bundle = pm.makePersistent(bundle);
         modelMap.put("package", bundle.draft());
         pm.makePersistent(bundle);
-        return "package/edit";
+        return "edit";
     }
 
-    @RequestMapping(value = "/package/*/boards", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/boards", method = {RequestMethod.GET, RequestMethod.POST})
     public String getBoards(ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory
@@ -72,55 +71,47 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
         modelMap.put("boards",  bundle.getRelease().getBoards());
-        return "package/boards";
+        return "boards";
     }
 
-    @RequestMapping(value = "/package/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/", method = {RequestMethod.GET, RequestMethod.POST})
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
-
-        List<BoardDO> boards = new ArrayList<BoardDO>();
-        Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
-        for (BoardDO board : extent) {
-            if (board.getBoardPackage().getKey().equals(bundle.getRelease().getKey())) boards.add(board);
-        }
-        modelMap.put("boards", boards);
-
-        return "package/view";
+        return "view";
     }
 
-    @RequestMapping(value = "/package/*/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/edit", method = {RequestMethod.GET, RequestMethod.POST})
     public String edit(ModelMap modelMap, HttpServletRequest request) throws Exception {
         Key key = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getDraft());
-        return "package/view";
+        return "view";
     }
 
-    @RequestMapping(value = "/package/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
     public void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.deletePersistent(bundle);
-        redirect("/package/list", request, response);
+        redirect("/games/list", request, response);
     }
 
-    @RequestMapping(value = "/package/*/release", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/*/release", method = {RequestMethod.POST, RequestMethod.DELETE})
     public void release(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle.release());
-        redirect("/package/list", request, response);
+        redirect("/games/list", request, response);
     }
 
-    @RequestMapping(value = "/package/*/addmanager", method = RequestMethod.POST)
+    @RequestMapping(value = "/games/*/addmanager", method = RequestMethod.POST)
     public String addManager(@RequestParam("manager") String manager,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -128,10 +119,10 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "package/package";
+        return "package";
     }
 
-    @RequestMapping(value = "/package/*/deletemanager", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/*/deletemanager", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String deleteManager(@RequestParam("email") String email,
                                 ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -139,10 +130,10 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "package/edit";
+        return "edit";
     }
 
-    @RequestMapping(value = "/package/*/newelementschool", method = RequestMethod.POST)
+    @RequestMapping(value = "/games/*/newelementschool", method = RequestMethod.POST)
     public String newElementSchool(@RequestParam("elementSchoolName") String elementSchoolName,
                                    ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
@@ -156,10 +147,10 @@ public class PackageController extends BasicController {
         ElementSchoolDO elementSchool = pack.newElementSchool(elementSchoolName);
         pm.makePersistent(pack);
         modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool/edit";
+        return "elementschool/edit";
     }
 
-    @RequestMapping(value = "/package/*/rule", method = RequestMethod.POST)
+    @RequestMapping(value = "/games/*/rule", method = RequestMethod.POST)
     public String rule(@RequestParam("definition") String definition,
                        ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -168,7 +159,7 @@ public class PackageController extends BasicController {
         RuleDO oldRule = bundle.getDraft().getRule();
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getDraft());
-        return "package/edit";
+        return "edit";
     }
 
 }

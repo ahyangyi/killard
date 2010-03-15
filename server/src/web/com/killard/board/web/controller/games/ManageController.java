@@ -1,8 +1,9 @@
-package com.killard.board.web;
+package com.killard.board.web.controller.games;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.images.Image;
 import com.killard.board.card.ElementSchool;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.JdoCardBuilder;
@@ -18,6 +19,7 @@ import com.killard.board.jdo.board.RoleGroupDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.cache.CacheInstance;
+import com.killard.board.web.controller.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class ManageController extends BasicController {
 //        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
     }
 
-    @RequestMapping(value = "/manage/clearboards.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/clearboards", method = RequestMethod.GET)
     public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -75,10 +76,10 @@ public class ManageController extends BasicController {
         extent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        redirect("/packages", request, response);
+        redirect("/games", request, response);
     }
 
-    @RequestMapping(value = "/manage/clear.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/clear", method = RequestMethod.GET)
     public void clearAllPackages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -90,10 +91,10 @@ public class ManageController extends BasicController {
         extent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        redirect("/packages", request, response);
+        redirect("/games", request, response);
     }
 
-    @RequestMapping(value = "/manage/reset.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/reset", method = RequestMethod.GET)
     public void reset(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -105,7 +106,7 @@ public class ManageController extends BasicController {
         extent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        PackageBundleDO bundle = new PackageBundleDO("Orions");
+        PackageBundleDO bundle = new PackageBundleDO("orions");
         pm.makePersistent(bundle);
 
         baseDirectory = "WEB-INF/orions/";
@@ -125,12 +126,12 @@ public class ManageController extends BasicController {
         group = pm.getObjectById(RoleGroupDO.class, group.getKey());
         group.addRole(role);
         group.addRole(role);
-        redirect("/manage/load", request, response);
+        redirect("/games/manage/load", request, response);
     }
 
-    @RequestMapping(value = "/manage/load.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/load", method = RequestMethod.GET)
     public void loadCards(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (defaultPackageKey == null) redirect("/manage/reset", request, response);
+        if (defaultPackageKey == null) redirect("/games/manage/reset", request, response);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -160,28 +161,22 @@ public class ManageController extends BasicController {
                         }
                         File imageFile = new File(baseDirectory + sub.getName() + "/" + name + ".png");
                         if (imageFile.exists()) {
-                            FileInputStream in = new FileInputStream(imageFile);
-                            byte[] buf = new byte[1024];
-                            int len;
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            while ((len = in.read(buf)) > 0) {
-                                out.write(buf, 0, len);
-                            }
-                            card.setImageData(out.toByteArray());
+                            card.setImageFormat(Image.Format.PNG);
+                            card.setImageData(getBytes(imageFile));
                         }
                         pm.makePersistent(card);
                         elementSchool = pm.makePersistent(elementSchool);
                         PersistenceHelper.commit();
                     }
                 }
-                redirect("/manage/load", request, response);
+                redirect("/games/manage/load", request, response);
                 return;
             }
         }
-        redirect("/manage/publish", request, response);
+        redirect("/games/manage/publish", request, response);
     }
 
-    @RequestMapping(value = "/manage/publish.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/publish", method = RequestMethod.GET)
     public void publish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -190,7 +185,7 @@ public class ManageController extends BasicController {
         bundle.setStatus(PackageStatus.PUBLIC);
         bundle.release();
         
-        redirect("/packages", request, response);
+        redirect("/games", request, response);
     }
 
     protected String getString(File file) throws IOException {

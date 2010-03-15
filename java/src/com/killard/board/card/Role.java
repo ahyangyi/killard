@@ -4,7 +4,7 @@ import com.killard.board.environment.event.ActionListener;
 
 /**
  * <p>
- * This interface defines the contract for game role.
+ * This interface defines the contract for games role.
  * </p>
  * <p>
  * <strong>Thread safety:</strong>

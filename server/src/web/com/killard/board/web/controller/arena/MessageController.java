@@ -1,7 +1,8 @@
-package com.killard.board.web;
+package com.killard.board.web.controller.arena;
 
 import com.killard.board.jdo.board.BoardDO;
 import com.killard.board.web.cache.CacheInstance;
+import com.killard.board.web.controller.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

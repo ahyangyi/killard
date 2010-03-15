@@ -35,8 +35,8 @@ import java.util.List;
 public class PackageController extends BasicController {
 
     @RequestMapping(value = "/games", method = {RequestMethod.GET, RequestMethod.POST})
-    public String browser(ModelMap modelMap) throws Exception {
-        return "browser";
+    public String browser() throws Exception {
+        return "games";
     }
 
     @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})

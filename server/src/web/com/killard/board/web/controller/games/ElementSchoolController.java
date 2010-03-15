@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ElementSchoolController extends BasicController {
 
-    @RequestMapping(value = "/games/*/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/*", method = RequestMethod.GET)
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         String bundleName = ids[2];
@@ -49,7 +49,7 @@ public class ElementSchoolController extends BasicController {
         return "elementschool/view";
     }
 
-    @RequestMapping(value = "/games/*/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/*/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String delete(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         String bundleName = ids[2];
@@ -69,7 +69,7 @@ public class ElementSchoolController extends BasicController {
         return "package/view";
     }
 
-    @RequestMapping(value = "/games/*/*/newcard", method = RequestMethod.POST)
+    @RequestMapping(value = "/*/*/newcard", method = RequestMethod.POST)
     public String newCard(@RequestParam("cardName") String cardName,
                           ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");

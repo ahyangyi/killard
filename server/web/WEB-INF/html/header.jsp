@@ -11,13 +11,6 @@
             padding: 0;
             background:#f9f9f9;
         }
-
-        div.dashboard {
-            margin: 40px;
-            padding: 0;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-        }
     </style>
 </head>
 <body>

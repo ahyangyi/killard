@@ -42,7 +42,7 @@ public class CardController extends BasicController {
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
-    @RequestMapping(value = "/*/*/*/*", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/*/*/*/", method = RequestMethod.GET)
     public String viewCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         String bundleName = ids[2];
@@ -53,7 +53,7 @@ public class CardController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
-        Key packageKey = KeyFactory.createKey(bundleKey, PackageBundleDO.class.getSimpleName(), packageId);
+        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
@@ -81,7 +81,7 @@ public class CardController extends BasicController {
         if (cardName.indexOf(".") > 0) cardName = cardName.substring(0, cardName.indexOf("."));
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
-        Key packageKey = KeyFactory.createKey(bundleKey, PackageBundleDO.class.getSimpleName(), packageId);
+        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);

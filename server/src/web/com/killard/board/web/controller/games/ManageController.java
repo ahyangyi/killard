@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -203,18 +204,17 @@ public class ManageController extends BasicController {
     }
 
     protected byte[] getBytes(File file) throws IOException {
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        FileReader reader = new FileReader(file);
+        FileInputStream in = new FileInputStream(file);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            int c;
-            while ((c = reader.read()) > -1) {
-                buf.write(c);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
             }
         } finally {
-            reader.close();
+            in.close();
         }
-        byte[] result = buf.toByteArray();
-        buf.close();
-        return result;
+        return out.toByteArray();
     }
 }

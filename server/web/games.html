@@ -110,23 +110,25 @@
                 //            });
             }
 
-            function showPackage(image) {
-                $('#package #description img').attr('src', image);
-                $('.richlist > ul > li').each(function() {
+            function showGame(game) {
+                $('.dashboard .title .menu ul li a').attr('href', 'games/' + game.bundle).text(game.title);
+                $('.dashboard .description img').attr('src', game.picture);
+                $('.richlist ul li').each(function() {
                     $(this).remove();
                 });
-                $('.richlist').data('richlist')._clear();
-                setTimeout(updateGameList, 0);
+                $('.richlist').richlist('_clear');
+                updateGameList();
             }
 
-            $.getJSON('packages.json', '', function(data, textStatus) {
-                $.each(data, function(i, item) {
-                    $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture
-                            + '\')" class="item" src="' + item.picture + '"/></li>');
+            $.getJSON('games/packages.json', '', function(data, textStatus) {
+                $.each(data, function(i, game) {
+                    var packageLi = $('<li></li>').appendTo($("#packageList"));
+                    $(new Image).attr('src', game.picture).addClass('item').click(function() {
+                        showGame(game);
+                    }).width($('.carousel .center').height()).appendTo(packageLi);
                 });
-                resizeWindow();
+                showGame(data[0]);
             });
-            updateGameList();
         });
     </script>
 </head>
@@ -140,7 +142,7 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li>|</li>
-            <li><a href="browser.html">All Games</a></li>
+            <li><a href="games.html">All Games</a></li>
             <li>|</li>
             <li><a href="arena.html">Arena</a></li>
             <li>|</li>
@@ -163,7 +165,7 @@
             <div class="title">    
                 <div class="menu">
                     <ul>
-                        <li>Animals In Danger</li>
+                        <li><a href="">Animals In Danger</a></li>
                         <li><img src="image/arrow1.png"/></li>
                         <li><img src="image/arrow2.png"/></li>
                     </ul>
@@ -174,7 +176,7 @@
                     <ul>
                         <li>
                             <div class="cards-show">
-                                <img src="arena/AIR/Spellbreaker.png"/>
+                                <img src="games/orions/1/AIR/Spellbreaker.png"/>
                             </div>
                         </li>
                         <li>

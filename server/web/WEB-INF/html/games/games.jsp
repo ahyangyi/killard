@@ -8,7 +8,7 @@
     <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
     <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="js/ui/carousel.js"></script>
@@ -110,28 +110,31 @@
                 //            });
             }
 
-            function showPackage(image) {
-                $('#package #description img').attr('src', image);
-                $('.richlist > ul > li').each(function() {
+            function showGame(game) {
+                $('.dashboard .title .menu ul li a').attr('href', 'games/' + game.bundle).text(game.title);
+                $('.dashboard .description img').attr('src', game.picture);
+                $('.richlist ul li').each(function() {
                     $(this).remove();
                 });
-                $('.richlist').data('richlist')._clear();
-                setTimeout(updateGameList, 0);
+                $('.richlist').richlist('_clear');
+                updateGameList();
             }
 
             $.getJSON('games/packages.json', '', function(data, textStatus) {
-                $.each(data, function(i, item) {
-                    $("#packageList").append('<li><img onclick="showPackage(\'' + item.picture
-                            + '\')" class="item" src="' + item.picture + '"/></li>');
+                $.each(data, function(i, game) {
+                    var packageLi = $('<li></li>').appendTo($("#packageList"));
+                    $(new Image).attr('src', game.picture).addClass('item').click(function() {
+                        showGame(game);
+                    }).width($('.carousel .center').height()).appendTo(packageLi);
                 });
-                resizeWindow();
+                showGame(data[0]);
             });
-            updateGameList();
         });
     </script>
 </head>
 <body>
 <%@include file="../topbar.jsp"%>
+
 <div class="container">
     <div class="ui-layout-center">
         <div class="dashboard">
@@ -142,7 +145,7 @@
             <div class="title">
                 <div class="menu">
                     <ul>
-                        <li>Animals In Danger</li>
+                        <li><a href="">Animals In Danger</a></li>
                         <li><img src="image/arrow1.png"/></li>
                         <li><img src="image/arrow2.png"/></li>
                     </ul>
@@ -153,7 +156,7 @@
                     <ul>
                         <li>
                             <div class="cards-show">
-                                <img src="arena/AIR/Spellbreaker.png"/>
+                                <img src="games/orions/1/AIR/Spellbreaker.png"/>
                             </div>
                         </li>
                         <li>
@@ -206,8 +209,8 @@
             <div class="bottom">
                 <div class="searchbar">
                     <ul>
-                        <li class="tag"><a href="browser.jsp#">card</a></li>
-                        <li class="tag"><a href="browser.jsp#">chess</a></li>
+                        <li class="tag"><a href="#">card</a></li>
+                        <li class="tag"><a href="#">chess</a></li>
                         <li class="searchbox">
                             <div class="wrapper">
                                 <input class="text" type="text"/>
@@ -220,6 +223,7 @@
         </div>
     </div>
 </div>
+
 <%@include file="../bottombar.jsp"%>
 </body>
 </html>

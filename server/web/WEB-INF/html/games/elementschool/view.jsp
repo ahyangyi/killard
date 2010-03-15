@@ -42,16 +42,16 @@
             <td>${card.attackValue}</td>
             <td>
                 <c:if test="${card.renderable}">
-                    <img src="/package/${bundle.key.id}/${card.elementSchool.name}/${card.name}/image.png"/>
+                    <img src="/games/${bundle.name}/${bundle.release.key.id}/${card.elementSchool.name}/${card.name}.png"/>
                 </c:if>
             </td>
             <td>
-                <form action="/package/${bundle.key.id}/${elementSchool.name}/${card.name}/view.html" method="GET">
+                <form action="/games/${bundle.name}/${elementSchool.name}/${card.name}/" method="GET">
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
-                <form action="/package/${bundle.key.id}/${elementSchool.name}/${card.name}/delete.html" method="POST">
+                <form action="/games/${bundle.name}/${elementSchool.name}/${card.name}/delete" method="POST">
                     <input type="submit" value="Delete"/>
                 </form>
             </td>

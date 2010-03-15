@@ -4,7 +4,7 @@
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <fieldset>
-    <legend>${element.descriptor.name}</legend>
+    <legend>${card.descriptor.name}</legend>
     <fieldset>
         <legend>Clone</legend>
         <ul class="fields">

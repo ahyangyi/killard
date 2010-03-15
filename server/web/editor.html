@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" href="css/layout.css" rel="stylesheet"/>
+    <link type="text/css" href="css/menu.css" rel="stylesheet"/>
+    <link type="text/css" href="css/form.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/card.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.1.7.js"></script>
+    <script type="text/javascript" src="js/ui/browser.js"></script>
+    <script type="text/javascript" src="js/ui/card.js"></script>
+    <title>Killard Games - Game Settings</title>
+</head>
+<body>
+<div class="topbar">
+    <div id="logo">
+        <img src="image/logo.png"/>
+        <img src="image/title.png"/>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li>|</li>
+            <li><a href="games.html">All Games</a></li>
+            <li>|</li>
+            <li><a href="arena.html">Arena</a></li>
+            <li>|</li>
+            <li><a href="#">DIY</a></li>
+            <li>|</li>
+            <li><a href="#">Help</a></li>
+            <li>|</li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
+</div>
+<form action="" method="POST" class="horizontal" id="card-form">
+    <div class="container">
+        <div class="ui-layout-west">
+            <div class="ui-layout-content">
+                <div class="vmenu">
+                    <ul>
+                        <li><a href="#">All Games</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">My Games</a></li>
+                    </ul>
+                    <ul class="highlight">
+                        <li><a href="#">Animals In Danger</a></li>
+                    </ul>
+                    <ul class="category">
+                        <li><a href="#">AIR</a></li>
+                    </ul>
+                    <ul>
+                        <li class="active"><a href="#">Fairy</a></li>
+                        <li><a href="#">BlackWind</a></li>
+                        <li><a href="#">ChainLightning</a></li>
+                        <li><a href="#">Gargoyle</a></li>
+                        <li><a href="#">Phoenix</a></li>
+                        <li><a href="#">Zeus</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="ui-layout-content">
+                <fieldset>
+                    <legend>Fairy</legend>
+
+                    <div class="field">
+                        <label>Level</label>
+                        <input type="text" name="level" id="card-level" value="3"/>
+                    </div>
+
+                    <div class="field">
+                        <label for="card-health">Health</label>
+                        <input type="text" name="health" id="card-health" value="7"/>
+                    </div>
+
+                    <div class="field">
+                        <label for="card-attack">Attack</label>
+                        <input type="text" name="attack" id="card-attack" value="3"/>
+                    </div>
+                    <div class="field">
+                        <label for="field3">Select</label>
+                        <select id="field3">
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                        </select>
+                    </div>
+                    <fieldset>
+                        <legend>Radio set</legend>
+                        <ul class="fields">
+                            <li>
+                                <label><input type="radio" class="radio" name="field4"/> A radio button 1</label>
+                            </li>
+                            <li>
+                                <label><input type="radio" class="radio" name="field4"/> A radio button 2</label>
+                            </li>
+                            <li>
+                                <label><input type="radio" class="radio" name="field4"/> A radio button 3</label>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <div class="field">
+                        <label for="card-description">Description</label>
+                        <textarea cols="32" rows="6" id="card-description" name="description"></textarea>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="ui-layout-east">
+            <div class="ui-layout-content">
+                <div style="text-align:center;">
+                    <img src="arena/AIR/Fairy.png"/>
+                </div>
+                <hr/>
+                <div class="field">
+                    <label for="card-image">Upload Image</label>
+                    <input type="file" name="image" id="card-image"/>
+                </div>
+            </div>
+        </div>
+        <div class="ui-layout-south">
+            <div class="ui-layout-content">
+                <div style="text-align:center;" class="buttons">
+                    <input type="reset" class="button" value="Reset" style="float:left;width:20%;"/>
+                    <input type="submit" value="Save" style="float:left;width:80%;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="bottombar">
+    <div class="menu">
+        <ul>
+            <li>Killard &copy; 2010</li>
+            <li>|</li>
+            <li><a href="#">Terms</a></li>
+            <li>|</li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

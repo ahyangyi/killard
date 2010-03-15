@@ -19,7 +19,7 @@
     </tr>
 </table>
 <p></p>
-<form action="/card.html" method="POST" enctype="multipart/form-data">
+<form action="/editor.html" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="packageId" value="${card.packageKey.id}"/>
     <input type="hidden" name="elementSchoolId" value="${card.elementSchool.key.id}"/>
     <input type="hidden" name="cardId" value="${card.key.id}"/>

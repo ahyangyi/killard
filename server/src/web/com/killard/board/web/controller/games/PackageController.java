@@ -111,7 +111,7 @@ public class PackageController extends BasicController {
         redirect("/games", request, response);
     }
 
-    @RequestMapping(value = "/games/*/addmanager", method = RequestMethod.POST)
+    @RequestMapping(value = "/*/addmanager", method = RequestMethod.POST)
     public String addManager(@RequestParam("manager") String manager,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -133,7 +133,7 @@ public class PackageController extends BasicController {
         return "/games/" + bundle.getName();
     }
 
-    @RequestMapping(value = "/games/*/newelementschool", method = RequestMethod.POST)
+    @RequestMapping(value = "/*/newelementschool", method = RequestMethod.POST)
     public String newElementSchool(@RequestParam("elementSchoolName") String elementSchoolName,
                                    ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");

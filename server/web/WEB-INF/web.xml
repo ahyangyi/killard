@@ -35,11 +35,6 @@
         <url-pattern>/games/*</url-pattern>
     </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>/manage/*</url-pattern>
-    </filter-mapping>
-
     <servlet>
         <servlet-name>arena</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

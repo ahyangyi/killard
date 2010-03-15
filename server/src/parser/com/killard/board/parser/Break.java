@@ -25,4 +25,9 @@ public class Break implements Node {
         context.getFlowControl().setBreak(getLabel());
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "break" + (label == null ? "" : " " + label) + ";";
+    }
 }

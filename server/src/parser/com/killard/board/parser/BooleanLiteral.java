@@ -16,4 +16,9 @@ public class BooleanLiteral extends Literal {
     public Object execute(Context context) throws ExecutionException {
         return Boolean.parseBoolean(getText());
     }
+
+    @Override
+    public String toString() {
+        return getText();
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -41,17 +42,18 @@ public class CardController extends BasicController {
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
-    @RequestMapping(value = "/package/*/*/*/view.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/*/*/*/*", method = RequestMethod.GET)
     public String viewCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[2]);
-        String elementSchoolName = ids[3];
-        String cardName = ids[4];
+        String bundleName = ids[2];
+        Long packageId = Long.parseLong(ids[3]);
+        String elementSchoolName = ids[4];
+        String cardName = ids[5];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
+        Key packageKey = KeyFactory.createKey(bundleKey, PackageBundleDO.class.getSimpleName(), packageId);
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
         Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
@@ -69,7 +71,41 @@ public class CardController extends BasicController {
         return "package/card/view";
     }
 
-    @RequestMapping(value = "/package/*/*/*/edit.*", method = RequestMethod.POST)
+    @RequestMapping(value = {"/*/*/*/*.png"}, method = RequestMethod.GET)
+    public void getCardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+        String bundleName = ids[2];
+        Long packageId = Long.parseLong(ids[3]);
+        String elementSchoolName = ids[4];
+        String cardName = ids[5];
+        if (cardName.indexOf(".") > 0) cardName = cardName.substring(0, cardName.indexOf("."));
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
+        Key packageKey = KeyFactory.createKey(bundleKey, PackageBundleDO.class.getSimpleName(), packageId);
+        Key elementSchoolkey =
+                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
+        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
+
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        if (request.getDateHeader("If-Modified-Since") >= card.getModifiedDate().getTime() - 1000) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+        if (card.isRenderable()) {
+            response.setContentType("image/" + card.getImageFormat().name());
+            response.setDateHeader("Last-Modified", card.getModifiedDate().getTime());
+            response.setHeader("Cache-Control", "private");
+            try {
+                response.getOutputStream().write(card.getImageData());
+            } catch (IOException ignored) {
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/*/*/*", method = RequestMethod.POST)
     public String updateCard(@RequestParam("image") MultipartFile file,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
@@ -101,7 +137,7 @@ public class CardController extends BasicController {
         return "package/card/view";
     }
 
-    @RequestMapping(value = "/package/*/*/*/delete.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/*/*/*/delete", method = RequestMethod.POST)
     public String deleteCard(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
         Long packageBundleId = Long.parseLong(ids[2]);
@@ -129,7 +165,7 @@ public class CardController extends BasicController {
         return "package/elementschool/view";
     }
 
-    @RequestMapping(value = "/package/*/*/*/updateimage.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/*/*/*/updateimage", method = RequestMethod.POST)
     public void updateImage(@RequestParam("image") MultipartFile file,
                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");

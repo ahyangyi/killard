@@ -43,4 +43,11 @@ public class Variable extends Expression {
         context.addVariable(getText(), value);
         return value;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

@@ -51,4 +51,11 @@ public abstract class BinaryExpression extends Expression {
     public String getText() {
         return lhs.getText();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

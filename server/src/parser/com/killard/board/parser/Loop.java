@@ -35,6 +35,7 @@ public class Loop implements Node {
         return body;
     }
 
+    @Override
     public Object execute(Context context) throws ExecutionException {
         Object result = null;
 
@@ -47,5 +48,11 @@ public class Loop implements Node {
             getControl().update(local);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        return buf.toString();
     }
 }

@@ -26,4 +26,11 @@ public class Return implements Node {
         if (getExpression() != null) return getExpression().execute(context);
         else return null;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

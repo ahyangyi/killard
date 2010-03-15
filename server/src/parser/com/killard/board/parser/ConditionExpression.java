@@ -56,4 +56,11 @@ public class ConditionExpression extends Expression {
     public String getText() {
         return test.getText();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

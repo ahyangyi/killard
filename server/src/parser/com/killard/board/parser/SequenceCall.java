@@ -38,4 +38,11 @@ public class SequenceCall extends Call {
         context.pop();
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

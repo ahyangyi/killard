@@ -1,4 +1,4 @@
-<%@ include file="../header.jsp" %>
+<%@ include file="../../header.jsp" %>
 <%@ page import="com.killard.board.jdo.board.MetaCardDO" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <h1>${package.descriptor.name}</h1>
@@ -40,4 +40,4 @@
         </tr>
     </c:forEach>
 </table>
-<%@ include file="../footer.jsp" %>
+<%@ include file="../../footer.jsp" %>

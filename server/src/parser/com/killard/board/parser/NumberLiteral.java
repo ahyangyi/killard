@@ -16,4 +16,11 @@ public class NumberLiteral extends Literal {
     public Object execute(Context context) throws ExecutionException {
         return Integer.parseInt(getText());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(getText());
+        return buf.toString();
+    }
 }

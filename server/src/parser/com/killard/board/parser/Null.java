@@ -21,4 +21,9 @@ public class Null extends Expression {
     public Object execute(Context context) throws ExecutionException {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "null";
+    }
 }

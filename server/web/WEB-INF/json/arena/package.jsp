@@ -1,6 +1,9 @@
 {
 <%@ include file="/WEB-INF/json/includes.jsp" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
+"bundle":"${package.bundleKey.name}",
+"version":${package.key.id},
+"cards":{
 <c:forEach var="elementSchool" items="${package.elementSchools}" varStatus="status">
     <c:if test="${not status.first}">,</c:if>
     "${elementSchool.name}": {
@@ -20,4 +23,5 @@
     </c:forEach>
     }
 </c:forEach>
+}
 }

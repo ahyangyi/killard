@@ -48,4 +48,11 @@ public class ForControl extends LoopControl {
         Node update = getUpdate();
         if (update != null) update.execute(context);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

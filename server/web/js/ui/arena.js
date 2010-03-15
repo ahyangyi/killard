@@ -95,8 +95,10 @@
                         var elementSchool = ui.draggable.attr('elementSchool');
                         var cardName = ui.draggable.attr('cardName');
                         var position = $(this).attr('position');
-                        var cardImage = $('<img src="arena/' + elementSchool + '/' + cardName + '.png" class="cardimage"/>');
-                        cardImage.width(arena.cardWidth).height(arena.cardHeight).hide()
+                        var cardImage = $(new Image);
+                        cardImage.addClass('cardimage')
+                                .attr('src', 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + elementSchool + '/' + cardName + '.png')
+                                .width(arena.cardWidth).height(arena.cardHeight).hide()
                                 .appendTo($(this)).fadeTo(1000, 0.5);
                         $.post('arena/playcard.json', {
                             'elementSchoolName':elementSchool,
@@ -497,21 +499,27 @@
             $.getJSON('arena/package.json', function(data, textStatus) {
                 var elementSchool, card;
                 var count = 0;
-                for (elementSchool in data) for (card in data[elementSchool]) count++;
-                for (elementSchool in data) {
-                    for (card in data[elementSchool]) {
+                $(window).data('bundle', data.bundle);
+                $(window).data('version', data.version);
+                for (elementSchool in data.cards) for (card in data.cards[elementSchool]) count++;
+                for (elementSchool in data.cards) {
+                    for (card in data.cards[elementSchool]) {
                         $(new Image).load(function() {
                             arena.updateProgressBar(85 / count);
-                        }).attr({'src': 'arena/' + elementSchool + '/' + card + '.png'});
+                        }).attr({'src':'games/' + data.bundle + '/' + data.version + '/' + elementSchool + '/' + card + '.png'});
                     }
                 }
-            });
-            $.getJSON('arena/board.json', function(data, textStatus) {
-                arena.updateProgressBar(5);
-                $(window).data('since', data.lastAction);
-                $.each(data.players, function(i, player){arena.updatePlayer(player);});
-                arena.updateProgressBar(5);
-                setTimeout(function(){arena.checkStatus();}, 2000);
+                $.getJSON('arena/board.json', function(data, textStatus) {
+                    arena.updateProgressBar(5);
+                    $(window).data('since', data.lastAction);
+                    $.each(data.players, function(i, player) {
+                        arena.updatePlayer(player);
+                    });
+                    arena.updateProgressBar(5);
+                    setTimeout(function() {
+                        arena.checkStatus();
+                    }, 2000);
+                });
             });
         },
 
@@ -629,7 +637,7 @@
                     .appendTo(cardLi)
                     .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
 
-            $(new Image).attr({'src': 'arena/' + card.elementSchool + '/' + card.name + '.png'})
+            $(new Image).attr({'src': 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + card.elementSchool + '/' + card.name + '.png'})
                     .addClass('cardimage')
                     .width(this.cardWidth).height(this.cardHeight)
                     .appendTo(cardDiv);
@@ -662,7 +670,7 @@
             if (cardDiv.children().length > 0) {
                 $('.cardimage', cardDiv).fadeTo(1000, 1);
             } else {
-                $(new Image).attr('src', 'arena/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
+                $(new Image).attr('src', 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
                         .width(this.cardWidth)
                         .height(this.cardHeight)
                         .hide()

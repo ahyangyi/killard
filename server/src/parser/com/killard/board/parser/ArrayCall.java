@@ -40,4 +40,11 @@ public class ArrayCall extends Call {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

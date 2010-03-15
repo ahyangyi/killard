@@ -38,4 +38,11 @@ public class FieldCall extends Call {
             throw new ExecutionException("Can not access property " + getText(), e);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

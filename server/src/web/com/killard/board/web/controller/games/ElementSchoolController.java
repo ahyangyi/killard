@@ -29,14 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ElementSchoolController extends BasicController {
 
-    @RequestMapping(value = "/package/*/*/view.*", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/*/*", method = RequestMethod.GET)
     public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[2]);
+        String bundleName = ids[2];
         String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -46,17 +46,17 @@ public class ElementSchoolController extends BasicController {
 
         modelMap.put("bundle", bundle);
         modelMap.put("elementSchool", elementSchool);
-        return "package/elementschool/view";
+        return "elementschool/view";
     }
 
-    @RequestMapping(value = "/package/*/*/delete.*", method = {RequestMethod.POST, RequestMethod.DELETE})
+    @RequestMapping(value = "/games/*/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String delete(ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[2]);
+        String bundleName = ids[2];
         String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -66,19 +66,19 @@ public class ElementSchoolController extends BasicController {
         pm.deletePersistent(elementSchool);
         
         modelMap.put("package", pack);
-        return "package/package";
+        return "package/view";
     }
 
-    @RequestMapping(value = "/package/*/*/newcard.*", method = RequestMethod.POST)
+    @RequestMapping(value = "/games/*/*/newcard", method = RequestMethod.POST)
     public String newCard(@RequestParam("cardName") String cardName,
                           ModelMap modelMap, HttpServletRequest request) throws Exception {
         String[] ids = request.getRequestURI().split("/");
-        Long packageBundleId = Long.parseLong(ids[2]);
+        String bundleName = ids[2];
         String elementSchoolName = ids[3];
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), packageBundleId);
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleName);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
         Key elementSchoolkey =
                 KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
@@ -88,7 +88,7 @@ public class ElementSchoolController extends BasicController {
         pm.makePersistent(elementSchool);
 
         modelMap.put("card", card);
-        return "package/card";
+        return "card/view";
     }
 
 }

@@ -18,4 +18,11 @@ public class VariableCall extends Call {
     public Object execute(Context context) throws ExecutionException {
         return context.getVariable(getText());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

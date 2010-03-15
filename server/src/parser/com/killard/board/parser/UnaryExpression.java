@@ -33,4 +33,11 @@ public abstract class UnaryExpression extends Expression {
     public String getText() {
         return getOperand().getText();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

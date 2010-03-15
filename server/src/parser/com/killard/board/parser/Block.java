@@ -18,4 +18,11 @@ public class Block extends Sequence {
     public Object execute(Context context) throws ExecutionException {
         return super.execute(new LocalContext(context));
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

@@ -1,750 +1,753 @@
 {
-    "WATER": {
+    "bundle": "orions",
+    "version": 1,
+    "cards": {
+        "WATER": {
 
 
-        "Paralyze": {
-            "level": 10,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
+            "Paralyze": {
+                "level": 10,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
 
+                }
             }
+
+            ,
+            "SeaJustice": {
+                "level": 3,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Waterfall": {
+                "level": 9,
+                "maxHealth": 33,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Poseidon": {
+                "level": 8,
+                "maxHealth": 25,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Hydra": {
+                "level": 13,
+                "maxHealth": 29,
+                "attack": 5,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Leviathan": {
+                "level": 11,
+                "maxHealth": 37,
+                "attack": 6,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "AcidStorm": {
+                "level": 9,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Poison": {
+                "level": 3,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "IceWizard": {
+                "level": 10,
+                "maxHealth": 22,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "IceGuard": {
+                "level": 5,
+                "maxHealth": 19,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "IceBolt": {
+                "level": 7,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Nixie": {
+                "level": 4,
+                "maxHealth": 10,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
         }
 
         ,
-        "SeaJustice": {
-            "level": 3,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
+        "LIFE": {
 
+
+            "Pegasus": {
+                "level": 6,
+                "maxHealth": 15,
+                "attack": 6,
+                "skills": {
+
+                }
             }
+
+            ,
+            "LifeSacrifice": {
+                "level": 8,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Purify": {
+                "level": 6,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "MagicHealer": {
+                "level": 3,
+                "maxHealth": 10,
+                "attack": 2,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Unicorn": {
+                "level": 9,
+                "maxHealth": 25,
+                "attack": 8,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Bless": {
+                "level": 3,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "GodsWrath": {
+                "level": 10,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Priest": {
+                "level": 4,
+                "maxHealth": 9,
+                "attack": 1,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Rejuvenation": {
+                "level": 6,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Paladin": {
+                "level": 8,
+                "maxHealth": 20,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Chimera": {
+                "level": 13,
+                "maxHealth": 30,
+                "attack": 10,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Apostate": {
+                "level": 5,
+                "maxHealth": 15,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
         }
 
         ,
-        "Waterfall": {
-            "level": 9,
-            "maxHealth": 33,
-            "attack": 0,
-            "skills": {
+        "FIRE": {
 
+
+            "Efreet": {
+                "level": 10,
+                "maxHealth": 33,
+                "attack": 6,
+                "skills": {
+
+                }
             }
+
+            ,
+            "FlamingArrow": {
+                "level": 4,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Salamander": {
+                "level": 8,
+                "maxHealth": 15,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "FireLord": {
+                "level": 11,
+                "maxHealth": 21,
+                "attack": 7,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Armageddon": {
+                "level": 11,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "FireSpikes": {
+                "level": 3,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Vulcan": {
+                "level": 12,
+                "maxHealth": 27,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Daemon": {
+                "level": 5,
+                "maxHealth": 12,
+                "attack": 2,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Cerberus": {
+                "level": 4,
+                "maxHealth": 6,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "FireBall": {
+                "level": 8,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Devil": {
+                "level": 6,
+                "maxHealth": 30,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
         }
 
         ,
-        "Poseidon": {
-            "level": 8,
-            "maxHealth": 25,
-            "attack": 3,
-            "skills": {
+        "EARTH": {
 
+
+            "Quicksands": {
+                "level": 6,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
             }
+
+            ,
+            "Restructure": {
+                "level": 6,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Elemental": {
+                "level": 13,
+                "maxHealth": 45,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Ent": {
+                "level": 7,
+                "maxHealth": 22,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Revival": {
+                "level": 5,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Satyr": {
+                "level": 0,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Echidna": {
+                "level": 10,
+                "maxHealth": 26,
+                "attack": 7,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Dryad": {
+                "level": 4,
+                "maxHealth": 12,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "AbsoluteDefence": {
+                "level": 7,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Earthquake": {
+                "level": 10,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Golem": {
+                "level": 5,
+                "maxHealth": 15,
+                "attack": 4,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "ForestSpirit": {
+                "level": 3,
+                "maxHealth": 3,
+                "attack": 2,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Centaur": {
+                "level": 6,
+                "maxHealth": 14,
+                "attack": 5,
+                "skills": {
+
+                }
+            }
+
         }
 
         ,
-        "Hydra": {
-            "level": 13,
-            "maxHealth": 29,
-            "attack": 5,
-            "skills": {
+        "DEATH": {
 
+
+            "DarkLord": {
+                "level": 8,
+                "maxHealth": 14,
+                "attack": 4,
+                "skills": {
+
+                }
             }
+
+            ,
+            "Vampire": {
+                "level": 9,
+                "maxHealth": 22,
+                "attack": 6,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "TotalWeakness": {
+                "level": 8,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Curse": {
+                "level": 4,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "StealLife": {
+                "level": 6,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "CoverOfDarkness": {
+                "level": 11,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Werewolf": {
+                "level": 6,
+                "maxHealth": 16,
+                "attack": 6,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "GrimReaper": {
+                "level": 12,
+                "maxHealth": 22,
+                "attack": 8,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Zombie": {
+                "level": 4,
+                "maxHealth": 11,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Banshee": {
+                "level": 7,
+                "maxHealth": 12,
+                "attack": 5,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Lich": {
+                "level": 10,
+                "maxHealth": 18,
+                "attack": 7,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Ghost": {
+                "level": 3,
+                "maxHealth": 13,
+                "attack": 3,
+                "skills": {
+
+                }
+            }
+
         }
 
         ,
-        "Leviathan": {
-            "level": 11,
-            "maxHealth": 37,
-            "attack": 6,
-            "skills": {
+        "AIR": {
 
+
+            "BlackWind": {
+                "level": 8,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
             }
-        }
 
-        ,
-        "AcidStorm": {
-            "level": 9,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
+            ,
+            "Fairy": {
+                "level": 3,
+                "maxHealth": 7,
+                "attack": 3,
+                "skills": {
 
+
+                    "Attack": {}
+
+                }
             }
-        }
 
-        ,
-        "Poison": {
-            "level": 3,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
+            ,
+            "Zeus": {
+                "level": 9,
+                "maxHealth": 24,
+                "attack": 3,
+                "skills": {
 
+                }
             }
-        }
 
-        ,
-        "IceWizard": {
-            "level": 10,
-            "maxHealth": 22,
-            "attack": 4,
-            "skills": {
+            ,
+            "Nymph": {
+                "level": 3,
+                "maxHealth": 14,
+                "attack": 1,
+                "skills": {
 
+                }
             }
-        }
 
-        ,
-        "IceGuard": {
-            "level": 5,
-            "maxHealth": 19,
-            "attack": 4,
-            "skills": {
+            ,
+            "Phoenix": {
+                "level": 6,
+                "maxHealth": 20,
+                "attack": 4,
+                "skills": {
 
+                }
             }
-        }
 
-        ,
-        "IceBolt": {
-            "level": 7,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
+            ,
+            "Titan": {
+                "level": 11,
+                "maxHealth": 28,
+                "attack": 7,
+                "skills": {
 
+                }
             }
-        }
 
-        ,
-        "Nixie": {
-            "level": 4,
-            "maxHealth": 10,
-            "attack": 3,
-            "skills": {
+            ,
+            "Gargoyle": {
+                "level": 5,
+                "maxHealth": 15,
+                "attack": 4,
+                "skills": {
 
+
+                    "Attack": {}
+
+                }
             }
-        }
 
+            ,
+            "ChainLightning": {
+                "level": 9,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Manticore": {
+                "level": 7,
+                "maxHealth": 19,
+                "attack": 5,
+                "skills": {
+
+
+                    "Attack": {}
+
+                }
+            }
+
+            ,
+            "Plague": {
+                "level": 12,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+            ,
+            "Spellbreaker": {
+                "level": 7,
+                "maxHealth": 0,
+                "attack": 0,
+                "skills": {
+
+                }
+            }
+
+        }
     }
-
-    ,
-    "LIFE": {
-
-
-        "Pegasus": {
-            "level": 6,
-            "maxHealth": 15,
-            "attack": 6,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "LifeSacrifice": {
-            "level": 8,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Purify": {
-            "level": 6,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "MagicHealer": {
-            "level": 3,
-            "maxHealth": 10,
-            "attack": 2,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Unicorn": {
-            "level": 9,
-            "maxHealth": 25,
-            "attack": 8,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Bless": {
-            "level": 3,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "GodsWrath": {
-            "level": 10,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Priest": {
-            "level": 4,
-            "maxHealth": 9,
-            "attack": 1,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Rejuvenation": {
-            "level": 6,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Paladin": {
-            "level": 8,
-            "maxHealth": 20,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Chimera": {
-            "level": 13,
-            "maxHealth": 30,
-            "attack": 10,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Apostate": {
-            "level": 5,
-            "maxHealth": 15,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-    }
-
-    ,
-    "FIRE": {
-
-
-        "Efreet": {
-            "level": 10,
-            "maxHealth": 33,
-            "attack": 6,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "FlamingArrow": {
-            "level": 4,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Salamander": {
-            "level": 8,
-            "maxHealth": 15,
-            "attack": 3,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "FireLord": {
-            "level": 11,
-            "maxHealth": 21,
-            "attack": 7,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Armageddon": {
-            "level": 11,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "FireSpikes": {
-            "level": 3,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Vulcan": {
-            "level": 12,
-            "maxHealth": 27,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Daemon": {
-            "level": 5,
-            "maxHealth": 12,
-            "attack": 2,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Cerberus": {
-            "level": 4,
-            "maxHealth": 6,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "FireBall": {
-            "level": 8,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Devil": {
-            "level": 6,
-            "maxHealth": 30,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-    }
-
-    ,
-    "EARTH": {
-
-
-        "Quicksands": {
-            "level": 6,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Restructure": {
-            "level": 6,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Elemental": {
-            "level": 13,
-            "maxHealth": 45,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Ent": {
-            "level": 7,
-            "maxHealth": 22,
-            "attack": 3,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Revival": {
-            "level": 5,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Satyr": {
-            "level": 0,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Echidna": {
-            "level": 10,
-            "maxHealth": 26,
-            "attack": 7,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Dryad": {
-            "level": 4,
-            "maxHealth": 12,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "AbsoluteDefence": {
-            "level": 7,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Earthquake": {
-            "level": 10,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Golem": {
-            "level": 5,
-            "maxHealth": 15,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "ForestSpirit": {
-            "level": 3,
-            "maxHealth": 3,
-            "attack": 2,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Centaur": {
-            "level": 6,
-            "maxHealth": 14,
-            "attack": 5,
-            "skills": {
-
-            }
-        }
-
-    }
-
-    ,
-    "DEATH": {
-
-
-        "DarkLord": {
-            "level": 8,
-            "maxHealth": 14,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Vampire": {
-            "level": 9,
-            "maxHealth": 22,
-            "attack": 6,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "TotalWeakness": {
-            "level": 8,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Curse": {
-            "level": 4,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "StealLife": {
-            "level": 6,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "CoverOfDarkness": {
-            "level": 11,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Werewolf": {
-            "level": 6,
-            "maxHealth": 16,
-            "attack": 6,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "GrimReaper": {
-            "level": 12,
-            "maxHealth": 22,
-            "attack": 8,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Zombie": {
-            "level": 4,
-            "maxHealth": 11,
-            "attack": 3,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Banshee": {
-            "level": 7,
-            "maxHealth": 12,
-            "attack": 5,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Lich": {
-            "level": 10,
-            "maxHealth": 18,
-            "attack": 7,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Ghost": {
-            "level": 3,
-            "maxHealth": 13,
-            "attack": 3,
-            "skills": {
-
-            }
-        }
-
-    }
-
-    ,
-    "AIR": {
-
-
-        "BlackWind": {
-            "level": 8,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Fairy": {
-            "level": 3,
-            "maxHealth": 7,
-            "attack": 3,
-            "skills": {
-
-
-                "Attack": {}
-
-            }
-        }
-
-        ,
-        "Zeus": {
-            "level": 9,
-            "maxHealth": 24,
-            "attack": 3,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Nymph": {
-            "level": 3,
-            "maxHealth": 14,
-            "attack": 1,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Phoenix": {
-            "level": 6,
-            "maxHealth": 20,
-            "attack": 4,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Titan": {
-            "level": 11,
-            "maxHealth": 28,
-            "attack": 7,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Gargoyle": {
-            "level": 5,
-            "maxHealth": 15,
-            "attack": 4,
-            "skills": {
-
-
-                "Attack": {}
-
-            }
-        }
-
-        ,
-        "ChainLightning": {
-            "level": 9,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Manticore": {
-            "level": 7,
-            "maxHealth": 19,
-            "attack": 5,
-            "skills": {
-
-
-                "Attack": {}
-
-            }
-        }
-
-        ,
-        "Plague": {
-            "level": 12,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-        ,
-        "Spellbreaker": {
-            "level": 7,
-            "maxHealth": 0,
-            "attack": 0,
-            "skills": {
-
-            }
-        }
-
-    }
-
 }

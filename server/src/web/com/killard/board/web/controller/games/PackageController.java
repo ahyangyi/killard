@@ -74,23 +74,23 @@ public class PackageController extends BasicController {
         return "boards";
     }
 
-    @RequestMapping(value = "/*/", method = {RequestMethod.GET, RequestMethod.POST})
-    public String view(ModelMap modelMap, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/*", method = {RequestMethod.GET})
+    public String viewPackage(ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
-        return "view";
+        return "package/view";
     }
 
-    @RequestMapping(value = "/*/edit", method = {RequestMethod.GET, RequestMethod.POST})
-    public String edit(ModelMap modelMap, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/*", method = {RequestMethod.POST})
+    public String updatePackage(ModelMap modelMap, HttpServletRequest request) throws Exception {
         Key key = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getDraft());
-        return "view";
+        return "package/edit";
     }
 
     @RequestMapping(value = "/*/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -99,7 +99,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.deletePersistent(bundle);
-        redirect("/games/list", request, response);
+        redirect("/games", request, response);
     }
 
     @RequestMapping(value = "/*/release", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -108,7 +108,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle.release());
-        redirect("/games/list", request, response);
+        redirect("/games", request, response);
     }
 
     @RequestMapping(value = "/games/*/addmanager", method = RequestMethod.POST)
@@ -119,7 +119,7 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "package";
+        return "package/edit";
     }
 
     @RequestMapping(value = "/*/deletemanager", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -130,7 +130,7 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "edit";
+        return "/games/" + bundle.getName();
     }
 
     @RequestMapping(value = "/games/*/newelementschool", method = RequestMethod.POST)
@@ -159,7 +159,7 @@ public class PackageController extends BasicController {
         RuleDO oldRule = bundle.getDraft().getRule();
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getDraft());
-        return "edit";
+        return "package/edit";
     }
 
 }

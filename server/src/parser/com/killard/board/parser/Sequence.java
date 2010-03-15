@@ -37,4 +37,11 @@ public class Sequence implements Node {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[Not implemented yet!]");
+        return buf.toString();
+    }
 }

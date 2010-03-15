@@ -18,4 +18,13 @@ public class StringLiteral extends Literal{
     public Object execute(Context context) throws ExecutionException {
         return getText();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("\"");
+        buf.append(getText());
+        buf.append("\"");
+        return buf.toString();
+    }
 }

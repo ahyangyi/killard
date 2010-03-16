@@ -6,17 +6,13 @@
     </div>
     <div class="menu">
         <ul>
-            <li><a href="/">Home</a></li>
+            <li><a href="/"><spring:message code="menu.home"/></a></li>
             <li>|</li>
-            <li><a href="<c:url value="/games"/>">All Games</a></li>
+            <li><a href="<c:url value="/games"/>"><spring:message code="menu.games"/></a></li>
             <li>|</li>
-            <li><a href="<c:url value="/arena"/>">Arena</a></li>
+            <li><a href="<c:url value="/arena"/>"><spring:message code="menu.arena"/></a></li>
             <li>|</li>
-            <li><a href="#">DIY</a></li>
-            <li>|</li>
-            <li><a href="#">Help</a></li>
-            <li>|</li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="<c:url value="/arena"/>"><spring:message code="menu.settings"/></a></li>
         </ul>
     </div>
 </div>

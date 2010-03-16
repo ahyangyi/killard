@@ -27,7 +27,7 @@
         <include path="/**.xml"/>
     </resource-files>
 
-    <sessions-enabled>false</sessions-enabled>
+    <sessions-enabled>true</sessions-enabled>
 
     <inbound-services>
         <service>xmpp_message</service>

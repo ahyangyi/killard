@@ -39,6 +39,11 @@ public class PackageController extends BasicController {
         return "games";
     }
 
+    @RequestMapping(value = "/encoding", method = {RequestMethod.GET, RequestMethod.POST})
+    public String encoding() throws Exception {
+        return "encoding";
+    }
+
     @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getPackages(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();

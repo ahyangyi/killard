@@ -55,13 +55,18 @@
 
     <!-- Declare the Interceptor -->
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="siteLanguage"/>
+        <property name="paramName" value="lang"/>
     </bean>
 
     <bean id="contextLocaleInterceptor" class="com.killard.board.web.context.LocaleInterceptor"/>
 
     <!-- Declare the Resolver -->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
 
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
         <property name="interceptors">

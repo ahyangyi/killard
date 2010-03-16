@@ -1,11 +1,12 @@
+<%@ include file="/WEB-INF/html/includes.jsp" %>
 <div class="bottombar">
     <div class="menu">
         <ul>
             <li>Killard &copy; 2010</li>
             <li>|</li>
-            <li><a href="#">Terms</a></li>
+            <li><a href="#"><spring:message code="menu.terms"/></a></li>
             <li>|</li>
-            <li><a href="#">Privacy</a></li>
+            <li><a href="#"><spring:message code="menu.privacy"/></a></li>
         </ul>
     </div>
 </div>

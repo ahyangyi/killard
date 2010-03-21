@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class ExecutionException extends Exception {
 
+    private static final long serialVersionUID = -4484608434801706831L;
+
     public ExecutionException() {
     }
 

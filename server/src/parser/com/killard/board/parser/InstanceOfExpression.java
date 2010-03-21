@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class InstanceOfExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = 3345004771397113881L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -27,7 +29,7 @@ public class InstanceOfExpression extends BinaryExpression {
      *             if lhs or rhs are <code>null</code>
      */
     public InstanceOfExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "instanceof");
     }
 
     public Object execute(Context context) throws ExecutionException {

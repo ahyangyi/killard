@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class DivideExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = 8992666823161179313L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -27,7 +29,7 @@ public class DivideExpression extends BinaryExpression {
      *             if lhs or rhs are <code>null</code>
      */
     public DivideExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "/");
     }
 
     public Object execute(Context context) throws ExecutionException {

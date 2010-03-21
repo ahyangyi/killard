@@ -16,6 +16,8 @@ public class Sequence implements Node {
 
     private final List<Node> children = new LinkedList<Node>();
 
+    private static final long serialVersionUID = 6895251414559948772L;
+
     public Sequence() {
     }
 

@@ -17,6 +17,8 @@ public class If implements Node {
 
     private final Node elseBody;
 
+    private static final long serialVersionUID = 9029594139702224763L;
+
     public If(Expression condition, Node body, Node elseBody) {
         this.condition = condition;
         this.body = body;
@@ -42,5 +44,20 @@ public class If implements Node {
 
     public Node getElseBody() {
         return elseBody;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("if (");
+        buf.append(condition.toString());
+        buf.append(") ");
+        buf.append(body.toString());
+        if (elseBody != null) {
+            buf.append("\nelse\n");
+            buf.append(elseBody);
+            buf.append("\n");
+        }
+        return buf.toString();
     }
 }

@@ -17,6 +17,8 @@ public class GlobalFunctionCall extends Call {
 
     private final Sequence arguments;
 
+    private static final long serialVersionUID = 8103749983477318966L;
+
     public GlobalFunctionCall(String text, Sequence arguments) {
         super(text);
         this.arguments = arguments;
@@ -70,6 +72,23 @@ public class GlobalFunctionCall extends Call {
         } catch (Exception e) {
             throw new ExecutionException("Can not invoke method " + getText(), e);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(getText());
+        buf.append("(");
+        if (arguments != null) {
+            boolean first = true;
+            for (Node arg : arguments.getChildren()) {
+                if (!first) buf.append(",");
+                else first = false;
+                buf.append(arg.toString());
+            }
+        }
+        buf.append(")");
+        return buf.toString();
     }
 
 }

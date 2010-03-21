@@ -1,8 +1,10 @@
 package com.killard.board.web.util;
 
+import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.web.cache.CacheInstance;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,5 +53,24 @@ public final class ResponseUtils {
             out.println("}");
         }
         out.println("]");
+    }
+
+    public static void outputImage(HttpServletRequest request, HttpServletResponse response,
+                                   DescriptableDO descriptable) {
+        if (request.getDateHeader("If-Modified-Since") >= descriptable.getModifiedDate().getTime() - 1000) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+        if (descriptable.isRenderable()) {
+            response.setContentType("image/" + descriptable.getImageFormat().name());
+            response.setDateHeader("Last-Modified", descriptable.getModifiedDate().getTime());
+            response.setHeader("Cache-Control", "private");
+            try {
+                response.getOutputStream().write(descriptable.getImageData());
+            } catch (IOException ignored) {
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 }

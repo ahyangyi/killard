@@ -2,6 +2,8 @@ package com.killard.board.parser;
 
 public class MultiplyExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = -5844718242193335683L;
+
     /**
      * <p>
      * Creates a new instance of this class.
@@ -15,7 +17,7 @@ public class MultiplyExpression extends BinaryExpression {
      *             if lhs or rhs is <code>null</code>
      */
     public MultiplyExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "*");
     }
 
     public Object execute(Context context) throws ExecutionException {

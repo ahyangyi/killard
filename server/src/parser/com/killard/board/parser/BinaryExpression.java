@@ -6,6 +6,8 @@ public abstract class BinaryExpression extends Expression {
 
     private final Expression rhs;
 
+    private final String operator;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -21,9 +23,10 @@ public abstract class BinaryExpression extends Expression {
      * @throws IllegalArgumentException
      *             if lhs or rhs are <code>null</code>
      */
-    protected BinaryExpression(Expression lhs, Expression rhs) {
+    protected BinaryExpression(Expression lhs, Expression rhs, String operator) {
         this.lhs = lhs;
         this.rhs = rhs;
+        this.operator = operator;
     }
 
     /**
@@ -55,7 +58,9 @@ public abstract class BinaryExpression extends Expression {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(lhs.toString());
+        buf.append(operator);
+        buf.append(rhs.toString());
         return buf.toString();
     }
 }

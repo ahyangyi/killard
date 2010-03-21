@@ -16,6 +16,8 @@ public class SequenceCall extends Call {
 
     private final List<Call> calls = new LinkedList<Call>();
 
+    private static final long serialVersionUID = -6275865663068487140L;
+
     public SequenceCall(Call call) {
         super(call.getText());
         addCall(call);
@@ -42,7 +44,12 @@ public class SequenceCall extends Call {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        Call[] c = getCalls();
+        buf.append(c[0].toString());
+        for (int i = 1; i < c.length; i++) {
+            if (!(c[i] instanceof ArrayCall)) buf.append(".");
+            buf.append(c[i].toString());
+        }
         return buf.toString();
     }
 }

@@ -42,7 +42,10 @@ public class Function implements Node {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append("function (");
+        if (arguments != null) buf.append(arguments.toString());
+        buf.append(")");
+        buf.append(body.toString());
         return buf.toString();
     }
 }

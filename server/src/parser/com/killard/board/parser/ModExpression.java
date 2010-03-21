@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class ModExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = -4375377880345039608L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -27,7 +29,7 @@ public class ModExpression extends BinaryExpression {
      *             if lhs or rhs are <code>null</code>
      */
     public ModExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "%");
     }
 
     public Object execute(Context context) throws ExecutionException {

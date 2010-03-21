@@ -34,14 +34,9 @@ import java.util.List;
 @Controller
 public class PackageController extends BasicController {
 
-    @RequestMapping(value = "/games", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/games", "/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String browser() throws Exception {
         return "games";
-    }
-
-    @RequestMapping(value = "/encoding", method = {RequestMethod.GET, RequestMethod.POST})
-    public String encoding() throws Exception {
-        return "encoding";
     }
 
     @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -57,7 +52,7 @@ public class PackageController extends BasicController {
         return "packages";
     }
 
-    @RequestMapping(value = "/newpackage", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/newpackage"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String newPackage(@RequestParam("packageName") String packageName,
                              ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -68,7 +63,7 @@ public class PackageController extends BasicController {
         return "edit";
     }
 
-    @RequestMapping(value = "/*/boards", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/*/boards"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getBoards(ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory
@@ -79,7 +74,7 @@ public class PackageController extends BasicController {
         return "boards";
     }
 
-    @RequestMapping(value = "/*", method = {RequestMethod.GET})
+    @RequestMapping(value = {"/*"}, method = {RequestMethod.GET})
     public String viewPackage(ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory
@@ -89,7 +84,7 @@ public class PackageController extends BasicController {
         return "package/view";
     }
 
-    @RequestMapping(value = "/*", method = {RequestMethod.POST})
+    @RequestMapping(value = {"/*"}, method = {RequestMethod.POST})
     public String updatePackage(ModelMap modelMap, HttpServletRequest request) throws Exception {
         Key key = KeyFactory
                 .createKey(PackageBundleDO.class.getSimpleName(), getPackageBundleId(request.getRequestURI()));

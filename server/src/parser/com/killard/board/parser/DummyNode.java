@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class DummyNode implements Node {
 
+    private static final long serialVersionUID = 1377778746463177600L;
+
     public Object execute(Context context) throws ExecutionException {
         return null;
     }

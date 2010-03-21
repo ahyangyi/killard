@@ -13,6 +13,8 @@ public class Break implements Node {
 
     private final String label;
 
+    private static final long serialVersionUID = 2182958197875795169L;
+
     public Break(String label) {
         this.label = label;
     }
@@ -28,6 +30,6 @@ public class Break implements Node {
 
     @Override
     public String toString() {
-        return "break" + (label == null ? "" : " " + label) + ";";
+        return "break" + (label == null ? ";" : " " + label + ";");
     }
 }

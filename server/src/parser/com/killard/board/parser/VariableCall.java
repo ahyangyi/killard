@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class VariableCall extends Call {
 
+    private static final long serialVersionUID = -7912802840128670213L;
+
     public VariableCall(String text) {
         super(text);
     }
@@ -22,7 +24,7 @@ public class VariableCall extends Call {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(getText());
         return buf.toString();
     }
 }

@@ -17,6 +17,8 @@ public class ForControl extends LoopControl {
 
     private final Node update;
 
+    private static final long serialVersionUID = -3042372369131127882L;
+
     public ForControl(Node init, Expression condition, Node update) {
         this.init = init;
         this.condition = condition;
@@ -52,7 +54,13 @@ public class ForControl extends LoopControl {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append("for (var ");
+        buf.append(init.toString());
+        buf.append("; ");
+        buf.append(condition.toString());
+        buf.append("; ");
+        buf.append(update.toString());
+        buf.append(")");
         return buf.toString();
     }
 }

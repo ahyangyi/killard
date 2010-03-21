@@ -4,6 +4,8 @@ public abstract class UnaryExpression extends Expression {
 
     private final Expression operand;
 
+    private final String operator;
+
     /**
      * <p>
      * Creates a new instance of an unary expression.
@@ -15,8 +17,9 @@ public abstract class UnaryExpression extends Expression {
      *             if operator is <code>null</code> or trimmed the empty
      *             string
      */
-    protected UnaryExpression(Expression operand) {
+    protected UnaryExpression(Expression operand, String operator) {
         this.operand = operand;
+        this.operator = operator;
     }
 
     /**
@@ -37,7 +40,8 @@ public abstract class UnaryExpression extends Expression {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(operator);
+        buf.append(getOperand().toString());
         return buf.toString();
     }
 }

@@ -2,6 +2,8 @@ package com.killard.board.parser;
 
 public class FunctionArgument implements Node {
 
+    private static final long serialVersionUID = -5852378245941660238L;
+
     public FunctionArgument(String text) {
     }
 

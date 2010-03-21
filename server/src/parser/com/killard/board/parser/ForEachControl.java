@@ -18,6 +18,8 @@ public class ForEachControl extends LoopControl {
 
     private final Expression collection;
 
+    private static final long serialVersionUID = 7288577278778848174L;
+
     public ForEachControl(Variable var, Expression collection) {
         this.var = var;
         this.collection = collection;
@@ -62,7 +64,11 @@ public class ForEachControl extends LoopControl {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append("for (var ");
+        buf.append(var.toString());
+        buf.append(" in ");
+        buf.append(collection.toString());
+        buf.append(")");
         return buf.toString();
     }
 }

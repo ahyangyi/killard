@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class Null extends Expression {
 
+    private static final long serialVersionUID = 1306978927411553184L;
+
     public Null() {
     }
 

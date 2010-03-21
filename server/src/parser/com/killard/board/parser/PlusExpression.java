@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class PlusExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = 5968528533904294955L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -27,7 +29,7 @@ public class PlusExpression extends BinaryExpression {
      *             if lhs or rhs are <code>null</code>
      */
     public PlusExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "+");
     }
 
     public Object execute(Context context) throws ExecutionException {

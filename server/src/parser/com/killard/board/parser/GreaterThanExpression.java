@@ -2,6 +2,8 @@ package com.killard.board.parser;
 
 public class GreaterThanExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = 1433514040289230869L;
+
     /**
      * <p>
      * Creates a new instance of this class.
@@ -15,7 +17,7 @@ public class GreaterThanExpression extends BinaryExpression {
      *             if lhs or rhs is <code>null</code>
      */
     public GreaterThanExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, ">");
     }
 
     public Object execute(Context context) throws ExecutionException {

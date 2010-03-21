@@ -1,6 +1,9 @@
 package com.killard.board.parser;
 
 public class NumberLiteral extends Literal {
+
+    private static final long serialVersionUID = 2789200945772857707L;
+
     /**
      * <p>
      * Creates a new instance of this node, wrapping the given value.

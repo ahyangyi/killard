@@ -17,6 +17,8 @@ public class Loop implements Node {
 
     private final Node body;
 
+    private static final long serialVersionUID = -4546585116813408859L;
+
     public Loop(String label, LoopControl ctrl, Node body) {
         this.label = label;
         this.ctrl = ctrl;
@@ -53,6 +55,12 @@ public class Loop implements Node {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        if (label != null) {
+            buf.append(label);
+            buf.append(" : ");
+        }
+        buf.append(ctrl.toString());
+        buf.append(body.toString());
         return buf.toString();
     }
 }

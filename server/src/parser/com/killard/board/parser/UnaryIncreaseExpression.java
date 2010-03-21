@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class UnaryIncreaseExpression extends UnaryExpression {
 
+    private static final long serialVersionUID = -3169479782570267391L;
+
     /**
      * <p>
      * Creates a new instance of an unary expression.
@@ -23,7 +25,7 @@ public class UnaryIncreaseExpression extends UnaryExpression {
      *             string
      */
     public UnaryIncreaseExpression(Expression operand) {
-        super(operand);
+        super(operand, "++");
     }
 
     public Object execute(Context context) throws ExecutionException {

@@ -8,6 +8,8 @@ public class ConditionExpression extends Expression {
 
     private final Expression falseExpression;
 
+    private static final long serialVersionUID = 4488709754268276767L;
+
     /**
      * <p>
      * Creates a new {@link ConditionExpression} instance wrapping the given expression.
@@ -60,7 +62,11 @@ public class ConditionExpression extends Expression {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(test.toString());
+        buf.append(" ? ");
+        buf.append(trueExpression.toString());
+        buf.append(" : ");
+        buf.append(falseExpression.toString());
         return buf.toString();
     }
 }

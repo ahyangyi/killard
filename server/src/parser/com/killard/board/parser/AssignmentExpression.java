@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class AssignmentExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = -98840895344761021L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -25,7 +27,7 @@ public class AssignmentExpression extends BinaryExpression {
      *             string, or lhs or rhs are <code>null</code>
      */
     public AssignmentExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "=");
     }
 
     public Object execute(Context context) throws ExecutionException {

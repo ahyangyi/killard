@@ -17,6 +17,8 @@ public class ArrayCall extends Call {
 
     private final Expression index;
 
+    private static final long serialVersionUID = -8410652918615541540L;
+
     public ArrayCall(String text, Expression index) {
         super(text);
         this.index = index;
@@ -44,7 +46,9 @@ public class ArrayCall extends Call {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append("[");
+        buf.append(index);
+        buf.append("]");
         return buf.toString();
     }
 }

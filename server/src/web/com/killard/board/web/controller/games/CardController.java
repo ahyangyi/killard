@@ -14,6 +14,7 @@ import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.controller.BasicController;
+import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * <p>
@@ -88,21 +88,7 @@ public class CardController extends BasicController {
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        if (request.getDateHeader("If-Modified-Since") >= card.getModifiedDate().getTime() - 1000) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            return;
-        }
-        if (card.isRenderable()) {
-            response.setContentType("image/" + card.getImageFormat().name());
-            response.setDateHeader("Last-Modified", card.getModifiedDate().getTime());
-            response.setHeader("Cache-Control", "private");
-            try {
-                response.getOutputStream().write(card.getImageData());
-            } catch (IOException ignored) {
-            }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
+        ResponseUtils.outputImage(request, response, card);
     }
 
     @RequestMapping(value = "/*/*/*", method = RequestMethod.POST)

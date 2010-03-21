@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class MultiplyAssignmentExpression extends BinaryExpression {
 
+    private static final long serialVersionUID = -6211786667929043232L;
+
     /**
      * <p>
      * Creates a new {@link BinaryExpression} instance.
@@ -27,7 +29,7 @@ public class MultiplyAssignmentExpression extends BinaryExpression {
      *             if lhs or rhs are <code>null</code>
      */
     public MultiplyAssignmentExpression(Expression lhs, Expression rhs) {
-        super(lhs, rhs);
+        super(lhs, rhs, "*=");
     }
 
     public Object execute(Context context) throws ExecutionException {

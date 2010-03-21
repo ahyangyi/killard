@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class Block extends Sequence {
 
+    private static final long serialVersionUID = -5162476635114345611L;
+
     public Block() {
     }
 
@@ -22,7 +24,16 @@ public class Block extends Sequence {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append("{\n");
+        for (Node node : getChildren()) {
+            buf.append("\t");
+            buf.append(node.toString());
+            if (node instanceof Variable || node instanceof Expression) {
+                buf.append(";");
+            }
+            buf.append("\n");
+        }
+        buf.append("}\n");
         return buf.toString();
     }
 }

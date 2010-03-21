@@ -11,6 +11,8 @@ package com.killard.board.parser;
  */
 public class StringLiteral extends Literal{
 
+    private static final long serialVersionUID = 1961171118734451864L;
+
     public StringLiteral(String text) {
         super(text);
     }

@@ -8,6 +8,8 @@ import java.util.List;
 
 public class FunctionCall extends GlobalFunctionCall {
 
+    private static final long serialVersionUID = -4013987710712368443L;
+
     public FunctionCall(String text, Sequence arguments) {
         super(text, arguments);
     }
@@ -77,8 +79,6 @@ public class FunctionCall extends GlobalFunctionCall {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
-        return buf.toString();
+        return super.toString();
     }
 }

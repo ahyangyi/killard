@@ -13,6 +13,8 @@ public class Return implements Node {
 
     private final Expression expression;
 
+    private static final long serialVersionUID = 7709483450777335834L;
+
     public Return(Expression expression) {
         this.expression = expression;
     }
@@ -29,8 +31,6 @@ public class Return implements Node {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
-        return buf.toString();
+        return "return" + (expression == null ? ";" : " " + expression.toString() + ";");
     }
 }

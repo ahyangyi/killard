@@ -15,6 +15,8 @@ public class Variable extends Expression {
 
     private final Expression initializer;
 
+    private static final long serialVersionUID = -3334541593058189202L;
+
     public Variable(String text) {
         this.text = text;
         this.initializer = null;
@@ -47,7 +49,9 @@ public class Variable extends Expression {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(text);
+        buf.append("=");
+        buf.append(initializer.toString());
         return buf.toString();
     }
 }

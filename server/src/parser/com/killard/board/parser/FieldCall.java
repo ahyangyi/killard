@@ -16,6 +16,8 @@ import java.lang.reflect.Array;
  */
 public class FieldCall extends Call {
 
+    private static final long serialVersionUID = 8001739029533765170L;
+
     public FieldCall(String text) {
         super(text);
     }
@@ -42,7 +44,7 @@ public class FieldCall extends Call {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        buf.append(getText());
         return buf.toString();
     }
 }

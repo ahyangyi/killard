@@ -15,10 +15,8 @@ import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -52,7 +50,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<PackageDescriptorDO> descriptors;
+    private transient List<PackageDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
@@ -64,7 +62,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.roles = new ArrayList<RoleDO>();
         this.roleGroups = new ArrayList<RoleGroupDO>();
         this.elementSchools = new ArrayList<ElementSchoolDO>();
-        this.descriptors = new HashSet<PackageDescriptorDO>();
+        this.descriptors = new ArrayList<PackageDescriptorDO>();
     }
 
     protected PackageDO(PackageBundleDO bundle, PackageDO source) {

@@ -506,7 +506,7 @@
                     for (card in data.cards[elementSchool]) {
                         $(new Image).load(function() {
                             arena.updateProgressBar(85 / count);
-                        }).attr({'src':'games/' + data.bundle + '/' + data.version + '/' + elementSchool + '/' + card + '.png'});
+                        }).attr({'src':'games/' + $(window).data('bundle') + '/element/' + elementSchool + '/card/' + card + '/image.png'});
                     }
                 }
                 $.getJSON('arena/board.json', function(data, textStatus) {
@@ -637,7 +637,7 @@
                     .appendTo(cardLi)
                     .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
 
-            $(new Image).attr({'src': 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + card.elementSchool + '/' + card.name + '.png'})
+            $(new Image).attr({'src': 'games/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png'})
                     .addClass('cardimage')
                     .width(this.cardWidth).height(this.cardHeight)
                     .appendTo(cardDiv);
@@ -670,7 +670,7 @@
             if (cardDiv.children().length > 0) {
                 $('.cardimage', cardDiv).fadeTo(1000, 1);
             } else {
-                $(new Image).attr('src', 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + card.elementSchool + '/' + card.name + '.png').addClass('cardimage')
+                $(new Image).attr('src', 'games/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png').addClass('cardimage')
                         .width(this.cardWidth)
                         .height(this.cardHeight)
                         .hide()

@@ -11,7 +11,7 @@
         <li><a href="<c:url value="/games/${package.name}"/>">${package.descriptor.name}</a></li>
     </ul>
     <ul class="highlight">
-        <li><a href="<c:url value="/games/${package.name}/${element.name}"/>">${element.descriptor.name}</a></li>
+        <li><a href="<c:url value="/games/${package.name}/element/${element.name}"/>">${element.descriptor.name}</a></li>
     </ul>
     <ul class="category">
         <li><a href="#">Cards</a></li>
@@ -21,14 +21,14 @@
             <c:choose>
                 <c:when test="${c.name == card.name}">
                     <li class="active">
-                        <a href="<c:url value="/games/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
+                        <a href="<c:url value="/games/${bundle.name}/element/${element.name}/card/${c.name}"/>">
                                 ${c.descriptor.name}
                         </a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li>
-                        <a href="<c:url value="/games/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
+                        <a href="<c:url value="/games/${bundle.name}/element/${element.name}/card/${c.name}"/>">
                                 ${c.descriptor.name}
                         </a>
                     </li>

@@ -12,7 +12,7 @@
     </ul>
     <ul>
         <c:forEach var="role" items="${package.allRoles}">
-        <li><a href="<c:url value="/games/${package.name}/${role.name}"/>">${role.descriptor.name}</a></li>
+        <li><a href="<c:url value="/games/${package.name}/role/${role.name}"/>">${role.descriptor.name}</a></li>
         </c:forEach>
     </ul>
     <ul class="category">
@@ -20,7 +20,7 @@
     </ul>
     <ul>
         <c:forEach var="element" items="${package.elementSchools}">
-        <li><a href="<c:url value="/games/${package.name}/${element.name}"/>">${element.descriptor.name}</a></li>
+        <li><a href="<c:url value="/games/${package.name}/element/${element.name}"/>">${element.descriptor.name}</a></li>
         </c:forEach>
     </ul>
 </div>

@@ -92,7 +92,7 @@ public class CardController extends BasicController {
         return "card/view";
     }
 
-    @RequestMapping(value = {".png"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/image.png", method = RequestMethod.GET)
     public void getCardImage(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                              @RequestParam(value = "v", required = false) String packageId,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {

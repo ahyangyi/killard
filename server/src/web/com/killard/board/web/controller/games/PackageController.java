@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/{bundleId}")
 public class PackageController extends BasicController {
 
-    @RequestMapping(value = {"/"}, method = {RequestMethod.GET})
+    @RequestMapping(method = {RequestMethod.GET})
     public String viewPackage(@PathVariable String bundleId,
                               ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -38,6 +38,15 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
         return "package/view";
+    }
+
+    @RequestMapping(method = {RequestMethod.POST})
+    public String updatePackage(@PathVariable String bundleId,
+                                ModelMap modelMap, HttpServletRequest request) throws Exception {
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
+        modelMap.put("package", bundle.getDraft());
+        return "package/edit";
     }
 
     @RequestMapping(value = {"/boards"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -49,15 +58,6 @@ public class PackageController extends BasicController {
         modelMap.put("package", bundle.getRelease());
         modelMap.put("boards",  bundle.getRelease().getBoards());
         return "boards";
-    }
-
-    @RequestMapping(value = {"/"}, method = {RequestMethod.POST})
-    public String updatePackage(@PathVariable String bundleId,
-                                ModelMap modelMap, HttpServletRequest request) throws Exception {
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
-        modelMap.put("package", bundle.getDraft());
-        return "package/edit";
     }
 
     @RequestMapping(value = {"/new"}, method = {RequestMethod.GET, RequestMethod.POST})

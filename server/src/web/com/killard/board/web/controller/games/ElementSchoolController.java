@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/{bundleId}/element/{elementId}")
 public class ElementSchoolController extends BasicController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String view(@PathVariable String bundleId, @PathVariable String elementId,
                        ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();

@@ -40,7 +40,7 @@ public class CardController extends BasicController {
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String viewCard(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                            @RequestParam(value = "v", required = false) String packageId,
                            ModelMap modelMap) throws Exception {
@@ -78,7 +78,7 @@ public class CardController extends BasicController {
         ResponseUtils.outputImage(request, response, card);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String updateCard(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                              @RequestParam("image") MultipartFile file,
                              ModelMap modelMap, HttpServletRequest request) throws Exception {

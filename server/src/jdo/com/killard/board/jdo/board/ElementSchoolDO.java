@@ -11,9 +11,8 @@ import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -30,29 +29,29 @@ public class ElementSchoolDO extends DescriptableDO<ElementSchoolDO, ElementScho
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<MetaCardDO> cards;
+    private List<MetaCardDO> cards;
 
     @Persistent(mappedBy = "elementSchool", defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<AttributeDO> attributes;
+    private List<AttributeDO> attributes;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<ElementSchoolPropertyDO> properties;
+    private List<ElementSchoolPropertyDO> properties;
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<ElementSchoolDescriptorDO> descriptors;
+    private transient List<ElementSchoolDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
 
     protected ElementSchoolDO(PackageDO pack, String name) {
         super(pack, name);
-        this.cards = new HashSet<MetaCardDO>();
-        this.attributes = new HashSet<AttributeDO>();
-        this.properties = new HashSet<ElementSchoolPropertyDO>();
-        this.descriptors = new HashSet<ElementSchoolDescriptorDO>();
+        this.cards = new ArrayList<MetaCardDO>();
+        this.attributes = new ArrayList<AttributeDO>();
+        this.properties = new ArrayList<ElementSchoolPropertyDO>();
+        this.descriptors = new ArrayList<ElementSchoolDescriptorDO>();
     }
 
     protected ElementSchoolDO(PackageDO pack, ElementSchoolDO source) {

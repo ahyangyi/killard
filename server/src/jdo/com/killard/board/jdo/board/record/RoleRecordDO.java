@@ -22,9 +22,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +49,7 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
 
     @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
-    private Set<RoleRecordPropertyDO> properties;
+    private List<RoleRecordPropertyDO> properties;
 
     @Persistent(serialized = "true")
     private List<AttributeHandler> validators;
@@ -70,7 +68,7 @@ public class RoleRecordDO implements Role<RoleRecordDO> {
         this.name = role.getName();
         this.visible = role.isVisible();
 
-        this.properties = new HashSet<RoleRecordPropertyDO>();
+        this.properties = new ArrayList<RoleRecordPropertyDO>();
         for (RolePropertyDO property : role.getProperties()) {
             this.properties.add(new RoleRecordPropertyDO(this, property));
         }

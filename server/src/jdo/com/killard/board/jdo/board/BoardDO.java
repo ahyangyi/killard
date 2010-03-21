@@ -36,13 +36,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
@@ -71,10 +67,10 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     private List<PlayerRecordDO> players;
 
     @Persistent
-    private Set<Key> dealtCardKeys;
+    private List<Key> dealtCardKeys;
 
     @Persistent
-    private SortedSet<BoardPropertyDO> properties;
+    private List<BoardPropertyDO> properties;
 
     @Persistent
     private List<ActionLogDO> actionLogs;
@@ -106,8 +102,8 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
         this.creator = creator;
         this.currentPlayerNumber = 1;
         this.players = new LinkedList<PlayerRecordDO>();
-        this.dealtCardKeys = new HashSet<Key>();
-        this.properties = new TreeSet<BoardPropertyDO>();
+        this.dealtCardKeys = new ArrayList<Key>();
+        this.properties = new ArrayList<BoardPropertyDO>();
         this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();

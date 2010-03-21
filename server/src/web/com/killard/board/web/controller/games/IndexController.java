@@ -1,8 +1,18 @@
 package com.killard.board.web.controller.games;
 
+import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.PackageBundleDO;
+import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.PackageStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.jdo.Extent;
+import javax.jdo.PersistenceManager;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>
@@ -16,9 +26,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IndexController {
 
-    @RequestMapping(value = "/index", method = {RequestMethod.GET, RequestMethod.POST})
-    public String index() throws Exception {
-        return "index";
+    @RequestMapping(value = {"/games", "/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String browser() throws Exception {
+        return "games";
+    }
+
+    @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String getPackages(ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        List<PackageDO> packages = new LinkedList<PackageDO>();
+        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
+        for (PackageBundleDO bundle : extent) {
+            if (bundle.getStatus().equals(PackageStatus.PUBLIC.name())) packages.add(bundle.getRelease());
+        }
+        extent.closeAll();
+        modelMap.put("packages", packages);
+        return "packages";
     }
 
 }

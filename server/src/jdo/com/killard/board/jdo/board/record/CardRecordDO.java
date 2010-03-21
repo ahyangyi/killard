@@ -23,10 +23,9 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -85,7 +84,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
 
     @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
-    private Set<CardRecordPropertyDO> properties;
+    private List<CardRecordPropertyDO> properties;
 
     @NotPersistent
     private BoardDO board;
@@ -123,7 +122,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         for (Attribute attribute : card.getAttributes()) addAttribute(attribute);
 
         this.casted = false;
-        this.properties = new TreeSet<CardRecordPropertyDO>();
+        this.properties = new ArrayList<CardRecordPropertyDO>();
         for (MetaCardPropertyDO property : card.getProperties()) {
             this.properties.add(new CardRecordPropertyDO(key, property));
         }

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -88,7 +87,7 @@ public class RoleGroupDO implements Comparable<RoleGroupDO>, Serializable {
         return getRoleAmount() - group.getRoleAmount();
     }
 
-    protected void restore(Set<RoleDO> roles) {
+    protected void restore(List<RoleDO> roles) {
         List<Key> invalid = new ArrayList<Key>();
         Map<Key, RoleDO> rolesMap = new HashMap<Key, RoleDO>(roles.size());
         for (RoleDO role : roles) {

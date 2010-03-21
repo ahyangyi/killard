@@ -17,9 +17,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -59,18 +57,18 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private List<SkillDO> skills;
 
     @Persistent(defaultFetchGroup = "true")
-    private Set<String> visibleAttributes;
+    private List<String> visibleAttributes;
 
     @Persistent(defaultFetchGroup = "true")
-    private Set<String> hiddenAttributes;
+    private List<String> hiddenAttributes;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<MetaCardPropertyDO> properties;
+    private List<MetaCardPropertyDO> properties;
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<MetaCardDescriptorDO> descriptors;
+    private transient List<MetaCardDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
@@ -82,10 +80,10 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.equippable = true;
         this.visible = true;
         this.skills = new ArrayList<SkillDO>();
-        this.hiddenAttributes = new HashSet<String>();
-        this.visibleAttributes = new HashSet<String>();
-        this.properties = new HashSet<MetaCardPropertyDO>();
-        this.descriptors = new HashSet<MetaCardDescriptorDO>();
+        this.hiddenAttributes = new ArrayList<String>();
+        this.visibleAttributes = new ArrayList<String>();
+        this.properties = new ArrayList<MetaCardPropertyDO>();
+        this.descriptors = new ArrayList<MetaCardDescriptorDO>();
     }
 
     protected MetaCardDO(ElementSchoolDO elementSchool, MetaCardDO source) {

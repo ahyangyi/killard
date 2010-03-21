@@ -9,13 +9,11 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * <p>
@@ -38,7 +36,7 @@ public class PackageBundleDO {
 
     @Persistent
     @Element(dependent = "true")
-    private Set<PlayerProfileDO> players;
+    private List<PlayerProfileDO> players;
 
     @Persistent
     private Date createdDate;
@@ -60,7 +58,7 @@ public class PackageBundleDO {
 
     @Persistent
     @Element(dependent = "true")
-    private SortedSet<PackageDO> packages;
+    private List<PackageDO> packages;
 
     public PackageBundleDO(String name) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(getClass().getSimpleName(), name);
@@ -68,12 +66,12 @@ public class PackageBundleDO {
         this.name = name;
         this.createdDate = Calendar.getInstance().getTime();
         this.modifiedDate = Calendar.getInstance().getTime();
-        this.players = new HashSet<PlayerProfileDO>();
+        this.players = new ArrayList<PlayerProfileDO>();
         this.clonable = true;
         this.clonedCount = 0;
         this.status = PackageStatus.PRIVATE.name();
         this.playedCount = 0;
-        this.packages = new TreeSet<PackageDO>();
+        this.packages = new ArrayList<PackageDO>();
     }
 
     public PackageBundleDO(PackageBundleDO source) {
@@ -99,8 +97,8 @@ public class PackageBundleDO {
         return modifiedDate;
     }
 
-    public Set<PlayerProfileDO> getPlayers() {
-        return Collections.unmodifiableSet(players);
+    public List<PlayerProfileDO> getPlayers() {
+        return Collections.unmodifiableList(players);
     }
 
     public boolean isClonable() {
@@ -124,11 +122,11 @@ public class PackageBundleDO {
     }
 
     public PackageDO getDraft() {
-        return packages.first();
+        return packages.get(0);
     }
 
     public PackageDO getRelease() {
-        return packages.last();
+        return packages.get(packages.size() - 1);
     }
 
     public PackageDO draft() {

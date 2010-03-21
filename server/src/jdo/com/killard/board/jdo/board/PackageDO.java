@@ -40,15 +40,15 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<RoleDO> roles;
+    private List<RoleDO> roles;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<RoleGroupDO> roleGroups;
+    private List<RoleGroupDO> roleGroups;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<ElementSchoolDO> elementSchools;
+    private List<ElementSchoolDO> elementSchools;
 
     @Persistent
     @Element(dependent = "true")
@@ -56,14 +56,14 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
 
     @Persistent(defaultFetchGroup = "false")
     @Element(dependent = "true")
-    private transient Set<BoardDO> boards;
+    private transient List<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
         super(bundle.getKey(), version);
         this.bundleKey = bundle.getKey();
-        this.roles = new HashSet<RoleDO>();
-        this.roleGroups = new HashSet<RoleGroupDO>();
-        this.elementSchools = new HashSet<ElementSchoolDO>();
+        this.roles = new ArrayList<RoleDO>();
+        this.roleGroups = new ArrayList<RoleGroupDO>();
+        this.elementSchools = new ArrayList<ElementSchoolDO>();
         this.descriptors = new HashSet<PackageDescriptorDO>();
     }
 
@@ -134,9 +134,9 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return candidates.get((int) (candidates.size() * Math.random()));
     }
 
-    public Set<RoleGroupDO> getRoleGroups() {
+    public List<RoleGroupDO> getRoleGroups() {
         for (RoleGroupDO group : roleGroups) group.restore(this.roles);
-        return Collections.unmodifiableSet(roleGroups);
+        return Collections.unmodifiableList(roleGroups);
     }
 
     public ElementSchoolDO newElementSchool(String name) {
@@ -160,7 +160,7 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return descriptors.add(new PackageDescriptorDO(this, locale, name, description));
     }
 
-    public Set<BoardDO> getBoards() {
+    public List<BoardDO> getBoards() {
         return boards;
     }
 }

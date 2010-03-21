@@ -19,11 +19,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -64,15 +60,15 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<CardRecordDO> equippedCards;
+    private List<CardRecordDO> equippedCards;
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private SortedSet<ElementRecordDO> elementRecords;
+    private List<ElementRecordDO> elementRecords;
 
     @Persistent
     @Element(dependent = "true")
-    private Set<PlayerRecordPropertyDO> properties;
+    private List<PlayerRecordPropertyDO> properties;
 
     @Persistent
     private boolean alive;
@@ -103,11 +99,11 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.number = number;
         this.health = 50;
         this.cardPlayed = false;
-        this.equippedCards = new HashSet<CardRecordDO>();
+        this.equippedCards = new ArrayList<CardRecordDO>();
         for (ElementRecordDO element : elementRecords) element.setPlayer(this);
-        this.elementRecords = new TreeSet<ElementRecordDO>(elementRecords);
+        this.elementRecords = new ArrayList<ElementRecordDO>(elementRecords);
 
-        this.properties = new HashSet<PlayerRecordPropertyDO>();
+        this.properties = new ArrayList<PlayerRecordPropertyDO>();
 
         this.alive = true;
         this.called = false;

@@ -18,9 +18,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -45,11 +43,11 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<SkillPropertyDO> properties;
+    private List<SkillPropertyDO> properties;
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<SkillDescriptorDO> descriptors;
+    private transient List<SkillDescriptorDO> descriptors;
 
     protected SkillDO(MetaCardDO card, String name, List<String> targets, int cost, Function function) {
         super(card, name);
@@ -60,8 +58,8 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         this.cost = cost;
         this.function = function;
 
-        this.properties = new HashSet<SkillPropertyDO>();
-        this.descriptors = new HashSet<SkillDescriptorDO>();
+        this.properties = new ArrayList<SkillPropertyDO>();
+        this.descriptors = new ArrayList<SkillDescriptorDO>();
     }
 
     protected SkillDO(MetaCardDO card, SkillDO source) {

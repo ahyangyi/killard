@@ -17,9 +17,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -51,11 +49,11 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<AttributePropertyDO> properties;
+    private List<AttributePropertyDO> properties;
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<AttributeDescriptorDO> descriptors;
+    private transient List<AttributeDescriptorDO> descriptors;
 
     protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
                           List<AttributeHandler> validators,
@@ -70,8 +68,8 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
 
-        this.properties = new HashSet<AttributePropertyDO>();
-        this.descriptors = new HashSet<AttributeDescriptorDO>();
+        this.properties = new ArrayList<AttributePropertyDO>();
+        this.descriptors = new ArrayList<AttributeDescriptorDO>();
     }
 
     protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {

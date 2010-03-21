@@ -11,9 +11,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -41,11 +39,11 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
 
     @Persistent(defaultFetchGroup = "true")
     @Element(dependent = "true")
-    private Set<RolePropertyDO> properties;
+    private List<RolePropertyDO> properties;
 
     @Persistent
     @Element(dependent = "true")
-    private transient Set<RoleDescriptorDO> descriptors;
+    private transient List<RoleDescriptorDO> descriptors;
 
     protected RoleDO(PackageDO pack, String name,
                      List<AttributeHandler> validators,
@@ -59,8 +57,8 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
         this.before = new ArrayList<AttributeHandler>(before);
         this.after = new ArrayList<AttributeHandler>(after);
 
-        this.properties = new HashSet<RolePropertyDO>();
-        this.descriptors = new HashSet<RoleDescriptorDO>();
+        this.properties = new ArrayList<RolePropertyDO>();
+        this.descriptors = new ArrayList<RoleDescriptorDO>();
     }
 
     protected RoleDO(PackageDO pack, RoleDO source) {

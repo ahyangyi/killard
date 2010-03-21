@@ -47,7 +47,9 @@ public class CardController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key packageKey = packageId == null
+                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
+                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
         Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
@@ -55,27 +57,12 @@ public class CardController extends BasicController {
 
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementKey);
 
         modelMap.put("card", card);
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("element", card.getElementSchool());
         return "card/view";
-    }
-
-    @RequestMapping(value = {"/image.png"}, method = RequestMethod.GET)
-    public void getCardImage(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
-                           @RequestParam(value = "v", required = false) String packageId,
-                             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        ResponseUtils.outputImage(request, response, card);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -103,6 +90,23 @@ public class CardController extends BasicController {
         modelMap.put("package", pack);
         modelMap.put("elementSchool", elementSchool);
         return "card/view";
+    }
+
+    @RequestMapping(value = {".png"}, method = RequestMethod.GET)
+    public void getCardImage(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
+                             @RequestParam(value = "v", required = false) String packageId,
+                             HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = packageId == null
+                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
+                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
+
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        ResponseUtils.outputImage(request, response, card);
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)

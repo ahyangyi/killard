@@ -1,14 +1,10 @@
 package com.killard.board.web.controller.arena;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.environment.BoardException;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
-import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.record.ActionLogDO;
 import com.killard.board.jdo.board.record.PlayerRecordDO;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * <p>
@@ -42,37 +37,6 @@ public class ArenaController extends BasicController {
     @RequestMapping(value = {"/arena"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String arena() throws Exception {
         return "arena";
-    }
-
-    @RequestMapping(value = "/*/*.png", method = RequestMethod.GET)
-    public void cardImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String[] ids = request.getRequestURI().split("/");
-        String elementSchoolName = ids[2];
-        String cardName = ids[3].substring(0, ids[3].indexOf("."));
-
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key packageKey = CacheInstance.getInstance().getPlayerCache().getPackageKey();
-        Key elementSchoolkey =
-                KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementSchoolName);
-        Key cardKey = KeyFactory.createKey(elementSchoolkey, MetaCardDO.class.getSimpleName(), cardName);
-
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        if (request.getDateHeader("If-Modified-Since") >= card.getModifiedDate().getTime() - 1000) {
-            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            return;
-        }
-        if (card.isRenderable()) {
-            response.setContentType("image/png");
-            response.setDateHeader("Last-Modified", card.getModifiedDate().getTime());
-            response.setHeader("Cache-Control", "private");
-            try {
-                response.getOutputStream().write(card.getImageData());
-            } catch (IOException ignored) {
-            }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
     }
 
     @RequestMapping(value = {"/package"}, method = {RequestMethod.GET, RequestMethod.POST})

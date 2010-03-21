@@ -49,6 +49,18 @@ public class PackageController extends BasicController {
         return "package/edit";
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public String rule(@PathVariable String bundleId, @RequestParam("definition") String rule,
+                       ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
+        RuleDO oldRule = bundle.getDraft().getRule();
+        pm.makePersistent(bundle);
+        modelMap.put("package", bundle.getDraft());
+        return "package/edit";
+    }
+
     @RequestMapping(value = {"/boards"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getBoards(@PathVariable String bundleId,
                             ModelMap modelMap, HttpServletRequest request) throws Exception {
@@ -110,18 +122,6 @@ public class PackageController extends BasicController {
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
         return "/games/" + bundle.getName();
-    }
-
-    @RequestMapping(value = "/rule", method = RequestMethod.POST)
-    public String rule(@PathVariable String bundleId, @RequestParam("definition") String definition,
-                       ModelMap modelMap, HttpServletRequest request) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
-        RuleDO oldRule = bundle.getDraft().getRule();
-        pm.makePersistent(bundle);
-        modelMap.put("package", bundle.getDraft());
-        return "package/edit";
     }
 
 }

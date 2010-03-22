@@ -1,8 +1,7 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.parser.ScriptEngine;
-import com.killard.board.web.controller.BasicController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  */
 @Controller
-@RequestMapping("/{bundleId}/element/{elementId}/attribute/{attributeId}")
-public class AttributeController extends BasicController {
+@RequestMapping("/{bundleId}/role/{roleId}")
+public class RoleController {
 
     private final ScriptEngine engine = new ScriptEngine();
 

@@ -4,7 +4,7 @@
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <div style="text-align:center;">
-    <img src="<c:url value="/games/${bundle.name}/element/${element.name}/card/${card.name}/image.png"/>"/>
+    <img src="<c:url value="/game/${bundle.name}/element/${element.name}/card/${card.name}/image.png"/>"/>
 </div>
 <hr/>
 <div class="field">

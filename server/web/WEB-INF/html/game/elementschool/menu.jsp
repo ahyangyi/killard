@@ -4,13 +4,13 @@
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementSchoolDO"--%>
 <div class="vmenu">
     <ul>
-        <li><a href="<c:url value="/games"/>">All Games</a></li>
+        <li><a href="<c:url value="/game"/>">All Games</a></li>
     </ul>
     <ul class="category">
-        <li><a href="<c:url value="/games/${package.name}"/>">${package.descriptor.name}</a></li>
+        <li><a href="<c:url value="/game/${package.name}"/>">${package.descriptor.name}</a></li>
     </ul>
     <ul class="highlight">
-        <li><a href="<c:url value="/games/${package.name}/element/${element.name}"/>">${element.descriptor.name}</a></li>
+        <li><a href="<c:url value="/game/${package.name}/element/${element.name}"/>">${element.descriptor.name}</a></li>
     </ul>
     <ul class="category">
         <li><a href="#">Cards</a></li>
@@ -18,7 +18,7 @@
     <ul>
         <c:forEach var="card" items="${element.cards}">
         <li>
-            <a href="<c:url value="/games/${bundle.name}/element/${element.name}/card/${card.name}"/>">
+            <a href="<c:url value="/game/${bundle.name}/element/${element.name}/card/${card.name}"/>">
             ${card.descriptor.name}
             </a>
         </li>

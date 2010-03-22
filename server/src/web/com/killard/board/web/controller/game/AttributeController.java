@@ -1,4 +1,4 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.parser.ScriptEngine;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  */
 @Controller
-@RequestMapping("/{bundleId}/element/{elementId}/card/{cardId}/skill/{skillId}")
-public class SkillController extends BasicController {
+@RequestMapping("/{bundleId}/element/{elementId}/attribute/{attributeId}")
+public class AttributeController extends BasicController {
 
     private final ScriptEngine engine = new ScriptEngine();
 

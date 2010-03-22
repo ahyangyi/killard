@@ -5,13 +5,13 @@
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <div class="vmenu">
     <ul>
-        <li><a href="<c:url value="/games"/>">All Games</a></li>
+        <li><a href="<c:url value="/game"/>">All Games</a></li>
     </ul>
     <ul class="category">
-        <li><a href="<c:url value="/games/${package.name}"/>">${package.descriptor.name}</a></li>
+        <li><a href="<c:url value="/game/${package.name}"/>">${package.descriptor.name}</a></li>
     </ul>
     <ul class="highlight">
-        <li><a href="<c:url value="/games/${package.name}/${element.name}"/>">${element.descriptor.name}</a></li>
+        <li><a href="<c:url value="/game/${package.name}/${element.name}"/>">${element.descriptor.name}</a></li>
     </ul>
     <ul class="category">
         <li><a href="#">Cards</a></li>
@@ -21,14 +21,14 @@
             <c:choose>
                 <c:when test="${c.name == card.name}">
                     <li class="active">
-                        <a href="<c:url value="/games/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
+                        <a href="<c:url value="/game/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
                                 ${c.descriptor.name}
                         </a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li>
-                        <a href="<c:url value="/games/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
+                        <a href="<c:url value="/game/${bundle.name}/${package.key.id}/${element.name}/${c.name}/"/>">
                                 ${c.descriptor.name}
                         </a>
                     </li>

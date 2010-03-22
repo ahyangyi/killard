@@ -8,7 +8,7 @@
         <ul>
             <li><a href="/"><spring:message code="menu.home"/></a></li>
             <li>|</li>
-            <li><a href="<c:url value="/games"/>"><spring:message code="menu.games"/></a></li>
+            <li><a href="<c:url value="/game"/>"><spring:message code="menu.game"/></a></li>
             <li>|</li>
             <li><a href="<c:url value="/arena"/>"><spring:message code="menu.arena"/></a></li>
             <li>|</li>

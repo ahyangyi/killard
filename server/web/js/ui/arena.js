@@ -97,7 +97,7 @@
                         var position = $(this).attr('position');
                         var cardImage = $(new Image);
                         cardImage.addClass('cardimage')
-                                .attr('src', 'games/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + elementSchool + '/' + cardName + '.png')
+                                .attr('src', 'game/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + elementSchool + '/' + cardName + '.png')
                                 .width(arena.cardWidth).height(arena.cardHeight).hide()
                                 .appendTo($(this)).fadeTo(1000, 0.5);
                         $.post('arena/playcard.json', {
@@ -506,7 +506,7 @@
                     for (card in data.cards[elementSchool]) {
                         $(new Image).load(function() {
                             arena.updateProgressBar(85 / count);
-                        }).attr({'src':'games/' + $(window).data('bundle') + '/element/' + elementSchool + '/card/' + card + '/image.png'});
+                        }).attr({'src':'game/' + $(window).data('bundle') + '/element/' + elementSchool + '/card/' + card + '/image.png'});
                     }
                 }
                 $.getJSON('arena/board.json', function(data, textStatus) {
@@ -637,7 +637,7 @@
                     .appendTo(cardLi)
                     .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
 
-            $(new Image).attr({'src': 'games/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png'})
+            $(new Image).attr({'src': 'game/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png'})
                     .addClass('cardimage')
                     .width(this.cardWidth).height(this.cardHeight)
                     .appendTo(cardDiv);
@@ -670,7 +670,7 @@
             if (cardDiv.children().length > 0) {
                 $('.cardimage', cardDiv).fadeTo(1000, 1);
             } else {
-                $(new Image).attr('src', 'games/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png').addClass('cardimage')
+                $(new Image).attr('src', 'game/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png').addClass('cardimage')
                         .width(this.cardWidth)
                         .height(this.cardHeight)
                         .hide()

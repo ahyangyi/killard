@@ -1,49 +1,294 @@
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>One Board</title>
-<script src="AC_OETags.js" language="javascript"></script>
-<style>
-body { margin: 0px; overflow:hidden }
-</style>
-</head>
+    <link type="text/css" href="css/layout.css" rel="stylesheet"/>
+    <link type="text/css" href="css/menu.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/package.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/richlist.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/rating.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="js/ui/carousel.js"></script>
+    <script type="text/javascript" src="js/ui/richlist.js"></script>
+    <script type="text/javascript" src="js/ui/searchbar.js"></script>
+    <title>Killard Games</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+        }
 
-<body scroll='no'>
-<script language="JavaScript" type="text/javascript">
-<!--
-		AC_FL_RunContent(
-					"src", "board",
-					"name", "board",
-					"id", "board",
-					"width", "100%",
-					"height", "100%",
-					"align", "middle",
-					"quality", "high",
-					"bgcolor", "#869ca7",
-					"allowScriptAccess","sameDomain",
-					"type", "application/x-shockwave-flash",
-					"pluginspage", "http://www.adobe.com/go/getflashplayer"
-	);
-// -->
-</script>
-<noscript>
-	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			id="explorer" width="100%" height="100%"
-			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-			<param name="movie" value="board.swf" />
-			<param name="quality" value="high" />
-			<param name="bgcolor" value="#869ca7" />
-			<param name="allowScriptAccess" value="sameDomain" />
-			<embed src="board.swf" quality="high" bgcolor="#869ca7"
-				width="100%" height="100%" name="board" align="middle"
-				play="true"
-				loop="false"
-				quality="high"
-				allowScriptAccess="sameDomain"
-				type="application/x-shockwave-flash"
-				pluginspage="http://www.adobe.com/go/getflashplayer">
-			</embed>
-	</object>
-</noscript>
+        .ui-layout-center {
+            padding-left: 50px;
+        }
+
+        .ui-layout-east {
+            padding-right:50px;
+        }
+
+        .carousel .content {
+            background: #D1D1D1;
+        }
+
+        .carousel .bottom {
+            display: none;
+        }
+
+        .cards-show img {
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+        }
+
+        div.description ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        div.description ul li {
+            display: inline;
+            float: left;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            function resize() {
+                var centerPadding = parseInt(Math.min($(window).width() / 80, $(window).height() / 45));
+                var centerHeight = $(window).height() - $('.topbar').outerHeight() - $('.bottombar').outerHeight();
+                $('.container').css({
+                    'padding-top' : centerPadding,
+                    'padding-bottom' : centerPadding,
+                    'padding-left' : 2 * centerPadding,
+                    'padding-right' : 2 * centerPadding
+                }).height(centerHeight - 2 * centerPadding);
+                
+                var cornerLength = parseInt(Math.min($(window).width() / 16, $(window).height() / 9));
+                $('.dashboard .corner img').width(cornerLength).height(cornerLength);
+                $('.dashboard .corner').width(cornerLength).height(cornerLength);
+
+                $('.dashboard .title').css({
+                    'font-size': parseInt(cornerLength / 2) + 'px',
+                    'line-height': cornerLength + 'px'
+                }).height(cornerLength);
+
+                $('.dashboard .description').css({
+                    'margin-left': cornerLength,
+                    'margin-right': cornerLength
+                });
+
+                $('.dashboard .description img').width( 2 * cornerLength);
+                $('.dashboard .description li').width(parseInt(($('.dashboard').width() - 2 * cornerLength) / 2))
+                        .height(parseInt(($('.dashboard').height() - 3 * cornerLength)))
+                        .css({
+                    'margin-top': parseInt(cornerLength /2 ),
+                    'margin-bottom': parseInt(cornerLength /2 )
+                });
+
+                var h = $('.carousel .center').height();
+                var padding = parseInt(h / 10);
+                var w = h - parseInt(h / 5);
+                $('.carousel .center .content .list li img').width(w).height(w);
+                $('.carousel .center .content .list li').css({
+                        'padding-top': padding,
+                        'padding-bottom': padding,
+                        'padding-left': padding,
+                        'padding-right': padding
+                }).width(w).height(w);
+            }
+            
+            resize();
+            $('.container').layout({
+                resizable: false,
+                closable: false,
+                spacing_open: 0,
+                east__size: "30%",
+                south__size: "20%",
+                center__onresize: function () {
+                },
+                east__onresize: function () {
+                    $('.richlist').richlist('resize');
+                },
+                south__onresize: function () {
+                    $('.carousel').carousel('resize');
+                    $('.searchbar').searchbar('resize');
+                }
+            });
+
+            $('.searchbar').searchbar();
+            $('.carousel').carousel();
+            $('.richlist').richlist();
+
+            $.event.add(window, 'load', resize);
+            $.event.add(window, 'resize', resize);
+
+            function updateGameList() {
+                //            $.getJSON('test/package/boards.json', '', function(data, textStatus) {
+                //                var richlist = $('.richlist').data('richlist');
+                //                richlist._clear();
+                //                $.each(data, function(i, item) {
+                //                    richlist.items.push('<li>\
+                //                        <a href="arena.html" title="View round">\
+                //                        <img width="' + richlist.height + '" height="' + richlist.height + '" src="image/head/head.png" title=""/></a>\
+                //                        <h5><a href="arena.html" title="Join Game">Join</a></h5>\
+                //                        <p class="info">Nov 29th 2008 by <a href="arena.html">hello</a></p>\
+                //                        </li>');
+                //                });
+                //            });
+            }
+
+            function showGame(game) {
+                $('.dashboard .title .menu ul li a').attr('href', 'game/' + game.bundle).text(game.title);
+                $('.dashboard .description img').attr('src', game.picture);
+                $('.richlist ul li').each(function() {
+                    $(this).remove();
+                });
+                $('.richlist').richlist('_clear');
+                updateGameList();
+            }
+
+            $.getJSON('game/query/top.json', '', function(data, textStatus) {
+                $.each(data, function(i, game) {
+                    var packageLi = $('<li></li>').appendTo($("#packageList"));
+                    $(new Image).attr('src', game.picture).addClass('item').click(function() {
+                        showGame(game);
+                    }).appendTo(packageLi);
+                    resize();
+                });
+//                showGame(data[0]);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="topbar">
+    <div id="logo">
+        <img src="image/logo.png"/>
+        <img src="image/title.png"/>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li>|</li>
+            <li><a href="flash.html">All Games</a></li>
+            <li>|</li>
+            <li><a href="arena.html">Arena</a></li>
+            <li>|</li>
+            <li><a href="#">DIY</a></li>
+            <li>|</li>
+            <li><a href="#">Help</a></li>
+            <li>|</li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <div class="ui-layout-center">
+        <div class="dashboard">
+            <div class="corner" style="top:0;left:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="top:0;right:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;left:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;right:0;"><img src="image/cycle.png"/></div>
+            <div class="title">    
+                <div class="menu">
+                    <ul>
+                        <li><a href="">Animals In Danger</a></li>
+                        <li><img src="image/arrow1.png"/></li>
+                        <li><img src="image/arrow2.png"/></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="description">
+                <ul>
+                    <li>
+                        <div class="cards-show">
+                            <img src="game/orions/element/AIR/card/Spellbreaker/image.png"/>
+                        </div>
+                    </li>
+                    <li>
+                        <p>This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="new-game-form">
+                <form action="/arena/new.html" method="POST">
+                    <input type="hidden" name="packageBundleId" value=""/>
+                    <b>Player Number:</b>
+                    <label>
+                        <select name="playerNumber">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </label>
+                    <input type="submit" value="New Game" style="vertical-align:middle;">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="ui-layout-east">
+        <div class="richlist" style="height:95%;">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="ui-layout-south">
+        <div class="carousel" style="height:100%;">
+            <div class="center" style="height:100%;">
+                <ul>
+                    <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+                    <li class="content">
+                        <div class="list">
+                            <ul id="packageList">
+                                <li class="item"><img src="image/cards/1.png"/></li>
+                                <li class="item"><img src="image/cards/2.png"/></li>
+                                <li class="item"><img src="image/cards/3.png"/></li>
+                                <li class="item"><img src="image/cards/4.png"/></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+                </ul>
+            </div>
+            <div class="bottom">
+                <div class="searchbar">
+                    <ul>
+                        <li class="tag"><a href="#">card</a></li>
+                        <li class="tag"><a href="#">chess</a></li>
+                        <li class="searchbox">
+                            <div class="wrapper">
+                                <input class="text" type="text"/>
+                                <input class="submit" type="submit" value="Search"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bottombar">
+    <div class="menu">
+        <ul>
+            <li>Killard &copy; 2010</li>
+            <li>|</li>
+            <li><a href="#">Terms</a></li>
+            <li>|</li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>

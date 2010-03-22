@@ -1,4 +1,4 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -48,6 +48,7 @@ import java.util.Set;
  * </p>
  */
 @Controller
+@RequestMapping("/manage")
 public class ManageController extends BasicController {
 
     private static Key defaultPackageKey;
@@ -65,8 +66,8 @@ public class ManageController extends BasicController {
 //        queue.add(TaskOptions.Builder.url("/cron/sync.xml"));
     }
 
-    @RequestMapping(value = "/manage/clearboards", method = RequestMethod.GET)
-    public void clearAllBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/clear/board", method = RequestMethod.GET)
+    public void clearBoards(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Extent<BoardDO> extent = pm.getExtent(BoardDO.class);
@@ -77,25 +78,53 @@ public class ManageController extends BasicController {
         extent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        redirect("/games", request, response);
+        redirect("/game", request, response);
     }
 
-    @RequestMapping(value = "/manage/clear", method = RequestMethod.GET)
-    public void clearAllPackages(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/clear/element", method = RequestMethod.GET)
+    public void clearElements(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
-        for (PackageBundleDO bundle : extent) {
+        Extent<ElementSchoolDO> elementExtent = pm.getExtent(ElementSchoolDO.class);
+        for (ElementSchoolDO record : elementExtent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(record);
+            PersistenceHelper.commit();
+        }
+        elementExtent.closeAll();
+
+        redirect("/game", request, response);
+    }
+
+    @RequestMapping(value = "/clear/card", method = RequestMethod.GET)
+    public void clearCards(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Extent<MetaCardDO> cardExtent = pm.getExtent(MetaCardDO.class);
+        for (MetaCardDO record : cardExtent) {
+            PersistenceHelper.getPersistenceManager().deletePersistent(record);
+            PersistenceHelper.commit();
+        }
+        cardExtent.closeAll();
+
+        redirect("/game", request, response);
+    }
+
+    @RequestMapping(value = "/clear", method = RequestMethod.GET)
+    public void clearPackages(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Extent<PackageBundleDO> bundleExtent = pm.getExtent(PackageBundleDO.class);
+        for (PackageBundleDO bundle : bundleExtent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(bundle);
             PersistenceHelper.commit();
         }
-        extent.closeAll();
+        bundleExtent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        redirect("/games", request, response);
+        redirect("/game", request, response);
     }
 
-    @RequestMapping(value = "/manage/reset", method = RequestMethod.GET)
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public void reset(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
@@ -107,14 +136,14 @@ public class ManageController extends BasicController {
         extent.closeAll();
         CacheInstance.getInstance().getBoardCache().clear();
 
-        PackageBundleDO bundle = new PackageBundleDO("orions");
+        PackageBundleDO bundle = new PackageBundleDO("animals");
         pm.makePersistent(bundle);
 
         baseDirectory = "WEB-INF/orions/";
-        defaultPackageKey = bundle.getKey();
 
         PackageDO draft = bundle.draft();
-        draft.newDescriptor(BoardContext.getLocale(), "Orions", "Orions");
+        defaultPackageKey = draft.getKey();
+        draft.newDescriptor(BoardContext.getLocale(), "Animals In Danger", "This game talks about animals.");
 
         File ruleFile = new File(baseDirectory + "Rule.json");
         builder.buildRule(draft, engine.parse(ruleFile));
@@ -127,17 +156,16 @@ public class ManageController extends BasicController {
         group = pm.getObjectById(RoleGroupDO.class, group.getKey());
         group.addRole(role);
         group.addRole(role);
-        redirect("/games/manage/load", request, response);
+        redirect("/game/manage/load", request, response);
     }
 
-    @RequestMapping(value = "/manage/load", method = RequestMethod.GET)
+    @RequestMapping(value = "/load", method = RequestMethod.GET)
     public void loadCards(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (defaultPackageKey == null) redirect("/games/manage/reset", request, response);
+        if (defaultPackageKey == null) redirect("/game/manage/reset", request, response);
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey);
-        PackageDO draft = bundle.getDraft();
+        PackageDO draft = pm.getObjectById(PackageDO.class, defaultPackageKey);
 
         Set<String> elementSchools = new HashSet<String>();
         for (ElementSchool elementSchool : draft.getElementSchools()) {
@@ -149,12 +177,14 @@ public class ManageController extends BasicController {
             if (sub.isDirectory() && !elementSchools.contains(sub.getName())) {
                 ElementSchoolDO elementSchool = draft.newElementSchool(sub.getName());
                 elementSchool.newDescriptor(BoardContext.getLocale(), sub.getName(), sub.getName());
+                pm.makePersistent(elementSchool);
+                PersistenceHelper.commit();
 
                 for (File file : sub.listFiles()) {
                     if (file.getName().endsWith(".json")) {
                         String name = file.getName().substring(0, file.getName().length() - 5);
                         MetaCardDO card = elementSchool.newCard(name);
-                        card = pm.makePersistent(card);
+                        pm.makePersistent(card);
                         PersistenceHelper.commit();
                         builder.buildCard(elementSchool, card, engine.parse(file));
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
@@ -165,28 +195,26 @@ public class ManageController extends BasicController {
                             card.setImageFormat(Image.Format.PNG);
                             card.setImageData(getBytes(imageFile));
                         }
-                        pm.makePersistent(card);
-                        elementSchool = pm.makePersistent(elementSchool);
                         PersistenceHelper.commit();
                     }
                 }
-                redirect("/games/manage/load", request, response);
+                redirect("/game/manage/load", request, response);
                 return;
             }
         }
-        redirect("/games/manage/publish", request, response);
+        redirect("/game/manage/publish", request, response);
     }
 
-    @RequestMapping(value = "/manage/publish", method = RequestMethod.GET)
+    @RequestMapping(value = "/publish", method = RequestMethod.GET)
     public void publish(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (defaultPackageKey == null) redirect("/manage/reset", request, response);
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, defaultPackageKey.getParent());
 
         bundle.setStatus(PackageStatus.PUBLIC);
         bundle.release();
         
-        redirect("/games", request, response);
+        redirect("/game", request, response);
     }
 
     protected String getString(File file) throws IOException {

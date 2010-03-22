@@ -1,4 +1,4 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;

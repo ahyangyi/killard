@@ -1,4 +1,4 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
@@ -24,15 +24,14 @@ import java.util.List;
  * </p>
  */
 @Controller
-@RequestMapping("/games")
 public class IndexController {
 
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/game", method = {RequestMethod.GET, RequestMethod.POST})
     public String browser() throws Exception {
-        return "games";
+        return "game";
     }
 
-    @RequestMapping(value = {"/packages"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/query/top", method = {RequestMethod.GET, RequestMethod.POST})
     public String getPackages(ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         List<PackageDO> packages = new LinkedList<PackageDO>();

@@ -1,4 +1,4 @@
-package com.killard.board.web.controller.games;
+package com.killard.board.web.controller.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -89,7 +89,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.deletePersistent(bundle);
-        redirect("/games", request, response);
+        redirect("/game", request, response);
     }
 
     @RequestMapping(value = "/release", method = {RequestMethod.POST, RequestMethod.DELETE})
@@ -99,7 +99,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle.release());
-        redirect("/games", request, response);
+        redirect("/game", request, response);
     }
 
     @RequestMapping(value = "/addmanager", method = RequestMethod.POST)
@@ -121,7 +121,7 @@ public class PackageController extends BasicController {
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getRelease());
-        return "/games/" + bundle.getName();
+        return "/game/" + bundle.getName();
     }
 
 }

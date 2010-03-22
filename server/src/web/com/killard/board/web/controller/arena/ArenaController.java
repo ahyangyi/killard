@@ -50,7 +50,7 @@ public class ArenaController extends BasicController {
     public void newGame(@RequestParam("packageBundleId") long packageBundleId,
                         @RequestParam(value = "playerNumber", required = false, defaultValue = "2") int playerNumber,
                         HttpServletRequest request, HttpServletResponse response) throws Exception {
-        getLog().fine("New games record for " + getUser().getNickname() + " package " + packageBundleId);
+        getLog().fine("New game record for " + getUser().getNickname() + " package " + packageBundleId);
         PlayerRecordDO player = CacheInstance.getInstance().getPlayer();
         if (player != null) quit();
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();

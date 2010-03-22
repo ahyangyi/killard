@@ -4,10 +4,9 @@
     <version>1</version>
 
     <static-files>
-        <include path="/**.js" expiration="1h"/>
-        <include path="/favicon.ico" expiration="1h"/>
-        <!--<include path="/**.png" expiration="1d 1h"/>-->
-        <include path="/**.gif" expiration="1h"/>
+        <include path="/**.js"/>
+        <include path="/**.ico"/>
+        <include path="/**.gif"/>
         <include path="/css/**.png"/>
         <include path="/image/**.png"/>
         <include path="/**.jpg"/>
@@ -15,8 +14,7 @@
         <include path="/**.swf"/>
         <include path="/**.txt"/>
         <include path="/**.html"/>
-        <exclude path="/arena/**.png"/>
-        <exclude path="/package/**.png"/>
+        <exclude path="/game/**.png"/>
         <exclude path="/**.json"/>
         <exclude path="/**.xml"/>
     </static-files>

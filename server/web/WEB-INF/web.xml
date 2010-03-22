@@ -32,7 +32,7 @@
 
     <filter-mapping>
         <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>/games/*</url-pattern>
+        <url-pattern>/game/*</url-pattern>
     </filter-mapping>
 
     <servlet>
@@ -42,7 +42,7 @@
     </servlet>
 
     <servlet>
-        <servlet-name>games</servlet-name>
+        <servlet-name>game</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -77,8 +77,8 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>games</servlet-name>
-        <url-pattern>/games/*</url-pattern>
+        <servlet-name>game</servlet-name>
+        <url-pattern>/game/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -118,7 +118,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>manage</web-resource-name>
-            <url-pattern>/games/manage/*</url-pattern>
+            <url-pattern>/game/manage/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -136,7 +136,7 @@
     </security-constraint>
 
     <welcome-file-list>
-        <welcome-file>games/index</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <error-page>

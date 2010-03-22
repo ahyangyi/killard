@@ -5,7 +5,7 @@ import com.killard.board.card.Player;
 
 /**
  * <p>
- * This class defines end games action.
+ * This class defines end game action.
  * </p>
  * <p>
  * <strong>Thread safety:</strong>

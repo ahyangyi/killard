@@ -41,6 +41,8 @@
         .cards-show img {
             padding: 15px;
             border: 1px solid #ccc;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
             background-color: #eee;
         }
 
@@ -53,6 +55,7 @@
         div.description ul li {
             display: inline;
             float: left;
+            word-wrap: break-word;
         }
     </style>
     <script type="text/javascript">
@@ -66,7 +69,7 @@
                     'padding-left' : 2 * centerPadding,
                     'padding-right' : 2 * centerPadding
                 }).height(centerHeight - 2 * centerPadding);
-                
+
                 var cornerLength = parseInt(Math.min($(window).width() / 16, $(window).height() / 9));
                 $('.dashboard .corner img').width(cornerLength).height(cornerLength);
                 $('.dashboard .corner').width(cornerLength).height(cornerLength);
@@ -88,19 +91,8 @@
                     'margin-top': parseInt(cornerLength /2 ),
                     'margin-bottom': parseInt(cornerLength /2 )
                 });
-
-                var h = $('.carousel .center').height();
-                var padding = parseInt(h / 10);
-                var w = h - parseInt(h / 5);
-                $('.carousel .center .content .list li img').width(w).height(w);
-                $('.carousel .center .content .list li').css({
-                        'padding-top': padding,
-                        'padding-bottom': padding,
-                        'padding-left': padding,
-                        'padding-right': padding
-                }).width(w).height(w);
             }
-            
+
             resize();
             $('.container').layout({
                 resizable: false,
@@ -142,7 +134,7 @@
             }
 
             function showGame(game) {
-                $('.dashboard .title .menu ul li a').attr('href', 'games/' + game.bundle).text(game.title);
+                $('.dashboard .title .menu ul li a').attr('href', 'game/' + game.bundle).text(game.title);
                 $('.dashboard .description img').attr('src', game.picture);
                 $('.richlist ul li').each(function() {
                     $(this).remove();
@@ -151,41 +143,20 @@
                 updateGameList();
             }
 
-            $.getJSON('games/packages.json', '', function(data, textStatus) {
+            $.getJSON('game/query/top.json', '', function(data, textStatus) {
                 $.each(data, function(i, game) {
                     var packageLi = $('<li></li>').appendTo($("#packageList"));
                     $(new Image).attr('src', game.picture).addClass('item').click(function() {
                         showGame(game);
-                    }).appendTo(packageLi);
-                    resize();
+                    }).width($('.carousel .center').height()).appendTo(packageLi);
                 });
-//                showGame(data[0]);
+                showGame(data[0]);
             });
         });
     </script>
 </head>
 <body>
-<div class="topbar">
-    <div id="logo">
-        <img src="image/logo.png"/>
-        <img src="image/title.png"/>
-    </div>
-    <div class="menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li>|</li>
-            <li><a href="games.html">All Games</a></li>
-            <li>|</li>
-            <li><a href="arena.html">Arena</a></li>
-            <li>|</li>
-            <li><a href="#">DIY</a></li>
-            <li>|</li>
-            <li><a href="#">Help</a></li>
-            <li>|</li>
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </div>
-</div>
+<%@include file="../topbar.jsp"%>
 
 <div class="container">
     <div class="ui-layout-center">
@@ -194,7 +165,7 @@
             <div class="corner" style="top:0;right:0;"><img src="image/cycle.png"/></div>
             <div class="corner" style="bottom:0;left:0;"><img src="image/cycle.png"/></div>
             <div class="corner" style="bottom:0;right:0;"><img src="image/cycle.png"/></div>
-            <div class="title">    
+            <div class="title">
                 <div class="menu">
                     <ul>
                         <li><a href="">Animals In Danger</a></li>
@@ -207,11 +178,11 @@
                 <ul>
                     <li>
                         <div class="cards-show">
-                            <img src="games/orions/1/AIR/Spellbreaker.png"/>
+                            <img src="game/animals/element/AIR/card/Spellbreaker/image.png"/>
                         </div>
                     </li>
                     <li>
-                        <p>This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.</p>
+                        <p>This game is talking about animals.</p>
                     </li>
                 </ul>
             </div>
@@ -250,12 +221,7 @@
                     <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
                     <li class="content">
                         <div class="list">
-                            <ul id="packageList">
-                                <li class="item"><img src="image/cards/1.png"/></li>
-                                <li class="item"><img src="image/cards/2.png"/></li>
-                                <li class="item"><img src="image/cards/3.png"/></li>
-                                <li class="item"><img src="image/cards/4.png"/></li>
-                            </ul>
+                            <ul id="packageList"></ul>
                         </div>
                     </li>
                     <li class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
@@ -279,16 +245,6 @@
     </div>
 </div>
 
-<div class="bottombar">
-    <div class="menu">
-        <ul>
-            <li>Killard &copy; 2010</li>
-            <li>|</li>
-            <li><a href="#">Terms</a></li>
-            <li>|</li>
-            <li><a href="#">Privacy</a></li>
-        </ul>
-    </div>
-</div>
+<%@include file="../bottombar.jsp"%>
 </body>
 </html>

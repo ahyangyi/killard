@@ -30,17 +30,17 @@
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="text/html"/>
-                    <property name="prefix" value="/WEB-INF/html/games/"/>
+                    <property name="prefix" value="/WEB-INF/html/game/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="application/json"/>
-                    <property name="prefix" value="/WEB-INF/json/games/"/>
+                    <property name="prefix" value="/WEB-INF/json/game/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="contentType" value="text/xml"/>
-                    <property name="prefix" value="/WEB-INF/xml/games/"/>
+                    <property name="prefix" value="/WEB-INF/xml/game/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>
@@ -79,6 +79,6 @@
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 
-    <context:component-scan base-package="com.killard.board.web.controller.games"/>
+    <context:component-scan base-package="com.killard.board.web.controller.game"/>
 
 </beans>

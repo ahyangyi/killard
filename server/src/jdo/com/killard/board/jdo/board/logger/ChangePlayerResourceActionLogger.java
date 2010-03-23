@@ -1,6 +1,6 @@
 package com.killard.board.jdo.board.logger;
 
-import com.killard.board.card.action.ChangePlayerElementAction;
+import com.killard.board.card.action.ChangePlayerResourceAction;
 
 /**
  * <p>
@@ -11,10 +11,10 @@ import com.killard.board.card.action.ChangePlayerElementAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ChangePlayerElementActionLogger extends PlayerActionLogger<ChangePlayerElementAction> {
+public class ChangePlayerResourceActionLogger extends PlayerActionLogger<ChangePlayerResourceAction> {
 
     @Override
-    public String log(ChangePlayerElementAction action) {
+    public String log(ChangePlayerResourceAction action) {
         return super.log(action) + ",\"element\":\"" + action.getElement().getName()
                 + "\",\"value\":" + action.getValue();
     }

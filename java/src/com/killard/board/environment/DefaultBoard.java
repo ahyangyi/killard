@@ -9,8 +9,8 @@ import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.CastCardAction;
 import com.killard.board.card.action.ChangeCardHealthAction;
-import com.killard.board.card.action.ChangePlayerElementAction;
 import com.killard.board.card.action.ChangePlayerHealthAction;
+import com.killard.board.card.action.ChangePlayerResourceAction;
 import com.killard.board.card.action.DropCardAction;
 import com.killard.board.card.action.EndTurnAction;
 import com.killard.board.card.action.EquipCardAction;
@@ -105,7 +105,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
         board.moveToNext();
         List<Action> actions = new ArrayList<Action>();
         for (Element element : getPackage().getElements())
-            actions.add(new ChangePlayerElementAction(board, action.getTarget(), element, 1));
+            actions.add(new ChangePlayerResourceAction(board, action.getTarget(), element, 1));
         return actions;
     }
 
@@ -130,7 +130,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     public Object after(DefaultBoard board, DefaultBoard owner, EquipCardAction action) {
         Card card = action.getTarget();
         for (Attribute attribute : card.getAttributes()) board.addActionListener(attribute, card);
-        return new ChangePlayerElementAction(card, card.getOwner(), card.getElement(), -card.getLevel());
+        return new ChangePlayerResourceAction(card, card.getOwner(), card.getElement(), -card.getLevel());
     }
 
     @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)

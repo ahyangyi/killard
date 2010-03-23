@@ -799,7 +799,7 @@
             score.text(parseInt(score.text()) + action.value);
         },
 
-        ChangePlayerElementAction: function(action) {
+        ChangePlayerResourceAction: function(action) {
             var playerDiv = $('.player[number="' + action.target.number + '"]');
             var scoreArea = playerDiv.find('> ul > li:last');
             var element = scoreArea.find('> .element[element=' + action.element + ']');

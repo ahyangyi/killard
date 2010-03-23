@@ -1,6 +1,6 @@
 package com.killard.board.card.record;
 
-import com.killard.board.card.action.ChangePlayerElementAction;
+import com.killard.board.card.action.ChangePlayerResourceAction;
 
 /**
  * <p>
@@ -11,9 +11,9 @@ import com.killard.board.card.action.ChangePlayerElementAction;
  * This class is mutable and not thread safe.
  * </p>
  */
-public class ExecutableChangePlayerElementAction extends ExecutablePlayerAction<ChangePlayerElementAction> {
+public class ExecutableChangePlayerResourceAction extends ExecutablePlayerAction<ChangePlayerResourceAction> {
 
-    public void execute(AbstractPlayerRecord record, ChangePlayerElementAction action) {
+    public void execute(AbstractPlayerRecord record, ChangePlayerResourceAction action) {
         record.changeElementForSchool(action.getElement(), action.getValue(), action);
     }
 }

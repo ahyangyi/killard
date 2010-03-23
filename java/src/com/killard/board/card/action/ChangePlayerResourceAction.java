@@ -13,13 +13,13 @@ import com.killard.board.card.Record;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class ChangePlayerElementAction extends PlayerAction<Record> {
+public final class ChangePlayerResourceAction extends PlayerAction<Record> {
 
     private final Element element;
 
     private final Integer value;
 
-    public ChangePlayerElementAction(Record source, Player target, Element element, Integer value) {
+    public ChangePlayerResourceAction(Record source, Player target, Element element, Integer value) {
         super(source, target);
         this.element = element;
         this.value = value == null ? 0 : value;

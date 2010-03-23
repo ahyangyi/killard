@@ -5,7 +5,7 @@ import com.killard.board.card.Board;
 import com.killard.board.card.Card;
 import com.killard.board.card.Element;
 import com.killard.board.card.Skill;
-import com.killard.board.card.action.ChangePlayerElementAction;
+import com.killard.board.card.action.ChangePlayerResourceAction;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,7 +52,7 @@ public abstract class BasicSkill<T extends BasicSkill> implements Skill<T> {
 
     public List<Action> execute(Board board, Card owner, Object... target) {
         List<Action> actions = new LinkedList<Action>();
-        if (getCost() != 0) actions.add(new ChangePlayerElementAction(owner, owner.getOwner(), getElement(), -getCost()));
+        if (getCost() != 0) actions.add(new ChangePlayerResourceAction(owner, owner.getOwner(), getElement(), -getCost()));
         return actions;
     }
 

@@ -1,6 +1,6 @@
 package com.killard.board.card.action;
 
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.Player;
 import com.killard.board.card.Record;
 
@@ -15,18 +15,18 @@ import com.killard.board.card.Record;
  */
 public final class ChangePlayerElementAction extends PlayerAction<Record> {
 
-    private final ElementSchool elementSchool;
+    private final Element element;
 
     private final Integer value;
 
-    public ChangePlayerElementAction(Record source, Player target, ElementSchool elementSchool, Integer value) {
+    public ChangePlayerElementAction(Record source, Player target, Element element, Integer value) {
         super(source, target);
-        this.elementSchool = elementSchool;
+        this.element = element;
         this.value = value == null ? 0 : value;
     }
 
-    public ElementSchool getElementSchool() {
-        return elementSchool;
+    public Element getElement() {
+        return element;
     }
 
     public Integer getValue() {

@@ -3,7 +3,7 @@
 <%--@elvariable id="elementRecord" type="com.killard.board.jdo.board.record.ElementRecordDO"--%>
 <%--@elvariable id="player" type="com.killard.board.jdo.board.record.PlayerRecordDO"--%>
 <div class="elementschool">
-    ${elementRecord.elementSchool.name}:&nbsp;${elementRecord.amount}
+    ${elementRecord.element.name}:&nbsp;${elementRecord.resource}
     <c:if test="${player.id == playerId}">
         <form action="<c:url value="/board/playcard.html"/>" method="POST">
             <div id="newcard">
@@ -23,7 +23,7 @@
                 </select>
             </div>
             <c:if test="${not empty player.availablePositions and active}">
-                <input type="hidden" name="elementSchoolName" value="${elementRecord.elementSchool.name}"/>
+                <input type="hidden" name="elementName" value="${elementRecord.element.name}"/>
                 <input type="hidden" name="targetPosition" value="1"/>
                 <input type="submit" value="Play"/>
             </c:if>

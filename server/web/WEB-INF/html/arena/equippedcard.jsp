@@ -4,7 +4,7 @@
 <c:set var="card" value="${record.card}"/>
 <c:choose>
     <c:when test="${card.renderable}">
-        <img src="<c:url value="/package/${board.boardPackage.bundleKey.id}/${record.elementSchool.name}/${record.name}/image.png"/>">
+        <img src="<c:url value="/package/${board.boardPackage.bundleKey.id}/${record.element.name}/${record.name}/image.png"/>">
     </c:when>
     <c:otherwise>
         ${card.name}
@@ -13,7 +13,7 @@
 <c:forEach var="skill" items="${record.skills}">
 <%@ include file="skill.jsp"%>
 </c:forEach>
-<form action="<c:url value="/package/${board.boardPackage.bundleKey.id}/${record.elementSchool.name}/${record.name}/updateimage.html"/>" method="POST"
+<form action="<c:url value="/package/${board.boardPackage.bundleKey.id}/${record.element.name}/${record.name}/updateimage.html"/>" method="POST"
       enctype="multipart/form-data">
     <table style="width:100%;table-layout:fixed;">
         <tr>

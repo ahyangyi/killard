@@ -1,6 +1,6 @@
 package com.killard.board.packages.magic;
 
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class MagicCardFactory {
 
-    public static final Map<ElementSchool, List<MetaCard>> cards = new HashMap<ElementSchool, List<MetaCard>>();
+    public static final Map<Element, List<MetaCard>> cards = new HashMap<Element, List<MetaCard>>();
 
     static {
 //        EarthCardFactory.registerCards();
@@ -32,10 +32,10 @@ public class MagicCardFactory {
     }
 
     public static void registerCard(MetaCard card) {
-        List<MetaCard> list = cards.get(card.getElementSchool());
+        List<MetaCard> list = cards.get(card.getElement());
         if (list == null) {
             list = new LinkedList<MetaCard>();
-            cards.put(card.getElementSchool(), list);
+            cards.put(card.getElement(), list);
         }
         list.add(card);
     }
@@ -43,38 +43,38 @@ public class MagicCardFactory {
     public MagicCardFactory() {
     }
 
-    public Map<ElementSchool, Integer> allocateElementsForNextPlayer() {
-        Map<ElementSchool, Integer> elements = new HashMap<ElementSchool, Integer>();
-        elements.put(MagicElementSchool.EARTH, 5);
-        elements.put(MagicElementSchool.FIRE, 5);
-        elements.put(MagicElementSchool.AIR, 5);
-        elements.put(MagicElementSchool.WATER, 5);
-        elements.put(MagicElementSchool.LIFE, 5);
-        elements.put(MagicElementSchool.DEATH, 5);
+    public Map<Element, Integer> allocateElementsForNextPlayer() {
+        Map<Element, Integer> elements = new HashMap<Element, Integer>();
+        elements.put(MagicElement.EARTH, 5);
+        elements.put(MagicElement.FIRE, 5);
+        elements.put(MagicElement.AIR, 5);
+        elements.put(MagicElement.WATER, 5);
+        elements.put(MagicElement.LIFE, 5);
+        elements.put(MagicElement.DEATH, 5);
         return elements;
     }
 
     public List<MetaCard> allocateCardsForNextPlayer(List<Player> players, int cardAmount) {
         List<MetaCard> newMetaCards = new LinkedList<MetaCard>();
-        for (ElementSchool elementSchool : cards.keySet()) {
-            List<MetaCard> remaining = getRemainingCards(elementSchool, players);
+        for (Element element : cards.keySet()) {
+            List<MetaCard> remaining = getRemainingCards(element, players);
             randomSelect(remaining, cardAmount);
             newMetaCards.addAll(remaining);
         }
         return newMetaCards;
     }
 
-    protected List<MetaCard> getRemainingCards(ElementSchool elementSchool, List<Player> players) {
+    protected List<MetaCard> getRemainingCards(Element element, List<Player> players) {
         List<MetaCard> remaining = new LinkedList<MetaCard>();
-        for (MetaCard card : cards.get(elementSchool)) {
-            if (isCardAllocated(players, elementSchool, card)) continue;
+        for (MetaCard card : cards.get(element)) {
+            if (isCardAllocated(players, element, card)) continue;
             remaining.add(card);
         }
         return remaining;
     }
 
-    protected boolean isCardAllocated(List<Player> players, ElementSchool elementSchool, MetaCard card) {
-        for (Player player : players) if (isCardAllocated(player.getDealtCards(elementSchool), card)) return true;
+    protected boolean isCardAllocated(List<Player> players, Element element, MetaCard card) {
+        for (Player player : players) if (isCardAllocated(player.getDealtCards(element), card)) return true;
         return false;
     }
 

@@ -3,7 +3,7 @@ package com.killard.board.jdo.board;
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
@@ -85,7 +85,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     private PackageDO boardPackage;
 
     @NotPersistent
-    private Map<Key, ElementSchoolDO> elementSchools;
+    private Map<Key, ElementDO> elements;
 
     @NotPersistent
     private Map<Key, AttributeDO> attributes;
@@ -250,12 +250,12 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     protected MetaCardDO dealCard() {
         List<MetaCardDO> cards = new ArrayList<MetaCardDO>();
         int n = 0;
-        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
-            n += elementSchool.getCards().length;
+        for (Element element : getBoardPackage().getElements()) {
+            n += element.getCards().length;
         }
         if (n == dealtCardKeys.size()) dealtCardKeys.clear();
-        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
-            for (MetaCard card : elementSchool.getCards()) {
+        for (Element element : getBoardPackage().getElements()) {
+            for (MetaCard card : element.getCards()) {
                 MetaCardDO record = (MetaCardDO) card;
                 if (dealtCardKeys.contains(record.getKey())) continue;
                 dealtCardKeys.add(record.getKey());
@@ -268,8 +268,8 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
 
     protected List<ElementRecordDO> makeElementRecords() {
         List<ElementRecordDO> record = new LinkedList<ElementRecordDO>();
-        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
-            ElementRecordDO elementRecord = new ElementRecordDO((ElementSchoolDO) elementSchool);
+        for (Element element : getBoardPackage().getElements()) {
+            ElementRecordDO elementRecord = new ElementRecordDO((ElementDO) element);
             elementRecord.restore(this);
             record.add(elementRecord);
         }
@@ -295,8 +295,8 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
 
     public void test() throws BoardException {
         //TODO
-        for (ElementSchool elementSchool : getBoardPackage().getElementSchools()) {
-            for (MetaCard card : elementSchool.getCards()) {
+        for (Element element : getBoardPackage().getElements()) {
+            for (MetaCard card : element.getCards()) {
                 if (Math.random() > .6) {
                     if (players.size() == 1) executeAction(new DealCardAction(card, getCurrentPlayer()));
                     else executeAction(new DealCardAction(card, getNextPlayer()));
@@ -305,8 +305,8 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
         }
     }
 
-    public ElementSchoolDO getElementSchoolDO(Key key) {
-        return elementSchools.get(key);
+    public ElementDO getElementDO(Key key) {
+        return elements.get(key);
     }
 
     public AttributeDO getAttributeDO(Key key) {
@@ -324,17 +324,17 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     @Override
     public void jdoPostLoad() {
         boardPackage = CacheInstance.getInstance().getPackage(packageKey);
-        elementSchools = new HashMap<Key, ElementSchoolDO>();
+        elements = new HashMap<Key, ElementDO>();
         attributes = new HashMap<Key, AttributeDO>();
         cards = new HashMap<Key, MetaCardDO>();
         skills = new HashMap<Key, SkillDO>();
-        for (ElementSchool elementSchool : boardPackage.getElementSchools()) {
-            ElementSchoolDO elementSchoolDo = (ElementSchoolDO) elementSchool;
-            elementSchools.put(elementSchoolDo.getKey(), elementSchoolDo);
-            for (AttributeDO attributeDo : elementSchoolDo.getAttributes()){
+        for (Element element : boardPackage.getElements()) {
+            ElementDO elementDo = (ElementDO) element;
+            elements.put(elementDo.getKey(), elementDo);
+            for (AttributeDO attributeDo : elementDo.getAttributes()){
                 attributes.put(attributeDo.getKey(), attributeDo);
             }
-            for (MetaCardDO card: elementSchoolDo.getCards()) {
+            for (MetaCardDO card: elementDo.getCards()) {
                 cards.put(card.getKey(), card);
                 for (Skill skill : card.getSkills()) {
                     SkillDO skillDo = (SkillDO) skill;

@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
 import com.killard.board.card.record.AbstractCardRecord;
@@ -16,7 +16,6 @@ import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.jdo.board.record.property.CardRecordPropertyDO;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -83,7 +82,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private boolean casted;
 
     @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<CardRecordPropertyDO> properties;
 
     @NotPersistent
@@ -170,8 +169,8 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         properties.add(new CardRecordPropertyDO(key, name, data.toString()));
     }
 
-    public ElementSchool getElementSchool() {
-        return getCard().getElementSchool();
+    public Element getElement() {
+        return getCard().getElement();
     }
 
     public int getLevel() {
@@ -187,7 +186,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     }
 
     public Attack getAttack() {
-        return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
+        return new Attack(getElement(), AttackType.valueOf(attackType), attackValue);
     }
 
     public boolean isEquippable() {

@@ -3,7 +3,7 @@ package com.killard.board.card.action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 
 /**
  * <p>
@@ -24,10 +24,10 @@ public final class ChangeCardHealthAction extends CardAction<Card> {
     }
 
     public ChangeCardHealthAction(Card source, Card target,
-                                  ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
+                                  Element element, AttackType attackType, Integer attackValue) {
         super(source, target);
         int value = attackValue == null ? 0 : attackValue;
-        this.healthChange = new Attack(elementSchool, attackType, value);
+        this.healthChange = new Attack(element, attackType, value);
     }
 
     public Attack getHealthChange() {

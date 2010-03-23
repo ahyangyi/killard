@@ -1,7 +1,7 @@
 package com.killard.board.environment.record;
 
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
@@ -35,7 +35,7 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
 
     private boolean cardPlayed = false;
 
-    private final Map<ElementSchool, Integer> elements = new HashMap<ElementSchool, Integer>();
+    private final Map<Element, Integer> elements = new HashMap<Element, Integer>();
 
     private final List<MetaCard> dealtCards = new ArrayList<MetaCard>();
 
@@ -76,13 +76,13 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
     }
 
     public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards,
-                        Map<ElementSchool, Integer> elements, int number) {
+                        Map<Element, Integer> elements, int number) {
         this(role, name, health, metaCards, number);
         this.elements.putAll(elements);
     }
 
     public PlayerRecord(Role role, String name, int health, List<MetaCard> metaCards,
-                        Map<ElementSchool, Integer> elements, StateListener listener, int number) {
+                        Map<Element, Integer> elements, StateListener listener, int number) {
         this(role, name, health, metaCards, elements, number);
         addStateListener(listener);
     }
@@ -107,17 +107,17 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
         return health;
     }
 
-    public int getElementAmount(ElementSchool elementSchool) {
-        return elements.get(elementSchool);
+    public int getElementResource(Element element) {
+        return elements.get(element);
     }
 
-    public MetaCard getDealtCard(String elementSchoolName, String cardName) {
+    public MetaCard getDealtCard(String elementName, String cardName) {
         return null;
     }
 
-    public MetaCard[] getDealtCards(ElementSchool elementSchool) {
+    public MetaCard[] getDealtCards(Element element) {
         List<MetaCard> metaCards = new ArrayList<MetaCard>();
-        for (MetaCard metaCard : dealtCards) if (metaCard.getElementSchool() == elementSchool) metaCards.add(metaCard);
+        for (MetaCard metaCard : dealtCards) if (metaCard.getElement() == element) metaCards.add(metaCard);
         return metaCards.toArray(new MetaCard[metaCards.size()]);
     }
 
@@ -179,8 +179,8 @@ public class PlayerRecord extends AbstractPlayerRecord<PlayerRecord> {
         this.health = health;
     }
 
-    protected void setElementAmount(ElementSchool elementSchool, int amount) {
-        elements.put(elementSchool, amount);
+    protected void setElementResource(Element element, int resource) {
+        elements.put(element, resource);
     }
 
     protected void setProperty(String name, Object data) {

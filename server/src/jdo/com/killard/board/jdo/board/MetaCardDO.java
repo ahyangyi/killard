@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Blob;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Skill;
 import com.killard.board.jdo.DescriptableDO;
@@ -12,7 +12,6 @@ import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
 import com.killard.board.parser.Function;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -32,7 +31,7 @@ import java.util.List;
 public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, MetaCardDescriptorDO> implements MetaCard<MetaCardDO> {
 
     @Persistent
-    private ElementSchoolDO elementSchool;
+    private ElementDO element;
 
     @Persistent
     private int level;
@@ -52,30 +51,30 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     @Persistent
     private boolean visible;
 
-    @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<SkillDO> skills;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private List<String> visibleAttributes;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     private List<String> hiddenAttributes;
 
-    @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<MetaCardPropertyDO> properties;
 
     @Persistent
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private transient List<MetaCardDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
     private transient Blob image;
 
-    protected MetaCardDO(ElementSchoolDO elementSchool, String name) {
-        super(elementSchool, name);
-        this.elementSchool = elementSchool;
+    protected MetaCardDO(ElementDO element, String name) {
+        super(element, name);
+        this.element = element;
         this.attackType = AttackType.PHYSICAL.name();
         this.equippable = true;
         this.visible = true;
@@ -86,8 +85,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.descriptors = new ArrayList<MetaCardDescriptorDO>();
     }
 
-    protected MetaCardDO(ElementSchoolDO elementSchool, MetaCardDO source) {
-        this(elementSchool, source.getName());
+    protected MetaCardDO(ElementDO element, MetaCardDO source) {
+        this(element, source.getName());
     }
 
     public MetaCardPropertyDO[] getProperties() {
@@ -98,8 +97,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return properties.add(new MetaCardPropertyDO(this, name, data));
     }
 
-    public ElementSchool getElementSchool() {
-        return elementSchool;
+    public Element getElement() {
+        return element;
     }
 
     public int getLevel() {
@@ -111,7 +110,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public Attack getAttack() {
-        return new Attack(getElementSchool(), AttackType.valueOf(attackType), attackValue);
+        return new Attack(getElement(), AttackType.valueOf(attackType), attackValue);
     }
 
     public String getAttackType() {
@@ -146,13 +145,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         Attribute[] result = new Attribute[hiddenAttributes.size() + visibleAttributes.size()];
         int i = 0;
         for (String name : hiddenAttributes) {
-            result[i] = elementSchool.getAttribute(name);
+            result[i] = element.getAttribute(name);
             i++;
         }
 
         i = 0;
         for (String name : visibleAttributes) {
-            result[i] = elementSchool.getAttribute(name);
+            result[i] = element.getAttribute(name);
             i++;
         }
         return result;
@@ -166,7 +165,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         Attribute[] result = new Attribute[visibleAttributes.size()];
         int i = 0;
         for (String name : visibleAttributes) {
-            result[i] = elementSchool.getAttribute(name);
+            result[i] = element.getAttribute(name);
             i++;
         }
         return result;
@@ -180,7 +179,7 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         Attribute[] result = new Attribute[hiddenAttributes.size()];
         int i = 0;
         for (String name : hiddenAttributes) {
-            result[i] = elementSchool.getAttribute(name);
+            result[i] = element.getAttribute(name);
             i++;
         }
         return result;

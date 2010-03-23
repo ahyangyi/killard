@@ -5,7 +5,7 @@ import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.SkillTarget;
 
 import java.util.List;
@@ -14,9 +14,9 @@ public class AttackSkill extends BasicSkill<AttackSkill> {
 
     private final Attack attack;
 
-    public AttackSkill(ElementSchool elementSchool, int cost, int attack) {
-        super(elementSchool, cost);
-        this.attack = new Attack(getElementSchool(), AttackType.MAGIC, attack);
+    public AttackSkill(Element element, int cost, int attack) {
+        super(element, cost);
+        this.attack = new Attack(getElement(), AttackType.MAGIC, attack);
     }
 
     public Attack getAttack() {

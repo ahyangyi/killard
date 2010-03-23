@@ -2,7 +2,7 @@ package com.killard.board.jdo;
 
 import com.killard.board.card.AttackType;
 import com.killard.board.jdo.board.AttributeDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.context.BoardContext;
@@ -57,7 +57,7 @@ public class JdoCardBuilder {
         }
     }
 
-    public void buildCard(ElementSchoolDO elementSchool, MetaCardDO card, Map map) throws InvalidCardException {
+    public void buildCard(ElementDO element, MetaCardDO card, Map map) throws InvalidCardException {
 
         card.setLevel(getInt(map, "level"));
         card.setMaxHealth(getInt(map, "health"));
@@ -65,7 +65,7 @@ public class JdoCardBuilder {
         card.setAttackValue(getInt(map, "attack"));
 
         buildSkills(card, map);
-        buildAttributes(elementSchool, map);
+        buildAttributes(element, map);
 
         if (map.containsKey("descriptor")) {
             Map descriptors = (Map) map.get("descriptor");
@@ -105,22 +105,22 @@ public class JdoCardBuilder {
             card.newSkill(name, Collections.<String>emptyList(), cost, function);
     }
 
-    public void buildAttributes(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
+    public void buildAttributes(ElementDO element, Map map) throws InvalidCardException {
         Object value = map.get("attribute");
         if (value instanceof Map) {
-            buildAttribute(elementSchool, (Map) value);
+            buildAttribute(element, (Map) value);
         }
         if (value instanceof List) {
             for (Object def : (List) value) {
                 if (def instanceof Map) {
-                    buildAttribute(elementSchool, (Map) def);
+                    buildAttribute(element, (Map) def);
                 }
             }
         }
     }
 
-    public void buildAttribute(ElementSchoolDO elementSchool, Map map) throws InvalidCardException {
-        AttributeDO attribute = elementSchool.newAttribute(getString(map, "name"),
+    public void buildAttribute(ElementDO element, Map map) throws InvalidCardException {
+        AttributeDO attribute = element.newAttribute(getString(map, "name"),
                 getBoolean(map, "visible"),
                 buildAttributeHandlers(map, "validate"),
                 buildAttributeHandlers(map, "before"),

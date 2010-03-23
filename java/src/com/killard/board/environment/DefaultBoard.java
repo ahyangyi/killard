@@ -4,7 +4,7 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.BoardPackage;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.action.CastCardAction;
@@ -104,8 +104,8 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     public Object after(DefaultBoard board, DefaultBoard owner, EndTurnAction action) {
         board.moveToNext();
         List<Action> actions = new ArrayList<Action>();
-        for (ElementSchool elementSchool : getPackage().getElementSchools())
-            actions.add(new ChangePlayerElementAction(board, action.getTarget(), elementSchool, 1));
+        for (Element element : getPackage().getElements())
+            actions.add(new ChangePlayerElementAction(board, action.getTarget(), element, 1));
         return actions;
     }
 
@@ -119,7 +119,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     @ActionValidator(actionClass = EquipCardAction.class, selfTargeted = false)
     public Object validator(DefaultBoard board, DefaultBoard owner, EquipCardAction action) {
         Card card = action.getTarget();
-        if (card.getLevel() <= card.getOwner().getElementAmount(card.getElementSchool())) {
+        if (card.getLevel() <= card.getOwner().getElementResource(card.getElement())) {
             if (card.getMaxHealth() > 0) return null;
             if (card.hasSkill()) return new CastCardAction(card.getOwner(), card, card.getSkills()[0], new Object[] {card});
         }
@@ -130,7 +130,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     public Object after(DefaultBoard board, DefaultBoard owner, EquipCardAction action) {
         Card card = action.getTarget();
         for (Attribute attribute : card.getAttributes()) board.addActionListener(attribute, card);
-        return new ChangePlayerElementAction(card, card.getOwner(), card.getElementSchool(), -card.getLevel());
+        return new ChangePlayerElementAction(card, card.getOwner(), card.getElement(), -card.getLevel());
     }
 
     @BeforeAction(actionClass = DropCardAction.class, selfTargeted = false)
@@ -149,7 +149,7 @@ public class DefaultBoard extends AbstractBoard<DefaultBoard> implements ActionL
     public Object validator(DefaultBoard board, DefaultBoard owner, CastCardAction action) {
         Card card = action.getTarget();
         if (!card.isCasted() && card.getSkills().length > 0 && card.getSkills()[0].getCost() <= card.getOwner()
-                .getElementAmount(card.getElementSchool())) return null;
+                .getElementResource(card.getElement())) return null;
         return false;
     }
 

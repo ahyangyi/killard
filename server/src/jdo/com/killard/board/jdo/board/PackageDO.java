@@ -2,13 +2,12 @@ package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.BoardPackage;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.PropertyDO;
 import com.killard.board.jdo.board.descriptor.PackageDescriptorDO;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -33,27 +32,27 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
     @Persistent
     private Key bundleKey;
 
-    @Persistent(dependent = "true", defaultFetchGroup = "true")
+    @Persistent(dependent = "true")
     private RuleDO rule;
 
-    @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<RoleDO> roles;
 
-    @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<RoleGroupDO> roleGroups;
 
-    @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
-    private List<ElementSchoolDO> elementSchools;
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
+    private List<ElementDO> elements;
 
     @Persistent
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private transient List<PackageDescriptorDO> descriptors;
 
     @Persistent(defaultFetchGroup = "false")
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private transient List<BoardDO> boards;
 
     protected PackageDO(PackageBundleDO bundle, long version) {
@@ -61,14 +60,14 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         this.bundleKey = bundle.getKey();
         this.roles = new ArrayList<RoleDO>();
         this.roleGroups = new ArrayList<RoleGroupDO>();
-        this.elementSchools = new ArrayList<ElementSchoolDO>();
+        this.elements = new ArrayList<ElementDO>();
         this.descriptors = new ArrayList<PackageDescriptorDO>();
     }
 
     protected PackageDO(PackageBundleDO bundle, PackageDO source) {
         this(bundle, bundle.getPlayedCount() + 1);
-        for (ElementSchool elementSchool : source.getElementSchools()) {
-            elementSchools.add(new ElementSchoolDO(this, (ElementSchoolDO) elementSchool));
+        for (Element element : source.getElements()) {
+            elements.add(new ElementDO(this, (ElementDO) element));
         }
         for (RoleDO role : source.getRoles().values()) {
             roles.add(new RoleDO(this, role));
@@ -137,17 +136,17 @@ public class PackageDO extends DescriptableDO<PackageDO, PropertyDO, PackageDesc
         return Collections.unmodifiableList(roleGroups);
     }
 
-    public ElementSchoolDO newElementSchool(String name) {
-        for (ElementSchoolDO elementSchool : elementSchools) {
-            if (elementSchool.getName().equals(name)) return elementSchool;
+    public ElementDO newElement(String name) {
+        for (ElementDO element : elements) {
+            if (element.getName().equals(name)) return element;
         }
-        ElementSchoolDO elementSchool = new ElementSchoolDO(this, name);
-        elementSchools.add(elementSchool);
-        return elementSchool;
+        ElementDO element = new ElementDO(this, name);
+        elements.add(element);
+        return element;
     }
 
-    public ElementSchool[] getElementSchools() {
-        return elementSchools.toArray(new ElementSchool[elementSchools.size()]);
+    public Element[] getElements() {
+        return elements.toArray(new Element[elements.size()]);
     }
 
     public PackageDescriptorDO[] getDescriptors() {

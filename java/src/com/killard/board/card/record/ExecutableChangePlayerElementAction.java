@@ -14,6 +14,6 @@ import com.killard.board.card.action.ChangePlayerElementAction;
 public class ExecutableChangePlayerElementAction extends ExecutablePlayerAction<ChangePlayerElementAction> {
 
     public void execute(AbstractPlayerRecord record, ChangePlayerElementAction action) {
-        record.changeElementForSchool(action.getElementSchool(), action.getValue(), action);
+        record.changeElementForSchool(action.getElement(), action.getValue(), action);
     }
 }

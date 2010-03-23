@@ -115,7 +115,7 @@ public class ArenaController extends BasicController {
 
     @RequestMapping(value = {"/playcard"},
             method = {RequestMethod.GET, RequestMethod.POST})
-    public void playCard(@RequestParam("elementSchoolName") String elementSchoolName,
+    public void playCard(@RequestParam("elementName") String elementName,
                            @RequestParam("cardName") String cardName,
                            @RequestParam("cardPosition") int cardPosition,
                            HttpServletResponse response) throws Exception {
@@ -124,7 +124,7 @@ public class ArenaController extends BasicController {
         BoardDO board = instance.getBoard();
         int start = board.getActions().size();
         if (instance.getPlayer().getNumber() == board.getCurrentPlayerNumber()) {
-            board.playCard(elementSchoolName, cardName, cardPosition, instance.getPlayer().getNumber());
+            board.playCard(elementName, cardName, cardPosition, instance.getPlayer().getNumber());
             logBoard(board);
         }
         ResponseUtils.outputActions(response, board.getActions(), start);

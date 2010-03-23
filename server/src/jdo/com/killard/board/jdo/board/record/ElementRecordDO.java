@@ -3,7 +3,7 @@ package com.killard.board.jdo.board.record;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -25,17 +25,17 @@ import java.util.List;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementRecordDO implements Comparable<ElementRecordDO> {
+public class ElementRecordDO {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private Key elementSchoolKey;
+    private Key elementKey;
 
     @Persistent
-    private int amount;
+    private int resource;
 
     @Persistent
     private List<Key> dealtCardKeys;
@@ -43,9 +43,9 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
     @NotPersistent
     private BoardDO board;
 
-    public ElementRecordDO(ElementSchoolDO elementSchool) {
-        this.elementSchoolKey = elementSchool.getKey();
-        this.amount = 10;
+    public ElementRecordDO(ElementDO element) {
+        this.elementKey = element.getKey();
+        this.resource = 5;
         this.dealtCardKeys = new LinkedList<Key>();
     }
 
@@ -57,20 +57,20 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
         return key;
     }
 
-    public Key getElementSchoolKey() {
-        return elementSchoolKey;
+    public Key getElementKey() {
+        return elementKey;
     }
 
-    public ElementSchoolDO getElementSchool() {
-        return board.getElementSchoolDO(elementSchoolKey);
+    public ElementDO getElement() {
+        return board.getElementDO(elementKey);
     }
 
-    public int getAmount() {
-        return amount;
+    public int getResource() {
+        return resource;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setResource(int resource) {
+        this.resource = resource;
     }
 
     public MetaCardDO[] getDealtCards() {
@@ -89,11 +89,7 @@ public class ElementRecordDO implements Comparable<ElementRecordDO> {
 
     protected void setPlayer(PlayerRecordDO player) {
         KeyFactory.Builder keyBuilder = new KeyFactory.Builder(player.getKey());
-        keyBuilder.addChild(getClass().getSimpleName(), elementSchoolKey.getName());
+        keyBuilder.addChild(getClass().getSimpleName(), elementKey.getName());
         this.key = keyBuilder.getKey();
-    }
-
-    public int compareTo(ElementRecordDO compare) {
-        return key.compareTo(compare.key);
     }
 }

@@ -4,10 +4,10 @@
 "bundle":"${package.bundleKey.name}",
 "version":${package.key.id},
 "cards":{
-<c:forEach var="elementSchool" items="${package.elementSchools}" varStatus="status">
+<c:forEach var="element" items="${package.elements}" varStatus="status">
     <c:if test="${not status.first}">,</c:if>
-    "${elementSchool.name}": {
-    <c:forEach var="card" items="${elementSchool.cards}" varStatus="cardStatus">
+    "${element.name}": {
+    <c:forEach var="card" items="${element.cards}" varStatus="cardStatus">
         <c:if test="${not cardStatus.first}">,</c:if>
         "${card.name}": {
             "level": ${card.level},

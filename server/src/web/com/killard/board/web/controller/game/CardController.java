@@ -4,7 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -50,7 +50,7 @@ public class CardController extends BasicController {
         Key packageKey = packageId == null
                 ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
                 : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
@@ -61,7 +61,7 @@ public class CardController extends BasicController {
         modelMap.put("card", card);
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
-        modelMap.put("element", card.getElementSchool());
+        modelMap.put("element", card.getElement());
         return "card/view";
     }
 
@@ -74,7 +74,7 @@ public class CardController extends BasicController {
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
 
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
@@ -83,12 +83,12 @@ public class CardController extends BasicController {
 
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementKey);
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
 
         modelMap.put("card", card);
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
-        modelMap.put("elementSchool", elementSchool);
+        modelMap.put("element", element);
         return "card/view";
     }
 
@@ -102,7 +102,7 @@ public class CardController extends BasicController {
         Key packageKey = packageId == null
                 ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
                 : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
@@ -116,11 +116,11 @@ public class CardController extends BasicController {
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
 
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementKey);
-        MetaCardDO card = elementSchool.newCard(cardId);
-        pm.makePersistent(elementSchool);
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        MetaCardDO card = element.newCard(cardId);
+        pm.makePersistent(element);
 
         modelMap.put("card", card);
         return "card/view";
@@ -133,7 +133,7 @@ public class CardController extends BasicController {
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
-        Key elementKey = KeyFactory.createKey(packageKey, ElementSchoolDO.class.getSimpleName(), elementId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
@@ -141,11 +141,11 @@ public class CardController extends BasicController {
 
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementSchoolDO elementSchool = pm.getObjectById(ElementSchoolDO.class, elementKey);
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
 
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
-        modelMap.put("element", elementSchool);
+        modelMap.put("element", element);
         return "elementschool/view";
     }
 }

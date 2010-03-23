@@ -33,8 +33,8 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
         StringBuilder buf = new StringBuilder("{");
         buf.append("\"name\":\"");
         buf.append(card.getName());
-        buf.append("\",\"elementSchool\":\"");
-        buf.append(card.getElementSchool().getName());
+        buf.append("\",\"element\":\"");
+        buf.append(card.getElement().getName());
         buf.append("\",\"level\":");
         buf.append(card.getLevel());
         buf.append(",\"maxHealth\":");
@@ -51,8 +51,8 @@ public abstract class BasicActionLogger<T extends Action> implements ActionLogge
         StringBuilder buf = new StringBuilder("{");
         buf.append("\"name\":\"");
         buf.append(card.getName());
-        buf.append("\",\"elementSchool\":\"");
-        buf.append(card.getElementSchool().getName());
+        buf.append("\",\"element\":\"");
+        buf.append(card.getElement().getName());
         buf.append("\",\"level\":");
         buf.append(card.getLevel());
         buf.append(",\"maxHealth\":");

@@ -2,7 +2,7 @@ package com.killard.board.ui;
 
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
-import com.killard.board.packages.magic.MagicElementSchool;
+import com.killard.board.packages.magic.MagicElement;
 import com.killard.board.ui.event.PlayerActionListener;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ public class PlayerPanel {
 
     private final int CARD_ON_BOARD = 5;
 
-    private Map<MagicElementSchool, ArrayList<MetaCard>> allCards = new HashMap<MagicElementSchool, ArrayList<MetaCard>>();
+    private Map<MagicElement, ArrayList<MetaCard>> allCards = new HashMap<MagicElement, ArrayList<MetaCard>>();
 
     private MetaCard selectedCard = null;
     private boolean cardSelected = false;
@@ -70,7 +70,7 @@ public class PlayerPanel {
         elementsPanel = new ElementsPanel(this, board, top, 5, 5, 5, 5, 5, 5);
         smallCardsPanel = new SmallCardsPanel(this, board, top);
 
-        for (MagicElementSchool school : MagicElementSchool.values()) {
+        for (MagicElement school : MagicElement.values()) {
             ArrayList<MetaCard> cards = new ArrayList<MetaCard>();
             allCards.put(school, cards);
         }
@@ -79,7 +79,7 @@ public class PlayerPanel {
         if (begin) begin();
         else end();
 
-        this.setElementSchool(MagicElementSchool.EARTH);
+        this.setElement(MagicElement.EARTH);
     }
 
     public void setCard(int index, MetaCard card) {
@@ -93,7 +93,7 @@ public class PlayerPanel {
         this.opponent = opponent;
     }
 
-    public void setElementSchool(MagicElementSchool element) {
+    public void setElement(MagicElement element) {
         ArrayList<MetaCard> cards = allCards.get(element);
         smallCardsPanel.clearAll();
         for (int i = 0; i < cards.size(); i++) {

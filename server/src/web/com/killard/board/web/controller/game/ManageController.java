@@ -4,12 +4,12 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.images.Image;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.BoardDO;
-import com.killard.board.jdo.board.ElementSchoolDO;
+import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -85,8 +85,8 @@ public class ManageController extends BasicController {
     public void clearElements(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
-        Extent<ElementSchoolDO> elementExtent = pm.getExtent(ElementSchoolDO.class);
-        for (ElementSchoolDO record : elementExtent) {
+        Extent<ElementDO> elementExtent = pm.getExtent(ElementDO.class);
+        for (ElementDO record : elementExtent) {
             PersistenceHelper.getPersistenceManager().deletePersistent(record);
             PersistenceHelper.commit();
         }
@@ -167,26 +167,26 @@ public class ManageController extends BasicController {
 
         PackageDO draft = pm.getObjectById(PackageDO.class, defaultPackageKey);
 
-        Set<String> elementSchools = new HashSet<String>();
-        for (ElementSchool elementSchool : draft.getElementSchools()) {
-            elementSchools.add(elementSchool.getName());
+        Set<String> elements = new HashSet<String>();
+        for (Element element : draft.getElements()) {
+            elements.add(element.getName());
         }
 
         File dir = new File(baseDirectory);
         for (File sub : dir.listFiles()) {
-            if (sub.isDirectory() && !elementSchools.contains(sub.getName())) {
-                ElementSchoolDO elementSchool = draft.newElementSchool(sub.getName());
-                elementSchool.newDescriptor(BoardContext.getLocale(), sub.getName(), sub.getName());
-                pm.makePersistent(elementSchool);
+            if (sub.isDirectory() && !elements.contains(sub.getName())) {
+                ElementDO element = draft.newElement(sub.getName());
+                element.newDescriptor(BoardContext.getLocale(), sub.getName(), sub.getName());
+                pm.makePersistent(element);
                 PersistenceHelper.commit();
 
                 for (File file : sub.listFiles()) {
                     if (file.getName().endsWith(".json")) {
                         String name = file.getName().substring(0, file.getName().length() - 5);
-                        MetaCardDO card = elementSchool.newCard(name);
+                        MetaCardDO card = element.newCard(name);
                         pm.makePersistent(card);
                         PersistenceHelper.commit();
-                        builder.buildCard(elementSchool, card, engine.parse(file));
+                        builder.buildCard(element, card, engine.parse(file));
                         if (card.getDescriptor(BoardContext.getLocale()) == null) {
                             card.newDescriptor(BoardContext.getLocale(), name, "");
                         }

@@ -4,7 +4,7 @@ public interface MetaCard<T extends MetaCard> extends Record<T> {
 
     public String getName();
 
-    public ElementSchool getElementSchool();
+    public Element getElement();
 
     public int getLevel();
 

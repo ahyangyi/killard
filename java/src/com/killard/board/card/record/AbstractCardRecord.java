@@ -109,7 +109,7 @@ public abstract class AbstractCardRecord<T extends AbstractCardRecord> implement
     }
 
     protected void changeAttack(Attack attackChange, Action action) {
-        setAttack(new Attack(getAttack().getElementSchool(), getAttack().getType(),
+        setAttack(new Attack(getAttack().getElement(), getAttack().getType(),
                 getAttack().getValue() + attackChange.getValue()));
         fireStateChanged(new StateEvent(this, action));
     }

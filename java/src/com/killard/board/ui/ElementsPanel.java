@@ -1,6 +1,6 @@
 package com.killard.board.ui;
 
-import com.killard.board.packages.magic.MagicElementSchool;
+import com.killard.board.packages.magic.MagicElement;
 import com.killard.board.ui.event.ElementListener;
 
 import javax.swing.*;
@@ -19,22 +19,22 @@ public class ElementsPanel{
     public ElementsPanel(PlayerPanel player, GameBoard board, boolean top, int earth, int fire, int air, int water, int life, int death) {
         elements[0] = new JLabel(String.valueOf(earth));
         elements[0].setBackground(Color.GRAY);
-        elements[0].addMouseListener(new ElementListener(player, MagicElementSchool.EARTH));
+        elements[0].addMouseListener(new ElementListener(player, MagicElement.EARTH));
         elements[1] = new JLabel(String.valueOf(fire));
         elements[1].setBackground(Color.RED);
-        elements[1].addMouseListener(new ElementListener(player, MagicElementSchool.FIRE));
+        elements[1].addMouseListener(new ElementListener(player, MagicElement.FIRE));
         elements[2] = new JLabel(String.valueOf(air));
         elements[2].setBackground(Color.CYAN);
-        elements[2].addMouseListener(new ElementListener(player, MagicElementSchool.AIR));
+        elements[2].addMouseListener(new ElementListener(player, MagicElement.AIR));
         elements[3] = new JLabel(String.valueOf(water));
         elements[3].setBackground(Color.BLUE);
-        elements[3].addMouseListener(new ElementListener(player, MagicElementSchool.WATER));
+        elements[3].addMouseListener(new ElementListener(player, MagicElement.WATER));
         elements[4] = new JLabel(String.valueOf(life));
         elements[4].setBackground(Color.GREEN);
-        elements[4].addMouseListener(new ElementListener(player, MagicElementSchool.LIFE));
+        elements[4].addMouseListener(new ElementListener(player, MagicElement.LIFE));
         elements[5] = new JLabel(String.valueOf(death));
         elements[5].setBackground(Color.BLACK);
-        elements[5].addMouseListener(new ElementListener(player, MagicElementSchool.DEATH));
+        elements[5].addMouseListener(new ElementListener(player, MagicElement.DEATH));
         for(int i=0;i<6;i++){
             board.add(elements[i]);
             if(top)
@@ -47,7 +47,7 @@ public class ElementsPanel{
         board.invalidate();
     }
 
-    public void setElementNo(MagicElementSchool school, int no) {
+    public void setElementNo(MagicElement school, int no) {
         this.elements[school.ordinal()].setText(String.valueOf(no));
     }
 }

@@ -3,7 +3,7 @@ package com.killard.board.card.skill;
 import com.killard.board.card.Action;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.Skill;
 import com.killard.board.card.SkillTarget;
 
@@ -23,12 +23,12 @@ public class CompositeSkill extends BasicSkill<CompositeSkill> {
 
     private List<Skill> skills = new ArrayList<Skill>();
 
-    protected CompositeSkill(ElementSchool elementSchool, List<Skill> skills) {
-        this(elementSchool, 0, skills);
+    protected CompositeSkill(Element element, List<Skill> skills) {
+        this(element, 0, skills);
     }
 
-    protected CompositeSkill(ElementSchool elementSchool, int cost, List<Skill> skills) {
-        super(elementSchool, cost);
+    protected CompositeSkill(Element element, int cost, List<Skill> skills) {
+        super(element, cost);
         this.skills.addAll(skills);
     }
 

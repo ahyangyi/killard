@@ -107,12 +107,12 @@ public class XmppController extends BasicController {
 //    protected void queryHoldedCards(JID from, String[] args) {
 //        PlayerRecordDO player = getPlayer(getUsername(from));
 //        if (player == null) throw new IllegalArgumentException(getUsername(from) + " has not joined any record.");
-//        for (ElementSchool elementSchool : player.getAllElementSchool()) {
-//            StringBuilder msg = new StringBuilder("You has these cards in element " + elementSchool.toString() + " : ");
-//            for (MetaCard board : player.getDealtCards(elementSchool)) {
+//        for (Element element : player.getAllElement()) {
+//            StringBuilder msg = new StringBuilder("You has these cards in element " + element.toString() + " : ");
+//            for (MetaCard board : player.getDealtCards(element)) {
 //                msg.append("Level " + board.getLevel() + " " + board + ", ");
 //            }
-//            msg.append("and " + player.getElementAmount(elementSchool) + " elements.");
+//            msg.append("and " + player.getElementResource(element) + " elements.");
 //            sendMessage(getUsername(from), msg.toString());
 //        }
 //    }

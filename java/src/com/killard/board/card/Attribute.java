@@ -6,7 +6,7 @@ public interface Attribute<T extends Attribute> extends ActionListener<T> {
 
     public String getName();
 
-    public ElementSchool getElementSchool();
+    public Element getElement();
 
     public boolean isVisible();
 }

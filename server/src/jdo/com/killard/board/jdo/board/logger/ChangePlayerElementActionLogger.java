@@ -15,7 +15,7 @@ public class ChangePlayerElementActionLogger extends PlayerActionLogger<ChangePl
 
     @Override
     public String log(ChangePlayerElementAction action) {
-        return super.log(action) + ",\"elementSchool\":\"" + action.getElementSchool().getName()
+        return super.log(action) + ",\"element\":\"" + action.getElement().getName()
                 + "\",\"value\":" + action.getValue();
     }
 

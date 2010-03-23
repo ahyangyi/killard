@@ -4,7 +4,7 @@ import com.killard.board.card.Action;
 import com.killard.board.card.Attribute;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.environment.ActionValidator;
 import com.killard.board.environment.AfterAction;
 import com.killard.board.environment.BeforeAction;
@@ -28,27 +28,27 @@ public class CompositeAttribute extends BasicAttribute<CompositeAttribute> {
 
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
-    public CompositeAttribute(ElementSchool elementSchool) {
-        super(elementSchool);
+    public CompositeAttribute(Element element) {
+        super(element);
     }
 
-    public CompositeAttribute(ElementSchool elementSchool, List<Attribute> attributes) {
-        super(elementSchool);
+    public CompositeAttribute(Element element, List<Attribute> attributes) {
+        super(element);
         this.attributes.addAll(attributes);
     }
 
-    public CompositeAttribute(ElementSchool elementSchool, Attribute[] attributes) {
-        super(elementSchool);
+    public CompositeAttribute(Element element, Attribute[] attributes) {
+        super(element);
         this.attributes.addAll(Arrays.asList(attributes));
     }
 
-    public CompositeAttribute(ElementSchool elementSchool, boolean visible, List<Attribute> attributes) {
-        super(elementSchool, visible);
+    public CompositeAttribute(Element element, boolean visible, List<Attribute> attributes) {
+        super(element, visible);
         this.attributes.addAll(attributes);
     }
 
-    public CompositeAttribute(ElementSchool elementSchool, boolean visible, Attribute[] attributes) {
-        super(elementSchool, visible);
+    public CompositeAttribute(Element element, boolean visible, Attribute[] attributes) {
+        super(element, visible);
         this.attributes.addAll(Arrays.asList(attributes));
     }
 

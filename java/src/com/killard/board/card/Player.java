@@ -12,11 +12,11 @@ public interface Player<T extends Player> extends Record<T> {
 
     public int getHealth();
 
-    public int getElementAmount(ElementSchool elementSchool);
+    public int getElementResource(Element element);
 
-    public MetaCard[] getDealtCards(ElementSchool elementSchool);
+    public MetaCard[] getDealtCards(Element element);
 
-    public MetaCard getDealtCard(String elementSchoolName, String cardName);
+    public MetaCard getDealtCard(String elementName, String cardName);
 
     public Card[] getEquippedCards();
 

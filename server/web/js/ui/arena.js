@@ -92,16 +92,16 @@
                 hoverClass: 'cardholder',
                 drop: function(event, ui) {
                     if ($(this).children().length == 0) {
-                        var elementSchool = ui.draggable.attr('elementSchool');
+                        var element = ui.draggable.attr('element');
                         var cardName = ui.draggable.attr('cardName');
                         var position = $(this).attr('position');
                         var cardImage = $(new Image);
                         cardImage.addClass('cardimage')
-                                .attr('src', 'game/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + elementSchool + '/' + cardName + '.png')
+                                .attr('src', 'game/' + $(window).data('bundle') + '/' + $(window).data('version') + '/' + element + '/' + cardName + '.png')
                                 .width(arena.cardWidth).height(arena.cardHeight).hide()
                                 .appendTo($(this)).fadeTo(1000, 0.5);
                         $.post('arena/playcard.json', {
-                            'elementSchoolName':elementSchool,
+                            'elementName':element,
                             'cardName':cardName,
                             'cardPosition':position}, function(actions) {
                             var equipped = false;
@@ -497,16 +497,16 @@
             this.updateProgressBar(5);
             var arena = this;
             $.getJSON('arena/package.json', function(data, textStatus) {
-                var elementSchool, card;
+                var element, card;
                 var count = 0;
                 $(window).data('bundle', data.bundle);
                 $(window).data('version', data.version);
-                for (elementSchool in data.cards) for (card in data.cards[elementSchool]) count++;
-                for (elementSchool in data.cards) {
-                    for (card in data.cards[elementSchool]) {
+                for (element in data.cards) for (card in data.cards[element]) count++;
+                for (element in data.cards) {
+                    for (card in data.cards[element]) {
                         $(new Image).load(function() {
                             arena.updateProgressBar(85 / count);
-                        }).attr({'src':'game/' + $(window).data('bundle') + '/element/' + elementSchool + '/card/' + card + '/image.png'});
+                        }).attr({'src':'game/' + $(window).data('bundle') + '/element/' + element + '/card/' + card + '/image.png'});
                     }
                 }
                 $.getJSON('arena/board.json', function(data, textStatus) {
@@ -564,27 +564,27 @@
             scoreArea.find('.score').text(player.health);
             if (player.elementRecords) {
                 $.each(player.elementRecords, function(i, elementRecord) {
-                    var element = scoreArea.find('> .element[elementSchool=' + elementRecord.elementSchool + ']');
+                    var element = scoreArea.find('> .element[element=' + elementRecord.element + ']');
                     if (element.length > 0) {
-                        element.find('.elementAmount').text(elementRecord.amount);
+                        element.find('.elementResource').text(elementRecord.resource);
                     } else {
-                        element = $('<div class="element"></div>').attr({elementSchool: elementRecord.elementSchool})
+                        element = $('<div class="element"></div>').attr({element: elementRecord.element})
                                 .css({'z-index': 10})
                                 .appendTo(scoreArea);
                         $(new Image).attr({src:'image/msg/blank.png'}).appendTo(element);
-                        $('<div class="elementAmount">' + elementRecord.amount + '</div>').appendTo(element);
+                        $('<div class="elementResource">' + elementRecord.resource + '</div>').appendTo(element);
                     }
                     if (player.self) {
                         var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
-                        var barElement = searchbar.find('.element[elementSchool=' + elementRecord.elementSchool + ']');
+                        var barElement = searchbar.find('.element[element=' + elementRecord.element + ']');
                         if (barElement.length > 0) {
-                            barElement.find('span:last').text(elementRecord.amount);
+                            barElement.find('span:last').text(elementRecord.resource);
                         } else {
                             barElement =
-                            $('<li class="tag element"></li>').attr({elementSchool: elementRecord.elementSchool})
+                            $('<li class="tag element"></li>').attr({element: elementRecord.element})
                                     .appendTo(searchbar);
-                            $('<span>' + elementRecord.elementSchool + ':</span>').appendTo(barElement);
-                            $('<span>' + elementRecord.amount + '</span>').appendTo(barElement);
+                            $('<span>' + elementRecord.element + ':</span>').appendTo(barElement);
+                            $('<span>' + elementRecord.resource + '</span>').appendTo(barElement);
                         }
                         if (elementRecord.dealtCards) {
                             $.each(elementRecord.dealtCards, function(i, card) {arena.dealCard(i, card);});
@@ -633,11 +633,11 @@
             
             var cardDiv = $('<div></div>').addClass('item').addClass('card')
                     .width(this.cardWidth).height(this.cardHeight)
-                    .attr({'elementSchool': card.elementSchool, 'cardName': card.name})
+                    .attr({'element': card.element, 'cardName': card.name})
                     .appendTo(cardLi)
                     .draggable({ opacity: 0.7, helper: 'clone', zIndex: 500 });
 
-            $(new Image).attr({'src': 'game/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png'})
+            $(new Image).attr({'src': 'game/' + $(window).data('bundle') + '/element/' + card.element + '/card/' + card.name + '/image.png'})
                     .addClass('cardimage')
                     .width(this.cardWidth).height(this.cardHeight)
                     .appendTo(cardDiv);
@@ -670,7 +670,7 @@
             if (cardDiv.children().length > 0) {
                 $('.cardimage', cardDiv).fadeTo(1000, 1);
             } else {
-                $(new Image).attr('src', 'game/' + $(window).data('bundle') + '/element/' + card.elementSchool + '/card/' + card.name + '/image.png').addClass('cardimage')
+                $(new Image).attr('src', 'game/' + $(window).data('bundle') + '/element/' + card.element + '/card/' + card.name + '/image.png').addClass('cardimage')
                         .width(this.cardWidth)
                         .height(this.cardHeight)
                         .hide()
@@ -802,26 +802,26 @@
         ChangePlayerElementAction: function(action) {
             var playerDiv = $('.player[number="' + action.target.number + '"]');
             var scoreArea = playerDiv.find('> ul > li:last');
-            var element = scoreArea.find('> .element[elementSchool=' + action.elementSchool + ']');
+            var element = scoreArea.find('> .element[element=' + action.element + ']');
             if (element.length > 0) {
-                var elementAmount = element.find('.elementAmount');
-                elementAmount.text(parseInt(elementAmount.text()) + action.value);
+                var elementResource = element.find('.elementResource');
+                elementResource.text(parseInt(elementResource.text()) + action.value);
             } else {
-                element = $('<div class="element"></div>').attr({elementSchool: action.elementSchool})
+                element = $('<div class="element"></div>').attr({element: action.element})
                         .appendTo(scoreArea);
                 $(new Image).attr({src:'image/msg/msg.png'}).appendTo(element);
-                $('<div class="elementAmount">' + action.value + '</div>').appendTo(element);
+                $('<div class="elementResource">' + action.value + '</div>').appendTo(element);
             }
             if (action.self) {
                 var searchbar = $('#bottompanel > .bottom > .searchbar > ul');
-                var barElement = searchbar.find('.element[elementSchool=' + action.elementSchool + ']');
+                var barElement = searchbar.find('.element[element=' + action.element + ']');
                 if (barElement.length > 0) {
                     var elementLabel = barElement.find('span:last');
                     elementLabel.text(parseInt(elementLabel.text()) + action.value);
                 } else {
-                    barElement = $('<li class="tag element"></li>').attr({elementSchool: action.elementSchool})
+                    barElement = $('<li class="tag element"></li>').attr({element: action.element})
                             .appendTo(searchbar);
-                    $('<span>' + action.elementSchool + ':</span>').appendTo(barElement);
+                    $('<span>' + action.element + ':</span>').appendTo(barElement);
                     $('<span>' + action.value + '</span>').appendTo(barElement);
                 }
             }

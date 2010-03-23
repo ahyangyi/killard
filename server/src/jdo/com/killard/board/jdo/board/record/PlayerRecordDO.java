@@ -3,7 +3,7 @@ package com.killard.board.jdo.board.record;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Role;
 import com.killard.board.card.record.AbstractPlayerRecord;
@@ -12,7 +12,6 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.record.property.PlayerRecordPropertyDO;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -59,15 +58,15 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     private boolean cardPlayed;
 
     @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<CardRecordDO> equippedCards;
 
     @Persistent(defaultFetchGroup = "true")
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<ElementRecordDO> elementRecords;
 
     @Persistent
-    @Element(dependent = "true")
+    @javax.jdo.annotations.Element(dependent = "true")
     private List<PlayerRecordPropertyDO> properties;
 
     @Persistent
@@ -192,9 +191,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         return turnCount;
     }
 
-    public MetaCard getDealtCard(String elementSchoolName, String cardName) {
+    public MetaCard getDealtCard(String elementName, String cardName) {
         for (ElementRecordDO element : elementRecords) {
-            if (element.getElementSchool().getName().equals(elementSchoolName)) {
+            if (element.getElement().getName().equals(elementName)) {
                 for (MetaCard card : element.getDealtCards()) {
                     MetaCardDO record = (MetaCardDO) card;
                     if (record.getName().equals(cardName)) return card;
@@ -204,9 +203,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         return null;
     }
 
-    public MetaCard[] getDealtCards(ElementSchool elementSchool) {
-        for (ElementRecordDO element : elementRecords) {
-            if (element.getElementSchool().getName().equals(elementSchool.getName())) return element.getDealtCards();
+    public MetaCard[] getDealtCards(Element element) {
+        for (ElementRecordDO record : elementRecords) {
+            if (record.getElement().getName().equals(element.getName())) return record.getDealtCards();
         }
         return new MetaCard[0];
     }
@@ -220,9 +219,9 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         return null;
     }
 
-    public int getElementAmount(ElementSchool elementSchool) {
+    public int getElementResource(Element element) {
         for (ElementRecordDO record : elementRecords) {
-            if (record.getElementSchool().equals(elementSchool)) return record.getAmount();
+            if (record.getElement().equals(element)) return record.getResource();
         }
         return 0;
     }
@@ -251,16 +250,16 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
         this.health = health;
     }
 
-    protected void setElementAmount(ElementSchool elementSchool, int amount) {
+    protected void setElementResource(Element element, int resource) {
         for (ElementRecordDO record : elementRecords) {
-            if (record.getElementSchool().equals(elementSchool)) record.setAmount(amount);
+            if (record.getElement().equals(element)) record.setResource(resource);
         }
     }
 
     protected boolean addDealtCard(MetaCard metaCard) {
         MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
-            if (record.getElementSchool().getName().equals(element.getElementSchool().getName())) {
+            if (record.getElement().getName().equals(element.getElement().getName())) {
                 return element.addDealtCard(record);
             }
         }
@@ -270,7 +269,7 @@ public class PlayerRecordDO extends AbstractPlayerRecord<PlayerRecordDO> {
     protected boolean removeDealtCard(MetaCard metaCard) {
         MetaCardDO record = (MetaCardDO) metaCard;
         for (ElementRecordDO element : elementRecords) {
-            if (record.getElementSchool().equals(element.getElementSchool()))
+            if (record.getElement().equals(element.getElement()))
                 return element.removeDealtCard(record);
         }
         return false;

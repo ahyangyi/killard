@@ -13,6 +13,6 @@ public interface BoardPackage {
 
     public String getName();
 
-    public ElementSchool[] getElementSchools();
+    public Element[] getElements();
 
 }

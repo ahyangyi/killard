@@ -16,9 +16,9 @@ import javax.jdo.annotations.PersistenceCapable;
  * </p>
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ElementSchoolPropertyDO extends PropertyDO {
+public class ElementPropertyDO extends PropertyDO {
 
-    public ElementSchoolPropertyDO(DescriptableDO owner, String name, String data) {
+    public ElementPropertyDO(DescriptableDO owner, String name, String data) {
         super(owner, name, data);
     }
 }

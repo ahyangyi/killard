@@ -3,7 +3,7 @@ package com.killard.board.card.record;
 import com.killard.board.card.Action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.environment.event.StateEvent;
@@ -53,7 +53,7 @@ public abstract class AbstractPlayerRecord<T extends AbstractPlayerRecord> imple
 
     protected abstract void setHealth(int health);
 
-    protected abstract void setElementAmount(ElementSchool elementSchool, int amount);
+    protected abstract void setElementResource(Element element, int resource);
 
     protected abstract void setProperty(String name, Object data);
 
@@ -99,8 +99,8 @@ public abstract class AbstractPlayerRecord<T extends AbstractPlayerRecord> imple
         fireStateChanged(new StateEvent(this, action));
     }
 
-    protected void changeElementForSchool(ElementSchool elementSchool, int elementChange, Action action) {
-        setElementAmount(elementSchool, getElementAmount(elementSchool) + elementChange);
+    protected void changeElementForSchool(Element element, int elementChange, Action action) {
+        setElementResource(element, getElementResource(element) + elementChange);
         fireStateChanged(new StateEvent(this, action));
     }
 

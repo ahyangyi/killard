@@ -1,9 +1,9 @@
 package com.killard.board.packages.magic;
 
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 
-public enum MagicElementSchool implements ElementSchool {
+public enum MagicElement implements Element {
 
     EARTH,
     FIRE,

@@ -1,6 +1,6 @@
 package com.killard.board.card;
 
-public interface ElementSchool {
+public interface Element {
 
     public String getName();
 

@@ -60,29 +60,29 @@
 <p></p>
 <table width="100%" style="border-style:solid">
     <tr>
-        <td>ElementSchool</td>
+        <td>Element</td>
         <td>Card Amount</td>
         <td>Details</td>
         <td>Delete</td>
     </tr>
-    <c:forEach var="elementSchool" items="${package.elementSchools}">
+    <c:forEach var="element" items="${package.elements}">
         <tr>
-            <td>${elementSchool.descriptor.name}</td>
+            <td>${element.descriptor.name}</td>
             <td>
-                <c:set var="cards" value="${elementSchool.cards}"/>
+                <c:set var="cards" value="${element.cards}"/>
                 <%=((MetaCardDO[]) pageContext.getAttribute("cards")).length%>
             </td>
             <td>
                 <form action="/package/elementschool.html" method="GET">
                     <input type="hidden" name="packageId" value="${package.key.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.key.id}"/>
+                    <input type="hidden" name="elementId" value="${element.key.id}"/>
                     <input type="submit" value="Details"/>
                 </form>
             </td>
             <td>
                 <form action="/package/elementschool/delete.html" method="POST">
                     <input type="hidden" name="packageId" value="${package.key.id}"/>
-                    <input type="hidden" name="elementSchoolId" value="${elementSchool.key.id}"/>
+                    <input type="hidden" name="elementId" value="${element.key.id}"/>
                     <input type="submit" value="Delete"/>
                 </form>
             </td>
@@ -95,7 +95,7 @@
     <table style="border-style:ridge">
         <tr>
             <td>New element school:</td>
-            <td><input type="text" name="elementSchoolName"/></td>
+            <td><input type="text" name="elementName"/></td>
             <td><input type="submit" value="New"/></td>
         </tr>
     </table>

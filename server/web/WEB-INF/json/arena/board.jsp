@@ -15,14 +15,14 @@
         "elementRecords" : [
     <c:forEach var="element" items="${player.elementRecords}" varStatus="elementStatus">
         <c:if test="${not elementStatus.first}">,</c:if>{
-        "elementSchool": "${element.elementSchool.name}",
-        "amount": ${element.amount}
+        "element": "${element.element.name}",
+        "resource": ${element.resource}
         <c:if test="${player.id == playerId and player.number > 0}">
         ,"dealtCards": [
             <c:forEach var="card" items="${element.dealtCards}" varStatus="cardStatus">
                 <c:if test="${not cardStatus.first}">,</c:if>{
                 "name" : "${card.key.name}",
-                "elementSchool" : "${card.elementSchool.name}",
+                "element" : "${card.element.name}",
                 "level" : ${card.level},
                 "maxHealth" : ${card.maxHealth},
                 "attack" : ${card.attack.value}
@@ -38,7 +38,7 @@
     <c:forEach var="card" items="${player.equippedCards}" varStatus="cardStatus">
         <c:if test="${not cardStatus.first}">,</c:if>{
         "name" : "${card.name}",
-        "elementSchool" : "${card.elementSchool.key.name}",
+        "element" : "${card.element.key.name}",
         "position" : ${card.position},
         "level" : ${card.level},
         "maxHealth" : ${card.maxHealth},

@@ -19,7 +19,7 @@
         <li><a href="#">Element Schools</a></li>
     </ul>
     <ul>
-        <c:forEach var="element" items="${package.elementSchools}">
+        <c:forEach var="element" items="${package.elements}">
         <li><a href="<c:url value="/game/${package.name}/element/${element.name}"/>">${element.descriptor.name}</a></li>
         </c:forEach>
     </ul>

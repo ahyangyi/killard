@@ -3,7 +3,7 @@ package com.killard.board.environment.record;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.MetaCard;
 import com.killard.board.card.Player;
 import com.killard.board.card.Skill;
@@ -30,7 +30,7 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
 
     private String name;
 
-    private ElementSchool elementSchool;
+    private Element element;
 
     private int level;
 
@@ -58,20 +58,20 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
 
     private final Map<String, Object> properties = new HashMap<String, Object>();
 
-    public CardRecord(ElementSchool elementSchool, int level, int maxHealth, int health, int attack, Skill skill) {
+    public CardRecord(Element element, int level, int maxHealth, int health, int attack, Skill skill) {
         this.name = getClass().getSimpleName();
-        this.elementSchool = elementSchool;
+        this.element = element;
         this.level = level;
         this.maxHealth = maxHealth;
         this.health = health;
-        this.attack = new Attack(elementSchool, AttackType.PHYSICAL, attack);
+        this.attack = new Attack(element, AttackType.PHYSICAL, attack);
         this.equippable = true;
         this.skills.add(skill);
     }
 
     public CardRecord(MetaCard metaCard, Player owner, Player target, int position) {
         this.name = metaCard.getName();
-        this.elementSchool = metaCard.getElementSchool();
+        this.element = metaCard.getElement();
         this.level = metaCard.getLevel();
         this.health = metaCard.getMaxHealth();
         this.maxHealth = metaCard.getMaxHealth();
@@ -95,8 +95,8 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
         return name;
     }
 
-    public ElementSchool getElementSchool() {
-        return elementSchool;
+    public Element getElement() {
+        return element;
     }
 
     public int getLevel() {

@@ -12,7 +12,7 @@ package com.killard.board.card;
  */
 public class Attack {
 
-    private final ElementSchool elementSchool;
+    private final Element element;
 
     private final AttackType type;
 
@@ -20,22 +20,22 @@ public class Attack {
 
     private final int range;
 
-    public Attack(ElementSchool elementSchool, AttackType type, int value) {
-        this.elementSchool = elementSchool;
+    public Attack(Element element, AttackType type, int value) {
+        this.element = element;
         this.type = type;
         this.value = value;
         this.range = 1;
     }
 
-    public Attack(ElementSchool elementSchool, AttackType type, int value, int range) {
-        this.elementSchool = elementSchool;
+    public Attack(Element element, AttackType type, int value, int range) {
+        this.element = element;
         this.type = type;
         this.value = value;
         this.range = range;
     }
 
-    public ElementSchool getElementSchool() {
-        return elementSchool;
+    public Element getElement() {
+        return element;
     }
 
     public AttackType getType() {

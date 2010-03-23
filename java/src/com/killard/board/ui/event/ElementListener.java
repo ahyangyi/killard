@@ -1,6 +1,6 @@
 package com.killard.board.ui.event;
 
-import com.killard.board.packages.magic.MagicElementSchool;
+import com.killard.board.packages.magic.MagicElement;
 import com.killard.board.ui.PlayerPanel;
 
 import java.awt.event.MouseEvent;
@@ -15,15 +15,15 @@ import java.awt.event.MouseListener;
  */
 public class ElementListener implements MouseListener {
     private PlayerPanel playerPanel;
-    MagicElementSchool school;
+    MagicElement school;
 
-    public ElementListener(PlayerPanel playerPanel, MagicElementSchool school) {
+    public ElementListener(PlayerPanel playerPanel, MagicElement school) {
         this.playerPanel = playerPanel;
         this.school = school;
     }
 
     public void mouseClicked(MouseEvent event) {
-        playerPanel.setElementSchool(school);
+        playerPanel.setElement(school);
 
     }
 

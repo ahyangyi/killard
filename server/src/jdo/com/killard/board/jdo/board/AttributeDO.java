@@ -33,7 +33,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         implements Attribute<AttributeDO> {
 
     @Persistent
-    private ElementSchoolDO elementSchool;
+    private ElementDO element;
 
     @Persistent
     private boolean visible;
@@ -47,7 +47,7 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Persistent(serialized = "true", defaultFetchGroup = "true")
     private List<AttributeHandler> after;
 
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent
     @Element(dependent = "true")
     private List<AttributePropertyDO> properties;
 
@@ -55,13 +55,13 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
     @Element(dependent = "true")
     private transient List<AttributeDescriptorDO> descriptors;
 
-    protected AttributeDO(ElementSchoolDO elementSchool, String name, boolean visible,
+    protected AttributeDO(ElementDO element, String name, boolean visible,
                           List<AttributeHandler> validators,
                           List<AttributeHandler> before,
                           List<AttributeHandler> after) {
-        super(elementSchool, name);
+        super(element, name);
 
-        this.elementSchool = elementSchool;
+        this.element = element;
         this.visible = visible;
 
         this.validators = new ArrayList<AttributeHandler>(validators);
@@ -72,13 +72,13 @@ public class AttributeDO extends DescriptableDO<AttributeDO, AttributePropertyDO
         this.descriptors = new ArrayList<AttributeDescriptorDO>();
     }
 
-    protected AttributeDO(ElementSchoolDO elementSchool, AttributeDO source) {
-        this(elementSchool, source.getName(), source.visible, source.validators, source.before,
+    protected AttributeDO(ElementDO element, AttributeDO source) {
+        this(element, source.getName(), source.visible, source.validators, source.before,
                 source.after);
     }
 
-    public ElementSchoolDO getElementSchool() {
-        return elementSchool;
+    public ElementDO getElement() {
+        return element;
     }
 
     public AttributePropertyDO[] getProperties() {

@@ -5,7 +5,7 @@ import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Board;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 import com.killard.board.card.SkillTarget;
 import com.killard.board.card.action.ChangePlayerHealthAction;
 
@@ -15,9 +15,9 @@ public class HealingSkill extends BasicSkill<HealingSkill> {
 
     private final Attack healing;
 
-    public HealingSkill(ElementSchool elementSchool, int cost, int healing) {
-        super(elementSchool, cost);
-        this.healing = new Attack(getElementSchool(), AttackType.MAGIC, -healing);
+    public HealingSkill(Element element, int cost, int healing) {
+        super(element, cost);
+        this.healing = new Attack(getElement(), AttackType.MAGIC, -healing);
     }
 
     public SkillTarget[] getTargets() {

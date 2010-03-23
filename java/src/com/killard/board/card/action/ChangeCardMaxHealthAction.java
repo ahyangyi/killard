@@ -3,7 +3,7 @@ package com.killard.board.card.action;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Card;
-import com.killard.board.card.ElementSchool;
+import com.killard.board.card.Element;
 
 /**
  * <p>
@@ -24,10 +24,10 @@ public class ChangeCardMaxHealthAction extends CardAction<Card> {
     }
 
     public ChangeCardMaxHealthAction(Card source, Card target,
-                                     ElementSchool elementSchool, AttackType attackType, Integer attackValue) {
+                                     Element element, AttackType attackType, Integer attackValue) {
         super(source, target);
         int value = attackValue == null ? 0 : attackValue;
-        this.maxHealthChange = new Attack(elementSchool, attackType, value);
+        this.maxHealthChange = new Attack(element, attackType, value);
     }
 
     public Attack getMaxHealthChange() {

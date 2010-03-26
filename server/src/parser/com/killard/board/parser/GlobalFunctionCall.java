@@ -82,7 +82,7 @@ public class GlobalFunctionCall extends Call {
         if (arguments != null) {
             boolean first = true;
             for (Node arg : arguments.getChildren()) {
-                if (!first) buf.append(",");
+                if (!first) buf.append(", ");
                 else first = false;
                 buf.append(arg.toString());
             }

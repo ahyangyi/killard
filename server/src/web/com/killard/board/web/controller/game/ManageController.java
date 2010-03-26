@@ -150,8 +150,9 @@ public class ManageController extends BasicController {
 
         List<AttributeHandler> handlers = new ArrayList<AttributeHandler>();
         RoleDO role = draft.newRole("test", handlers, handlers, handlers);
+        PersistenceHelper.commit();
+        role.newDescriptor(BoardContext.getLocale(), "test", "Test Role");
         RoleGroupDO group = draft.newRoleGroup();
-        pm.makePersistent(group);
         PersistenceHelper.commit();
         group = pm.getObjectById(RoleGroupDO.class, group.getKey());
         group.addRole(role);

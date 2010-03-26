@@ -35,7 +35,7 @@ public class ElementController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getRelease();
+        PackageDO pack = bundle.getDraft();
         Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
 
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);

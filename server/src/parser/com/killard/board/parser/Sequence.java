@@ -43,7 +43,10 @@ public class Sequence implements Node {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Not implemented yet!]");
+        for (Node child : getChildren()) {
+            buf.append(child.toString());
+            buf.append(";\n");
+        }
         return buf.toString();
     }
 }

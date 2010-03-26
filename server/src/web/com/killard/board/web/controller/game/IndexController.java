@@ -26,7 +26,7 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    @RequestMapping(value = "/game", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/game", "/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String browser() throws Exception {
         return "game";
     }

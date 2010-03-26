@@ -7,8 +7,8 @@ import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.parser.ScriptEngine;
+import com.killard.board.web.util.DescriptorUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,15 +28,15 @@ import javax.jdo.PersistenceManager;
  * </p>
  */
 @Controller
-@RequestMapping("/{bundleId}/role/{roleId}")
-public class RoleController {
+@RequestMapping("/{bundleId}/rule")
+public class RuleController {
 
     private final ScriptEngine engine = new ScriptEngine();
 
     private final JdoCardBuilder builder = new JdoCardBuilder();
 
     @RequestMapping(method = {RequestMethod.GET})
-    public String viewPackage(@PathVariable String bundleId, @PathVariable String roleId,
+    public String viewPackage(@PathVariable String bundleId,
                               @RequestParam(value = "v", required = false) String packageId,
                               ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -45,15 +45,25 @@ public class RoleController {
         Key packageKey = packageId == null
                 ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
                 : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key roleKey = KeyFactory.createKey(packageKey, RoleDO.class.getSimpleName(), roleId);
 
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
-
         modelMap.put("package", bundle.getDraft());
-        modelMap.put("role", role);
         modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
-        return "role/view";
+        return "rule/view";
+    }
+
+    @RequestMapping(method = {RequestMethod.POST})
+    public String updatePackage(@PathVariable String bundleId,
+                                @RequestParam("locales") String[] locales,
+                                @RequestParam("names") String[] names,
+                                @RequestParam("descriptions") String[] descriptions,
+                                ModelMap modelMap) throws Exception {
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
+        PackageDO pack = bundle.getDraft();
+        DescriptorUtils.updateDescriptors(pack, locales, names, descriptions);
+        modelMap.put("package", pack);
+        return "rule/edit";
     }
 
 }

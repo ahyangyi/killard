@@ -16,30 +16,36 @@
 <body>
 <%@ include file="../topbar.jsp" %>
 <div class="container">
-    <div class="ui-layout-west">
-        <div class="ui-layout-content">
-            <%--@elvariable id="menu" type="java.lang.String"--%>
-            <jsp:include page="${menu}"/>
+    <c:if test="${menu != null}">
+        <div class="ui-layout-west">
+            <div class="ui-layout-content">
+                    <%--@elvariable id="menu" type="java.lang.String"--%>
+                <jsp:include page="${menu}"/>
+            </div>
         </div>
-    </div>
+    </c:if>
     <div class="ui-layout-center">
         <div class="ui-layout-content">
             <%--@elvariable id="form" type="java.lang.String"--%>
             <jsp:include page="${form}"/>
         </div>
     </div>
-    <div class="ui-layout-east">
-        <div class="ui-layout-content">
-            <%--@elvariable id="image" type="java.lang.String"--%>
-            <jsp:include page="${image}"/>
+    <c:if test="${image != null}">
+        <div class="ui-layout-east">
+            <div class="ui-layout-content">
+                    <%--@elvariable id="image" type="java.lang.String"--%>
+                <jsp:include page="${image}"/>
+            </div>
         </div>
-    </div>
-    <div class="ui-layout-south">
-        <div class="ui-layout-content">
-            <%--@elvariable id="toolbar" type="java.lang.String"--%>
-            <jsp:include page="${toolbar}"/>
+    </c:if>
+    <c:if test="${toolbar != null}">
+        <div class="ui-layout-south">
+            <div class="ui-layout-content">
+                    <%--@elvariable id="toolbar" type="java.lang.String"--%>
+                <jsp:include page="${toolbar}"/>
+            </div>
         </div>
-    </div>
+    </c:if>
 </div>
 <%@ include file="../bottombar.jsp" %>
 </body>

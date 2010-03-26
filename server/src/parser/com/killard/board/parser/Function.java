@@ -43,7 +43,14 @@ public class Function implements Node {
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append("function (");
-        if (arguments != null) buf.append(arguments.toString());
+        if (arguments != null) {
+            boolean start = true;
+            for (Node arg : arguments.getChildren()) {
+                if (!start) buf.append(", ");
+                else start = false;
+                buf.append(((Variable)arg).getText());
+            }
+        }
         buf.append(")");
         buf.append(body.toString());
         return buf.toString();

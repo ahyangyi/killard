@@ -49,9 +49,12 @@ public class Variable extends Expression {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
+        buf.append("var ");
         buf.append(text);
-        buf.append("=");
-        buf.append(initializer.toString());
+        if (initializer != null) {
+            buf.append(" = ");
+            buf.append(initializer.toString());
+        }
         return buf.toString();
     }
 }

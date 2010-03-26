@@ -1,19 +1,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link type="text/css" href="css/layout.css" rel="stylesheet"/>
-    <link type="text/css" href="css/menu.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/package.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/richlist.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/rating.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/carousel.css" rel="stylesheet"/>
-    <link type="text/css" href="css/ui/searchbar.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.7.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
-    <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-    <script type="text/javascript" src="js/ui/carousel.js"></script>
-    <script type="text/javascript" src="js/ui/richlist.js"></script>
-    <script type="text/javascript" src="js/ui/searchbar.js"></script>
+    <link type="text/css" href="/css/layout.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/menu.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/package.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/richlist.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/rating.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/carousel.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/ui/searchbar.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.layout-latest.js"></script>
+    <script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="/js/ui/carousel.js"></script>
+    <script type="text/javascript" src="/js/ui/richlist.js"></script>
+    <script type="text/javascript" src="/js/ui/searchbar.js"></script>
     <title>Killard Games</title>
     <style type="text/css">
         body {
@@ -143,7 +143,7 @@
                 updateGameList();
             }
 
-            $.getJSON('game/query/top.json', '', function(data, textStatus) {
+            $.getJSON('/game/query/top.json', '', function(data, textStatus) {
                 $.each(data, function(i, game) {
                     var packageLi = $('<li></li>').appendTo($("#packageList"));
                     $(new Image).attr('src', game.picture).addClass('item').click(function() {
@@ -161,16 +161,16 @@
 <div class="container">
     <div class="ui-layout-center">
         <div class="dashboard">
-            <div class="corner" style="top:0;left:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="top:0;right:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="bottom:0;left:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="bottom:0;right:0;"><img src="image/cycle.png"/></div>
+            <div class="corner" style="top:0;left:0;"><img src="/image/cycle.png"/></div>
+            <div class="corner" style="top:0;right:0;"><img src="/image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;left:0;"><img src="/image/cycle.png"/></div>
+            <div class="corner" style="bottom:0;right:0;"><img src="/image/cycle.png"/></div>
             <div class="title">
                 <div class="menu">
                     <ul>
                         <li><a href="">Animals In Danger</a></li>
-                        <li><img src="image/arrow1.png"/></li>
-                        <li><img src="image/arrow2.png"/></li>
+                        <li><img src="/image/arrow1.png"/></li>
+                        <li><img src="/image/arrow2.png"/></li>
                     </ul>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                 <ul>
                     <li>
                         <div class="cards-show">
-                            <img src="game/animals/element/AIR/card/Spellbreaker/image.png"/>
+                            <img src="/game/animals/element/AIR/card/Spellbreaker/image.png"/>
                         </div>
                     </li>
                     <li>
@@ -187,7 +187,7 @@
                 </ul>
             </div>
             <div class="new-game-form">
-                <form action="/arena/new.html" method="POST">
+                <form action="/arena/new" method="POST">
                     <input type="hidden" name="packageBundleId" value=""/>
                     <b>Player Number:</b>
                     <label>
@@ -218,13 +218,13 @@
         <div class="carousel" style="height:100%;">
             <div class="center" style="height:100%;">
                 <ul>
-                    <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
+                    <li class="arrow"><a class="back"><img src="/image/arrow/left.png"/></a></li>
                     <li class="content">
                         <div class="list">
                             <ul id="packageList"></ul>
                         </div>
                     </li>
-                    <li class="arrow"><a class="forward"><img src="image/arrow/right.png"/></a></li>
+                    <li class="arrow"><a class="forward"><img src="/image/arrow/right.png"/></a></li>
                 </ul>
             </div>
             <div class="bottom">

@@ -7,7 +7,7 @@
         "id" : "${package.key.id}",
         "title" : "${package.descriptor.name}",
         "description" : "${package.descriptor.description}",
-        "picture" : "image/index.png"
+        "picture" : "/image/index.png"
     }<c:if test="${not status.last}">,</c:if>
 </c:forEach>
 ]

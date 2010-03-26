@@ -4,8 +4,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.RuleDO;
+import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
+import com.killard.board.web.util.DescriptorUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class PackageController extends BasicController {
 
     @RequestMapping(method = {RequestMethod.GET})
     public String viewPackage(@PathVariable String bundleId,
-                              ModelMap modelMap, HttpServletRequest request) throws Exception {
+                              ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
@@ -42,28 +43,20 @@ public class PackageController extends BasicController {
 
     @RequestMapping(method = {RequestMethod.POST})
     public String updatePackage(@PathVariable String bundleId,
-                                ModelMap modelMap, HttpServletRequest request) throws Exception {
+                                @RequestParam("locales") String[] locales,
+                                @RequestParam("names") String[] names,
+                                @RequestParam("descriptions") String[] descriptions,
+                                ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
-        modelMap.put("package", bundle.getDraft());
-        return "package/edit";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String rule(@PathVariable String bundleId, @RequestParam("definition") String rule,
-                       ModelMap modelMap, HttpServletRequest request) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
-        RuleDO oldRule = bundle.getDraft().getRule();
-        pm.makePersistent(bundle);
-        modelMap.put("package", bundle.getDraft());
+        PackageDO pack = bundle.getDraft();
+        DescriptorUtils.updateDescriptors(pack, locales, names, descriptions);
+        modelMap.put("package", pack);
         return "package/edit";
     }
 
     @RequestMapping(value = {"/boards"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String getBoards(@PathVariable String bundleId,
-                            ModelMap modelMap, HttpServletRequest request) throws Exception {
+    public String getBoards(@PathVariable String bundleId, ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
@@ -98,7 +91,7 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
-        pm.makePersistent(bundle.release());
+        bundle.release();
         redirect("/game", request, response);
     }
 
@@ -108,8 +101,7 @@ public class PackageController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
-        pm.makePersistent(bundle);
-        modelMap.put("package", bundle.getRelease());
+        modelMap.put("package", bundle.getDraft());
         return "package/edit";
     }
 
@@ -120,7 +112,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         pm.makePersistent(bundle);
-        modelMap.put("package", bundle.getRelease());
+        modelMap.put("package", bundle.getDraft());
         return "/game/" + bundle.getName();
     }
 

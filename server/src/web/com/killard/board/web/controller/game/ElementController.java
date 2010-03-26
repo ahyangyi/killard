@@ -43,7 +43,7 @@ public class ElementController extends BasicController {
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("element", element);
-        return "elementschool/view";
+        return "element/view";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public class ElementController extends BasicController {
         ElementDO element = pack.newElement(elementId);
         pm.makePersistent(pack);
         modelMap.put("element", element);
-        return "elementschool/edit";
+        return "element/edit";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.POST, RequestMethod.DELETE})

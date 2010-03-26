@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/xml/includes.jsp" %>
 <%@ page import="com.killard.board.card.Element" %>
+<%@ page import="com.killard.board.card.MetaCard" %>
 <%@ page import="com.killard.board.jdo.board.record.PlayerRecordDO" %>
 <%--@elvariable id="playerName" type="java.lang.String"--%>
 <%--@elvariable id="board" type="com.killard.board.jdo.board.BoardDO"--%>
@@ -14,19 +15,21 @@
             <elements>
                 <c:forEach var="element" items="${player.allElement}">
                     <c:set var="element" scope="page" value="${element}"/>
-                    <%Element elementement) pageContext.getAttribute("element");%>
+                    <%Element elementSchool = (Element) pageContext.getAttribute("element");%>
                     <element>
                         <type>${element}</type>
                         <amount>
-                            <%=player.getElementResource(element                      </resource>
+                            <%=player.getElementResource(elementSchool)%>
+                        </amount>
                         <c:if test="${player.id == playerName}">
                             <holdedcards>
                                 <%
-                                    for (MetaCard metaCard : player.getDealtCards(element                                       pageContext.setAttribute("board", metaCard);
+                                    for (MetaCard metaCard : player.getDealtCards(elementSchool)) {
+                                        pageContext.setAttribute("board", metaCard);
                                 %>
                                 <card>
                                     <name>${card.name}</name>
-                                    <element>${card.element}</element>
+                                    <elementSchool>${card.elementSchool}</elementSchool>
                                     <level>${card.level}</level>
                                     <maxHealth>${card.maxHealth}</maxHealth>
                                     <health>${card.health}</health>
@@ -55,7 +58,7 @@
                         <name>${card.name}</name>
                         <position>${card.position}</position>
                         <target>${card.target.name}</target>
-                        <element>${card.element}</element>
+                        <elementSchool>${card.elementSchool}</elementSchool>
                         <level>${card.level}</level>
                         <maxHealth>${card.maxHealth}</maxHealth>
                         <health>${card.health}</health>

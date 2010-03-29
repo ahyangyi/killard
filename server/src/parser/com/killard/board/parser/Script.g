@@ -14,11 +14,11 @@ tokens {
 }
 
 @header {
-package com.oneboard.parser;  
+package com.killard.board.parser;
 }
 
 @lexer::header {
-package com.oneboard.parser;
+package com.killard.board.parser;
 }
 
 value

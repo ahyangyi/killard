@@ -6,7 +6,7 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
-import com.killard.board.web.util.DescriptorUtils;
+import com.killard.board.web.util.FormUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +50,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         PackageDO pack = bundle.getDraft();
-        DescriptorUtils.updateDescriptors(pack, locales, names, descriptions);
+        FormUtils.updateDescriptors(pack, locales, names, descriptions);
         modelMap.put("package", pack);
         return "package/edit";
     }

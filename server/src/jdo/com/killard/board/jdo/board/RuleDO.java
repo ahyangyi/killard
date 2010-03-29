@@ -85,6 +85,18 @@ public class RuleDO implements ActionListener<RuleDO>, Serializable {
         return after.toArray(new AttributeHandler[after.size()]);
     }
 
+    public void setValidators(List<AttributeHandler> validators) {
+        this.validators = validators;
+    }
+
+    public void setBefore(List<AttributeHandler> before) {
+        this.before = before;
+    }
+
+    public void setAfter(List<AttributeHandler> after) {
+        this.after = after;
+    }
+
     @ActionValidator(actionClass = Action.class, selfTargeted = false)
     public List<Action> validateAction(BoardDO board, BoardDO owner, Action action) {
         List<Action> result = FunctionHelper.handler(owner, owner, action, validators);

@@ -53,6 +53,7 @@ public class If implements Node {
         buf.append(condition.toString());
         buf.append(") ");
         buf.append(body.toString());
+        if (body instanceof Expression) buf.append(";");
         if (elseBody != null) {
             buf.append("\nelse\n");
             buf.append(elseBody);

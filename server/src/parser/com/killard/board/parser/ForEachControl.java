@@ -64,8 +64,8 @@ public class ForEachControl extends LoopControl {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("for (var ");
-        buf.append(var.toString());
+        buf.append("for (");
+        buf.append(var.getText());
         buf.append(" in ");
         buf.append(collection.toString());
         buf.append(")");

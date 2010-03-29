@@ -3,12 +3,11 @@ package com.killard.board.web.controller.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.record.ExecutableActions;
-import com.killard.board.jdo.JdoCardBuilder;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
-import com.killard.board.parser.ScriptEngine;
-import com.killard.board.web.util.DescriptorUtils;
+import com.killard.board.web.util.FormUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jdo.PersistenceManager;
+import java.util.List;
 
 /**
  * <p>
@@ -30,10 +30,6 @@ import javax.jdo.PersistenceManager;
 @Controller
 @RequestMapping("/{bundleId}/rule")
 public class RuleController {
-
-    private final ScriptEngine engine = new ScriptEngine();
-
-    private final JdoCardBuilder builder = new JdoCardBuilder();
 
     @RequestMapping(method = {RequestMethod.GET})
     public String viewPackage(@PathVariable String bundleId,
@@ -53,17 +49,32 @@ public class RuleController {
     }
 
     @RequestMapping(method = {RequestMethod.POST})
-    public String updatePackage(@PathVariable String bundleId,
-                                @RequestParam("locales") String[] locales,
-                                @RequestParam("names") String[] names,
-                                @RequestParam("descriptions") String[] descriptions,
-                                ModelMap modelMap) throws Exception {
+    public String update(@PathVariable String bundleId,
+                         @RequestParam("validator_actionClass") String[] validator_actionClass,
+                         @RequestParam("validator_selfTargeted") boolean[] validator_selfTargeted,
+                         @RequestParam("validator_function") String[] validator_function,
+                         @RequestParam("before_actionClass") String[] before_actionClass,
+                         @RequestParam("before_selfTargeted") boolean[] before_selfTargeted,
+                         @RequestParam("before_function") String[] before_function,
+                         @RequestParam("after_actionClass") String[] after_actionClass,
+                         @RequestParam("after_selfTargeted") boolean[] after_selfTargeted,
+                         @RequestParam("after_function") String[] after_function,
+                         ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
         PackageDO pack = bundle.getDraft();
-        DescriptorUtils.updateDescriptors(pack, locales, names, descriptions);
+        List<AttributeHandler> validator =
+                FormUtils.buildHandlers(validator_actionClass, validator_selfTargeted, validator_function);
+        List<AttributeHandler> before =
+                FormUtils.buildHandlers(before_actionClass, before_selfTargeted, before_function);
+        List<AttributeHandler> after =
+                FormUtils.buildHandlers(after_actionClass, after_selfTargeted, after_function);
+        pack.getRule().setValidators(validator);
+        pack.getRule().setBefore(before);
+        pack.getRule().setAfter(after);
         modelMap.put("package", pack);
-        return "rule/edit";
+        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
+        return "rule/view";
     }
 
 }

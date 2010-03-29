@@ -43,4 +43,19 @@ public class ScriptEngine {
     public Map parse(File file) throws RecognitionException, IOException {
         return parse(new ANTLRFileStream(file.getAbsolutePath()));
     }
+
+    public Function parseFunction(CharStream input) throws RecognitionException {
+        ScriptLexer lex = new ScriptLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lex);
+        ScriptParser parser = new ScriptParser(tokens);
+        ScriptParser.function_return r = parser.function();
+        CommonTreeNodeStream nodes = new CommonTreeNodeStream(r.tree);
+        nodes.setTokenStream(tokens);
+        CardBuilder builder = new CardBuilder(nodes);
+        return builder.function();
+    }
+
+    public Function parseFunction(String definition) throws RecognitionException {
+        return parseFunction(new ANTLRStringStream(definition));
+    }
 }

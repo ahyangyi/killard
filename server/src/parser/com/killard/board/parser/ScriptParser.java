@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 Script.g 2009-09-29 11:28:18
+// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 Script.g 2010-03-29 12:31:42
 
 package com.killard.board.parser;
 
@@ -906,7 +906,7 @@ public class ScriptParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, 53, 52, Identifier, argumentDecls
+            // elements: 52, argumentDecls, block, Identifier, 53
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -937,13 +937,13 @@ public class ScriptParser extends Parser {
                 }
                 stream_argumentDecls.reset();
                 // Script.g:49:45: ( '[' ']' )*
-                while ( stream_53.hasNext()||stream_52.hasNext() ) {
+                while ( stream_52.hasNext()||stream_53.hasNext() ) {
                     adaptor.addChild(root_1, stream_52.nextNode());
                     adaptor.addChild(root_1, stream_53.nextNode());
 
                 }
-                stream_53.reset();
                 stream_52.reset();
+                stream_53.reset();
                 adaptor.addChild(root_1, stream_block.nextTree());
 
                 adaptor.addChild(root_0, root_1);
@@ -1196,7 +1196,7 @@ public class ScriptParser extends Parser {
 
 
             // AST REWRITE
-            // elements: value, Identifier
+            // elements: Identifier, value
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2071,7 +2071,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: Identifier, statement, loopControl
+                    // elements: Identifier, loopControl, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2150,7 +2150,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, Identifier, parExpression
+                    // elements: Identifier, parExpression, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2235,7 +2235,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, parExpression, Identifier
+                    // elements: parExpression, Identifier, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5185,7 +5185,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: unaryExpression, 87
+                    // elements: 87, unaryExpression
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5273,7 +5273,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 92, unaryExpression
+                    // elements: unaryExpression, 92
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5449,7 +5449,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 92, atomicExpression
+                    // elements: atomicExpression, 92
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5493,7 +5493,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: atomicExpression, 93
+                    // elements: 93, atomicExpression
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5687,7 +5687,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: call, subCall
+                    // elements: subCall, call
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5892,7 +5892,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expressionList, expression, Identifier
+                    // elements: expressionList, Identifier, expression
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -5979,7 +5979,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expression, Identifier
+                    // elements: Identifier, expression
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -6205,7 +6205,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: Identifier, expressionList, expression
+                    // elements: expression, expressionList, Identifier
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -6296,7 +6296,7 @@ public class ScriptParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expression, Identifier
+                    // elements: Identifier, expression
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 

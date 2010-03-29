@@ -54,7 +54,7 @@ public class ForControl extends LoopControl {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("for (var ");
+        buf.append("for (");
         buf.append(init.toString());
         buf.append("; ");
         buf.append(condition.toString());

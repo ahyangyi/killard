@@ -3,7 +3,7 @@
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
-<form action="" method="POST" class="horizontal" id="card-form">
+<form action="" method="POST" class="horizontal">
 <fieldset>
     <legend>${card.descriptor.name}</legend>
     <div class="field">

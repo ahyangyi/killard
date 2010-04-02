@@ -1,6 +1,6 @@
 <%@ include file="../../includes.jsp" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
-<form action="" method="POST">
+<form action="<c:url value="/game/${package.name}"/>" method="POST" class="horizontal">
     <fieldset>
         <legend>${package.descriptor.name}</legend>
         <fieldset>
@@ -47,31 +47,11 @@
         </fieldset>
     </fieldset>
     <hr/>
-    <fieldset>
-        <fieldset>
-            <legend>Elements</legend>
-            <c:forEach var="element" items="${package.elements}">
-                <div class="field">
-                    <label>${element.name}</label>
-                    <form action="<c:url value="/game/${package.name}/element/${element.name}/delete"/>"
-                          method="POST">
-                        <input type="submit" value="Delete"/>
-                    </form>
-                </div>
-            </c:forEach>
-        </fieldset>
-    </fieldset>
-    <form action="<c:url value="/game/${package.name}/newelement"/>" method="POST">
-        <fieldset>
-            <legend>New Element</legend>
-            <div class="field">
-                <label for="element-id">Card ID</label>
-                <input type="text" id="element-id" name="elementId"/>
-                <input type="submit" value="Create"/>
-            </div>
-        </fieldset>
-    </form>
     <div class="field">
         <a href="<c:url value="/game/${package.name}/rule"/>">Rule</a>
+    </div>
+    <hr/>
+    <div class="field">
+        <a href="<c:url value="/game/${package.name}/newelement"/>">New Element</a>
     </div>
 </form>

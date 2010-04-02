@@ -2,7 +2,7 @@
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="role" type="com.killard.board.jdo.board.RoleDO"--%>
 <%--@elvariable id="actions" type="java.util.Set<java.lang.Class>"--%>
-<form action="" method="POST" class="horizontal" id="card-form">
+<form action="" method="POST" class="horizontal">
 <fieldset>
     <fieldset>
         <legend>Validator</legend>

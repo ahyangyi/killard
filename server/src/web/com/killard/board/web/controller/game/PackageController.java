@@ -3,7 +3,6 @@ package com.killard.board.web.controller.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
@@ -66,7 +65,7 @@ public class PackageController extends BasicController {
         return "boards";
     }
 
-    @RequestMapping(value = {"/new"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/new"}, method = {RequestMethod.POST})
     public String newPackage(@PathVariable String bundleId, ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         PackageBundleDO bundle = new PackageBundleDO(bundleId);
@@ -107,7 +106,7 @@ public class PackageController extends BasicController {
     }
 
     @RequestMapping(value = "/deletemanager", method = {RequestMethod.POST, RequestMethod.DELETE})
-    public String deleteManager(@PathVariable String bundleId, @RequestParam("email") String email,
+    public String deleteManager(@PathVariable String bundleId, @RequestParam("id") String id,
                                 ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -118,9 +117,10 @@ public class PackageController extends BasicController {
     }
 
     @RequestMapping(value = "/newelement", method = RequestMethod.POST)
-    public String newElement(@PathVariable String bundleId,
-                             @RequestParam("elementId") String elementId,
-                             ModelMap modelMap, HttpServletRequest request) throws Exception {
+    public void newElement(@PathVariable String bundleId,
+                           @RequestParam("elementId") String elementId,
+                           ModelMap modelMap,
+                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] ids = request.getRequestURI().split("/");
 
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
@@ -128,10 +128,8 @@ public class PackageController extends BasicController {
         Key packageKey = pm.getObjectById(PackageBundleDO.class, key).getDraft().getKey();
 
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementDO element = pack.newElement(elementId);
-        pm.makePersistent(pack);
-        modelMap.put("element", element);
-        return "element/edit";
+        pack.newElement(elementId);
+        redirect("/game/" + bundleId + "/element/" + elementId, request, response);
     }
 
 }

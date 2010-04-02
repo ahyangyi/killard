@@ -10,7 +10,7 @@
         body {
             margin: 0;
             padding: 0;
-            background:#f9f9f9;
+            background: rgb(200, 233, 115);
         }
 
         div.dashboard {
@@ -22,13 +22,16 @@
 
         div.dashboard img {
             display: none;
-            /*border: solid gray thin;*/
+        }
+
+        div.bottombar {
+            border: 0;
         }
     </style>
     <script type="text/javascript">
         $(function () {
             function resize() {
-                var centerPadding = parseInt(Math.min($(window).width() / 80, $(window).height() / 45));
+                var centerPadding = 0;//parseInt(Math.min($(window).width() / 80, $(window).height() / 45));
                 var centerHeight = $(window).height() - $('.topbar').outerHeight() - $('.bottombar').outerHeight();
                 $('.container').css({
                     'padding-top' : centerPadding,
@@ -57,36 +60,28 @@
 </head>
 <body>
 
-<div class="topbar">
-    <div id="logo">
-        <img src="image/logo.png"/>
-        <img src="image/title.png"/>
-    </div>
-    <div class="menu">
-        <ul>
-            <li><a href="/">Home</a>|</li>
-            <li><a href="/game">All Games</a>|</li>
-            <li><a href="/arena">Arena</a>|</li>
-            <li><a href="#">DIY</a>|</li>
-            <li><a href="#">Help</a>|</li>
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </div>
-</div>
+<!--<div class="topbar">-->
+    <!--<div id="logo">-->
+        <!--<img src="image/logo.png"/>-->
+        <!--<img src="image/title.png"/>-->
+    <!--</div>-->
+    <!--<div class="menu">-->
+        <!--<ul>-->
+            <!--<li><a href="/">Home</a>|</li>-->
+            <!--<li><a href="/game">All Games</a>|</li>-->
+            <!--<li><a href="/arena">Arena</a>|</li>-->
+            <!--<li><a href="#">DIY</a>|</li>-->
+            <!--<li><a href="#">Help</a>|</li>-->
+            <!--<li><a href="#">Logout</a></li>-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div class="container">
-    <div class="ui-layout-west" style="display:none;">
-        <div class="ui-layout-content">
-            <h3>Online board game engine</h3>
-            <p style="vertical-align:middle;">
-                Creative ideas.
-            </p>
-        </div>
-    </div>
     <div class="ui-layout-center" style="display:none;">
         <div class="ui-layout-content">
-            <div style="border:2px dashed #a9a9a9;text-align: center;">
-                <img src="image/index.png" style="width:70%;"/>
+            <div style="text-align: center;">
+                <img src="image/bg.png" style="width:100%;"/>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/jquery.validate.1.7.js"></script>
     <script type="text/javascript" src="js/ui/browser.js"></script>
     <script type="text/javascript" src="js/ui/card.js"></script>
+    <script type="text/javascript" src="js/ui/form.js"></script>
     <title>Killard Games - Game Settings</title>
 </head>
 <body>
@@ -81,30 +82,78 @@
                         <label for="card-attack">Attack</label>
                         <input type="text" name="attack" id="card-attack" value="3"/>
                     </div>
-                    <div class="field">
-                        <label for="field3">Select</label>
-                        <select id="field3">
-                            <option>Option 1</option>
-                            <option>Option 2</option>
-                        </select>
-                    </div>
+
                     <fieldset>
-                        <legend>Radio set</legend>
-                        <ul class="fields">
-                            <li>
-                                <label><input type="radio" class="radio" name="field4"/> A radio button 1</label>
-                            </li>
-                            <li>
-                                <label><input type="radio" class="radio" name="field4"/> A radio button 2</label>
-                            </li>
-                            <li>
-                                <label><input type="radio" class="radio" name="field4"/> A radio button 3</label>
-                            </li>
-                        </ul>
+                        <legend>Descriptions <a href="#" class="new">new</a></legend>
+                        <fieldset style="display:none;">
+                        <hr/>
+                        <div class="field">
+                            <label for="locale">Locale</label>
+                            <select id="locale">
+                                <option>en_US</option>
+                                <option>zh_CN</option>
+                            </select>
+                            <a href="#" class="delete">delete</a>
+                        </div>
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name"/>
+                        </div>
+                        <div class="field">
+                            <label for="description">Description</label>
+                            <textarea rows="5" cols="25" id="description" name="descriptin"></textarea>
+                        </div>
+                        </fieldset>
+                        <fieldset>
+                        <div class="field">
+                            <label for="locale1">Locale</label>
+                            <span id="locale1">zh_CN</span>
+                            <a href="#" class="delete">delete</a>
+                        </div>
+                        <div class="field">
+                            <label for="name1">Name</label>
+                            <input type="text" id="name1" name="name"/>
+                        </div>
+                        <div class="field">
+                            <label for="description">Description</label>
+                            <textarea rows="5" cols="25" id="description1" name="descriptin"></textarea>
+                        </div>
+                        </fieldset>
                     </fieldset>
                     <div class="field">
-                        <label for="card-description">Description</label>
-                        <textarea cols="32" rows="6" id="card-description" name="description"></textarea>
+                        <input type="submit" value="Save"/>
+                    </div>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Cards</legend>
+                    <div class="field">
+                        <label>Fairy</label>
+                        <input type="submit" value="Delete"/>
+                    </div>
+                    <div class="field">
+                        <label>BlackWind</label>
+                        <input type="submit" value="Delete"/>
+                    </div>
+                    <div class="field">
+                        <label>ChainLightning</label>
+                        <input type="submit" value="Delete"/>
+                    </div>
+                    <div class="field">
+                        <label>Phoenix</label>
+                        <input type="submit" value="Delete"/>
+                    </div>
+                    <div class="field">
+                        <label>Zeus</label>
+                        <input type="submit" value="Delete"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>New Card</legend>
+                    <div class="field">
+                        <label for="card-id">Card ID</label>
+                        <input type="text" id="card-id" name="newcard"/>
+                        <input type="submit" value="Create"/>
                     </div>
                 </fieldset>
             </div>
@@ -112,7 +161,7 @@
         <div class="ui-layout-east">
             <div class="ui-layout-content">
                 <div style="text-align:center;">
-                    <img src="arena/AIR/Fairy.png"/>
+                    <img src="game/orions/element/AIR/card/Fairy/image.png"/>
                 </div>
                 <hr/>
                 <div class="field">

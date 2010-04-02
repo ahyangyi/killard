@@ -46,22 +46,6 @@ public class ElementController extends BasicController {
         return "element/view";
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String newElement(@PathVariable String bundleId, @PathVariable String elementId,
-                                   ModelMap modelMap, HttpServletRequest request) throws Exception {
-        String[] ids = request.getRequestURI().split("/");
-
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, key).getDraft().getKey();
-
-        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementDO element = pack.newElement(elementId);
-        pm.makePersistent(pack);
-        modelMap.put("element", element);
-        return "element/edit";
-    }
-
     @RequestMapping(value = "/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String delete(@PathVariable String bundleId, @PathVariable String elementId,
                          ModelMap modelMap, HttpServletRequest request) throws Exception {
@@ -73,6 +57,7 @@ public class ElementController extends BasicController {
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         pm.deletePersistent(element);
+        PersistenceHelper.commit();
         
         modelMap.put("package", pack);
         return "package/view";

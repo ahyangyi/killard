@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/js/jquery.layout-latest.js"></script>
     <script type="text/javascript" src="/js/jquery.validate.1.7.js"></script>
     <script type="text/javascript" src="/js/ui/browser.js"></script>
+    <script type="text/javascript" src="/js/ui/form.js"></script>
     <title>Killard Games - Game Settings</title>
 </head>
 <body>

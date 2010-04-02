@@ -3,6 +3,7 @@ package com.killard.board.web.controller.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
@@ -61,7 +62,7 @@ public class PackageController extends BasicController {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
         modelMap.put("package", bundle.getRelease());
-        modelMap.put("boards",  bundle.getRelease().getBoards());
+        modelMap.put("boards", bundle.getRelease().getBoards());
         return "boards";
     }
 
@@ -114,6 +115,23 @@ public class PackageController extends BasicController {
         pm.makePersistent(bundle);
         modelMap.put("package", bundle.getDraft());
         return "/game/" + bundle.getName();
+    }
+
+    @RequestMapping(value = "/newelement", method = RequestMethod.POST)
+    public String newElement(@PathVariable String bundleId,
+                             @RequestParam("elementId") String elementId,
+                             ModelMap modelMap, HttpServletRequest request) throws Exception {
+        String[] ids = request.getRequestURI().split("/");
+
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, key).getDraft().getKey();
+
+        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
+        ElementDO element = pack.newElement(elementId);
+        pm.makePersistent(pack);
+        modelMap.put("element", element);
+        return "element/edit";
     }
 
 }

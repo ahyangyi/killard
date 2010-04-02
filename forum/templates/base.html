@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+    <meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+    <link rel="stylesheet" href="/style/subSilver.css" type="text/css"/>
+    <link rel="stylesheet" href="/style/thickbox.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="/style/jquery.js"></script>
+    <script type="text/javascript" src="/style/thickbox.js"></script>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link href="rss.xml?n=20" rel="alternate" type="application/rss+xml" title="{{ forum.title }} - 20">
+    <link href="rss.xml?n=30" rel="alternate" type="application/rss+xml" title="{{ forum.title }} - 30">
+    <link href="rss.xml?n=50" rel="alternate" type="application/rss+xml" title="{{ forum.title }} - 50">
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="7" border="0" align="center">
+    <tr>
+        <td class="bodyline">
+            <table width="100%" cellspacing="0" cellpadding="8" border="0" align="center">
+                <tbody>
+                <tr>
+                    <td>
+                        <img vspace="1" border="0" alt="logo" src="/images/logo.png"/>
+                    </td>
+                    <td>
+                        <img vspace="1" border="0" alt="title" src="/images/title.png"/>
+                    </td>
+                    <td width="100%" valign="middle" align="center">
+                        <span class="maintitle">{{ forum.title }}</span>
+                        <br/>
+       <span class="gen">
+       {{ forum.description }}
+       <br/>
+       <br/>
+       </span>
+                    </td>
+                    <td nowrap="nowrap" align="center">
+       <span class="gensmall">
+        <a href="myProfile"><b>{{ user}}</b></a> | <a href="{{ url }}">Sign out</a><br/>
+        {% if admin %}<a href="/?mode=admin" style="color: red;">Swith to Admin Mode</a> {% endif %}
+       </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            {% block path %}{% endblock %}
+            {% block main %}{% endblock %}
+
+            <br/>
+
+            <div align="center" style="background: #ffffff;">
+                Killard &copy; 2010
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

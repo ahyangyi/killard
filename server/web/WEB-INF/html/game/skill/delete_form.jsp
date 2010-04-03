@@ -2,14 +2,16 @@
 <%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
-<%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.board.SkillDO"--%>
-<form action="" method="POST" class="horizontal" id="card-form">
+<form action="<c:url value="/game/${package.name}/element/${element.name}/skill/${skill.name}/delete"/>" method="POST"
+      class="horizontal">
     <fieldset>
         <legend>${skill.descriptor.name}</legend>
-        <hr/>
-        <div class="field">
-            <a href="<c:url value="/game/${package.name}/element/${element.name}/skill/${skill.name}/delete"/>">Delete</a>
-        </div>
+        <fieldset>
+            <legend>Delete Skill?</legend>
+            <div class="field">
+                <input type="submit" value="Confirm"/>
+            </div>
+        </fieldset>
     </fieldset>
 </form>

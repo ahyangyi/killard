@@ -71,6 +71,14 @@ public class ElementDO extends DescriptableDO<ElementDO, ElementPropertyDO, Elem
         return card;
     }
 
+    public AttributeDO newAttribute(String name) {
+        AttributeDO attribute = new AttributeDO(this, name, false,
+                new ArrayList<AttributeHandler>(),
+                new ArrayList<AttributeHandler>(), new ArrayList<AttributeHandler>());
+        attributes.add(attribute);
+        return attribute;
+    }
+
     public MetaCardDO[] getCards() {
         return cards.toArray(new MetaCardDO[cards.size()]);
     }

@@ -3,12 +3,10 @@ package com.killard.board.web.controller.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.record.ExecutableActions;
-import com.killard.board.jdo.JdoCardBuilder;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
-import com.killard.board.parser.ScriptEngine;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,14 +29,32 @@ import javax.jdo.PersistenceManager;
 @RequestMapping("/{bundleId}/role/{roleId}")
 public class RoleController {
 
-    private final ScriptEngine engine = new ScriptEngine();
-
-    private final JdoCardBuilder builder = new JdoCardBuilder();
-
     @RequestMapping(method = {RequestMethod.GET})
-    public String viewPackage(@PathVariable String bundleId, @PathVariable String roleId,
-                              @RequestParam(value = "v", required = false) String packageId,
-                              ModelMap modelMap) throws Exception {
+    public String view(@PathVariable String bundleId, @PathVariable String roleId,
+                       @RequestParam(value = "v", required = false) String packageId,
+                       ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = packageId == null
+                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
+                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key roleKey = KeyFactory.createKey(packageKey, RoleDO.class.getSimpleName(), roleId);
+
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", bundle.getDraft());
+        modelMap.put("role", role);
+        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
+        return "role/view";
+    }
+
+    @RequestMapping(value = "/handlers", method = {RequestMethod.GET})
+    public String handlers(@PathVariable String bundleId, @PathVariable String roleId,
+                           @RequestParam(value = "v", required = false) String packageId,
+                           ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -53,7 +69,41 @@ public class RoleController {
         modelMap.put("package", bundle.getDraft());
         modelMap.put("role", role);
         modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
-        return "role/view";
+        return "role/handlers";
+    }
+
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET})
+    public String requestDelete(@PathVariable String bundleId, @PathVariable String roleId,
+                                ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
+
+        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("role", role);
+        return "role/delete";
+    }
+
+    @RequestMapping(value = "/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
+    public String delete(@PathVariable String bundleId, @PathVariable String roleId,
+                         ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
+
+        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+        pm.deletePersistent(role);
+        PersistenceHelper.commit();
+
+        modelMap.put("package", pack);
+        return "package/view";
     }
 
 }

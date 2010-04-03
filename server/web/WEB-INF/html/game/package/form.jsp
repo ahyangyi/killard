@@ -48,10 +48,14 @@
     </fieldset>
     <hr/>
     <div class="field">
-        <a href="<c:url value="/game/${package.name}/rule"/>">Rule</a>
+        <a href="<c:url value="/game/${package.name}/rule"/>" id="rule">Rule</a>
     </div>
     <hr/>
     <div class="field">
-        <a href="<c:url value="/game/${package.name}/newelement"/>">New Element</a>
+        <a href="<c:url value="/game/${package.name}/newrole"/>" id="role">New Role</a>
+    </div>
+    <hr/>
+    <div class="field">
+        <a href="<c:url value="/game/${package.name}/newelement"/>" id="element">New Element</a>
     </div>
 </form>

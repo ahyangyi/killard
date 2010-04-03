@@ -103,26 +103,47 @@ public class CardController extends BasicController {
         ResponseUtils.outputImage(request, response, card);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String deleteCard(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
-                             ModelMap modelMap, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET})
+    public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
+                                @PathVariable String cardId,
+                                ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
-        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        pm.deletePersistent(card);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
 
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);
         modelMap.put("element", element);
-        return "elementschool/view";
+        modelMap.put("card", card);
+        return "card/delete";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
+                         ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+
+        pm.deletePersistent(card);
+        PersistenceHelper.commit();
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "element/view";
     }
 }

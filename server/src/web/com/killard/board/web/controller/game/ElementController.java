@@ -48,6 +48,23 @@ public class ElementController extends BasicController {
         return "element/view";
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public String update(@PathVariable String bundleId, @PathVariable String elementId,
+                         ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "element/view";
+    }
+
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 ModelMap modelMap) throws Exception {
@@ -113,6 +130,72 @@ public class ElementController extends BasicController {
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         element.newCard(cardId);
         redirect("/game/" + bundleId + "/element/" + elementId + "/card/" + cardId, request, response);
+    }
+
+    @RequestMapping(value = "/newattribute", method = RequestMethod.GET)
+    public String requestNewAttribute(@PathVariable String bundleId, @PathVariable String elementId,
+                                      ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "element/newattribute";
+    }
+
+    @RequestMapping(value = "/newattribute", method = RequestMethod.POST)
+    public void newAttribute(@PathVariable String bundleId, @PathVariable String elementId,
+                             @RequestParam String attributeId,
+                             ModelMap modelMap,
+                             HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        element.newAttribute(attributeId);
+        redirect("/game/" + bundleId + "/element/" + elementId + "/attribute/" + attributeId, request, response);
+    }
+
+    @RequestMapping(value = "/newskill", method = RequestMethod.GET)
+    public String requestNewSkill(@PathVariable String bundleId, @PathVariable String elementId,
+                                  ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "element/newskill";
+    }
+
+    @RequestMapping(value = "/newskill", method = RequestMethod.POST)
+    public void newSkill(@PathVariable String bundleId, @PathVariable String elementId,
+                         @RequestParam String skillId,
+                         ModelMap modelMap,
+                         HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        element.newCard(skillId);
+        redirect("/game/" + bundleId + "/element/" + elementId + "/skill/" + skillId, request, response);
     }
 
 }

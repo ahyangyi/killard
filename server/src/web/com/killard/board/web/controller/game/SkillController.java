@@ -29,6 +29,27 @@ import javax.jdo.PersistenceManager;
 @RequestMapping("/{bundleId}/element/{elementId}/card/{cardId}/skill/{skillId}")
 public class SkillController extends BasicController {
 
+    @RequestMapping(method = {RequestMethod.GET})
+    public String view(@PathVariable String bundleId, @PathVariable String elementId,
+                       @PathVariable String skillId,
+                       ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        modelMap.put("skill", skill);
+        return "skill/view";
+    }
+
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String skillId,

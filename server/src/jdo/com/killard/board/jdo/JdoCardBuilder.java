@@ -5,6 +5,7 @@ import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.jdo.context.BoardContext;
 import com.killard.board.parser.Expression;
 import com.killard.board.parser.Function;
@@ -64,7 +65,7 @@ public class JdoCardBuilder {
         card.setAttackType(AttackType.PHYSICAL);
         card.setAttackValue(getInt(map, "attack"));
 
-        buildSkills(card, map);
+        buildSkills(element, card, map);
         buildAttributes(element, map);
 
         if (map.containsKey("descriptor")) {
@@ -77,21 +78,21 @@ public class JdoCardBuilder {
         }
     }
 
-    public void buildSkills(MetaCardDO card, Map map) throws InvalidCardException {
+    public void buildSkills(ElementDO element, MetaCardDO card, Map map) throws InvalidCardException {
         Object value = map.get("skill");
         if (value instanceof Map) {
-            buildSkill(card, (Map) value);
+            buildSkill(element, card, (Map) value);
         }
         if (value instanceof List) {
             for (Object def : (List) value) {
                 if (def instanceof Map) {
-                    buildSkill(card, (Map) def);
+                    buildSkill(element, card, (Map) def);
                 }
             }
         }
     }
 
-    public void buildSkill(MetaCardDO card, Map map) throws InvalidCardException {
+    public void buildSkill(ElementDO element, MetaCardDO card, Map map) throws InvalidCardException {
         String name = getString(map, "name");
         int cost = getInt(map, "cost");
         Function function = (Function) map.get("execute");
@@ -99,10 +100,13 @@ public class JdoCardBuilder {
         if (value instanceof List) {
             List<String> targets = new LinkedList<String>();
             for (Object v : (List) value) targets.add(((StringLiteral)v).getText());
-            card.newSkill(name, targets, cost, function);
+            SkillDO skill = element.newSkill(name, targets, cost, function);
+            card.addSkill(skill);
         }
-        else
-            card.newSkill(name, Collections.<String>emptyList(), cost, function);
+        else {
+            SkillDO skill = element.newSkill(name, Collections.<String>emptyList(), cost, function);
+            card.addSkill(skill);
+        }
     }
 
     public void buildAttributes(ElementDO element, Map map) throws InvalidCardException {

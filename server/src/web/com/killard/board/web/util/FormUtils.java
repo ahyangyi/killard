@@ -27,11 +27,11 @@ public final class FormUtils {
         for (int i = 0; i < locales.length; i++) {
             if (names.length <= i || descriptions.length <= i) break;
             DescriptorDO descriptor = descriptable.getDescriptor(locales[i]);
-            if (descriptor == null) {
-                descriptable.newDescriptor(locales[i], names[i], descriptions[i]);
-            } else {
+            if (descriptor.getLocale().equals(locales[i])) {
                 descriptor.setName(names[i]);
                 descriptor.setDescription(descriptions[i]);
+            } else {
+                descriptable.newDescriptor(locales[i], names[i], descriptions[i]);
             }
         }
     }

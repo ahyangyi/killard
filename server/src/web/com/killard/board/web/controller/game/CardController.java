@@ -8,6 +8,7 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
+import com.killard.board.web.util.FormUtils;
 import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,9 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 public class CardController extends BasicController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public String viewCard(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
-                           @RequestParam(value = "v", required = false) String packageId,
-                           ModelMap modelMap) throws Exception {
+    public String view(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
+                       @RequestParam(value = "v", required = false) String packageId,
+                       ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -60,9 +61,15 @@ public class CardController extends BasicController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String updateCard(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
-                             @RequestParam("image") MultipartFile file,
-                             ModelMap modelMap, HttpServletRequest request) throws Exception {
+    public String update(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
+                         @RequestParam("locales") String[] locales,
+                         @RequestParam("names") String[] names,
+                         @RequestParam("descriptions") String[] descriptions,
+                         @RequestParam("level") int level,
+                         @RequestParam("health") int health,
+                         @RequestParam("attack") int attack,
+                         @RequestParam("range") int range,
+                         ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -72,8 +79,10 @@ public class CardController extends BasicController {
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        card.setImageData(file.getBytes());
-        pm.makePersistent(card);
+        FormUtils.updateDescriptors(card, locales, names, descriptions);
+        card.setLevel(level);
+        card.setMaxHealth(health);
+        card.setAttackValue(attack);
 
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
         PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
@@ -87,9 +96,9 @@ public class CardController extends BasicController {
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
-    public void getCardImage(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
-                             @RequestParam(value = "v", required = false) String packageId,
-                             HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void image(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
+                      @RequestParam(value = "v", required = false) String packageId,
+                      HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -99,8 +108,31 @@ public class CardController extends BasicController {
         Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
+        ResponseUtils.outputImage(request, response, pm.getObjectById(MetaCardDO.class, cardKey));
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public String updateImage(@PathVariable String bundleId, @PathVariable String elementId,
+                              @PathVariable String cardId,
+                              @RequestParam("image") MultipartFile file,
+                              ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        ResponseUtils.outputImage(request, response, card);
+        card.setImageData(file.getBytes());
+
+        modelMap.put("card", card);
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "card/view";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})

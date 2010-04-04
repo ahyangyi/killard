@@ -1,6 +1,7 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.Attack;
 import com.killard.board.card.AttackType;
 import com.killard.board.card.Attribute;
@@ -10,7 +11,6 @@ import com.killard.board.card.Skill;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.MetaCardDescriptorDO;
 import com.killard.board.jdo.board.property.MetaCardPropertyDO;
-import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -52,14 +52,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private boolean visible;
 
     @Persistent
-    @javax.jdo.annotations.Element(dependent = "true")
-    private List<SkillDO> skills;
+    private List<Key> skillKeys;
 
     @Persistent
-    private List<String> visibleAttributes;
+    private List<Key> visibleAttributes;
 
     @Persistent
-    private List<String> hiddenAttributes;
+    private List<Key> hiddenAttributes;
 
     @Persistent
     @javax.jdo.annotations.Element(dependent = "true")
@@ -78,9 +77,9 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.attackType = AttackType.PHYSICAL.name();
         this.equippable = true;
         this.visible = true;
-        this.skills = new ArrayList<SkillDO>();
-        this.hiddenAttributes = new ArrayList<String>();
-        this.visibleAttributes = new ArrayList<String>();
+        this.skillKeys = new ArrayList<Key>();
+        this.hiddenAttributes = new ArrayList<Key>();
+        this.visibleAttributes = new ArrayList<Key>();
         this.properties = new ArrayList<MetaCardPropertyDO>();
         this.descriptors = new ArrayList<MetaCardDescriptorDO>();
     }
@@ -130,11 +129,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public boolean hasSkill() {
-        return !skills.isEmpty();
+        return !skillKeys.isEmpty();
     }
 
     public Skill[] getSkills() {
-        return skills.toArray(new Skill[skills.size()]);
+        Skill[] skills = new Skill[skillKeys.size()];
+        for (int i = 0; i < skills.length; i++) skills[i] = element.getSkill(skillKeys.get(i));
+        return skills;
     }
 
     public boolean hasAttribute() {
@@ -144,14 +145,14 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     public Attribute[] getAttributes() {
         Attribute[] result = new Attribute[hiddenAttributes.size() + visibleAttributes.size()];
         int i = 0;
-        for (String name : hiddenAttributes) {
-            result[i] = element.getAttribute(name);
+        for (Key key : hiddenAttributes) {
+            result[i] = element.getAttribute(key);
             i++;
         }
 
         i = 0;
-        for (String name : visibleAttributes) {
-            result[i] = element.getAttribute(name);
+        for (Key key : visibleAttributes) {
+            result[i] = element.getAttribute(key);
             i++;
         }
         return result;
@@ -164,8 +165,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     public Attribute[] getVisibleAttributes() {
         Attribute[] result = new Attribute[visibleAttributes.size()];
         int i = 0;
-        for (String name : visibleAttributes) {
-            result[i] = element.getAttribute(name);
+        for (Key key : visibleAttributes) {
+            result[i] = element.getAttribute(key);
             i++;
         }
         return result;
@@ -178,8 +179,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     public Attribute[] getHiddenAttributes() {
         Attribute[] result = new Attribute[hiddenAttributes.size()];
         int i = 0;
-        for (String name : hiddenAttributes) {
-            result[i] = element.getAttribute(name);
+        for (Key key : hiddenAttributes) {
+            result[i] = element.getAttribute(key);
             i++;
         }
         return result;
@@ -211,10 +212,22 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visible = visible;
     }
 
-    public SkillDO newSkill(String name, List<String> targets, int cost, Function function) {
-        SkillDO skill = new SkillDO(this, name, targets, cost, function);
-        skills.add(skill);
-        return skill;
+    public boolean addSkill(SkillDO skill) {
+        return skillKeys.add(skill.getKey());
+    }
+
+    public boolean removeSkill(SkillDO skill) {
+        return skillKeys.remove(skill.getKey());
+    }
+
+    public boolean addAttribute(AttributeDO attribute) {
+        if (attribute.isVisible()) return visibleAttributes.add(attribute.getKey());
+        else return hiddenAttributes.add(attribute.getKey());
+    }
+
+    public boolean removeSkill(AttributeDO attribute) {
+        if (attribute.isVisible()) return visibleAttributes.remove(attribute.getKey());
+        else return hiddenAttributes.remove(attribute.getKey());
     }
 
     public MetaCardDescriptorDO[] getDescriptors() {

@@ -6,6 +6,15 @@
 <%--@elvariable id="skill" type="com.killard.board.jdo.board.SkillDO"--%>
 <form action="" method="POST" class="horizontal" id="card-form">
     <fieldset>
+        <div class="field">
+            <label for="cost">Cost</label>
+            <input id="cost" type="text" name="cost" value="${skill.cost}"/>
+        </div>
+        <div class="field">
+            <label for="function">Function</label>
+            <textarea id="function" rows="6" cols="25" name="function">${skill.function}</textarea>
+        </div>
+        <hr/>
         <c:set var="descriptable" value="${skill}"/>
         <%@ include file="../descriptors.jsp" %>
         <hr/>

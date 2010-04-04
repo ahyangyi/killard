@@ -9,14 +9,19 @@ import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
+import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.jdo.PersistenceManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -39,17 +44,84 @@ public class AttributeController extends BasicController {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        Key packageKey = packageId == null
+                ? bundle.getRelease().getKey()
+                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+        Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), attributeId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        AttributeDO attribute = pm.getObjectById(AttributeDO.class, attributeKey);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", bundle.getDraft());
+        modelMap.put("element", element);
+        modelMap.put("attribute", attribute);
+        return "attribute/view";
+    }
+
+    @RequestMapping(method = {RequestMethod.POST})
+    public String update(@PathVariable String bundleId, @PathVariable String elementId,
+                         @PathVariable String attributeId,
+                         @RequestParam("locales") String[] locales,
+                         @RequestParam("names") String[] names,
+                         @RequestParam("descriptions") String[] descriptions,
+                         ModelMap modelMap) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+        Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), attributeId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        AttributeDO attribute = pm.getObjectById(AttributeDO.class, attributeKey);
+        FormUtils.updateDescriptors(attribute, locales, names, descriptions);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        modelMap.put("attribute", attribute);
+        return "attribute/view";
+    }
+
+    @RequestMapping(value = "/image.png", method = RequestMethod.GET)
+    public void image(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String attributeId,
+                      @RequestParam(value = "v", required = false) String packageId,
+                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         Key packageKey = packageId == null
                 ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
                 : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
         Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
         Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), attributeId);
 
+        ResponseUtils.outputImage(request, response, pm.getObjectById(AttributeDO.class, attributeKey));
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public String updateImage(@PathVariable String bundleId, @PathVariable String elementId,
+                              @PathVariable String attributeId,
+                              @RequestParam("image") MultipartFile file,
+                              ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+        Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), attributeId);
+
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         AttributeDO attribute = pm.getObjectById(AttributeDO.class, attributeKey);
+        attribute.setImageData(file.getBytes());
 
-        modelMap.put("package", bundle.getDraft());
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
         modelMap.put("element", element);
         modelMap.put("attribute", attribute);
         return "attribute/view";
@@ -73,6 +145,7 @@ public class AttributeController extends BasicController {
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         AttributeDO attribute = pm.getObjectById(AttributeDO.class, attributeKey);
 
+        modelMap.put("bundle", bundle);
         modelMap.put("package", bundle.getDraft());
         modelMap.put("element", element);
         modelMap.put("attribute", attribute);

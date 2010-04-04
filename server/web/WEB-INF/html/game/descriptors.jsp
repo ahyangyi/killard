@@ -8,40 +8,41 @@
             <hr/>
             <div class="field">
                 <label for="locale">Locale</label>
-                <select id="locale">
-                    <option>en_US</option>
-                    <option>zh_CN</option>
+                <select id="locale" name="locales">
+                    <option value="en_US">English</option>
+                    <option value="zh_CN">Chinese</option>
                 </select>
                 <a href="#" class="delete">delete</a>
             </div>
             <div class="field">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name"/>
+                <input type="text" id="name" name="names"/>
             </div>
             <div class="field">
                 <label for="description">Description</label>
-                <textarea rows="5" cols="25" id="description" name="descriptin"></textarea>
+                <textarea rows="5" cols="25" id="description" name="descriptions"></textarea>
             </div>
         </fieldset>
         <c:forEach var="descriptor" items="${descriptable.descriptors}">
             <fieldset>
                 <div class="field">
                     <label for="locale_${descriptor.locale}">Locale</label>
-                    <span id="locale_${descriptor.locale}">${descriptor.locale}</span>
-                    <a href="#" class="delete">delete</a>
+                    <select id="locale_${descriptor.locale}" name="locales">
+                        <option value="${descriptor.locale}">${descriptor.locale}</option>
+                    </select>
                 </div>
                 <div class="field">
                     <label for="name_${descriptor.locale}">Name</label>
-                    <input type="text" id="name_${descriptor.locale}" name="name"/>
+                    <input type="text" id="name_${descriptor.locale}" name="names" value="${descriptor.name}"/>
                 </div>
                 <div class="field">
                     <label for="description_${descriptor.locale}">Description</label>
-                    <textarea rows="5" cols="25" id="description_${descriptor.locale}" name="description"></textarea>
+                    <textarea rows="5" cols="25" id="description_${descriptor.locale}" name="descriptions">${descriptor.description}</textarea>
                 </div>
             </fieldset>
         </c:forEach>
-        <div class="field">
-            <input type="submit" value="Save"/>
-        </div>
     </fieldset>
+    <div class="field">
+        <input type="submit" value="Save"/>
+    </div>
 </fieldset>

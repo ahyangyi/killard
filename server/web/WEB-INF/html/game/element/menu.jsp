@@ -17,11 +17,35 @@
     </ul>
     <ul>
         <c:forEach var="card" items="${element.cards}">
-        <li>
-            <a href="<c:url value="/game/${bundle.name}/element/${element.name}/card/${card.name}"/>">
-            ${card.descriptor.name}
-            </a>
-        </li>
+            <li>
+                <a href="<c:url value="/game/${bundle.name}/element/${element.name}/card/${card.name}"/>">
+                        ${card.descriptor.name}
+                </a>
+            </li>
+        </c:forEach>
+    </ul>
+    <ul class="category">
+        <li><a href="#">Skills</a></li>
+    </ul>
+    <ul>
+        <c:forEach var="skill" items="${element.skills}">
+            <li>
+                <a href="<c:url value="/game/${bundle.name}/element/${element.name}/skill/${skill.name}"/>">
+                        ${skill.descriptor.name}
+                </a>
+            </li>
+        </c:forEach>
+    </ul>
+    <ul class="category">
+        <li><a href="#">Attributes</a></li>
+    </ul>
+    <ul>
+        <c:forEach var="attribute" items="${element.attributes}">
+            <li>
+                <a href="<c:url value="/game/${bundle.name}/element/${element.name}/attribute/${attribute.name}"/>">
+                        ${attribute.descriptor.name}
+                </a>
+            </li>
         </c:forEach>
     </ul>
 </div>

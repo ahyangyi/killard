@@ -7,12 +7,15 @@ import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
+import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +53,9 @@ public class ElementController extends BasicController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String update(@PathVariable String bundleId, @PathVariable String elementId,
+                         @RequestParam("locales") String[] locales,
+                         @RequestParam("names") String[] names,
+                         @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap, HttpServletRequest request) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
@@ -58,6 +64,42 @@ public class ElementController extends BasicController {
         Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
 
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        FormUtils.updateDescriptors(element, locales, names, descriptions);
+
+        modelMap.put("bundle", bundle);
+        modelMap.put("package", pack);
+        modelMap.put("element", element);
+        return "element/view";
+    }
+
+    @RequestMapping(value = "/image.png", method = RequestMethod.GET)
+    public void image(@PathVariable String bundleId, @PathVariable String elementId,
+                      @RequestParam(value = "v", required = false) String packageId,
+                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        Key packageKey = packageId == null
+                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
+                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
+        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+
+        ResponseUtils.outputImage(request, response, pm.getObjectById(ElementDO.class, elementKey));
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public String updateImage(@PathVariable String bundleId, @PathVariable String elementId,
+                              @RequestParam("image") MultipartFile file,
+                              ModelMap modelMap, HttpServletRequest request) throws Exception {
+        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+
+        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
+
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        element.setImageData(file.getBytes());
 
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);

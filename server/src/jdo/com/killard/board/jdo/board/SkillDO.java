@@ -49,8 +49,8 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
     @Element(dependent = "true")
     private transient List<SkillDescriptorDO> descriptors;
 
-    protected SkillDO(MetaCardDO card, String name, List<String> targets, int cost, Function function) {
-        super(card, name);
+    protected SkillDO(ElementDO element, String name, List<String> targets, int cost, Function function) {
+        super(element, name);
 
         this.targets = new ArrayList<String>(targets);
         this.targets.add(SkillTarget.self.name());
@@ -62,8 +62,8 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         this.descriptors = new ArrayList<SkillDescriptorDO>();
     }
 
-    protected SkillDO(MetaCardDO card, SkillDO source) {
-        this(card, source.getName(), source.targets, source.cost, source.function);
+    protected SkillDO(ElementDO element, SkillDO source) {
+        this(element, source.getName(), source.targets, source.cost, source.function);
         this.cost = source.cost;
     }
 

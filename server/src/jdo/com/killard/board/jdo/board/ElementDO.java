@@ -1,11 +1,13 @@
 package com.killard.board.jdo.board;
 
 import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.Key;
 import com.killard.board.card.Element;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.DescriptableDO;
 import com.killard.board.jdo.board.descriptor.ElementDescriptorDO;
 import com.killard.board.jdo.board.property.ElementPropertyDO;
+import com.killard.board.parser.Function;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -33,6 +35,10 @@ public class ElementDO extends DescriptableDO<ElementDO, ElementPropertyDO, Elem
     @Persistent(mappedBy = "element")
     @javax.jdo.annotations.Element(dependent = "true")
     private List<AttributeDO> attributes;
+
+    @Persistent
+    @javax.jdo.annotations.Element(dependent = "true")
+    private List<SkillDO> skills;
 
     @Persistent
     @javax.jdo.annotations.Element(dependent = "true")
@@ -83,6 +89,23 @@ public class ElementDO extends DescriptableDO<ElementDO, ElementPropertyDO, Elem
         return cards.toArray(new MetaCardDO[cards.size()]);
     }
 
+    public SkillDO newSkill(String name, List<String> targets, int cost, Function function) {
+        SkillDO skill = new SkillDO(this, name, targets, cost, function);
+        skills.add(skill);
+        return skill;
+    }
+
+    public SkillDO[] getSkills() {
+        return skills.toArray(new SkillDO[skills.size()]);
+    }
+
+    public SkillDO getSkill(Key key) {
+        for (SkillDO skill : skills) {
+            if (skill.getKey().equals(key)) return skill;
+        }
+        return null;
+    }
+
     public AttributeDO newAttribute(String name, boolean visible,
                                     List<AttributeHandler> validators,
                                     List<AttributeHandler> before,
@@ -96,9 +119,9 @@ public class ElementDO extends DescriptableDO<ElementDO, ElementPropertyDO, Elem
         return attributes.toArray(new AttributeDO[attributes.size()]);
     }
 
-    public AttributeDO getAttribute(String name) {
+    public AttributeDO getAttribute(Key key) {
         for (AttributeDO attribute : attributes) {
-            if (attribute.getName().equals(name)) return attribute;
+            if (attribute.getKey().equals(key)) return attribute;
         }
         return null;
     }

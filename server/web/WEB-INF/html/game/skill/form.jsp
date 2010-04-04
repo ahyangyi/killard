@@ -6,7 +6,8 @@
 <%--@elvariable id="skill" type="com.killard.board.jdo.board.SkillDO"--%>
 <form action="" method="POST" class="horizontal" id="card-form">
     <fieldset>
-        <legend>${skill.descriptor.name}</legend>
+        <c:set var="descriptable" value="${skill}"/>
+        <%@ include file="../descriptors.jsp" %>
         <hr/>
         <div class="field">
             <a href="<c:url value="/game/${package.name}/element/${element.name}/skill/${skill.name}/delete"/>">Delete</a>

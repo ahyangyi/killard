@@ -64,6 +64,9 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     private int attackValue;
 
     @Persistent
+    private int range;
+
+    @Persistent
     private boolean equippable;
 
     @Persistent
@@ -110,6 +113,7 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         this.health = card.getMaxHealth();
         this.attackType = card.getAttackType();
         this.attackValue = card.getAttackValue();
+        this.range = card.getRange();
         this.equippable = card.isEquippable();
         this.visible = card.isVisible();
         this.position = position;
@@ -189,6 +193,10 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
         return new Attack(getElement(), AttackType.valueOf(attackType), attackValue);
     }
 
+    public int getRange() {
+        return range;
+    }
+
     public boolean isEquippable() {
         return equippable;
     }
@@ -248,6 +256,10 @@ public class CardRecordDO extends AbstractCardRecord<CardRecordDO> {
     protected void setAttack(Attack attack) {
         this.attackType = attack.getType().name();
         this.attackValue = attack.getValue();
+    }
+
+    public void setRange(int range) {
+        this.range = range;
     }
 
     public void setVisible(boolean visible) {

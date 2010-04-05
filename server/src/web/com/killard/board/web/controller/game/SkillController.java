@@ -7,6 +7,7 @@ import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.SkillDO;
+import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
 import com.killard.board.web.util.ResponseUtils;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -34,6 +36,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/{bundleId}/element/{elementId}/skill/{skillId}")
 public class SkillController extends BasicController {
+
+    private static final ScriptEngine engine = new ScriptEngine();
 
     @RequestMapping(method = RequestMethod.GET)
     public String view(@PathVariable String bundleId, @PathVariable String elementId,
@@ -59,6 +63,9 @@ public class SkillController extends BasicController {
     @RequestMapping(method = RequestMethod.POST)
     public String update(@PathVariable String bundleId, @PathVariable String elementId,
                          @PathVariable String skillId,
+                         @RequestParam("targets") String[] targets,
+                         @RequestParam("cost") int cost,
+                         @RequestParam("function") String function,
                          @RequestParam("locales") String[] locales,
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
@@ -72,7 +79,11 @@ public class SkillController extends BasicController {
 
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
+        skill.setCost(cost);
+        skill.setTargets(Arrays.asList(targets));
+        skill.setFunction(engine.parseFunction("function(){" + function + "}"));
         FormUtils.updateDescriptors(skill, locales, names, descriptions);
+        PersistenceHelper.commit();
 
         modelMap.put("bundle", bundle);
         modelMap.put("package", pack);

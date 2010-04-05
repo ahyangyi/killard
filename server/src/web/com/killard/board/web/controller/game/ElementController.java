@@ -6,6 +6,8 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.parser.Block;
+import com.killard.board.parser.Function;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
 import com.killard.board.web.util.ResponseUtils;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -236,7 +239,7 @@ public class ElementController extends BasicController {
         Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
 
         ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        element.newCard(skillId);
+        element.newSkill(skillId, new ArrayList<String>(), 0, new Function("execute", null, new Block()));
         redirect("/game/" + bundleId + "/element/" + elementId + "/skill/" + skillId, request, response);
     }
 

@@ -40,6 +40,8 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
 
     private Attack attack;
 
+    private int range;
+
     private boolean equippable;
 
     private Player owner;
@@ -115,6 +117,10 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
         return attack;
     }
 
+    public int getRange() {
+        return range;
+    }
+
     public boolean isEquippable() {
         return equippable;
     }
@@ -158,6 +164,10 @@ public class CardRecord extends AbstractCardRecord<CardRecord> {
 
     protected void setAttack(Attack attack) {
         this.attack = attack;
+    }
+
+    protected void setRange(int range) {
+        this.range = range;
     }
 
     protected void setOwner(Player owner) {

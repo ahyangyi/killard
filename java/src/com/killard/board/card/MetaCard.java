@@ -12,6 +12,8 @@ public interface MetaCard<T extends MetaCard> extends Record<T> {
 
     public Attack getAttack();
 
+    public int getRange();
+
     public boolean isEquippable();
 
     public boolean hasSkill();

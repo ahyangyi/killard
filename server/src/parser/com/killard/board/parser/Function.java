@@ -42,17 +42,25 @@ public class Function implements Node {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("function (");
-        if (arguments != null) {
-            boolean start = true;
-            for (Node arg : arguments.getChildren()) {
-                if (!start) buf.append(", ");
-                else start = false;
-                buf.append(((Variable)arg).getText());
+//        buf.append("function (");
+//        if (arguments != null) {
+//            boolean start = true;
+//            for (Node arg : arguments.getChildren()) {
+//                if (!start) buf.append(", ");
+//                else start = false;
+//                buf.append(((Variable)arg).getText());
+//            }
+//        }
+//        buf.append(")");
+//        buf.append(body.toString());
+
+        for (Node node : body.getChildren()) {
+            buf.append(node.toString());
+            if (node instanceof Variable || node instanceof Expression) {
+                buf.append(";");
             }
+            buf.append("\n");
         }
-        buf.append(")");
-        buf.append(body.toString());
         return buf.toString();
     }
 }

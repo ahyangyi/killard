@@ -46,6 +46,9 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private int attackValue;
 
     @Persistent
+    private int range;
+
+    @Persistent
     private boolean equippable;
 
     @Persistent
@@ -55,10 +58,10 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     private List<Key> skillKeys;
 
     @Persistent
-    private List<Key> visibleAttributes;
+    private List<Key> visibleAttributeKeys;
 
     @Persistent
-    private List<Key> hiddenAttributes;
+    private List<Key> hiddenAttributeKeys;
 
     @Persistent
     @javax.jdo.annotations.Element(dependent = "true")
@@ -78,8 +81,8 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.equippable = true;
         this.visible = true;
         this.skillKeys = new ArrayList<Key>();
-        this.hiddenAttributes = new ArrayList<Key>();
-        this.visibleAttributes = new ArrayList<Key>();
+        this.hiddenAttributeKeys = new ArrayList<Key>();
+        this.visibleAttributeKeys = new ArrayList<Key>();
         this.properties = new ArrayList<MetaCardPropertyDO>();
         this.descriptors = new ArrayList<MetaCardDescriptorDO>();
     }
@@ -116,8 +119,12 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         return attackType;
     }
 
-    public Integer getAttackValue() {
+    public int getAttackValue() {
         return attackValue;
+    }
+
+    public int getRange() {
+        return range;
     }
 
     public boolean isEquippable() {
@@ -143,15 +150,15 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public Attribute[] getAttributes() {
-        Attribute[] result = new Attribute[hiddenAttributes.size() + visibleAttributes.size()];
+        Attribute[] result = new Attribute[hiddenAttributeKeys.size() + visibleAttributeKeys.size()];
         int i = 0;
-        for (Key key : hiddenAttributes) {
+        for (Key key : hiddenAttributeKeys) {
             result[i] = element.getAttribute(key);
             i++;
         }
 
         i = 0;
-        for (Key key : visibleAttributes) {
+        for (Key key : visibleAttributeKeys) {
             result[i] = element.getAttribute(key);
             i++;
         }
@@ -159,13 +166,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public boolean hasVisibleAttribute() {
-        return !visibleAttributes.isEmpty();
+        return !visibleAttributeKeys.isEmpty();
     }
 
     public Attribute[] getVisibleAttributes() {
-        Attribute[] result = new Attribute[visibleAttributes.size()];
+        Attribute[] result = new Attribute[visibleAttributeKeys.size()];
         int i = 0;
-        for (Key key : visibleAttributes) {
+        for (Key key : visibleAttributeKeys) {
             result[i] = element.getAttribute(key);
             i++;
         }
@@ -173,13 +180,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public boolean hasHiddenAttribute() {
-        return !hiddenAttributes.isEmpty();
+        return !hiddenAttributeKeys.isEmpty();
     }
 
     public Attribute[] getHiddenAttributes() {
-        Attribute[] result = new Attribute[hiddenAttributes.size()];
+        Attribute[] result = new Attribute[hiddenAttributeKeys.size()];
         int i = 0;
-        for (Key key : hiddenAttributes) {
+        for (Key key : hiddenAttributeKeys) {
             result[i] = element.getAttribute(key);
             i++;
         }
@@ -204,6 +211,10 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.attackValue = attackValue;
     }
 
+    public void setRange(int range) {
+        this.range = range;
+    }
+
     public void setEquippable(boolean equippable) {
         this.equippable = equippable;
     }
@@ -221,13 +232,13 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
     }
 
     public boolean addAttribute(AttributeDO attribute) {
-        if (attribute.isVisible()) return visibleAttributes.add(attribute.getKey());
-        else return hiddenAttributes.add(attribute.getKey());
+        if (attribute.isVisible()) return visibleAttributeKeys.add(attribute.getKey());
+        else return hiddenAttributeKeys.add(attribute.getKey());
     }
 
     public boolean removeSkill(AttributeDO attribute) {
-        if (attribute.isVisible()) return visibleAttributes.remove(attribute.getKey());
-        else return hiddenAttributes.remove(attribute.getKey());
+        if (attribute.isVisible()) return visibleAttributeKeys.remove(attribute.getKey());
+        else return hiddenAttributeKeys.remove(attribute.getKey());
     }
 
     public MetaCardDescriptorDO[] getDescriptors() {

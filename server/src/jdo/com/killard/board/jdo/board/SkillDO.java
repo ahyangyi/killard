@@ -101,6 +101,19 @@ public class SkillDO extends DescriptableDO<SkillDO, SkillPropertyDO, SkillDescr
         return ctx.getActions();
     }
 
+    public void setTargets(List<String> targets) {
+        this.targets.clear();
+        this.targets.addAll(targets);
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public void setFunction(Function function) {
+        this.function = function;
+    }
+
     public SkillDescriptorDO[] getDescriptors() {
         return descriptors.toArray(new SkillDescriptorDO[descriptors.size()]);
     }

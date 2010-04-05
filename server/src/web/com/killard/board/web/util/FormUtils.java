@@ -27,7 +27,7 @@ public final class FormUtils {
         for (int i = 0; i < locales.length; i++) {
             if (names.length <= i || descriptions.length <= i) break;
             DescriptorDO descriptor = descriptable.getDescriptor(locales[i]);
-            if (descriptor.getLocale().equals(locales[i])) {
+            if (descriptor != null && descriptor.getLocale().equals(locales[i])) {
                 descriptor.setName(names[i]);
                 descriptor.setDescription(descriptions[i]);
             } else {
@@ -46,13 +46,9 @@ public final class FormUtils {
             handlers.add(new AttributeHandler(
                     Class.forName("com.killard.board.card.action." + actionClass[i]),
                     selfTargeted[i],
-                    engine.parseFunction(function[i])
+                    engine.parseFunction("function(){" + function[i] + "}")
             ));
         }
         return handlers;
-    }
-
-    public static void main(String[] args) throws RecognitionException {
-        engine.parseFunction("function (EquipCardAction, All){}");
     }
 }

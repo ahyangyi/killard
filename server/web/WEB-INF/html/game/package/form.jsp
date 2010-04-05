@@ -1,5 +1,6 @@
 <%@ include file="../../includes.jsp" %>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
+<%@ include file="../locale_options.jsp" %>
 <form action="<c:url value="/game/${package.name}"/>" method="POST" class="horizontal">
     <fieldset>
         <c:set var="descriptable" value="${package}"/>

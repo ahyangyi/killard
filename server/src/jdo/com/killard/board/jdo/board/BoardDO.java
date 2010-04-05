@@ -81,6 +81,9 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     @Persistent
     private Date startDate;
 
+    @Persistent
+    private Date lastTurnDate;
+
     @NotPersistent
     private PackageDO boardPackage;
 
@@ -107,6 +110,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
         this.actionLogs = new ArrayList<ActionLogDO>();
         this.messages = new ArrayList<MessageDO>();
         this.startDate = new Date();
+        this.lastTurnDate = new Date();
         jdoPostLoad();
         this.roleNames = new ArrayList<Key>(Arrays.asList(boardPackage.getRoleGroup(playerNumber).getRoleKeys()));
     }
@@ -137,6 +141,10 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
 
     public Date getStartDate() {
         return startDate;
+    }
+
+    public Date getLastTurnDate() {
+        return lastTurnDate;
     }
 
     public List<ActionLogDO> getActions() {
@@ -245,6 +253,7 @@ public class BoardDO extends AbstractBoard<BoardDO> implements LoadCallback {
     @Override
     protected void moveToNext() {
         currentPlayerNumber = getNextPlayer().getNumber();
+        this.lastTurnDate = new Date();
     }
 
     protected MetaCardDO dealCard() {

@@ -4,8 +4,36 @@
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
 <%--@elvariable id="card" type="com.killard.board.jdo.board.MetaCardDO"--%>
 <%--@elvariable id="skill" type="com.killard.board.jdo.board.SkillDO"--%>
-<form action="" method="POST" class="horizontal" id="card-form">
+<fieldset style="display:none;" id="target_options">
+    <div class="field">
+        <label for="target">Target</label>
+        <select id="target" name="targets">
+            <option value="self">self</option>
+            <option value="all">all</option>
+            <option value="other">other</option>
+            <option value="owncard">owncard</option>
+            <option value="otherscard">otherscard</option>
+        </select>
+        <a href="#" class="delete">delete</a>
+    </div>
+</fieldset>
+<%@ include file="../locale_options.jsp" %>
+<form action="" method="POST" class="horizontal" id="skill-form">
     <fieldset>
+        <fieldset>
+            <legend>Targets&nbsp;<a href="#" class="new" options="target_options">add</a>
+            </legend>
+            <c:forEach var="target" items="${skill.targets}" varStatus="status">
+                <fieldset>
+                    <div class="field">
+                        <select name="targets">
+                            <option value="${target.name}">${target.name}</option>
+                        </select>
+                        <a href="#" class="delete">delete</a>
+                    </div>
+                </fieldset>
+            </c:forEach>
+        </fieldset>
         <div class="field">
             <label for="cost">Cost</label>
             <input id="cost" type="text" name="cost" value="${skill.cost}"/>

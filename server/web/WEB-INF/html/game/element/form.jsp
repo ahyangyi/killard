@@ -2,6 +2,7 @@
 <%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
+<%@ include file="../locale_options.jsp" %>
 <form action="<c:url value="/game/${package.name}/element/${element.name}"/>" method="POST" class="horizontal">
     <fieldset>
         <c:set var="descriptable" value="${element}"/>

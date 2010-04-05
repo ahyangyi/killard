@@ -4,10 +4,14 @@
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
 <%--@elvariable id="attribute" type="com.killard.board.jdo.board.AttributeDO"--%>
 <%@ include file="../locale_options.jsp" %>
+<%@ include file="../handler_options.jsp" %>
 <form action="<c:url value="/game/${package.name}/element/${element.name}/attribute/${attribute.name}"/>" method="POST"
       class="horizontal">
     <c:set var="descriptable" value="${attribute}"/>
     <%@ include file="../descriptors.jsp" %>
+    <div class="field">
+        <input type="submit" value="Save"/>
+    </div>
     <hr/>
     <div class="field">
         <a href="<c:url value="/game/${package.name}/element/${element.name}/attribute/${attribute.name}/handlers"/>"

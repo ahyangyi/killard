@@ -50,15 +50,15 @@ public class RuleController {
 
     @RequestMapping(method = {RequestMethod.POST})
     public String update(@PathVariable String bundleId,
-                         @RequestParam("validator_actionClass") String[] validator_actionClass,
-                         @RequestParam("validator_selfTargeted") boolean[] validator_selfTargeted,
-                         @RequestParam("validator_function") String[] validator_function,
-                         @RequestParam("before_actionClass") String[] before_actionClass,
-                         @RequestParam("before_selfTargeted") boolean[] before_selfTargeted,
-                         @RequestParam("before_function") String[] before_function,
-                         @RequestParam("after_actionClass") String[] after_actionClass,
-                         @RequestParam("after_selfTargeted") boolean[] after_selfTargeted,
-                         @RequestParam("after_function") String[] after_function,
+                         @RequestParam(value = "validator_actionClass", required = false) String[] validator_actionClass,
+                         @RequestParam(value = "validator_selfTargeted", required = false) boolean[] validator_selfTargeted,
+                         @RequestParam(value = "validator_function", required = false) String[] validator_function,
+                         @RequestParam(value = "before_actionClass", required = false) String[] before_actionClass,
+                         @RequestParam(value = "before_selfTargeted", required = false) boolean[] before_selfTargeted,
+                         @RequestParam(value = "before_function", required = false) String[] before_function,
+                         @RequestParam(value = "after_actionClass", required = false) String[] after_actionClass,
+                         @RequestParam(value = "after_selfTargeted", required = false) boolean[] after_selfTargeted,
+                         @RequestParam(value = "after_function", required = false) String[] after_function,
                          ModelMap modelMap) throws Exception {
         Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
         PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);

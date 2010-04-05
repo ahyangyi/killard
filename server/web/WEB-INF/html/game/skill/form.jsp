@@ -18,11 +18,13 @@
     </div>
 </fieldset>
 <%@ include file="../locale_options.jsp" %>
+<%@ include file="../handler_options.jsp" %>
 <form action="" method="POST" class="horizontal" id="skill-form">
     <fieldset>
+        <c:set var="descriptable" value="${skill}"/>
+        <%@ include file="../descriptors.jsp" %>
         <fieldset>
-            <legend>Targets&nbsp;<a href="#" class="new" options="target_options">add</a>
-            </legend>
+            <legend>Targets&nbsp;<a href="#" class="new" options="target_options">add</a></legend>
             <c:forEach var="target" items="${skill.targets}" varStatus="status">
                 <fieldset>
                     <div class="field">
@@ -42,9 +44,9 @@
             <label for="function">Function</label>
             <textarea id="function" rows="6" cols="25" name="function">${skill.function}</textarea>
         </div>
-        <hr/>
-        <c:set var="descriptable" value="${skill}"/>
-        <%@ include file="../descriptors.jsp" %>
+        <div class="field">
+            <input type="submit" value="Save"/>
+        </div>
         <hr/>
         <div class="field">
             <a href="<c:url value="/game/${package.name}/element/${element.name}/skill/${skill.name}/delete"/>">Delete</a>

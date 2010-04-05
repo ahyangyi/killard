@@ -41,6 +41,9 @@ public final class FormUtils {
                                                        String[] function)
             throws RecognitionException, ClassNotFoundException {
         List<AttributeHandler> handlers = new ArrayList<AttributeHandler>();
+
+        if (actionClass == null) return handlers;
+
         for (int i = 0; i < actionClass.length; i++) {
             if (selfTargeted.length <= i || function.length <= i) break;
             handlers.add(new AttributeHandler(

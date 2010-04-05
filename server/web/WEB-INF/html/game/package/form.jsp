@@ -5,6 +5,9 @@
     <fieldset>
         <c:set var="descriptable" value="${package}"/>
         <%@ include file="../descriptors.jsp" %>
+        <div class="field">
+            <input type="submit" value="Save"/>
+        </div>
         <hr/>
         <div class="field">
             <a href="<c:url value="/game/${package.name}/rule"/>" id="rule">Rule</a>

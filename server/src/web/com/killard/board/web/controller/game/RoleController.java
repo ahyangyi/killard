@@ -82,6 +82,17 @@ public class RoleController {
     @RequestMapping(value = "/handlers", method = {RequestMethod.GET})
     public String handlers(@PathVariable String bundleId, @PathVariable String roleId,
                            @RequestParam(value = "v", required = false) String packageId,
+                           @RequestParam(value = "validator_actionClass", required = false)
+                           String[] validator_actionClass,
+                           @RequestParam(value = "validator_selfTargeted", required = false)
+                           boolean[] validator_selfTargeted,
+                           @RequestParam(value = "validator_function", required = false) String[] validator_function,
+                           @RequestParam(value = "before_actionClass", required = false) String[] before_actionClass,
+                           @RequestParam(value = "before_selfTargeted", required = false) boolean[] before_selfTargeted,
+                           @RequestParam(value = "before_function", required = false) String[] before_function,
+                           @RequestParam(value = "after_actionClass", required = false) String[] after_actionClass,
+                           @RequestParam(value = "after_selfTargeted", required = false) boolean[] after_selfTargeted,
+                           @RequestParam(value = "after_function", required = false) String[] after_function,
                            ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

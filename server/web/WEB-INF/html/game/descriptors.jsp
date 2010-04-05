@@ -23,7 +23,4 @@
             </fieldset>
         </c:forEach>
     </fieldset>
-    <div class="field">
-        <input type="submit" value="Save"/>
-    </div>
 </fieldset>

@@ -26,6 +26,8 @@
 </fieldset>
 <form action="" method="POST" class="horizontal" id="card-form">
     <fieldset>
+        <c:set var="descriptable" value="${card}"/>
+        <%@ include file="../descriptors.jsp" %>
         <div class="field">
             <label for="level">Level</label>
             <input id="level" type="text" name="level" value="${card.level}"/>
@@ -70,9 +72,9 @@
                 </fieldset>
             </c:forEach>
         </fieldset>
-        <hr/>
-        <c:set var="descriptable" value="${card}"/>
-        <%@ include file="../descriptors.jsp" %>
+        <div class="field">
+            <input type="submit" value="Save"/>
+        </div>
         <hr/>
         <div class="field">
             <a href="<c:url value="/game/${package.name}/element/${element.name}/card/${card.name}/delete"/>">Delete</a>

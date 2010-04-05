@@ -223,22 +223,35 @@ public class MetaCardDO extends DescriptableDO<MetaCardDO, MetaCardPropertyDO, M
         this.visible = visible;
     }
 
+    public void clearSkill() {
+        skillKeys.clear();
+    }
+
+    public void clearAttribute() {
+        visibleAttributeKeys.clear();
+        hiddenAttributeKeys.clear();
+    }
+
     public boolean addSkill(SkillDO skill) {
-        return skillKeys.add(skill.getKey());
+        return !skillKeys.contains(skill.getKey()) && skillKeys.add(skill.getKey());
     }
 
     public boolean removeSkill(SkillDO skill) {
-        return skillKeys.remove(skill.getKey());
+        return skillKeys.contains(skill.getKey()) && skillKeys.remove(skill.getKey());
     }
 
     public boolean addAttribute(AttributeDO attribute) {
-        if (attribute.isVisible()) return visibleAttributeKeys.add(attribute.getKey());
-        else return hiddenAttributeKeys.add(attribute.getKey());
+        if (attribute.isVisible())
+            return !visibleAttributeKeys.contains(attribute.getKey()) && visibleAttributeKeys.add(attribute.getKey());
+        else
+            return !hiddenAttributeKeys.contains(attribute.getKey()) && hiddenAttributeKeys.add(attribute.getKey());
     }
 
-    public boolean removeSkill(AttributeDO attribute) {
-        if (attribute.isVisible()) return visibleAttributeKeys.remove(attribute.getKey());
-        else return hiddenAttributeKeys.remove(attribute.getKey());
+    public boolean removeAttribute(AttributeDO attribute) {
+        if (attribute.isVisible())
+            return visibleAttributeKeys.contains(attribute.getKey()) && visibleAttributeKeys.remove(attribute.getKey());
+        else
+            return hiddenAttributeKeys.contains(attribute.getKey()) && hiddenAttributeKeys.remove(attribute.getKey());
     }
 
     public MetaCardDescriptorDO[] getDescriptors() {

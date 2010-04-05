@@ -3,10 +3,12 @@ package com.killard.board.web.controller.game;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
+import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
+import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
 import com.killard.board.web.util.ResponseUtils;
@@ -69,24 +71,41 @@ public class CardController extends BasicController {
                          @RequestParam("health") int health,
                          @RequestParam("attack") int attack,
                          @RequestParam("range") int range,
-                         ModelMap modelMap, HttpServletRequest request) throws Exception {
+                         @RequestParam(value = "attributes", required = false) String[] attributeKeys,
+                         @RequestParam(value = "skills", required = false) String[] skillKeys,
+                         ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 
         Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = pm.getObjectById(PackageBundleDO.class, bundleKey).getDraft().getKey();
 
-        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
+        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
+        PackageDO pack = bundle.getDraft();
+
+        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
         Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
 
+        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
         MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-        FormUtils.updateDescriptors(card, locales, names, descriptions);
         card.setLevel(level);
         card.setMaxHealth(health);
         card.setAttackValue(attack);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
+        card.setRange(range);
+        card.clearSkill();
+        card.clearAttribute();
+        if (attributeKeys != null) {
+            for (String key : attributeKeys) {
+                Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), key);
+                card.addAttribute(element.getAttribute(attributeKey));
+            }
+        }
+        if (skillKeys != null) {
+            for (String key : skillKeys) {
+                Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), key);
+                card.addSkill(element.getSkill(skillKey));
+            }
+        }
+        FormUtils.updateDescriptors(card, locales, names, descriptions);
+        PersistenceHelper.commit();
 
         modelMap.put("card", card);
         modelMap.put("bundle", bundle);

@@ -1,13 +1,11 @@
 package com.killard.board.web.controller.game;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.card.record.ExecutableActions;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.QueryUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jdo.PersistenceManager;
 import java.util.List;
 
 /**
@@ -35,15 +32,7 @@ public class RuleController {
     public String viewPackage(@PathVariable String bundleId,
                               @RequestParam(value = "v", required = false) String packageId,
                               ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        modelMap.put("package", bundle.getDraft());
+        QueryUtils.fetchPackage(bundleId, packageId, modelMap);
         modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
         return "rule/view";
     }
@@ -60,9 +49,8 @@ public class RuleController {
                          @RequestParam(value = "after_selfTargeted", required = false) boolean[] after_selfTargeted,
                          @RequestParam(value = "after_function", required = false) String[] after_function,
                          ModelMap modelMap) throws Exception {
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
-        PackageDO pack = bundle.getDraft();
+        QueryUtils.fetchPackage(bundleId, null, modelMap);
+        PackageDO pack = (PackageDO) modelMap.get("package");
         List<AttributeHandler> validator =
                 FormUtils.buildHandlers(validator_actionClass, validator_selfTargeted, validator_function);
         List<AttributeHandler> before =
@@ -72,9 +60,9 @@ public class RuleController {
         pack.getRule().setValidators(validator);
         pack.getRule().setBefore(before);
         pack.getRule().setAfter(after);
-        modelMap.put("package", pack);
+        PersistenceHelper.commit();
         modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
-        return "rule/view";
+        return "rule/edit";
     }
 
 }

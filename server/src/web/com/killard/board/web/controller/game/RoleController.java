@@ -114,6 +114,7 @@ public class RoleController {
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
     public void image(@PathVariable String bundleId, @PathVariable String roleId,
                       @RequestParam(value = "v", required = false) String packageId,
+                      ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

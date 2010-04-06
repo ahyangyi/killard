@@ -1,15 +1,11 @@
 package com.killard.board.web.controller.game;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.ElementDO;
-import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.parser.ScriptEngine;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.QueryUtils;
 import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,23 +36,10 @@ public class SkillController extends BasicController {
     private static final ScriptEngine engine = new ScriptEngine();
 
     @RequestMapping(method = RequestMethod.GET)
-    public String view(@PathVariable String bundleId, @PathVariable String elementId,
-                       @PathVariable String skillId,
+    public String view(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String skillId,
+                       @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        modelMap.put("skill", skill);
+        QueryUtils.fetchSkill(bundleId, elementId, packageId, skillId, modelMap);
         return "skill/view";
     }
 
@@ -70,86 +53,43 @@ public class SkillController extends BasicController {
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
+        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        SkillDO skill = (SkillDO) modelMap.get("skill");
         skill.setCost(cost);
         skill.setTargets(Arrays.asList(targets));
         skill.setFunction(engine.parseFunction("function(){" + function + "}"));
         FormUtils.updateDescriptors(skill, locales, names, descriptions);
         PersistenceHelper.commit();
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        modelMap.put("skill", skill);
-        return "skill/view";
+        return "skill/edit";
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
     public void image(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String skillId,
                       @RequestParam(value = "v", required = false) String packageId,
+                      ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ResponseUtils.outputImage(request, response, pm.getObjectById(SkillDO.class, skillKey));
+        QueryUtils.fetchSkill(bundleId, elementId, packageId, skillId, modelMap);
+        SkillDO skill = (SkillDO) modelMap.get("skill");
+        ResponseUtils.outputImage(request, response, skill);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
     public String updateImage(@PathVariable String bundleId, @PathVariable String elementId,
                               @PathVariable String skillId,
                               @RequestParam("image") MultipartFile file,
-                              ModelMap modelMap, HttpServletRequest request) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
+                              ModelMap modelMap) throws Exception {
+        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        SkillDO skill = (SkillDO) modelMap.get("skill");
         skill.setImageData(file.getBytes());
-
-        modelMap.put("skill", skill);
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        return "skill/view";
+        PersistenceHelper.commit();
+        return "skill/edit";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String skillId,
                                 ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        modelMap.put("skill", skill);
+        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
         return "skill/delete";
     }
 
@@ -158,21 +98,12 @@ public class SkillController extends BasicController {
                          @PathVariable String skillId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), skillId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        SkillDO skill = pm.getObjectById(SkillDO.class, skillKey);
+        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        SkillDO skill = (SkillDO) modelMap.get("skill");
 
         pm.deletePersistent(skill);
         PersistenceHelper.commit();
 
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        return "element/view";
+        return "element/edit";
     }
 }

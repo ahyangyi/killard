@@ -6,11 +6,10 @@ import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.jdo.board.MetaCardDO;
-import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.QueryUtils;
 import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,24 +40,7 @@ public class CardController extends BasicController {
     public String view(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = pm.getObjectById(PackageDO.class, packageKey);
-
-        modelMap.put("card", card);
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", card.getElement());
+        QueryUtils.fetchCard(bundleId, elementId, packageId, cardId, modelMap);
         return "card/view";
     }
 
@@ -74,18 +56,9 @@ public class CardController extends BasicController {
                          @RequestParam(value = "attributes", required = false) String[] attributeKeys,
                          @RequestParam(value = "skills", required = false) String[] skillKeys,
                          ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        ElementDO element = (ElementDO) modelMap.get("element");
+        MetaCardDO card = (MetaCardDO) modelMap.get("card");
         card.setLevel(level);
         card.setMaxHealth(health);
         card.setAttackValue(attack);
@@ -94,40 +67,29 @@ public class CardController extends BasicController {
         card.clearAttribute();
         if (attributeKeys != null) {
             for (String key : attributeKeys) {
-                Key attributeKey = KeyFactory.createKey(elementKey, AttributeDO.class.getSimpleName(), key);
+                Key attributeKey = KeyFactory.createKey(element.getKey(), AttributeDO.class.getSimpleName(), key);
                 card.addAttribute(element.getAttribute(attributeKey));
             }
         }
         if (skillKeys != null) {
             for (String key : skillKeys) {
-                Key skillKey = KeyFactory.createKey(elementKey, SkillDO.class.getSimpleName(), key);
+                Key skillKey = KeyFactory.createKey(element.getKey(), SkillDO.class.getSimpleName(), key);
                 card.addSkill(element.getSkill(skillKey));
             }
         }
         FormUtils.updateDescriptors(card, locales, names, descriptions);
         PersistenceHelper.commit();
-
-        modelMap.put("card", card);
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
         return "card/view";
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
     public void image(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                       @RequestParam(value = "v", required = false) String packageId,
+                      ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key elementKey = KeyFactory.createKey(packageKey, ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        ResponseUtils.outputImage(request, response, pm.getObjectById(MetaCardDO.class, cardKey));
+        QueryUtils.fetchCard(bundleId, elementId, packageId, cardId, modelMap);
+        MetaCardDO card = (MetaCardDO) modelMap.get("card");
+        ResponseUtils.outputImage(request, response, card);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
@@ -135,22 +97,10 @@ public class CardController extends BasicController {
                               @PathVariable String cardId,
                               @RequestParam("image") MultipartFile file,
                               ModelMap modelMap, HttpServletRequest request) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
+        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        MetaCardDO card = (MetaCardDO) modelMap.get("card");
         card.setImageData(file.getBytes());
-
-        modelMap.put("card", card);
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
+        PersistenceHelper.commit();
         return "card/view";
     }
 
@@ -158,20 +108,7 @@ public class CardController extends BasicController {
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String cardId,
                                 ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
-        modelMap.put("card", card);
+        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
         return "card/delete";
     }
 
@@ -179,22 +116,10 @@ public class CardController extends BasicController {
     public String delete(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key elementKey = KeyFactory.createKey(pack.getKey(), ElementDO.class.getSimpleName(), elementId);
-        Key cardKey = KeyFactory.createKey(elementKey, MetaCardDO.class.getSimpleName(), cardId);
-
-        ElementDO element = pm.getObjectById(ElementDO.class, elementKey);
-        MetaCardDO card = pm.getObjectById(MetaCardDO.class, cardKey);
-
+        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        MetaCardDO card = (MetaCardDO) modelMap.get("card");
         pm.deletePersistent(card);
         PersistenceHelper.commit();
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("element", element);
         return "element/view";
     }
 }

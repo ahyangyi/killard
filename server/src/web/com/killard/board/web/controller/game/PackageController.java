@@ -7,6 +7,7 @@ import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.QueryUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +34,7 @@ public class PackageController extends BasicController {
     @RequestMapping(value = "/{bundleId}", method = {RequestMethod.GET})
     public String view(@PathVariable String bundleId,
                        ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, key);
-        modelMap.put("package", bundle.getRelease());
+        QueryUtils.fetchPackage(bundleId, null, modelMap);
         return "package/view";
     }
 
@@ -46,11 +44,9 @@ public class PackageController extends BasicController {
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap) throws Exception {
-        Key key = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = PersistenceHelper.getPersistenceManager().getObjectById(PackageBundleDO.class, key);
-        PackageDO pack = bundle.getDraft();
+        QueryUtils.fetchPackage(bundleId, null, modelMap);
+        PackageDO pack = (PackageDO) modelMap.get("package");
         FormUtils.updateDescriptors(pack, locales, names, descriptions);
-        modelMap.put("package", pack);
         return "package/edit";
     }
 

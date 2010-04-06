@@ -78,6 +78,7 @@ public class ElementController extends BasicController {
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
     public void image(@PathVariable String bundleId, @PathVariable String elementId,
                       @RequestParam(value = "v", required = false) String packageId,
+                      ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
 

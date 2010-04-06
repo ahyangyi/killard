@@ -21,7 +21,9 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class ResponseUtils {
+public enum ResponseUtils {
+
+    instance;
 
     public static void outputActions(HttpServletResponse response, List<ActionLogDO> actions, int start)
             throws IOException {

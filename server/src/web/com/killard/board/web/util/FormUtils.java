@@ -18,9 +18,11 @@ import java.util.List;
  * This class is mutable and not thread safe.
  * </p>
  */
-public final class FormUtils {
+public enum FormUtils {
 
-    private static final ScriptEngine engine = new ScriptEngine();
+    instance;
+
+    private final ScriptEngine engine = new ScriptEngine();
 
     public static void updateDescriptors(DescriptableDO descriptable,
                                          String[] locales, String[] names, String[] descriptions) {
@@ -49,7 +51,7 @@ public final class FormUtils {
             handlers.add(new AttributeHandler(
                     Class.forName("com.killard.board.card.action." + actionClass[i]),
                     selfTargeted[i],
-                    engine.parseFunction("function(){" + function[i] + "}")
+                    instance.engine.parseFunction("function(){" + function[i] + "}")
             ));
         }
         return handlers;

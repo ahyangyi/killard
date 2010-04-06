@@ -36,7 +36,7 @@ public class AttributeController extends BasicController {
                        @PathVariable String attributeId,
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, packageId, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, packageId, elementId, attributeId, modelMap);
         return "attribute/view";
     }
 
@@ -47,7 +47,7 @@ public class AttributeController extends BasicController {
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, null, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
         FormUtils.updateDescriptors(attribute, locales, names, descriptions);
         PersistenceHelper.commit();
@@ -59,7 +59,7 @@ public class AttributeController extends BasicController {
                       @RequestParam(value = "v", required = false) String packageId,
                       ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, packageId, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, packageId, elementId, attributeId, modelMap);
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
         ResponseUtils.outputImage(request, response, attribute);
     }
@@ -69,7 +69,7 @@ public class AttributeController extends BasicController {
                               @PathVariable String attributeId,
                               @RequestParam("image") MultipartFile file,
                               ModelMap modelMap) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, null, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
         attribute.setImageData(file.getBytes());
         PersistenceHelper.commit();
@@ -92,7 +92,7 @@ public class AttributeController extends BasicController {
                            @RequestParam(value = "after_selfTargeted", required = false) boolean[] after_selfTargeted,
                            @RequestParam(value = "after_function", required = false) String[] after_function,
                            ModelMap modelMap) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, null, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         return "attribute/handlers";
     }
 
@@ -100,7 +100,7 @@ public class AttributeController extends BasicController {
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String attributeId,
                                 ModelMap modelMap) throws Exception {
-        QueryUtils.fetchAttribute(bundleId, elementId, null, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         return "attribute/delete";
     }
 
@@ -109,7 +109,7 @@ public class AttributeController extends BasicController {
                          @PathVariable String attributeId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        QueryUtils.fetchAttribute(bundleId, elementId, null, attributeId, modelMap);
+        QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
 
         pm.deletePersistent(attribute);

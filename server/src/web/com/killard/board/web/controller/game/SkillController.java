@@ -39,7 +39,7 @@ public class SkillController extends BasicController {
     public String view(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String skillId,
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        QueryUtils.fetchSkill(bundleId, elementId, packageId, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, packageId, elementId, skillId, modelMap);
         return "skill/view";
     }
 
@@ -53,7 +53,7 @@ public class SkillController extends BasicController {
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap) throws Exception {
-        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, null, elementId, skillId, modelMap);
         SkillDO skill = (SkillDO) modelMap.get("skill");
         skill.setCost(cost);
         skill.setTargets(Arrays.asList(targets));
@@ -68,7 +68,7 @@ public class SkillController extends BasicController {
                       @RequestParam(value = "v", required = false) String packageId,
                       ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QueryUtils.fetchSkill(bundleId, elementId, packageId, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, packageId, elementId, skillId, modelMap);
         SkillDO skill = (SkillDO) modelMap.get("skill");
         ResponseUtils.outputImage(request, response, skill);
     }
@@ -78,7 +78,7 @@ public class SkillController extends BasicController {
                               @PathVariable String skillId,
                               @RequestParam("image") MultipartFile file,
                               ModelMap modelMap) throws Exception {
-        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, null, elementId, skillId, modelMap);
         SkillDO skill = (SkillDO) modelMap.get("skill");
         skill.setImageData(file.getBytes());
         PersistenceHelper.commit();
@@ -89,7 +89,7 @@ public class SkillController extends BasicController {
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String skillId,
                                 ModelMap modelMap) throws Exception {
-        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, null, elementId, skillId, modelMap);
         return "skill/delete";
     }
 
@@ -98,7 +98,7 @@ public class SkillController extends BasicController {
                          @PathVariable String skillId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        QueryUtils.fetchSkill(bundleId, elementId, null, skillId, modelMap);
+        QueryUtils.fetchSkill(bundleId, null, elementId, skillId, modelMap);
         SkillDO skill = (SkillDO) modelMap.get("skill");
 
         pm.deletePersistent(skill);

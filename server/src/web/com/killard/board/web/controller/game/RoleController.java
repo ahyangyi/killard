@@ -1,13 +1,10 @@
 package com.killard.board.web.controller.game;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.killard.board.card.record.ExecutableActions;
+import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
-import com.killard.board.jdo.board.PackageBundleDO;
-import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.web.util.FormUtils;
+import com.killard.board.web.util.QueryUtils;
 import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * <p>
@@ -38,21 +36,7 @@ public class RoleController {
     public String view(@PathVariable String bundleId, @PathVariable String roleId,
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key roleKey = KeyFactory.createKey(packageKey, RoleDO.class.getSimpleName(), roleId);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", bundle.getDraft());
-        modelMap.put("role", role);
-        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
         return "role/view";
     }
 
@@ -62,26 +46,22 @@ public class RoleController {
                          @RequestParam("names") String[] names,
                          @RequestParam("descriptions") String[] descriptions,
                          ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
-
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
+        RoleDO role = (RoleDO) modelMap.get("role");
         FormUtils.updateDescriptors(role, locales, names, descriptions);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("role", role);
-        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
         return "role/view";
     }
 
     @RequestMapping(value = "/handlers", method = {RequestMethod.GET})
     public String handlers(@PathVariable String bundleId, @PathVariable String roleId,
                            @RequestParam(value = "v", required = false) String packageId,
+                           ModelMap modelMap) throws Exception {
+        QueryUtils.fetchRole(bundleId, packageId, roleId, modelMap);
+        return "role/handlers";
+    }
+
+    @RequestMapping(value = "/handlers", method = {RequestMethod.POST})
+    public String updateHandlers(@PathVariable String bundleId, @PathVariable String roleId,
                            @RequestParam(value = "validator_actionClass", required = false)
                            String[] validator_actionClass,
                            @RequestParam(value = "validator_selfTargeted", required = false)
@@ -94,20 +74,18 @@ public class RoleController {
                            @RequestParam(value = "after_selfTargeted", required = false) boolean[] after_selfTargeted,
                            @RequestParam(value = "after_function", required = false) String[] after_function,
                            ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key roleKey = KeyFactory.createKey(packageKey, RoleDO.class.getSimpleName(), roleId);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
-
-        modelMap.put("package", bundle.getDraft());
-        modelMap.put("role", role);
-        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
+        RoleDO role = (RoleDO) modelMap.get("role");
+        List<AttributeHandler> validator =
+                FormUtils.buildHandlers(validator_actionClass, validator_selfTargeted, validator_function);
+        List<AttributeHandler> before =
+                FormUtils.buildHandlers(before_actionClass, before_selfTargeted, before_function);
+        List<AttributeHandler> after =
+                FormUtils.buildHandlers(after_actionClass, after_selfTargeted, after_function);
+        role.setValidators(validator);
+        role.setBefore(before);
+        role.setAfter(after);
+        PersistenceHelper.commit();
         return "role/handlers";
     }
 
@@ -116,53 +94,26 @@ public class RoleController {
                       @RequestParam(value = "v", required = false) String packageId,
                       ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        Key packageKey = packageId == null
-                ? pm.getObjectById(PackageBundleDO.class, bundleKey).getRelease().getKey()
-                : KeyFactory.createKey(bundleKey, PackageDO.class.getSimpleName(), packageId);
-        Key roleKey = KeyFactory.createKey(packageKey, RoleDO.class.getSimpleName(), roleId);
-
-        ResponseUtils.outputImage(request, response, pm.getObjectById(RoleDO.class, roleKey));
+        QueryUtils.fetchRole(bundleId, packageId, roleId, modelMap);
+        RoleDO role = (RoleDO) modelMap.get("role");
+        ResponseUtils.outputImage(request, response, role);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
     public String updateImage(@PathVariable String bundleId, @PathVariable String roleId,
                               @RequestParam("image") MultipartFile file,
-                              ModelMap modelMap, HttpServletRequest request) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-
-        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
-
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+                              ModelMap modelMap) throws Exception {
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
+        RoleDO role = (RoleDO) modelMap.get("role");
         role.setImageData(file.getBytes());
-
-        modelMap.put("role", role);
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
+        PersistenceHelper.commit();
         return "role/view";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
     public String requestDelete(@PathVariable String bundleId, @PathVariable String roleId,
                                 ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
-
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
-
-        modelMap.put("bundle", bundle);
-        modelMap.put("package", pack);
-        modelMap.put("role", role);
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
         return "role/delete";
     }
 
@@ -170,16 +121,12 @@ public class RoleController {
     public String delete(@PathVariable String bundleId, @PathVariable String roleId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), bundleId);
-        PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, bundleKey);
-        PackageDO pack = bundle.getDraft();
-        Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
 
-        RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
+        QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
+        RoleDO role = (RoleDO) modelMap.get("role");
         pm.deletePersistent(role);
         PersistenceHelper.commit();
 
-        modelMap.put("package", pack);
         return "package/view";
     }
 

@@ -99,4 +99,16 @@ public class RoleDO extends DescriptableDO<RoleDO, RolePropertyDO, RoleDescripto
     public List<AttributeHandler> getAfter() {
         return Collections.unmodifiableList(after);
     }
+
+    public void setValidators(List<AttributeHandler> validators) {
+        this.validators = validators;
+    }
+
+    public void setBefore(List<AttributeHandler> before) {
+        this.before = before;
+    }
+
+    public void setAfter(List<AttributeHandler> after) {
+        this.after = after;
+    }
 }

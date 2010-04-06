@@ -1,10 +1,17 @@
 <%@ include file="../../includes.jsp" %>
+<%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <div style="text-align:center;">
     <img src="/image/index.png"/>
 </div>
 <hr/>
-<div class="field">
-    <label for="card-image">Upload Image</label>
-    <input type="file" name="image" id="card-image"/>
-</div>
+<form action="<c:url value="/game/${bundle.name}/image"/>"
+      method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Upload Image</legend>
+        <div class="field">
+            <label for="package-image">Choose Image</label>
+            <input type="file" name="image" id="package-image"/>
+        </div>
+    </fieldset>
+</form>

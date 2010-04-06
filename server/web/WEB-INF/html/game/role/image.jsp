@@ -6,7 +6,13 @@
     <img src="<c:url value="/game/${bundle.name}/role/${role.name}/image.png"/>"/>
 </div>
 <hr/>
-<div class="field">
-    <label for="card-image">Upload Image</label>
-    <input type="file" name="image" id="card-image"/>
-</div>
+<form action="<c:url value="/game/${bundle.name}/role/${role.name}/image"/>"
+      method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Upload Image</legend>
+        <div class="field">
+            <label for="role-image">Choose Image</label>
+            <input type="file" name="image" id="role-image"/>
+        </div>
+    </fieldset>
+</form>

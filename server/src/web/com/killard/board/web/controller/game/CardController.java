@@ -40,7 +40,7 @@ public class CardController extends BasicController {
     public String view(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
-        QueryUtils.fetchCard(bundleId, elementId, packageId, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, packageId, elementId, cardId, modelMap);
         return "card/view";
     }
 
@@ -56,7 +56,7 @@ public class CardController extends BasicController {
                          @RequestParam(value = "attributes", required = false) String[] attributeKeys,
                          @RequestParam(value = "skills", required = false) String[] skillKeys,
                          ModelMap modelMap) throws Exception {
-        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, null, elementId, cardId, modelMap);
         ElementDO element = (ElementDO) modelMap.get("element");
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         card.setLevel(level);
@@ -87,7 +87,7 @@ public class CardController extends BasicController {
                       @RequestParam(value = "v", required = false) String packageId,
                       ModelMap modelMap,
                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QueryUtils.fetchCard(bundleId, elementId, packageId, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, packageId, elementId, cardId, modelMap);
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         ResponseUtils.outputImage(request, response, card);
     }
@@ -97,7 +97,7 @@ public class CardController extends BasicController {
                               @PathVariable String cardId,
                               @RequestParam("image") MultipartFile file,
                               ModelMap modelMap, HttpServletRequest request) throws Exception {
-        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, null, elementId, cardId, modelMap);
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         card.setImageData(file.getBytes());
         PersistenceHelper.commit();
@@ -108,7 +108,7 @@ public class CardController extends BasicController {
     public String requestDelete(@PathVariable String bundleId, @PathVariable String elementId,
                                 @PathVariable String cardId,
                                 ModelMap modelMap) throws Exception {
-        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, null, elementId, cardId, modelMap);
         return "card/delete";
     }
 
@@ -116,7 +116,7 @@ public class CardController extends BasicController {
     public String delete(@PathVariable String bundleId, @PathVariable String elementId, @PathVariable String cardId,
                          ModelMap modelMap) throws Exception {
         PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        QueryUtils.fetchCard(bundleId, elementId, null, cardId, modelMap);
+        QueryUtils.fetchCard(bundleId, null, elementId, cardId, modelMap);
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         pm.deletePersistent(card);
         PersistenceHelper.commit();

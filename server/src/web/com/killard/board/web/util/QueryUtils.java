@@ -2,6 +2,7 @@ package com.killard.board.web.util;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.killard.board.card.record.ExecutableActions;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementDO;
@@ -48,6 +49,7 @@ public enum QueryUtils {
         Key roleKey = KeyFactory.createKey(pack.getKey(), RoleDO.class.getSimpleName(), roleId);
         RoleDO role = pm.getObjectById(RoleDO.class, roleKey);
         modelMap.put("role", role);
+        modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
     }
 
     public static void fetchElement(String bundleId, String packageId, String elementId, ModelMap modelMap) {

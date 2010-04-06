@@ -257,7 +257,6 @@ class Post(db.Model, DataBaseOperations):
       userObj = self.getUser(login)
       if userObj.mailing:
         toEmails.append(userObj.login.email())
-    toEmails.append("log1 (sms) <48693781332@text.plusgsm.pl>")
     message = mail.EmailMessage(sender=sender, subject="New message in small-forum")
     message.to = toEmails #userObj.login.email()
     message.body = self.body + additionalText

@@ -346,8 +346,8 @@ class AddPost(webapp.RequestHandler, AclUser):
     # replace('\n','<br />')
     if post.body != '':
       post.put()
-      mailAdditionalText = """ ... testing e-mail notification. Sorry if you get this message accidently."""
-      post.sendMailToAll(user.email(), mailAdditionalText)
+      #mailAdditionalText = """ ... testing e-mail notification. Sorry if you get this message accidently."""
+      #post.sendMailToAll(user.email(), mailAdditionalText)
       #####
       #message = mail.EmailMessage(sender=user.email(), subject="New message in small-forum")
       #message.to = "log1 (sms) <48693781332@text.plusgsm.pl>"

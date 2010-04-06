@@ -1,5 +1,6 @@
 package com.killard.board.web.controller.game;
 
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.SkillDO;
 import com.killard.board.parser.ScriptEngine;
@@ -80,6 +81,7 @@ public class SkillController extends BasicController {
                               ModelMap modelMap) throws Exception {
         QueryUtils.fetchSkill(bundleId, null, elementId, skillId, modelMap);
         SkillDO skill = (SkillDO) modelMap.get("skill");
+        skill.setImageFormat(Image.Format.PNG);
         skill.setImageData(file.getBytes());
         PersistenceHelper.commit();
         return "skill/edit";

@@ -19,7 +19,8 @@
 </fieldset>
 <%@ include file="../locale_options.jsp" %>
 <%@ include file="../handler_options.jsp" %>
-<form action="" method="POST" class="horizontal" id="skill-form">
+<form action="<c:url value="/game/${bundle.name}/element/${element.name}/skill/${skill.name}"/>" method="POST"
+      class="horizontal" id="skill-form">
     <fieldset>
         <c:set var="descriptable" value="${skill}"/>
         <%@ include file="../descriptors.jsp" %>

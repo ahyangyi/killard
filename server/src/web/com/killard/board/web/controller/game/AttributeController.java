@@ -1,5 +1,6 @@
 package com.killard.board.web.controller.game;
 
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.web.controller.BasicController;
@@ -71,6 +72,7 @@ public class AttributeController extends BasicController {
                               ModelMap modelMap) throws Exception {
         QueryUtils.fetchAttribute(bundleId, null, elementId, attributeId, modelMap);
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
+        attribute.setImageFormat(Image.Format.PNG);
         attribute.setImageData(file.getBytes());
         PersistenceHelper.commit();
         return "attribute/edit";

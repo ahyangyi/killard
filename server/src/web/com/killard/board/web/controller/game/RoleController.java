@@ -1,5 +1,6 @@
 package com.killard.board.web.controller.game;
 
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.AttributeHandler;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.RoleDO;
@@ -105,6 +106,7 @@ public class RoleController {
                               ModelMap modelMap) throws Exception {
         QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
         RoleDO role = (RoleDO) modelMap.get("role");
+        role.setImageFormat(Image.Format.PNG);
         role.setImageData(file.getBytes());
         PersistenceHelper.commit();
         return "role/edit";

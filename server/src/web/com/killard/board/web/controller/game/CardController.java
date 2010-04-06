@@ -2,6 +2,7 @@ package com.killard.board.web.controller.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.AttributeDO;
 import com.killard.board.jdo.board.ElementDO;
@@ -99,6 +100,7 @@ public class CardController extends BasicController {
                               ModelMap modelMap, HttpServletRequest request) throws Exception {
         QueryUtils.fetchCard(bundleId, null, elementId, cardId, modelMap);
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
+        card.setImageFormat(Image.Format.PNG);
         card.setImageData(file.getBytes());
         PersistenceHelper.commit();
         return "card/edit";

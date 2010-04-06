@@ -1,5 +1,6 @@
 package com.killard.board.web.controller.game;
 
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.ElementDO;
 import com.killard.board.parser.Block;
@@ -71,6 +72,7 @@ public class ElementController extends BasicController {
                               ModelMap modelMap) throws Exception {
         QueryUtils.fetchElement(bundleId, null, elementId, modelMap);
         ElementDO element = (ElementDO) modelMap.get("element");
+        element.setImageFormat(Image.Format.PNG);
         element.setImageData(file.getBytes());
         PersistenceHelper.commit();
 

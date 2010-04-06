@@ -3,7 +3,7 @@
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
 <div style="text-align:center;">
-    <img src="/image/index.png"/>
+    <img src="<c:url value="/game/${bundle.name}/element/${element.name}/image.png"/>"/>
 </div>
 <hr/>
 <form action="<c:url value="/game/${bundle.name}/element/${element.name}/image"/>"

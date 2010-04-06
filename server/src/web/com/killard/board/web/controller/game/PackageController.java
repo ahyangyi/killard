@@ -2,6 +2,7 @@ package com.killard.board.web.controller.game;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.images.Image;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -70,6 +71,7 @@ public class PackageController extends BasicController {
                               ModelMap modelMap, HttpServletRequest request) throws Exception {
         QueryUtils.fetchPackage(bundleId, null, modelMap);
         PackageDO pack = (PackageDO) modelMap.get("package");
+        pack.setImageFormat(Image.Format.PNG);
         pack.setImageData(file.getBytes());
         PersistenceHelper.commit();
         return "package/edit";

@@ -8,12 +8,14 @@ import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.web.controller.BasicController;
 import com.killard.board.web.util.FormUtils;
 import com.killard.board.web.util.QueryUtils;
+import com.killard.board.web.util.ResponseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,27 @@ public class PackageController extends BasicController {
         PackageDO pack = (PackageDO) modelMap.get("package");
         FormUtils.updateDescriptors(pack, locales, names, descriptions);
         return "package/edit";
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.GET)
+    public void image(@PathVariable String bundleId,
+                      @RequestParam(value = "v", required = false) String packageId,
+                      ModelMap modelMap,
+                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        QueryUtils.fetchPackage(bundleId, packageId, modelMap);
+        PackageDO pack = (PackageDO) modelMap.get("package");
+        ResponseUtils.outputImage(request, response, pack);
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public String updateImage(@PathVariable String bundleId,
+                              @RequestParam("image") MultipartFile file,
+                              ModelMap modelMap, HttpServletRequest request) throws Exception {
+        QueryUtils.fetchPackage(bundleId, null, modelMap);
+        PackageDO pack = (PackageDO) modelMap.get("package");
+        pack.setImageData(file.getBytes());
+        PersistenceHelper.commit();
+        return "package/view";
     }
 
     @RequestMapping(value = "/{bundleId}/boards", method = {RequestMethod.GET, RequestMethod.POST})

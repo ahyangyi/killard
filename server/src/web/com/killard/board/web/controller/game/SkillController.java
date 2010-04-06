@@ -40,7 +40,7 @@ public class SkillController extends BasicController {
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
         QueryUtils.fetchSkill(bundleId, packageId, elementId, skillId, modelMap);
-        return "skill/view";
+        return "skill/edit";
     }
 
     @RequestMapping(method = RequestMethod.POST)

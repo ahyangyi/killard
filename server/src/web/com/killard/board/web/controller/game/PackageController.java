@@ -39,10 +39,7 @@ public class PackageController extends BasicController {
                        ModelMap modelMap,
                        HttpServletRequest request) throws Exception {
         QueryUtils.fetchPackage(bundleId, null, modelMap);
-        if (mode.equalsIgnoreCase("edit")) {
-            request.getSession().setAttribute("mode", "edit");
-        }
-        return "package/" + mode;
+        return "package/edit";
     }
 
     @RequestMapping(value = "/{bundleId}", method = {RequestMethod.POST})

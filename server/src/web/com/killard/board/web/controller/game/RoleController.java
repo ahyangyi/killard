@@ -37,7 +37,7 @@ public class RoleController {
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
         QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
-        return "role/view";
+        return "role/edit";
     }
 
     @RequestMapping(method = {RequestMethod.POST})

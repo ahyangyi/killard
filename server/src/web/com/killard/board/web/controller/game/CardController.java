@@ -41,7 +41,7 @@ public class CardController extends BasicController {
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
         QueryUtils.fetchCard(bundleId, packageId, elementId, cardId, modelMap);
-        return "card/view";
+        return "card/edit";
     }
 
     @RequestMapping(method = RequestMethod.POST)

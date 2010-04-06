@@ -37,7 +37,7 @@ public class AttributeController extends BasicController {
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
         QueryUtils.fetchAttribute(bundleId, packageId, elementId, attributeId, modelMap);
-        return "attribute/view";
+        return "attribute/edit";
     }
 
     @RequestMapping(method = {RequestMethod.POST})

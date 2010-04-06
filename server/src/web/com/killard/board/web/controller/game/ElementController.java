@@ -39,7 +39,7 @@ public class ElementController extends BasicController {
                        @RequestParam(value = "v", required = false) String packageId,
                        ModelMap modelMap) throws Exception {
         QueryUtils.fetchElement(bundleId, packageId, elementId, modelMap);
-        return "element/view";
+        return "element/edit";
     }
 
     @RequestMapping(method = RequestMethod.POST)

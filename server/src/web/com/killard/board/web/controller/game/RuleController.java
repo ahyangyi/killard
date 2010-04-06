@@ -34,7 +34,7 @@ public class RuleController {
                               ModelMap modelMap) throws Exception {
         QueryUtils.fetchPackage(bundleId, packageId, modelMap);
         modelMap.put("actions", ExecutableActions.instance.getRegisterActions());
-        return "rule/view";
+        return "rule/edit";
     }
 
     @RequestMapping(method = {RequestMethod.POST})

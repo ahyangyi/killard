@@ -52,7 +52,7 @@ public class ElementController extends BasicController {
         ElementDO element = (ElementDO) modelMap.get("element");
         FormUtils.updateDescriptors(element, locales, names, descriptions);
 
-        return "element/view";
+        return "element/edit";
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
@@ -74,7 +74,7 @@ public class ElementController extends BasicController {
         element.setImageData(file.getBytes());
         PersistenceHelper.commit();
 
-        return "element/view";
+        return "element/edit";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
@@ -93,7 +93,7 @@ public class ElementController extends BasicController {
         pm.deletePersistent(element);
         PersistenceHelper.commit();
 
-        return "package/view";
+        return "package/edit";
     }
 
     @RequestMapping(value = "/newcard", method = RequestMethod.GET)

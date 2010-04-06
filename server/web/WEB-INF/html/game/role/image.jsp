@@ -14,5 +14,8 @@
             <label for="role-image">Choose Image</label>
             <input type="file" name="image" id="role-image"/>
         </div>
+        <div class="field">
+            <input type="submit" value="Submit"/>
+        </div>
     </fieldset>
 </form>

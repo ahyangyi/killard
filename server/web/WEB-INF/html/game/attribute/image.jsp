@@ -15,5 +15,8 @@
             <label for="attribute-image">Choose Image</label>
             <input type="file" name="image" id="attribute-image"/>
         </div>
+        <div class="field">
+            <input type="submit" value="Submit"/>
+        </div>
     </fieldset>
 </form>

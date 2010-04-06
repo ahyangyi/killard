@@ -35,9 +35,14 @@ public class PackageController extends BasicController {
 
     @RequestMapping(value = "/{bundleId}", method = {RequestMethod.GET})
     public String view(@PathVariable String bundleId,
-                       ModelMap modelMap) throws Exception {
+                       @RequestParam(value = "mode", required = false, defaultValue = "view") String mode,
+                       ModelMap modelMap,
+                       HttpServletRequest request) throws Exception {
         QueryUtils.fetchPackage(bundleId, null, modelMap);
-        return "package/view";
+        if (mode.equalsIgnoreCase("edit")) {
+            request.getSession().setAttribute("mode", "edit");
+        }
+        return "package/" + mode;
     }
 
     @RequestMapping(value = "/{bundleId}", method = {RequestMethod.POST})
@@ -70,7 +75,7 @@ public class PackageController extends BasicController {
         PackageDO pack = (PackageDO) modelMap.get("package");
         pack.setImageData(file.getBytes());
         PersistenceHelper.commit();
-        return "package/view";
+        return "package/edit";
     }
 
     @RequestMapping(value = "/{bundleId}/boards", method = {RequestMethod.GET, RequestMethod.POST})

@@ -51,7 +51,7 @@ public class AttributeController extends BasicController {
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
         FormUtils.updateDescriptors(attribute, locales, names, descriptions);
         PersistenceHelper.commit();
-        return "attribute/view";
+        return "attribute/edit";
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
@@ -73,7 +73,7 @@ public class AttributeController extends BasicController {
         AttributeDO attribute = (AttributeDO) modelMap.get("attribute");
         attribute.setImageData(file.getBytes());
         PersistenceHelper.commit();
-        return "attribute/view";
+        return "attribute/edit";
     }
 
     @RequestMapping(value = "/handlers", method = {RequestMethod.GET})
@@ -115,7 +115,7 @@ public class AttributeController extends BasicController {
         pm.deletePersistent(attribute);
         PersistenceHelper.commit();
 
-        return "element/view";
+        return "element/edit";
     }
 
 }

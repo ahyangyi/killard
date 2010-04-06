@@ -49,7 +49,7 @@ public class RoleController {
         QueryUtils.fetchRole(bundleId, null, roleId, modelMap);
         RoleDO role = (RoleDO) modelMap.get("role");
         FormUtils.updateDescriptors(role, locales, names, descriptions);
-        return "role/view";
+        return "role/edit";
     }
 
     @RequestMapping(value = "/handlers", method = {RequestMethod.GET})
@@ -107,7 +107,7 @@ public class RoleController {
         RoleDO role = (RoleDO) modelMap.get("role");
         role.setImageData(file.getBytes());
         PersistenceHelper.commit();
-        return "role/view";
+        return "role/edit";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
@@ -127,7 +127,7 @@ public class RoleController {
         pm.deletePersistent(role);
         PersistenceHelper.commit();
 
-        return "package/view";
+        return "package/edit";
     }
 
 }

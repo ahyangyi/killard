@@ -15,5 +15,8 @@
             <label for="skill-image">Choose Image</label>
             <input type="file" name="image" id="skill-image"/>
         </div>
+        <div class="field">
+            <input type="submit" value="Submit"/>
+        </div>
     </fieldset>
 </form>

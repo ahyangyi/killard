@@ -2,6 +2,7 @@
 <%--@elvariable id="bundle" type="com.killard.board.jdo.board.PackageBundleDO"--%>
 <%--@elvariable id="package" type="com.killard.board.jdo.board.PackageDO"--%>
 <%--@elvariable id="element" type="com.killard.board.jdo.board.ElementDO"--%>
+<%--@elvariable id="mode" type="java.lang.String"--%>
 <div class="vmenu">
     <ul>
         <li><a href="<c:url value="/game"/>">All Games</a></li>

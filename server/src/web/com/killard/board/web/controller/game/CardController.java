@@ -79,7 +79,7 @@ public class CardController extends BasicController {
         }
         FormUtils.updateDescriptors(card, locales, names, descriptions);
         PersistenceHelper.commit();
-        return "card/view";
+        return "card/edit";
     }
 
     @RequestMapping(value = "/image.png", method = RequestMethod.GET)
@@ -101,7 +101,7 @@ public class CardController extends BasicController {
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         card.setImageData(file.getBytes());
         PersistenceHelper.commit();
-        return "card/view";
+        return "card/edit";
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET})
@@ -120,6 +120,6 @@ public class CardController extends BasicController {
         MetaCardDO card = (MetaCardDO) modelMap.get("card");
         pm.deletePersistent(card);
         PersistenceHelper.commit();
-        return "element/view";
+        return "element/edit";
     }
 }

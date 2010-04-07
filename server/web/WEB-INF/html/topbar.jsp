@@ -13,6 +13,8 @@
             <li><a href="<c:url value="/arena"/>"><spring:message code="menu.arena"/></a></li>
             <li>|</li>
             <li><a href="<c:url value="/arena"/>"><spring:message code="menu.settings"/></a></li>
+            <li>|</li>
+            <li><a href="<c:url value="/game"><c:param name="filter" value="mine"/></c:url>"><spring:message code="menu.mygames"/></a></li>
         </ul>
     </div>
 </div>

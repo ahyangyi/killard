@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -36,7 +38,7 @@ public class PackageBundleDO {
 
     @Persistent
     @Element(dependent = "true")
-    private List<PlayerProfileDO> players;
+    private Set<PlayerProfileDO> players;
 
     @Persistent
     private Date createdDate;
@@ -66,7 +68,7 @@ public class PackageBundleDO {
         this.name = name;
         this.createdDate = Calendar.getInstance().getTime();
         this.modifiedDate = Calendar.getInstance().getTime();
-        this.players = new ArrayList<PlayerProfileDO>();
+        this.players = new HashSet<PlayerProfileDO>();
         this.clonable = true;
         this.clonedCount = 0;
         this.status = PackageStatus.PRIVATE.name();
@@ -75,7 +77,7 @@ public class PackageBundleDO {
     }
 
     public PackageBundleDO(PackageBundleDO source) {
-        this(source.name + " clone");
+        this(source.name + "_clone");
         for (PackageDO pack : source.packages) {
             packages.add(new PackageDO(this, pack));
         }
@@ -97,8 +99,8 @@ public class PackageBundleDO {
         return modifiedDate;
     }
 
-    public List<PlayerProfileDO> getPlayers() {
-        return Collections.unmodifiableList(players);
+    public Set<PlayerProfileDO> getPlayers() {
+        return Collections.unmodifiableSet(players);
     }
 
     public boolean isClonable() {
@@ -161,5 +163,9 @@ public class PackageBundleDO {
 
     public void setClonedCount(int clonedCount) {
         this.clonedCount = clonedCount;
+    }
+
+    public boolean addPlayerProfile(PlayerProfileDO player) {
+        return this.players.add(player);
     }
 }

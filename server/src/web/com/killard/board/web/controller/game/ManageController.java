@@ -14,6 +14,7 @@ import com.killard.board.jdo.board.MetaCardDO;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
 import com.killard.board.jdo.board.PackageStatus;
+import com.killard.board.jdo.board.PlayerProfileDO;
 import com.killard.board.jdo.board.RoleDO;
 import com.killard.board.jdo.board.RoleGroupDO;
 import com.killard.board.jdo.context.BoardContext;
@@ -157,6 +158,11 @@ public class ManageController extends BasicController {
         group = pm.getObjectById(RoleGroupDO.class, group.getKey());
         group.addRole(role);
         group.addRole(role);
+
+        PlayerProfileDO player = new PlayerProfileDO(bundle, getUser().getUserId(), getUser().getNickname());
+        player.setCreator(true);
+        player.setEditor(true);
+        bundle.addPlayerProfile(player);
         redirect("/game/manage/load", request, response);
     }
 

@@ -37,8 +37,7 @@ public class PackageController extends BasicController {
     @RequestMapping(value = "/{bundleId}", method = {RequestMethod.GET})
     public String view(@PathVariable String bundleId,
                        @RequestParam(value = "mode", required = false, defaultValue = "view") String mode,
-                       ModelMap modelMap,
-                       HttpServletRequest request) throws Exception {
+                       ModelMap modelMap) throws Exception {
         QueryUtils.fetchPackage(bundleId, null, modelMap);
         return "package/edit";
     }

@@ -76,8 +76,8 @@ public class PackageBundleDO {
         this.packages = new ArrayList<PackageDO>();
     }
 
-    public PackageBundleDO(PackageBundleDO source) {
-        this(source.name + "_clone");
+    public PackageBundleDO(PackageBundleDO source, String name) {
+        this(name);
         for (PackageDO pack : source.packages) {
             packages.add(new PackageDO(this, pack));
         }

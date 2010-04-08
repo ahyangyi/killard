@@ -31,7 +31,7 @@
         <tfoot>
         <tr>
             <td colspan="2">
-                <a href="<c:url value="/game"/>">Create a Game</a>
+                <a href="<c:url value="/game"><c:param name="filter" value="new"/></c:url>">Create a Game</a>
             </td>
         </tr>
         </tfoot>

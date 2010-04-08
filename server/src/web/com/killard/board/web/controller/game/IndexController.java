@@ -1,5 +1,7 @@
 package com.killard.board.web.controller.game;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.killard.board.jdo.PersistenceHelper;
 import com.killard.board.jdo.board.PackageBundleDO;
 import com.killard.board.jdo.board.PackageDO;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.Collection;
@@ -34,8 +35,22 @@ public class IndexController extends BasicController {
     @RequestMapping(value = {"/game", "/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String browser(
             @RequestParam(value = "filter", required = false, defaultValue = "all") String filter,
+            @RequestParam(value = "packageId", required = false) String packageId,
+            @RequestParam(value = "templateId", required = false) String templateId,
             ModelMap modelMap) throws Exception {
-        if (filter.equalsIgnoreCase("mine")) {
+        if (filter.equalsIgnoreCase("top")) {
+            PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+            List<PackageDO> packages = new LinkedList<PackageDO>();
+            Query query = pm.newQuery(PackageBundleDO.class);
+            query.setFilter("status == status");
+            query.declareParameters("String status");
+            Collection result = (Collection) query.execute(PackageStatus.PUBLIC.name());
+            for (Object obj : result) {
+                PackageBundleDO bundle = (PackageBundleDO) obj;
+                packages.add(bundle.getRelease());
+            }
+            modelMap.put("packages", packages);
+        } else if (filter.equalsIgnoreCase("mine")) {
             PersistenceManager pm = PersistenceHelper.getPersistenceManager();
             Query query = pm.newQuery(PlayerProfileDO.class);
             query.setFilter("identities == id");
@@ -45,27 +60,46 @@ public class IndexController extends BasicController {
                 List<PackageBundleDO> bundles = new LinkedList<PackageBundleDO>();
                 for (Object obj : result) {
                     PlayerProfileDO player = (PlayerProfileDO) obj;
+                    if (player.isCreator()) modelMap.put("created", true);
                     PackageBundleDO bundle = pm.getObjectById(PackageBundleDO.class, player.getBundleKey());
                     bundles.add(bundle);
                 }
                 modelMap.put("bundles", bundles);
                 return "mygame";
             }
+        } else if (filter.equalsIgnoreCase("new")) {
+            if (packageId == null) {
+                PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+                List<PackageDO> packages = new LinkedList<PackageDO>();
+                Query query = pm.newQuery(PackageBundleDO.class);
+                query.setFilter("status == status && clonable == true");
+                query.declareParameters("String status");
+                Collection result = (Collection) query.execute(PackageStatus.PUBLIC.name());
+                for (Object obj : result) {
+                    PackageBundleDO bundle = (PackageBundleDO) obj;
+                    packages.add(bundle.getRelease());
+                }
+                modelMap.put("templates", packages);
+                return "newgame";
+            } else {
+                PersistenceManager pm = PersistenceHelper.getPersistenceManager();
+                PackageBundleDO template = null;
+                if (templateId != null && templateId.trim().length() > 0) {
+                    Key bundleKey = KeyFactory.createKey(PackageBundleDO.class.getSimpleName(), templateId);
+                    template = pm.getObjectById(PackageBundleDO.class, bundleKey);
+                }
+                PackageBundleDO bundle =
+                        template == null ? new PackageBundleDO(packageId) : new PackageBundleDO(template, packageId);
+                PlayerProfileDO profile = new PlayerProfileDO(bundle, getUser().getUserId(), getUser().getNickname());
+                bundle.addPlayerProfile(profile);
+                pm.makePersistent(bundle);
+                PersistenceHelper.commit();
+                modelMap.put("bundle", bundle);
+                modelMap.put("package", bundle.getDraft());
+                return "package/edit";
+            }
         }
         return "game";
-    }
-
-    @RequestMapping(value = "/query/top", method = {RequestMethod.GET, RequestMethod.POST})
-    public String getPackages(ModelMap modelMap) throws Exception {
-        PersistenceManager pm = PersistenceHelper.getPersistenceManager();
-        List<PackageDO> packages = new LinkedList<PackageDO>();
-        Extent<PackageBundleDO> extent = pm.getExtent(PackageBundleDO.class);
-        for (PackageBundleDO bundle : extent) {
-            if (bundle.getStatus().equals(PackageStatus.PUBLIC.name())) packages.add(bundle.getRelease());
-        }
-        extent.closeAll();
-        modelMap.put("packages", packages);
-        return "packages";
     }
 
 }

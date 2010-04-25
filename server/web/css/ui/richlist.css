@@ -1,13 +1,14 @@
 .richlist {
-    color: #AFB0B1;
-    background-color:#e6e6e6;
+    /*color: #AFB0B1;*/
+    /*background-color:#e6e6e6;*/
     float:left;
     margin: 0;
     padding: 0;
     width:100%;
     height: 100%;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
+    border-left: dashed 1px;
+    /*-webkit-border-radius: 20px;*/
+    /*-moz-border-radius: 20px;*/
 }
 
 .richlist ul {

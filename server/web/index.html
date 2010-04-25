@@ -1,12 +1,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Killard Games</title>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <style type="text/css">
         * {
             border: 0;
             margin: 0;
             padding: 0;
         }
+
         body {
             margin: 0;
             padding: 0;
@@ -14,15 +16,19 @@
             overflow: hidden;
             font: .75em / 1.5em Helvetica, Arial, "Liberation Sans", "Bitstream Vera Sans", sans-serif;
         }
+
         div.menu {
             text-align: center;
         }
+
         div.menu ul {
             list-style: none;
         }
+
         div.menu ul li {
             display: inline;
         }
+
         div.bottom {
             position: absolute;
             left: 0;
@@ -31,10 +37,44 @@
             height: 1.5em;
             line-height: 1.5em;
         }
+        #logo {
+            position: absolute;
+            top: 10px;
+            left: 5%;
+        }
+        #title {
+            position: absolute;
+            top: 10px;
+            left: 12%;
+        }
+        #enter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: 20%;
+            margin-left: 10%;
+        }
     </style>
+    <script type="text/javascript">
+        $(function() {
+            function resize() {
+                var w = $('img').width();
+                var left = parseInt(w * 0.094);
+                var top = parseInt(w * 0.127);
+                var right = parseInt(w * 0.273);
+                var bottom = parseInt(w * 0.187);
+                $('area').attr('coords', left + ',' + top + ',' + right + ',' + bottom);
+            }
+            $.event.add(window, 'load', resize);
+            $.event.add(window, 'resize', resize);
+        });
+    </script>
 </head>
 <body>
-<img src="image/bg.png" style="width:100%;"/>
+<img src="image/bg.png" style="width:100%;" usemap="#menumap"/>
+<map name="menumap" id="menumap">
+  <area shape="rect" href="/game" alt="Sun" />
+</map>
 <div class="bottom">
     <div class="menu">
         <ul>

@@ -23,7 +23,7 @@
             </c:when>
             <c:otherwise>
             <li>|</li>
-            <li><a href="<%=userService.createLoginURL(request.getRequestURI())%>"><spring:message code="menu.mygames"/></a></li>
+            <li><a href="<%=userService.createLoginURL("/game?filter=mine")%>"><spring:message code="menu.mygames"/></a></li>
             </c:otherwise>
             </c:choose>
         </ul>

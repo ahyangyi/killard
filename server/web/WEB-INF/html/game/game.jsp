@@ -143,7 +143,7 @@
                 updateGameList();
             }
 
-            $.getJSON('/game/query/top.json', '', function(data, textStatus) {
+            $.getJSON('/game.json', {'filter':'top'}, function(data, textStatus) {
                 $.each(data, function(i, game) {
                     var packageLi = $('<li></li>').appendTo($("#packageList"));
                     $(new Image).attr('src', game.picture).addClass('item').click(function() {

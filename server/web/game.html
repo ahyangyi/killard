@@ -44,13 +44,13 @@
             background-color: #eee;
         }
 
-        div.description ul {
+        div.dashboard ul {
             margin: 0;
             padding: 0;
             list-style-type: none;
         }
 
-        div.description ul li {
+        div.dashboard ul li {
             display: inline;
             float: left;
         }
@@ -170,6 +170,9 @@
         <img src="image/logo.png"/>
         <img src="image/title.png"/>
     </div>
+    <div class="bg">
+        <img src="image/top.png"/>
+    </div>
     <div class="menu">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -190,31 +193,20 @@
 <div class="container">
     <div class="ui-layout-center">
         <div class="dashboard">
-            <div class="corner" style="top:0;left:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="top:0;right:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="bottom:0;left:0;"><img src="image/cycle.png"/></div>
-            <div class="corner" style="bottom:0;right:0;"><img src="image/cycle.png"/></div>
-            <div class="title">    
-                <div class="menu">
-                    <ul>
-                        <li><a href="">Animals In Danger</a></li>
-                        <li><img src="image/arrow1.png"/></li>
-                        <li><img src="image/arrow2.png"/></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="description">
-                <ul>
-                    <li>
-                        <div class="cards-show">
-                            <img src="game/orions/element/AIR/card/Spellbreaker/image.png"/>
-                        </div>
-                    </li>
-                    <li>
-                        <p>This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.This game is talking about animals.</p>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li>
+                    <h3>Animals In Danger</h3>
+
+                    <p>This game is talking about animals.This game is talking about animals.This game is talking about
+                        animals.This game is talking about animals.This game is talking about animals.This game is
+                        talking about animals.</p>
+                </li>
+                <li>
+                    <div class="cards-show">
+                        <img src="game/orions/element/AIR/card/Spellbreaker/image.png"/>
+                    </div>
+                </li>
+            </ul>
             <div class="new-game-form">
                 <form action="/arena/new.html" method="POST">
                     <input type="hidden" name="packageBundleId" value=""/>
@@ -244,7 +236,7 @@
         </div>
     </div>
     <div class="ui-layout-south">
-        <div class="carousel" style="height:100%;">
+        <div class="carousel" style="height:100%;display:none;">
             <div class="center" style="height:100%;">
                 <ul>
                     <li class="arrow"><a class="back"><img src="image/arrow/left.png"/></a></li>
@@ -278,7 +270,7 @@
         </div>
     </div>
 </div>
-
+<img src="image/bottom.png" style="position:absolute;bottom:0;left:0;width:100%;"/>
 <div class="bottombar">
     <div class="menu">
         <ul>

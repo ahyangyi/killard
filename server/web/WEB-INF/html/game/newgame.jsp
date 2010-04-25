@@ -11,7 +11,7 @@
 </head>
 <body>
 <%@ include file="../topbar.jsp" %>
-<div class="container">
+<div style="width:80%;text-align:center;">
     <form action="<c:url value="/game"/>" method="POST">
         <input type="hidden" name="filter" value="new"/>
         <fieldset>

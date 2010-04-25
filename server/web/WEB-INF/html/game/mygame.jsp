@@ -11,13 +11,13 @@
 </head>
 <body>
 <%@ include file="../topbar.jsp" %>
-<div class="container">
+<div style="width:80%;text-align:center;">
     <h3>My Games</h3>
-    <table>
+    <table style="width:100%;">
         <thead>
         <tr>
-            <th>Game</th>
-            <th>Title</th>
+            <th style="width:40%;">Game</th>
+            <th style="width:60%;">Title</th>
         </tr>
         </thead>
         <tbody>

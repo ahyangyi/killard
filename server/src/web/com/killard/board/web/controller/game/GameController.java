@@ -30,10 +30,11 @@ import java.util.List;
  * </p>
  */
 @Controller
-public class IndexController extends BasicController {
+@RequestMapping("/custom")
+public class GameController extends BasicController {
 
-    @RequestMapping(value = {"/game", "/"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String browser(
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public String list(
             @RequestParam(value = "filter", required = false, defaultValue = "all") String filter,
             @RequestParam(value = "packageId", required = false) String packageId,
             @RequestParam(value = "templateId", required = false) String templateId,
@@ -102,5 +103,8 @@ public class IndexController extends BasicController {
         }
         return "game";
     }
-
+    @RequestMapping(value = "/top", method = {RequestMethod.GET, RequestMethod.POST})
+    public String list() {
+        return "";
+    }
 }
